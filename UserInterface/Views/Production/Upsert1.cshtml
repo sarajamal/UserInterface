@@ -1,0 +1,393 @@
+﻿@model ProductionVM;
+
+<body>
+    <div class="card shadow border-0 my-4 py-4">
+        <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+            <div class="row">
+                <div class="col-12 text-center">
+
+                    <h2 class="text-white py-2">   تعديل الأصناف </h2>
+                </div>
+            </div>
+        </div>
+
+        <div>
+
+            <p>
+                <a asp-action="GeneratePdf"  asp-route-fk="@Model.Productionvm.BrandFK"
+                   asp-controller="GeneratePDF" class="btn btn-primary">Generate PDF Report</a>
+            </p>
+
+        </div>
+
+        <form method="post" class="row" enctype="multipart/form-data" data-id="@TempData["ID"]" asp-action="Upsert1" asp-controller="Production" id="myForm">
+            <input asp-for="Productionvm.ProductionID" hidden />
+            <input asp-for="Productionvm.ProductImage" hidden />
+            <input asp-for="Productionvm.ProductType" hidden />
+
+            <input asp-for="Productionvm.BrandFK" hidden />
+            <input asp-for="tredMaeketVM.BrandID" hidden />
+            <input asp-for="tredMaeketVM.ID_Login" hidden />
+            <input asp-for="tredMaeketVM.BrandName" hidden />
+            <input asp-for="tredMaeketVM.Date" hidden />
+            <input asp-for="tredMaeketVM.BrandCoverImage" hidden />
+            <input asp-for="tredMaeketVM.BrandFooterImage" hidden />
+            <input asp-for="tredMaeketVM.BrandLogoImage" hidden />
+            @* <input type="hidden" id="order-input" name="Productionvm.Order" value="0.1" />*@
+
+
+            <div class="card-body p-4 py-4">
+                <div class="border p-3">
+
+                    @*added this class main-container-table*@
+                    <div class="main-container-table">
+                        @*<button class="btn dropdown-toggle float-end mb-2" id="button" onclick="showhide()"> المعلومات</button>*@
+                        @*<div id="newpost">*@
+                        @*<hr class="featurette-divider">*@
+                        <div>
+                            <h4 style="text-align:right">المعلومات</h4>
+                        </div>
+                        <div class=" row">
+                            <div class=" col-md-6 p-2">
+                                <div class="form-group">
+
+                                    <label asp-for=" Productionvm.ProductName" class="control-label"> اسم الصنف </label>
+                                    <input asp-for=" Productionvm.ProductName " class="form-control" />
+                                    <span asp-validation-for=" Productionvm.ProductName" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            
+                                <div class=" col-md-6 p-2">
+                                    <div class="form-group">
+                                        <label asp-for=" Productionvm.VersionNumber" class="control-label">رقم النسخة</label>
+                                    <input asp-for=" Productionvm.VersionNumber" class="form-control" readonly />
+                                    <span asp-validation-for=" Productionvm.VersionNumber" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            
+                            <div class=" col-md-6 p-2">
+                                <div class="form-group">
+                                    <label asp-for=" Productionvm.Expiry" class="control-label">مدة الصلاحية</label>
+                                    <input asp-for=" Productionvm.Expiry" class="form-control" />
+                                    <span asp-validation-for=" Productionvm.Expiry" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 p-2">
+                                <div class="form-group">
+                                    @if (Model.Productionvm.ProductionID != 0)
+                                    {
+                                        <label asp-for="Productionvm.ProductType" class="control-label">نوع الصنف</label>
+                                        <input asp-for="Productionvm.ProductType" class="form-control" />
+                                    }
+
+                                    <input asp-for="Productionvm.ProductType" class="form-control" id="customTypeInput" style="display: none" />
+                                    <div id="errorMessage" style="color: red; display: none;" class="py-3">
+                                        . يجب ادخال نوع الصنف *
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class=" col-md-6 p-2">
+                                <div class="form-group">
+                                    <label asp-for="  Productionvm.Station" class="control-label">المحطة</label>
+                                    <input asp-for="Productionvm.Station" class="form-control" />
+                                    <span asp-validation-for=" Productionvm.Station" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class=" col-md-6 p-2">
+                                <div class="form-group">
+                                    <label asp-for=" Productionvm.PreparationTime" class="control-label"> وقت التحضير</label>
+                                    <input asp-for=" Productionvm.PreparationTime" class="form-control" />
+                                    <span asp-validation-for=" Productionvm.PreparationTime" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6 btn-group">
+                                <div class="form-group col-8 p-0">
+                                    <label asp-for=" Productionvm.ProductImage" class="ms-2"> ادخل صورة</label>
+                                    <input type="file" name="file" class="form-control border-0 shadow" id="customFile"
+                                           onchange="document.getElementById('PreviewPhoto').src= window.URL.createObjectURL(this.files[0])" />
+                                    <div id="errorMessage1" style="color: red; display: none;" class="py-3">
+                                        . يجب ادخال صورة الأصناف النهائية *
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group col-4">                               
+                                    <div class="form-group col-4">
+                                        <img id="PreviewPhoto" src="@Url.Content("~/IMAGES/الانتاج/"+ Model.Productionvm.ProductionID +
+                                        "/" + Model.Productionvm.BrandFK + "/" + Model.Productionvm.ProductImage)" alt="Logo"
+                                             width="125" height="125" style="border:1px ; margin-top:20px" />
+                                    </div>    
+                            </div>
+                        </div>
+
+                        @*المكونات*@
+
+                        <h4 style="text-align:right" class="px-2 py-3">المكونات</h4>
+                        @* id is important!!*@
+                        <table id="tbComponant" class="table table-bordered table-striped" data-Production-id="@Model.Productionvm.ProductionID">
+                            <thead>
+                                <tr>
+                                    <th> المكون</th>
+                                    <th>الكمية</th>
+                                    <th>الوحدة</th>
+                                    <th style="text-align:center;">
+                                        @*type="button" is important*@
+                                        
+                                            <button type="button" class="btn btn-success" onclick="AddRowcomponentUpdate2()">إضافة</button>
+
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @if (Model.Productionvm.ProductionID != 0)
+                                {
+                                    @for (int i = 0; i < Model.componontVMList2.Count; i++)
+                                    {
+                                        var item = Model.componontVMList2[i];
+                                        <tr>
+                                            <td>
+                                                @*Id is important but should be hidden*@
+                                                <input asp-for="@item.ProdIngredientsID" name="componontVMList2[@i].ProdIngredientsID" hidden />
+                                                <input asp-for="@item.ProductionFK" id="ID_الصنف" name="componontVMList2[@i].ProductionFK" hidden />
+
+
+                                                <input asp-for="@item.ProdIngredientsName" class="form-control" id="QuontityId" name="componontVMList2[@i].ProdIngredientsName" />
+                                                <span asp-validation-for="@item.ProdIngredientsName" class="text-danger"></span>
+                                            </td>
+                                            <td>
+                                                <input asp-for="@item.ProdQuantity" class="form-control" id="UnitId" name="componontVMList2[@i].ProdQuantity" />
+                                                <span asp-validation-for="@item.ProdQuantity" class="text-danger"></span>
+                                            </td>
+                                            <td>
+                                                <input asp-for="@item.ProdUnit" class="form-control" id="componentId" name="componontVMList2[@i].ProdUnit" />
+                                                <span asp-validation-for="@item.ProdUnit" class="text-danger"></span>
+                                            </td>
+
+                                            <td style="text-align:center;">
+                                                <button type="button" class="btn btn-danger" onclick="Delete(@item.ProductionFK)">حذف</button>
+
+                                            </td>
+                                        </tr>
+                                    }
+
+                                }
+                                 
+                            </tbody>
+                        </table>
+
+                        @*الأدوات*@
+                        <div>
+                            <h4 style="text-align:right">الأدوات</h4>
+                        </div>
+                        @* id is important!!*@
+                        <table id="tblToolVarity2" class="table table-bordered table-striped" data-Production-id="@Model.Productionvm.ProductionID">
+                            <thead>
+                                <tr>
+                                    <th class="col-1">رقم الأداة</th>
+                                    <th class="col-9"> الأدوات المستخدمة</th>
+
+                                    <th style="text-align:center;">
+                                       
+                                            @*type="button" is important*@
+                                            <button type="button" class="btn btn-success " onclick="AddRowTool2('@Model.Productionvm.ProductionID')">إضافة</button>
+                                        
+                                        
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.Productionvm.ProductionID != 0)
+                                {
+                                    @for (int i = 0; i < Model.ToolsVarityVM2.Count; i++)
+                                    {
+                                        var item = Model.ToolsVarityVM2[i];
+                                        <tr>
+                                            <td>@(i + 1)</td>
+                                            <td>
+                                                @*Id is important but should be hidden*@
+                                                <input asp-for="@item.ProdToolsID" name="ToolsVarityVM2[@i].ProdToolsID" hidden />
+                                                <input asp-for="@item.ProductionFK" name="ToolsVarityVM2[@i].ProductionFK" hidden />
+
+                                                <input asp-for="@item.ProdTools" class="form-control" name="ToolsVarityVM2[@i].ProdTools" />
+                                                <span asp-validation-for="@item.ProdTools" class="text-danger"></span>
+                                            </td>
+
+                                            <td style="text-align:center;">
+                                                <button type="button" class="btn btn-danger" onclick="DeleteToolVariety2(@item.ProdToolsID)">حذف</button>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                
+                            </tbody>
+
+                        </table>
+
+                        @*الخطوات*@
+
+
+                        <div class="form-group col-4 py-2 ">
+                            <h4 style="text-align:right"> الخطوات</h4>
+                        </div>
+                        <table id="tblSteps2" class="table table-bordered table-striped" data-Production-id="@Model.Productionvm.ProductionID">
+
+                         @*    <tbody>
+                                @if (Model.Productionvm.ProductionID != 0)
+                                {
+                                    @for (int i = 0; i < Model.stepsVM2.Count; i++)
+                                    {
+                                        var itemStep = Model.stepsVM2[i];
+                                        <tr>
+                                            <td style="text-align:center;">
+                                                <input asp-for="@itemStep.ID" name="stepsVM2[@i].ID" hidden />
+                                                <input type="hidden" asp-for="@itemStep.ID_الصنف" name="stepsVM2[@i].ID_الصنف" />
+                                                <input asp-for="@itemStep.الصورة1" name="stepsVM2[@i].الصورة1" hidden />
+                                                <input asp-for="@itemStep.رقم_الخطوة1" name="stepsVM2[@i].رقم_الخطوة1" hidden /> @*نسوي اخفاء اذا كان الادخال تلقائي*@
+
+                                               @*  @if (!string.IsNullOrEmpty(itemStep.الخطوة1) || !string.IsNullOrEmpty(itemStep.الصورة1))
+                                                {
+
+                                                    <div class="col-12 text-center">
+
+                                                        <div>
+                                                            @Model.stepsVM2[i].رقم_الخطوة1
+                                                        </div>
+
+
+                                                        <div>
+                                                            <img id="PreviewPhoto1_@Model.stepsVM2[i].رقم_الخطوة1"
+                                                                 src="@Url.Content("~/IMAGES/الانتاج/" + itemStep.رقم_الخطوة1+ "/" + itemStep.ID_الصنف + "/" +  itemStep.ID +"/"+   itemStep.الصورة1)"
+                                                                 alt="Logo"
+                                                                 width="125" height="125" style="border: 1px; margin-top: 20px;">
+                                                        </div>
+
+                                                        <div class="form-group mt-2">
+                                                            <input type="file" name="file1_@Model.stepsVM2[i].رقم_الخطوة1" class="border-0 shadow mt-5" id="customFile1_@Model.stepsVM2[i].رقم_الخطوة1"
+                                                                   data-preview-id="PreviewPhoto1_@Model.stepsVM2[i].رقم_الخطوة1"
+                                                                   onchange="displaySelectedImage(this,'PreviewPhoto1_@Model.stepsVM2[i].رقم_الخطوة1')" />
+
+                                                            <textarea asp-for="@itemStep.الخطوة1" id="stepsVM_@Model.stepsVM2[i].رقم_الخطوة1" class="form-control mt-2" name="stepsVM2[@i].الخطوة1"></textarea>
+                                                            <span asp-validation-for="@itemStep.الخطوة1" class="text-danger"></span>
+
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </td> *@
+                                          @*   <td style="text-align:center;">
+                                                @if (!string.IsNullOrEmpty(itemStep.الخطوة2) || !string.IsNullOrEmpty(itemStep.الصورة2))
+                                                {
+
+                                                    <input asp-for="@itemStep.رقم_الخطوة2" name="stepsVM2[@i].رقم_الخطوة2" hidden />
+                                                    <input asp-for="@itemStep.الصورة2" name="stepsVM2[@i].الصورة2" hidden />
+
+                                                    <div class="row">
+                                                        <div class="col-12 text-center">
+
+                                                            <div>
+                                                                @Model.stepsVM2[i].رقم_الخطوة2
+                                                            </div>
+
+                                                            <div>
+                                                                <img id="PreviewPhoto2_@Model.stepsVM2[i].رقم_الخطوة2"
+                                                                     src="@Url.Content("~/IMAGES/الانتاج/" + itemStep.رقم_الخطوة2+ "/" + itemStep.ID_الصنف + "/" + itemStep.ID +"/"+itemStep.الصورة2)"
+                                                                     alt="Logo"
+                                                                     width="125" height="125" style="border: 1px; margin-top: 20px;">
+                                                            </div>
+
+                                                            <div class="form-group mt-2">
+                                                                <input type="file" name="file2_@Model.stepsVM2[i].رقم_الخطوة2" class="border-0 shadow mt-5" id="customFile2_@Model.stepsVM2[i].رقم_الخطوة2"
+                                                                       data-preview-id="PreviewPhoto2_@Model.stepsVM2[i].رقم_الخطوة2"
+                                                                       onchange="displaySelectedImage(this,'PreviewPhoto2_@Model.stepsVM2[i].رقم_الخطوة2')"
+                                                                @* data-file-id="file2_@Model.stepsVM[i].رقم_الخطوة2"*@ />
+
+
+                                                             @*    <textarea asp-for="@itemStep.الخطوة2" id="stepsVM_@Model.stepsVM2[i].رقم_الخطوة2" class="form-control mt-2" name="stepsVM2[@i].الخطوة2"></textarea>
+                                                                <span asp-validation-for="@itemStep.الخطوة2" class="text-danger"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </td> *@
+
+                                          @*   <td style="text-align: center;" class="py-5">
+                                                <button type="button" class="btn btn-danger delete-button" id="deleteButton" onclick="Deletestep(@Model.Productionvm.ProductionID,@itemStep.F )" abled>حذف</button>
+                                            </td>
+                                        </tr> *@
+                                   @*  }
+                                }
+                            </tbody> *@
+
+                            @* أزرار إضافة خطوات جديدة *@
+                            <tr>
+                                <td colspan="1" style="text-align:right;">
+
+                                    <button type="button" id="addStepButton" class="btn btn-success my-3" onclick="AddnewRowstepsUpdate2('@Model.Productionvm.ProductionID')" abled>إضافة خطوات جديدة </button>
+
+
+                                </td>
+                            </tr>
+
+                        </table>
+
+
+                        
+
+                        
+                        @* أزرار الحفظ *@
+                        <div class="form-group col-12 py-2">
+                            <div style="text-align: left;">
+                                
+                                    <div class="form-group col-12 py-3">
+                                        <input type="submit" id="saveChange" value="حفظ التغييرات" asp-action="Upsert1" asp-route-id="@Model.Productionvm.ProductionID" style="text-align:center" class="btn btn-primary me-3" abled />
+                                    </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+
+
+@* رسالة يجب إدخال صورة التأصناف *@
+@* <script>
+    document.getElementById("submitButton").addEventListener("click", function (e) {
+        var customFileInput = document.getElementById("customFile");
+        var selectPreparation1 = document.getElementById("selectPreparation1");
+        var customTypeInput = document.getElementById("customTypeInput");
+        var errorMessage = document.getElementById("errorMessage");
+
+        if (customFileInput.files.length === 0) {
+            errorMessage.style.display = "block";
+            e.preventDefault(); // Prevent the form from being submitted
+
+            var customFileOffset = customFileInput.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({
+                top: customFileOffset,
+                behavior: "smooth"
+            });
+        } else {
+            errorMessage.style.display = "none";
+        }
+    });
+</script> *@
+
+
+
+
+@section Scripts{
+
+    <script src="~/Js/Production/AddDltComponent2.js"></script>
+    <script src="~/Js/Production/Toolsvariety2.js"></script>
+    <script src="~/Js/Production/custom.js"></script>
+    <script src="~/Js/Production/AddDLTsteps2.js"></script>
+    
+        }

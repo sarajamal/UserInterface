@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Cleaning>
+
+@{
+    ViewData["Title"] = "CleanList";
+}
+
+<div class="card shadow border-0 my-4">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2"> قائمة التنظيف</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body p-4">
+
+        <table class="table table-bordered table-striped py-5 mb-3 pb-4" id="tblDataClean" style="width:100%">
+            <thead>
+                <tr class=" py-5 mb-3 pb-4">
+                    <th style="text-align:center ;font-size:medium">
+                        اسم التنظيف 
+                    </th>
+                   
+                    <th>
+                        <div class="row pb-3">
+                        </div>
+                        <div style="text-align:center">
+                            <a asp-controller="Clean" asp-action="Upsert3" name="AddButtonItem" class=" btn btn-primary px-4 add-button" onclick="saveItemId(this)">
+                                <i class="bi bi-plus-circle"></i>
+                            </a>
+                        </div>
+                    </th>
+
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    <script src="~/Js/Clean/Deletelist3.js"></script>
+}

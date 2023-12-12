@@ -1,0 +1,279 @@
+﻿@model FoodVM
+
+<div class="row pb-3">
+
+    <div class="card shadow border-0 my-4 py-4">
+        <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+            <div class="row">
+                <div class="col-12 text-center">
+
+                    <h2 class="text-white py-2">   تعديل المواد الغذائية </h2>
+                </div>
+            </div>
+        </div>
+
+
+
+        <form method="post" class="row" enctype="multipart/form-data" asp-action=" " asp-controller="Food">
+@* 
+            <div style="text-align:center">
+               
+                <a asp-controller="Food" asp-action="FoodIndex" name="AddButtonDevice" asp-route-id="0"
+                class=" btn btn-primary px-4 add-button" onclick="saveItemId(this)">
+                    <i class="bi bi-plus-circle"></i>
+                </a>
+            </div> *@
+
+            <div class="col-lg-3 col-sm-6">
+                <div class="row p-2">
+                    <div class="col-12 p-1">
+                        <div class="card border-0 p-3 shadow  border-top border-5 rounded">
+
+
+                            <input asp-for="FoodViewM.BrandFK"  hidden />
+                            <input asp-for="FoodViewM.FoodStuffsID" hidden />
+                           
+
+                            <table id="tblFood" class="table table-bordered table-striped" data-Food-id="@Model.FoodViewM.BrandFK">
+
+                                <tbody>
+                                    @* @if (Model.FoodViewM.ID != 0)
+                                    {
+                                        @for (int i = 0; i < Model.FoodViewMList.Count; i++)
+                                        {
+                                            var itemFood = Model.FoodViewMList[i];
+                                            <tr>
+                                                <td style="text-align:center;">
+
+                                                    <input asp-for="@itemFood.ID" name="FoodViewMList[@i].ID" hidden />
+                                                    <input asp-for="@itemFood.ID2" name="FoodViewMList[@i].ID2" hidden /> 
+                                                   
+                                                    <input asp-for="@itemFood.صورة1" name="FoodViewMList[@i].صورة1" hidden />
+                                                    <input asp-for="@itemFood.صورة2" name="FoodViewMList[@i].صورة2" hidden />
+                                                    <input asp-for="@itemFood.صورة3" name="FoodViewMList[@i].صورة3" hidden />
+                                                    <input asp-for="@itemFood.صورة4" name="FoodViewMList[@i].صورة4" hidden />
+
+ *@
+                                                   @*  @if (!string.IsNullOrEmpty(itemFood.اسم_المادة_الغذئية1) || !string.IsNullOrEmpty(itemFood.صورة1))
+                                                    {
+
+                                                        <div class="col-12 text-center">
+
+
+                                                            <div>
+                                                                <img id="PreviewPhoto1_@Model.FoodViewMList[i].اسم_المادة_الغذئية1"
+                                                                     src="@Url.Content("~/IMAGES/مواد/" + itemFood.اسم_المادة_الغذئية1+ "/"+ itemFood.ID2 + "/" + itemFood.ID +"/" +  itemFood.صورة1)"
+                                                                alt="Logo"
+                                                                     width="125" height="125" style="border: 1px; margin-top: 20px;">
+                                                            </div>
+
+                                                            <div class="form-group mt-2">
+                                                                <input asp-for="@itemFood.اسم_المادة_الغذئية1" id="اسم_المادة_الغذئية1_@Model.FoodViewMList[i]" oninput="updateFileNameInput(this)" class="form-control mt-2" name="FoodViewMList[@i].اسم_المادة_الغذئية1">
+                                                                <input type="file" name="file1_@Model.FoodViewMList[i]" class="border-0 shadow mt-5" id="customFile1_@Model.FoodViewMList[i]" onchange="displaySelectedImage(this, 'PreviewPhoto1_@Model.FoodViewMList[i].اسم_المادة_الغذئية1')">
+
+                                                                <span asp-validation-for="@itemFood.اسم_المادة_الغذئية1" class="text-danger"></span>
+
+                                                            </div>
+                                                        </div>
+                                                    } *@
+                                              @*   </td>
+                                                <td style="text-align:center;">
+                                                    @if (!string.IsNullOrEmpty(itemFood.اسم_المادة_الغذئية2) || !string.IsNullOrEmpty(itemFood.صورة2))
+                                                    {
+
+                                                        <div class="col-12 text-center">
+
+
+                                                            <div>
+                                                                <img id="PreviewPhoto2_@Model.FoodViewMList[i].اسم_المادة_الغذئية2"
+                                                                     src="@Url.Content("~/IMAGES/مواد/" + itemFood.اسم_المادة_الغذئية2+ "/"+ itemFood.ID2 + "/" + itemFood.ID +"/" +  itemFood.صورة2)"
+                                                                     alt="Logo"
+                                                                     width="125" height="125" style="border: 1px; margin-top: 20px;">
+                                                            </div>
+
+                                                            <div class="form-group mt-2">
+                                                                <input asp-for="@itemFood.اسم_المادة_الغذئية2" id=" اسم_المادة_الغذئية2_@Model.FoodViewMList[i]" oninput="updateFileNameInput2(this)" class="form-control mt-2" name="FoodViewMList[@i].اسم_المادة_الغذئية2">
+                                                                <input type="file" name="file2_@Model.FoodViewMList[i]" class="border-0 shadow mt-5" id="customFile2_@Model.FoodViewMList[i]" onchange="displaySelectedImage(this, 'PreviewPhoto2_@Model.FoodViewMList[i].اسم_المادة_الغذئية2')">
+
+                                                                <span asp-validation-for="@itemFood.اسم_المادة_الغذئية2" class="text-danger"></span>
+
+                                                            </div>
+                                                        </div>
+                                                    } *@
+                                              @*   </td>
+                                                <td style="text-align:center;">
+                                                    @if (!string.IsNullOrEmpty(itemFood.اسم_المادة_الغذئية3) || !string.IsNullOrEmpty(itemFood.صورة3))
+                                                    {
+
+                                                        <div class="col-12 text-center">
+
+
+                                                            <div>
+                                                                <img id="PreviewPhoto3_@Model.FoodViewMList[i].اسم_المادة_الغذئية3"
+                                                                     src="@Url.Content("~/IMAGES/مواد/" + itemFood.اسم_المادة_الغذئية3+ "/"+ itemFood.ID2 + "/" + itemFood.ID +"/" +  itemFood.صورة3)"
+                                                                     alt="Logo"
+                                                                     width="125" height="125" style="border: 1px; margin-top: 20px;">
+                                                            </div>
+
+                                                            <div class="form-group mt-2">
+                                                                <input asp-for="@itemFood.اسم_المادة_الغذئية3" id="اسم_المادة_الغذئية3_@Model.FoodViewMList[i]" oninput="updateFileNameInput3(this)" class="form-control mt-2" name="FoodViewMList[@i].اسم_المادة_الغذئية3">
+                                                                <input type="file" name="file3_@Model.FoodViewMList[i]" class="border-0 shadow mt-5" id="customFile3_@Model.FoodViewMList[i]" onchange="displaySelectedImage(this, 'PreviewPhoto3_@Model.FoodViewMList[i].اسم_المادة_الغذئية3')">
+
+                                                                <span asp-validation-for="@itemFood.اسم_المادة_الغذئية3" class="text-danger"></span>
+
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </td> *@
+                                               @*  <td style="text-align:center;">
+                                                    @if (!string.IsNullOrEmpty(itemFood.اسم_المادة_الغذئية4) || !string.IsNullOrEmpty(itemFood.صورة4))
+                                                    {
+
+                                                        <div class="col-12 text-center">
+
+
+                                                            <div>
+                                                                <img id="PreviewPhoto4_@Model.FoodViewMList[i].اسم_المادة_الغذئية4"
+                                                                     src="@Url.Content("~/IMAGES/مواد/" + itemFood.اسم_المادة_الغذئية4+ "/"+ itemFood.ID2 + "/" + itemFood.ID +"/" +  itemFood.صورة4)"
+                                                                     alt="Logo"
+                                                                     width="125" height="125" style="border: 1px; margin-top: 20px;">
+                                                            </div>
+
+                                                            <div class="form-group mt-2">
+                                                                <input asp-for="@itemFood.اسم_المادة_الغذئية4" id="اسم_المادة_الغذئية4_@Model.FoodViewMList[i]" oninput="updateFileNameInput4(this)" class="form-control mt-2" name="FoodViewMList[@i].اسم_المادة_الغذئية4">
+                                                                <input type="file" name="file4_@Model.FoodViewMList[i]" class="border-0 shadow mt-5" id="customFile3_@Model.FoodViewMList[i]" onchange="displaySelectedImage(this, 'PreviewPhoto3_@Model.FoodViewMList[i].اسم_المادة_الغذئية4')">
+
+                                                                <span asp-validation-for="@itemFood.اسم_المادة_الغذئية4" class="text-danger"></span>
+
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody> *@
+                            </table>
+
+                        </div>
+                    </div>
+
+                </div>
+             
+            </div>
+
+            <div class="form-group col-12 py-2">
+                <div style="text-align: left;">
+                    @if (Model.FoodViewM.BrandFK != 0)
+                    {
+                        <div class="form-group col-12 py-3">
+                            <input type="submit" id="saveChange" value=" حفظ التغييرات"
+                                   asp-action="FoodIndex" asp-route-id="@Model.FoodViewM.BrandFK"
+                                   onclick="return validateForm()"
+                                   style="text-align:center" class="btn btn-primary me-3" abled />
+                        </div>
+                       
+                    }
+                  
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    function updateFileNameInput(input) {
+        var dynamicValue = input.value;
+        var fileInput = input.closest('form').querySelector('[name^="file1_"]');
+
+        // Check if the fileInput element is found before setting its name
+        if (fileInput) {
+            // Check if dynamicValue is not empty and has changed
+            if (dynamicValue !== fileInput.value && dynamicValue.trim() !== "") {
+                fileInput.name = `file1_${dynamicValue}`;
+            }
+        } else {
+            console.error("File input element not found.");
+        }
+    }
+</script>
+
+<script>
+    function updateFileNameInput2(input) {
+        var dynamicValue = input.value;
+        var fileInput = input.closest('form').querySelector('[name^="file2_"]');
+
+        // Check if the fileInput element is found before setting its name
+        if (fileInput) {
+            fileInput.name = `file2_${dynamicValue}`;
+        } else {
+            console.error("File input element not found.");
+        }
+    }
+</script>
+<script>
+    function updateFileNameInput3(input) {
+        var dynamicValue = input.value;
+        var fileInput = input.closest('form').querySelector('[name^="file3_"]');
+
+        // Check if the fileInput element is found before setting its name
+        if (fileInput) {
+            fileInput.name = `file3_${dynamicValue}`;
+        } else {
+            console.error("File input element not found.");
+        }
+    }
+</script>
+
+<script>
+    function updateFileNameInput4(input) {
+        var dynamicValue = input.value;
+        var fileInput = input.closest('form').querySelector('[name^="file4_"]');
+
+        // Check if the fileInput element is found before setting its name
+        if (fileInput) {
+            fileInput.name = `file4_${dynamicValue}`;
+        } else {
+            console.error("File input element not found.");
+        }
+    }
+</script>
+
+<script>
+    function displaySelectedImage(input, imgId) {
+
+        // Get the reference to the HTML img element based on the provided imgId
+        var imgElement = document.getElementById(imgId);
+
+        // Check if a file has been selected in the input element
+        if (input.files && input.files[0]) {
+
+            // Create a new FileReader object to read the selected file
+            var reader = new FileReader();
+
+            // Define an event handler for when the FileReader has finished reading the file
+            reader.onload = function (e) {
+
+                // Set the 'src' attribute of the img element to the read image data
+                imgElement.src = e.target.result;
+            };
+            // Read the selected file as a data URL (base64 encoded)
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+
+
+@section Scripts {
+
+    <script src="~/Js/Foodjs/FoodDeletelist.js"></script>
+}
+
+
+@* @section Scripts {
+
+    <script src="~/Js/Foodjs/FoodDeletelist.js"></script>
+    <script src="~/Js/Foodjs/AdddeleteFood.js"></script>
+}
+ *@

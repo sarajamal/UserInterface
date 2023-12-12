@@ -1,0 +1,127 @@
+﻿@model FoodVM
+
+<div class="row pb-3">
+
+    <div class="card shadow border-0 my-4 py-4">
+        <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h2 class="text-white py-2">
+                        إضافة المواد الغذائية
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <form method="post" class="row" enctype="multipart/form-data" asp-action="CreateFood" asp-controller="Food">
+
+            <div class="col-lg-3 col-sm-6">
+                <div class="row p-2">
+                    <div class="col-12 p-1">
+                        <div class="card border-0 p-3 shadow  border-top border-5 rounded">
+
+
+                            <input asp-for="tredMaeketFoodsVM.BrandID" hidden />
+                            <input asp-for="tredMaeketFoodsVM.ID_Login" hidden />
+                            <input asp-for="tredMaeketFoodsVM.BrandName" hidden />
+                            <input asp-for="tredMaeketFoodsVM.Date" hidden />
+                            <input asp-for="tredMaeketFoodsVM.BrandCoverImage" hidden />
+                            <input asp-for="tredMaeketFoodsVM.BrandFooterImage" hidden />
+                            <input asp-for="tredMaeketFoodsVM.BrandLogoImage" hidden />
+                            <input asp-for="FoodViewM.FoodStuffsID" hidden />
+
+                            <table id="tblFoods" class="table table-bordered table-striped" data-DeviceTools-id="@Model.tredMaeketFoodsVM.BrandID">
+                                <thead>
+                                    <tr class=" py-5 mb-3 pb-4">
+                                        <th style="text-align:center ;font-size:medium">
+                                            المادة الغذائية الأولى
+                                        </th>
+                                        <th style="text-align:center ;font-size:medium">
+                                            المادة الغذائية الثانية
+                                        </th>
+                                        <th style="text-align:center ;font-size:medium">
+                                            المادة الغذائية الثالثة
+                                        </th>
+                                        <th style="text-align:center ;font-size:medium">
+                                            المادة الغذائية الرابعة
+                                        </th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    <tr>
+                                        <td colspan="1" style="text-align:right;">
+
+                                            <button type="button" id="addToolButton4" class="btn btn-success my-3 " onclick="AddnewFoods('@Model.tredMaeketFoodsVM.BrandID')" abled>إضافة مواد غذائية جديدة</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="form-floating py-2 col-12">
+                                @{
+                                    var sortedFoodsName = Model.FoodsVMorder.OrderBy(item => item.FoodStuffsOrder).ToList();
+                                }
+                                <select asp-for="FoodViewM.FoodStuffsID" class="form-select" id="selectFoodvalues" name="selectFoodvalue">
+                                    <option value="" disabled selected>-- اختر مكان الصف الجديد--</option>
+                                    @foreach (var item in sortedFoodsName)
+                                    {
+                                        <option value="@item.FoodStuffsID">@* @item.اسم_المادة_الغذئية1 ,@item.اسم_المادة_الغذئية2 , @item.اسم_المادة_الغذئية3, @item.اسم_المادة_الغذئية4 *@ </option>
+                                    }
+                                    <option value="0">اخر صف</option> <!-- The "Other" option -->
+                                </select>
+                            </div>
+
+                            <div class="form-group col-12 py-2">
+                                <div style="text-align: left;">
+
+                                    <div class="form-group col-12 py-5">
+
+                                        <input type="submit" value=" حفظ" asp-route-id="@Model.tredMaeketFoodsVM.BrandID"
+                                               style="text-align:center" class="btn btn-primary me-3" id="submitButton5" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+
+<script>
+    function displaySelectedImage(input, imgId) {
+
+        // Get the reference to the HTML img element based on the provided imgId
+        var imgElement = document.getElementById(imgId);
+
+        // Check if a file has been selected in the input element
+        if (input.files && input.files[0]) {
+
+            // Create a new FileReader object to read the selected file
+            var reader = new FileReader();
+
+            // Define an event handler for when the FileReader has finished reading the file
+            reader.onload = function (e) {
+
+                // Set the 'src' attribute of the img element to the read image data
+                imgElement.src = e.target.result;
+            };
+            // Read the selected file as a data URL (base64 encoded)
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+
+@section Scripts {
+
+    <script src="~/Js/Foodjs/AdddeleteFoods.js"></script>
+}
+

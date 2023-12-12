@@ -1,0 +1,22 @@
+﻿@model LoginTredMarktViewModel
+
+<div style="text-align: center;">
+    <h1> مرحبا , @Model.LoginVM.Username!</h1>
+
+
+    <div>
+        @foreach (var item in Model.tredList)
+        {
+            <div class="row">
+                <a href="@Url.Action("WelcomTredMarket", "Home", new { id = item.BrandID })">
+                    @item.BrandName
+                    <img class="card-img-right flex-auto d-none d-md-block" src="@Url.Content("~/IMAGES/BRAND/" + item.BrandID + "/" + item.BrandLogoImage)" alt="Card image cap" style="width: 150px; height: 100px">
+                </a>
+            </div>
+        }
+    </div>
+ 
+    <div>
+        <p> اخر تسجيل للدخول كان في :  @(Model.TredMarktVM.Date.HasValue ? Model.TredMarktVM.Date.Value.ToString("dd/MM/yyyy HH:mm:ss") : "No previous login recorded")</p>
+    </div>
+</div>

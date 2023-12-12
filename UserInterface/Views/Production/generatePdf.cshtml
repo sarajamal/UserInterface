@@ -1,0 +1,77 @@
+﻿@* @model ProductionVM;
+
+
+
+
+<div class="card-body p-4 py-4">
+    <div class="border p-3"> *@
+
+        @*added this class main-container-table*@
+        @* <div class="main-container-table"> *@
+            @*<button class="btn dropdown-toggle float-end mb-2" id="button" onclick="showhide()"> المعلومات</button>*@
+            @*<div id="newpost">*@
+            @*<hr class="featurette-divider">*@
+           @*  <div>
+                <h4 style="text-align:right">المعلومات</h4>
+            </div>
+            <div class=" row">
+                <div class=" col-md-6 p-2">
+                    <div class="form-group">
+
+                        <label asp-for=" Productionvm.اسم_الصنف" class="control-label"> اسم الصنف </label>
+                        <input asp-for=" Productionvm.اسم_الصنف " class="form-control" />
+                    </div>
+                </div>
+
+
+                <div class=" col-md-6 p-2">
+                    <div class="form-group">
+                        <label asp-for=" Productionvm.رقم_النسخة" class="control-label">رقم النسخة</label>
+                        <input asp-for=" Productionvm.رقم_النسخة" class="form-control" readonly />
+
+                    </div>
+                </div>
+
+                <div class=" col-md-6 p-2">
+                    <div class="form-group">
+                        <label asp-for=" Productionvm.مدة_الصلاحية" class="control-label">مدة الصلاحية</label>
+                        <input asp-for=" Productionvm.مدة_الصلاحية" class="form-control" />
+
+                    </div>
+                </div>
+
+                <div class="col-md-6 p-2">
+                    <div class="form-group">
+
+                        <label asp-for="Productionvm.نوع_الصنف" class="control-label">نوع الصنف</label>
+                        <input asp-for="Productionvm.نوع_الصنف" class="form-control" />
+                    </div>
+                </div>
+
+                <div class=" col-md-6 p-2">
+                    <div class="form-group">
+                        <label asp-for="  Productionvm.المحطة" class="control-label">المحطة</label>
+                        <input asp-for="Productionvm.المحطة" class="form-control" />
+
+                    </div>
+                </div>
+
+                <div class=" col-md-6 p-2">
+                    <div class="form-group">
+                        <label asp-for=" Productionvm.وقت_التحضير" class="control-label"> وقت التحضير</label>
+                        <input asp-for=" Productionvm.وقت_التحضير" class="form-control" />
+
+                    </div>
+                </div>
+
+                <div class="form-group col-4">
+                    <div class="form-group col-4">
+                        <img id="PreviewPhoto" src="@Url.Content("~/IMAGES/الانتاج/"+ Model.Productionvm.ID_المنتج +
+                                        "/" + Model.Productionvm.ID + "/" + Model.Productionvm.صورة)" alt="Logo"
+                             width="125" height="125" style="border:1px ; margin-top:20px" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> *@

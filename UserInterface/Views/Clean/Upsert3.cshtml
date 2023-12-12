@@ -1,0 +1,218 @@
+﻿@model CleanVM;
+
+<body>
+    <div class="card shadow border-0 my-4 py-4">
+        <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h2 class="text-white py-2">
+                       @*  @(Model.tredMaeketCleanVM.ID == null || Model.tredMaeketCleanVM.BrandID == 0 ? "إضافة" : "تعديل") الأجهزة والأدوات *@
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+
+        <form method="post" class="row" enctype="multipart/form-data" asp-action="Upsert3" asp-controller="Clean">
+            
+            <div class="card-body p-4 py-4">
+                <div class="border p-3">
+
+                    @*added this class main-container-table*@
+                    <div class="main-container-table">
+                        @*<button class="btn dropdown-toggle float-end mb-2" id="button" onclick="showhide()"> المعلومات</button>*@
+                        @*<div id="newpost">*@
+                        @*<hr class="featurette-divider">*@
+
+
+                        <div class="form-group col-4 py-2 ">
+                            <h4 style="text-align:right"> الخطوات</h4>
+                        </div>
+                        <table id="tblSteps3" class="table table-bordered table-striped" data-preparation-id="@Model.CleanViewModel.CleaningID">
+                            <input asp-for="CleanViewModel.CleaningID" hidden />
+                            <input asp-for="CleanViewModel.BrandFK" hidden />
+
+                            <tbody>
+
+                                @if (Model.CleanViewModel.CleaningID != 0)
+                                {
+                                    <tr>
+                                        <div class=" col-md-6 p-2">
+                                            <div class="form-group">
+                                                
+                                                <label asp-for=" CleanViewModel.DeviceName" class="control-label"> اسم الجهاز </label>
+                                                <input asp-for=" CleanViewModel.DeviceName " class="form-control" />
+                                                <span asp-validation-for=" CleanViewModel.DeviceName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </tr>
+
+                                    @for (int i = 0; i < Model.stepsVM3.Count; i++)
+                                    {
+                                        var itemStep = Model.stepsVM3[i];
+
+                                        <tr>
+                                            <td style="text-align:center;">
+                                                <input asp-for="@itemStep.ID" name="stepsVM3[@i].ID" hidden />
+                                                <input type="hidden" asp-for="@itemStep.ID_Tandeef1" name="stepsVM3[@i].ID_Tandeef1" />
+                                                <input asp-for="@itemStep.الصورة1" name="stepsVM3[@i].الصورة1" hidden />
+                                                <input asp-for="@itemStep.رقم_الخطوة1" name="stepsVM3[@i].رقم_الخطوة1" hidden /> @*نسوي اخفاء اذا كان الادخال تلقائي*@
+
+                                                @if (!string.IsNullOrEmpty(itemStep.الخطوة1) || !string.IsNullOrEmpty(itemStep.الصورة1))
+                                                {
+
+                                                    <div class="col-12 text-center">
+
+                                                        <div>
+                                                            @Model.stepsVM3[i].رقم_الخطوة1
+                                                        </div>
+
+
+                                                        <div>
+                                                            <img id="PreviewPhoto1_@Model.stepsVM3[i].رقم_الخطوة1" src="@itemStep.الصورة1" alt="Logo"
+                                                                 width="125" height="125" style="border: 1px; margin-top: 20px;">
+                                                        </div>
+
+                                                        <div class="form-group mt-2">
+                                                            <input type="file" name="file1_@Model.stepsVM3[i].رقم_الخطوة1" class="border-0 shadow mt-5" id="customFile1_@Model.stepsVM3[i].رقم_الخطوة1"
+                                                                   data-preview-id="PreviewPhoto1_@Model.stepsVM3[i].رقم_الخطوة1"
+                                                                   onchange="displaySelectedImage(this,'PreviewPhoto1_@Model.stepsVM3[i].رقم_الخطوة1')" />
+
+                                                            <textarea asp-for="@itemStep.الخطوة1" id="stepsVM3_@Model.stepsVM3[i].رقم_الخطوة1" class="form-control mt-2" name="stepsVM3[@i].الخطوة1"></textarea>
+                                                            <span asp-validation-for="@itemStep.الخطوة1" class="text-danger"></span>
+
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </td>
+                                            <td style="text-align:center;">
+                                                @if (!string.IsNullOrEmpty(itemStep.الخطوة2) || !string.IsNullOrEmpty(itemStep.الصورة2))
+                                                {
+
+                                                    <input asp-for="@itemStep.رقم_الخطوة2" name="stepsVM3[@i].رقم_الخطوة2" hidden />
+                                                    <input asp-for="@itemStep.الصورة2" name="stepsVM3[@i].الصورة2" hidden />
+
+                                                    <div class="row">
+                                                        <div class="col-12 text-center">
+
+                                                            <div>
+                                                                @Model.stepsVM3[i].رقم_الخطوة2
+                                                            </div>
+
+                                                            <div>
+                                                                <img id="PreviewPhoto2_@Model.stepsVM3[i].رقم_الخطوة2" src="@itemStep.الصورة2" alt="Logo"
+                                                                     width="125" height="125" style="border: 1px; margin-top: 20px;">
+                                                            </div>
+
+                                                            <div class="form-group mt-2">
+                                                                <input type="file" name="file2_@Model.stepsVM3[i].رقم_الخطوة2" class="border-0 shadow mt-5" id="customFile2_@Model.stepsVM3[i].رقم_الخطوة2"
+                                                                       data-preview-id="PreviewPhoto2_@Model.stepsVM3[i].رقم_الخطوة2"
+                                                                       onchange="displaySelectedImage(this,'PreviewPhoto2_@Model.stepsVM3[i].رقم_الخطوة2')"
+                                                                @* data-file-id="file2_@Model.stepsVM[i].رقم_الخطوة2"*@ />
+
+
+                                                                <textarea asp-for="@itemStep.الخطوة2" id="stepsVM_@Model.stepsVM3[i].رقم_الخطوة2" class="form-control mt-2" name="stepsVM3[@i].الخطوة2"></textarea>
+                                                                <span asp-validation-for="@itemStep.الخطوة2" class="text-danger"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </td>
+
+                                            <td style="text-align: center;" class="py-5">
+                                                <button type="button" class="btn btn-danger delete-button" id="deleteButton" onclick="Deletestep3(@Model.CleanViewModel.CleaningID,@itemStep.ID )" abled>حذف</button>
+                                            </td>
+                                        </tr>
+                                    }
+                                  
+                                }
+                            
+                                else
+                                {
+                                    <tr>
+                                        <div class=" col-md-6 p-2">
+                                            <div class="form-group">
+                                                <input asp-for="CleanViewModel.CleaningID" hidden />
+                                                <input asp-for="CleanViewModel.BrandFK" hidden />
+
+                                                <label asp-for=" CleanViewModel.DeviceName" class="control-label"> اسم الجهاز </label>
+                                                <input asp-for=" CleanViewModel.DeviceName " class="form-control" />
+                                                <span asp-validation-for=" CleanViewModel.DeviceName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        @* أزار إضافة خطوات جديدة *@
+                        <tr>
+                            <td colspan="1" style="text-align:right;">
+                                @if (Model.CleanViewModel.CleaningID != 0)
+                                {
+                                    <button type="button" id="addStepButton3" class="btn btn-success my-3" onclick="AddnewRowstepsUpdate3('@Model.CleanViewModel.CleaningID')" abled>إضافة خطوات جديدة </button>
+                                }
+                                else
+                                {
+                                    <button type="button" id="addStepButton4" class="btn btn-success my-3 " onclick="AddnewRowstepsNew3('@Model.CleanViewModel.CleaningID')" abled>إضافة خطوات جديدة</button>
+                                }
+
+                            </td>
+                        </tr>
+
+                        <div class=" col-md-6 p-2">
+                            <div class="form-group">
+                                <input asp-for="CleanViewModel.CleaningID" hidden />
+                                <input asp-for="CleanViewModel.BrandFK" hidden />
+                                <label asp-for="CleanViewModel.Note" class="control-label"> ملاحظة </label>
+                                <textarea asp-for="@Model.CleanViewModel.Note" id="Note" class="form-control mt-2"> </textarea>
+                            </div>
+                        </div>
+
+                        @* مكان وجود الصف *@
+                        @if (Model.CleanViewModel.CleaningID == 0)
+                        {
+                            <div class="form-floating py-2 col-12">
+                                @{
+                                    var sortedPreparationName = Model.CleanList.OrderBy(item => item.CleaningOrder).ToList();
+                                }
+                                <select asp-for="CleanViewModel.CleaningID" class="form-select" id="selectPreparation" name="selectedValue3">
+                                    <option value="" disabled selected>-- اختر مكان الصف الجديد--</option>
+                                    @foreach (var item in sortedPreparationName)
+                                    {
+                                        <option value="@item.CleaningID">@* @item.اسم_الجهاز_أو_الأداة *@</option>
+                                    }
+                                    <option value="0">اخر صف</option> <!-- The "Other" option -->
+                                </select>
+                            </div>
+                        }
+
+                        @* أزرار الحفظ وحفظ التغييرات *@
+                        <div class="form-group col-12 py-2">
+                            <div style="text-align: left;">
+                                @if (Model.CleanViewModel.CleaningID != 0)
+                                {
+                                    <div class="form-group col-12 py-3">
+                                        <input type="submit" id="saveChange" value=" حفظ التغييرات" asp-action="Upsert3" asp-route-id="@Model.CleanViewModel.CleaningID" style="text-align:center" class="btn btn-primary me-3" abled />
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="form-group col-12 py-5">
+                                        <input type="submit" value=" حفظ" asp-action="Upsert3" asp-route-id="@Model.CleanViewModel.CleaningID" style="text-align:center" class="btn btn-primary me-3" id="submitButton" />
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+
+
+@section Scripts{
+
+
+    <script src="~/Js/Clean/AddDLTsteps3.js"></script>
+        }

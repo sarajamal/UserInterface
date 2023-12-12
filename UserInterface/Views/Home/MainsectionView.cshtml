@@ -1,0 +1,46 @@
+﻿@model LoginTredMarktViewModel
+
+<header>
+    <nav class="navbar navbar-dark bg-dark me-auto">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="@Model.TredMarktVM.BrandLogoImage"
+                     class="me-2"
+                     height="30"
+                     alt=" Logo" />
+
+                <small>  @Model.TredMarktVM.BrandName </small>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-4" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+                <div class="offcanvas-header">
+                    <h4 class="" id="offcanvasDarkNavbarLabel" style="color:white">قم بالتعديل</h4>
+                    <button type="button" class="btn-close btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <nav id="TableOfContents me-auto">
+                        <div class="bd-toc mt-3 mb-4 my-md-0 ps-xl-2 mb-lg-4 text-muted">
+                            <strong class="d-block h6 my-2 pb-2 border-bottom"></strong>
+                             
+                            <nav id="TableOfContents">
+                                <ul class="navbar-nav flex-grow-1">
+                                    
+                                    <li class="nav-item border p-2 mt-2  "><a class="nav-link  " asp-area="" asp-controller="Device_tool" asp-action="Index">الأجهزةوالأدوات</a></li>
+                                    <li class="nav-item border p-2 mt-2  "><a class="nav-link  " asp-area="" asp-controller="Food" asp-action="FoodIndex">المواد الغذائية</a></li>
+                                    <li class="nav-item border p-2 mt-2  "><a class="nav-link  " asp-controller="Preparation" asp-route-id="@Model.MainsectionVM.BrandFK" asp-action="PreparationList">التحضيرات</a></li>
+                                    <li class="nav-item border p-2 mt-2  "><a class="nav-link  " asp-controller="Production" asp-action="ProductionList">الانتاج</a></li>
+                                    <li class="nav-item border p-2 mt-2  "><a class="nav-link  " asp-area="" asp-controller="FinishProducts" asp-action="FinishProductsIndex"> المنتجات الجاهزة</a></li>
+                                    <li class="nav-item border p-2 mt-2  "><a class="nav-link  " asp-area="" asp-controller="Clean" asp-action="CleanList"> التنظيف</a></li>
+
+                                </ul>
+                            </nav>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+

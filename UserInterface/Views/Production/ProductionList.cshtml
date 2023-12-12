@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Production>
+
+@{
+    ViewData["Title"] = "PreparationList";
+}
+
+
+
+<div class="card shadow border-0 my-4">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2"> قائمة  Product</h2>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card-body p-4">
+
+        <table class="table table-bordered table-striped py-5 mb-3 pb-4" id="tblData" style="width:100%">
+            <thead data-id="@TempData["ID"]">
+                <tr class=" py-5 mb-3 pb-4">
+                    <th style="text-align:center ;font-size:medium">
+                        اسم الصنف
+                    </th>
+
+                    <th style="text-align:center ;font-size:medium">
+                        نوع الصنف
+                    </th>
+
+                    <th style="text-align:center ;font-size:medium">
+                        صورة الصنف
+                    </th>
+
+                    <th>
+                        <div class="row pb-3">
+                        </div>
+                        <div style="text-align:center">
+                            <a asp-controller="Production" asp-action="CreateProduction" name="AddButtonItem" class=" btn btn-primary px-4 add-button" asp-route-id="@TempData["ID"]" onclick="saveItemId(this)">
+                                <i class="bi bi-plus-circle"></i>
+                            </a>
+                        </div>
+                    </th>
+
+                </tr>
+            </thead>
+
+          @*   <tbody class="container py-4 m-2">
+            @foreach (var item in Model)
+            {
+
+            <tr>
+            <td>
+            <h3>@item.اسم_الصنف </h3>
+            </td>
+            <td style="text-align:center" >
+            <img class="card-img-right flex-auto d-none d-md-block" data- src="@item.صورة" alt="Card image cap" style="width:150px;height:100px">
+            </td>
+            <td class="mb-3" style="text-align:center">
+            <div class="w-75 btn-group py-4" role="group">
+            <a asp-controller="Production" asp-action="Upsert1" asp-route-id="@item.ID_المنتج" class="btn btn-primary mx-2">
+            <i class="bi bi-pencil-square"> </i> تعديل
+            </a>
+
+            <button type="button" class="bi bi-trash-fill btn btn-danger" onclick="DeletePreparationPost(@item.ID_المنتج)">حذف</button>
+            <div class="row pb-3">
+            </div>
+
+            </div>
+            </td>
+            </tr>
+            }
+
+
+            </tbody> *@
+        </table>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    <script src="~/Js/Production/Deletelist2.js"></script>
+    <script src="~/Js/Pdf/PdfGenerator.js"></script>
+}
+
+

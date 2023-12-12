@@ -1,0 +1,445 @@
+﻿@model PreComViewModel;
+
+<body>
+    <div class="card shadow border-0 my-4 py-4">
+        <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+            <div class="row">
+                <div class="col-12 text-center">
+
+                    <h2 class="text-white py-2"> إضافة التحضيرات </h2>
+                </div>
+            </div>
+        </div>
+
+
+        <form method="post" class="row" enctype="multipart/form-data" asp-action="CreatePreparation" asp-controller="Preparation">
+
+
+            <input asp-for="PreparationVM.PreparationsID" hidden />
+            <input asp-for="PreparationVM.prepareImage" hidden />
+            <input asp-for="PreparationVM.BrandFK" hidden />
+
+            <input asp-for="@Model.tredMaeketVM.BrandID" class="form-control" hidden />
+            <input asp-for="@Model.tredMaeketVM.ID_Login" class="form-control" hidden />
+            <input asp-for="@Model.tredMaeketVM.BrandName" class="form-control" hidden />
+            <input asp-for="@Model.tredMaeketVM.Date" class="form-control" hidden />
+            <input asp-for="tredMaeketVM.BrandCoverImage" hidden />
+            <input asp-for="tredMaeketVM.BrandLogoImage" hidden />
+            <input asp-for="tredMaeketVM.BrandFooterImage" hidden />
+
+            @* <input type="hidden" id="order-input" name="PreparationVM.Order" value="0.1" />*@
+
+           
+
+            <div class="card-body p-4 py-4">
+                <div class="border p-3">
+
+                    @*added this class main-container-table*@
+                    <div class="main-container-table">
+                        @*<button class="btn dropdown-toggle float-end mb-2" id="button" onclick="showhide()"> المعلومات</button>*@
+                        @*<div id="newpost">*@
+                        @*<hr class="featurette-divider">*@
+                        <div>
+                            <h4 style="text-align:right">المعلومات</h4>
+                        </div>
+                        <div class=" row">
+                            <div class=" col-md-6 p-2">
+                                <div class="form-group">
+
+                                    <label asp-for=" PreparationVM.prepareName" class="control-label"> اسم التحضير </label>
+                                    <input asp-for=" PreparationVM.prepareName " class="form-control" />
+                                    <span asp-validation-for=" PreparationVM.prepareName" class="text-danger"></span>
+                                </div>
+                            </div>
+
+
+                            <div class=" col-md-6 p-2">
+                                <div class="form-group">
+                                    <label asp-for=" PreparationVM.VersionNumber" class="control-label">رقم النسخة</label>
+                                    <input asp-for=" PreparationVM.VersionNumber" class="form-control" readonly />
+                                    <span asp-validation-for=" PreparationVM.VersionNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class=" col-md-6 p-2">
+                                <div class="form-group">
+                                    <label asp-for=" PreparationVM.Expiry" class="control-label">مدة الصلاحية</label>
+                                    <input asp-for=" PreparationVM.Expiry" class="form-control" />
+                                    <span asp-validation-for=" PreparationVM.Expiry" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class=" col-md-6 p-2">
+                                <div class="form-group">
+                                    <label asp-for=" PreparationVM.NetWeight" class="control-label">الوزن الصافي</label>
+                                    <input asp-for="PreparationVM.NetWeight" class="form-control" />
+                                    <span asp-validation-for=" PreparationVM.NetWeight" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class=" col-md-6 p-2">
+                                <div class="form-group">
+                                    <label asp-for="  PreparationVM.Station" class="control-label">المحطة</label>
+                                    <input asp-for="PreparationVM.Station" class="form-control" />
+                                    <span asp-validation-for=" PreparationVM.Station" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class=" col-md-6 p-2">
+                                <div class="form-group">
+                                    <label asp-for=" PreparationVM.PreparationTime" class="control-label"> وقت التحضير</label>
+                                    <input asp-for=" PreparationVM.PreparationTime" class="form-control" />
+                                    <span asp-validation-for=" PreparationVM.PreparationTime" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 btn-group">
+                                <div class="form-group col-8 p-0">
+                                    <label asp-for=" PreparationVM.prepareImage" class="ms-2"> ادخل صورة</label>
+                                    <input type="file" name="file" class="form-control border-0 shadow" id="customFile"
+                                           onchange="document.getElementById('PreviewPhoto').src= window.URL.createObjectURL(this.files[0])" />
+                                    <div id="errorMessage" style="color: red; display: none;" class="py-3">
+                                        . يجب ادخال صورة التحضير النهائية *
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group col-4">
+
+
+                                <div class="form-group col-12">
+                                    <img id="PreviewPhoto" src="~/IMAGES/noImage.png" alt="Logo"
+                                         width="125" height="125" style="border:1px ; margin-top:20px" required />
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        @*المكونات*@
+
+                        <h4 style="text-align:right" class="px-2 py-3">المكونات</h4>
+                        @* id is important!!*@
+                        <table id="tbComponant" class="table table-bordered table-striped" data-preparation-id="@Model.PreparationVM.PreparationsID">
+                            <thead>
+                                <tr>
+                                    <th> المكون</th>
+                                    <th>الكمية</th>
+                                    <th>الوحدة</th>
+                                    <th style="text-align:center;">
+                                        @*type="button" is important*@
+
+                                        <button type="button" class="btn btn-success" onclick="AddRowcomponentnew()">إضافة</button>
+
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+
+                                    <td>
+                                        <input asp-for="@Model.PreparationVM.PreparationsID" id="PreparationID" hidden />
+
+                                        <input type="text" class="form-control" name="PrepIngredientsName" placeholder=" المكون  " />
+                                    </td>
+
+                                    <td>
+                                        <input type="text" class="form-control" name="PrepQuantity" placeholder=" الكمية  " />
+                                    </td>
+
+                                    <td>
+                                        <input type="text" class="form-control" name="PrepUnit" placeholder=" الوحدة  " />
+                                    </td>
+
+                                    <td>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                        @*الأدوات*@
+                        <div>
+                            <h4 style="text-align:right">الأدوات</h4>
+                        </div>
+                        @* id is important!!*@
+                        <table id="tblToolVarity" class="table table-bordered table-striped" data-preparation-id="@Model.PreparationVM.PreparationsID">
+                            <thead>
+                                <tr>
+                                    <th class="col-1">رقم الأداة</th>
+                                    <th class="col-9"> الأدوات المستخدمة</th>
+
+                                    <th style="text-align:center;">
+
+                                        <button type="button" class="btn btn-success " onclick="AddRowToolnew('@Model.PreparationVM.PreparationsID')">إضافة</button>
+
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr>
+                                    <td style="text-align:center;">1</td>
+
+                                    <td>
+                                        <input asp-for="@Model.PreparationVM.PreparationsID" id="PreparationID" hidden />
+
+                                        <input type="text" class="form-control" name="PrepTools" placeholder="الأدات المستخدمة" />
+                                    </td>
+                                    <td>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                        @*الخطوات*@
+
+                        <div class="form-group col-4 py-2 ">
+                            <h4 style="text-align:right"> الخطوات</h4>
+                        </div>
+                        <table id="tblSteps" class="table table-bordered table-striped" data-preparation-id="@Model.PreparationVM.PreparationsID">
+
+                            <tbody>
+
+                                @* زر إضافة خطوات جديدة *@
+                                <tr>
+                                    <td colspan="1" style="text-align:right;">
+
+                                        <button type="button" id="addStepButton1" class="btn btn-success my-3 " onclick="AddnewRowstepsNew('@Model.PreparationVM.PreparationsID')" abled>إضافة خطوات جديدة</button>
+
+                                    </td>
+                                </tr>
+                                @* else
+                                {
+
+                                <tr>
+
+                                <td>
+                                <input asp-for="@Model.PreparationVM.التحضير_ID" id="PreparationID" hidden />
+                                <input type="hidden" name="stepsVM[@step1].رقم_الخطوة1" value="${step1}" />
+                                <input type="hidden" name="stepsVM[@step1].الصورة1"  />
+
+                                <div class="row">
+                                <div class="col-12 text-center">
+
+                                <div>
+                                @step1
+                                </div>
+
+                                <div>
+                                <img id="PreviewPhoto1_@step1" src="~/images/noImage.jpg" alt="Logo"
+                                width="125" height="125" style="border:1px ; margin-top:20px" />
+                                </div>
+
+                                <div class="form-group mt-2">
+                                <input type="file" name="file1_" class="border-0 shadow mt-5" id="customFile1_@step1"
+                                onchange="displaySelectedImage(this,'PreviewPhoto1_@step1')"
+                                data-preview-id="PreviewPhoto1_@step1" />
+
+                                <textarea type="text" class="form-control" name="الخطوة1" required> </textarea>
+                                </div>
+                                </div>
+                                </div>
+                                </td>
+                                <td>
+                                <input asp-for="@Model.PreparationVM.التحضير_ID" id="PreparationID" hidden />
+                                <div class="row">
+                                <div class="col-12 text-center">
+
+                                <div>@step2</div>
+
+                                <div>
+                                <img id="PreviewPhoto2_@step2" src="~/images/noImage.jpg" alt="Logo"
+                                width="125" height="125" style="border:1px ; margin-top:20px" />
+                                </div>
+
+                                <div class="form-group mt-2">
+                                <input type="file" name="file2_" class="border-0 shadow mt-5" id="customFile2_@step2"
+                                onchange="document.getElementById('PreviewPhoto2_@step2').src= window.URL.createObjectURL(this.files[0])" />
+
+                                <textarea type="text" class="form-control" name="الخطوة2" required > </textarea>
+                                </div>
+
+                                </div>
+                                </div>
+                                </td>
+                                </tr>
+                                }
+                                *@
+
+                            </tbody>
+                        </table>
+
+
+
+                        @* Select List *@
+                        @* @if (Model.PreparationVM.التحضير_ID == 0)
+                        {
+                        <div class="form-floating py-2 col-12">
+                        @{
+                        var sortedPreparationName = Model.PreparationName.OrderByDescending(item => item.Value).ToList();
+                        }
+                        <select asp-for="PreparationVM.التحضير_ID" class="form-select" id="selectPreparation" name="selectedValue">
+                        <option value="" disabled selected>-- اختر مكان الصف الجديد--</option>
+                        @foreach (var item in sortedPreparationName)
+                        {
+                        <option value="@item.Value">@item.Text</option>
+                        }
+                        </select>
+                        </div>*@
+
+
+                        <div class="form-floating py-2 col-12">
+                            @{
+                                var sortedPreparationName = Model.PreparationList.OrderBy(item => item.PreparationsOrder).ToList();
+                            }
+                            <select asp-for="PreparationVM.PreparationsID" class="form-select" id="selectPreparation" name="selectedValue">
+                                <option value="" disabled selected>-- اختر مكان الصف الجديد--</option>
+                                @foreach (var item in sortedPreparationName)
+                                {
+                                    <option value="@item.PreparationsID">@item.prepareName</option>
+                                }
+                                <option value="0">اخر صف</option> <!-- The "Other" option -->
+                            </select>
+                        </div>
+
+
+                        <div class="form-group col-12 py-2">
+                            <div style="text-align: left;">
+
+                                <div class="form-group col-12 py-5">
+                                    <input asp-for="@Model.tredMaeketVM.BrandID" class="form-control" hidden />
+                                    <input asp-for="@Model.tredMaeketVM.ID_Login" class="form-control" hidden />
+                                    <input asp-for="@Model.tredMaeketVM.BrandName" class="form-control" hidden />
+                                    <input asp-for="@Model.tredMaeketVM.Date" class="form-control" hidden />
+                                    <input asp-for="tredMaeketVM.BrandCoverImage" hidden />
+                                    <input asp-for="tredMaeketVM.BrandLogoImage" hidden />
+                                    <input asp-for="tredMaeketVM.BrandFooterImage" hidden />
+
+                                    <input type="submit" value=" حفظ" asp-action="CreatePreparation" asp-route-id="@Model.tredMaeketVM.BrandID"
+                                           style="text-align:center" class="btn btn-primary me-3" id="submitButton" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</body>
+
+
+<script>
+    function displaySelectedImage(input, imgId) {
+
+        // Get the reference to the HTML img element based on the provided imgId
+        var imgElement = document.getElementById(imgId);
+
+        // Check if a file has been selected in the input element
+        if (input.files && input.files[0]) {
+
+            // Create a new FileReader object to read the selected file
+            var reader = new FileReader();
+
+            // Define an event handler for when the FileReader has finished reading the file
+            reader.onload = function (e) {
+
+                // Set the 'src' attribute of the img element to the read image data
+                imgElement.src = e.target.result;
+            };
+            // Read the selected file as a data URL (base64 encoded)
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+
+
+
+<script>
+    document.getElementById("submitButton").addEventListener("click", function (e) {
+        var customFileInput = document.getElementById("customFile");
+        var errorMessage = document.getElementById("errorMessage");
+
+        if (customFileInput.files.length === 0) {
+            errorMessage.style.display = "block";
+            e.preventDefault(); // Prevent the form from being submitted
+
+            var customFileOffset = customFileInput.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({
+                top: customFileOffset,
+                behavior: "smooth"
+            });
+
+        } else {
+            errorMessage.style.display = "none";
+        }
+    });
+</script>
+@*<script>
+    var currentNumber = 1;
+
+    function validateرقم_الخطوة1(input, index) {
+        console.log("validateرقم_الخطوة1 function called"); // Debugging
+        var رقم_الخطوة1 = parseInt(input.value);
+
+        if (index === 0) {
+            // If this is the first input, ensure it's 1
+            if (رقم_الخطوة1 !== 1) {
+                input.setCustomValidity("الرقم الأول يجب أن يكون 1");
+            } else {
+                input.setCustomValidity('');
+                currentNumber = 3; // Reset currentNumber to 1 for the next input
+            }
+        } else {
+            // For subsequent inputs, enforce sequential incrementation
+            if (isNaN(رقم_الخطوة1) || رقم_الخطوة1 !== currentNumber) {
+                input.setCustomValidity("الرقم يجب أن يكون " + currentNumber);
+            } else {
+                input.setCustomValidity('');
+                currentNumber += 2; // Increment the current number for the next validation
+            }
+        }
+    }
+</script>
+
+<script>
+var currentNumber = 2;
+
+function validateرقم_الخطوة2(input, index) {
+        console.log("validateرقم_الخطوة2 function called"); // Corrected function name
+    var رقم_الخطوة2 = parseInt(input.value);
+
+    if (index === 0) {
+        // If this is the first input, ensure it's 2 (not 1)
+        if (رقم_الخطوة2 !== 2) { // Corrected expected value
+            input.setCustomValidity("الرقم الأول يجب أن يكون 2");
+        } else {
+            input.setCustomValidity('');
+            currentNumber = 4; // Reset currentNumber to 2 for the next input
+        }
+    } else {
+        // For subsequent inputs, enforce sequential incrementation
+        if (isNaN(رقم_الخطوة2) || رقم_الخطوة2 !== currentNumber) {
+            input.setCustomValidity("الرقم يجب أن يكون " + currentNumber);
+        } else {
+            input.setCustomValidity('');
+            currentNumber += 2; // Increment the current number by 2 for the next validation
+        }
+    }
+}
+
+</script> *@
+
+@section Scripts{
+
+    <script src="~/Js/Preparation/AddDltComponent.js"></script>
+    <script src="~/Js/Preparation/Toolsvariety.js"></script>
+    <script src="~/Js/Preparation/AddDLTsteps.js"></script>
+}
+
+
+
