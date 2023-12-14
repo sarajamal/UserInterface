@@ -37,7 +37,7 @@ function DeleteToolVariety2(id) { //هذي فقط للعرض البرمجة في
 }
 
 
-function AddRowTool2(ID_الصنف) { //صفحة التعديل 
+function AddRowTool2(ProductionFK) { //صفحة التعديل 
     var tableBody = document.querySelector("#tblToolVarity2 tbody");
     var newRowNumber = tableBody.children.length + 1;
 
@@ -45,10 +45,10 @@ function AddRowTool2(ID_الصنف) { //صفحة التعديل
     newRow.innerHTML = `
         <td>${newRowNumber}</td>
 
-        <td><input name="ToolsVarityVM2[${newRowNumber - 1}].الأدوات" class="form-control" /></td>
+        <td><input name="ToolsVarityVM2[${newRowNumber - 1}].ProdTools" class="form-control" /></td>
 
        <td style="text-align:center;" >
-            <input type="hidden" name="ToolsVarityVM2[${newRowNumber - 1}].ID_الصنف" value="${ID_الصنف}" />
+            <input type="hidden" name="ToolsVarityVM2[${newRowNumber - 1}].ProductionFK" value="${ProductionFK}" />
             <button type="button" class="btn btn-danger" data-row-index="${newRowNumber}" onclick="DeleteRow9(this)">حذف</button>
         </td>
          `;
@@ -88,16 +88,16 @@ document.querySelector("#tblToolVarity2 tbody").addEventListener("click", functi
 
 var newRowNumber = 1;
 var numeric = 2;
-function AddRowToolnew2(ID_الصنف) { //صفحة الإضافة
+function AddRowToolnew2(ProductionFK) { //صفحة الإضافة
     var tableBody = document.querySelector("#tblToolVarity2 tbody");
 
     var newRow = document.createElement("tr");
     newRow.innerHTML = `
 
         <td style="text-align:center;">${numeric}</td>
-        <td><input name="ToolsVarityVM2[${newRowNumber - 1}].الأدوات" class="form-control"  /></td>
+        <td><input name="ToolsVarityVM2[${newRowNumber - 1}].ProdTools" class="form-control"  /></td>
        <td style="text-align:center;" >
-            <input type="hidden" name="ToolsVarityVM2[${newRowNumber - 1}].ID_الصنف" value="${ID_الصنف}" />
+            <input type="hidden" name="ToolsVarityVM2[${newRowNumber - 1}].ProductionFK" value="${ProductionFK}" />
               
             <button type="button" class="btn btn-danger" data-row-index="${newRowNumber}" onclick="DeleteRow9(this)">حذف</button> 
         </td>

@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-12 text-center">
 
-                    <h2 class="text-white py-2">   إضافة Product </h2>
+                    <h2 class="text-white py-2">   إضافة الانتاج </h2>
                 </div>
             </div>
         </div>
@@ -144,15 +144,15 @@
                                 <tr>
 
                                     <td>
-                                        <input asp-for="@Model.Productionvm.ProductionID" id="ID_الصنف" hidden />
+                                        <input asp-for="@Model.Productionvm.ProductionID" id="ProductionID" hidden />
 
-                                        <input type="text" class="form-control" name="المكون" placeholder=" المكون  " />
+                                        <input type="text" class="form-control" name="ProdIngredientsName" placeholder=" المكون  " />
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" name="الكمية" placeholder=" الكمية  " />
+                                        <input type="text" class="form-control" name="ProdQuantity" placeholder=" الكمية  " />
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" name="الوحدة" placeholder=" الوحدة  " />
+                                        <input type="text" class="form-control" name="ProdUnit" placeholder=" الوحدة  " />
                                     </td>
                                     <td>
                                     </td>
@@ -185,7 +185,7 @@
                                     <td>
                                         <input asp-for="@Model.Productionvm.ProductionID" id="ProductionId" hidden />
 
-                                        <input type="text" class="form-control" name="الأدوات" placeholder="الأدات المستخدمة" />
+                                        <input type="text" class="form-control" name="ProdTools" placeholder="الأدات المستخدمة" />
                                     </td>
                                     <td>
                                     </td>
@@ -251,7 +251,36 @@
     </div>
 </body>
 
+@* يجب إدخال نوع الصنف والصورة *@
+<script>
+    document.getElementById('submitButton').addEventListener('click', function(event) {
+        let isValid = true;
 
+        // Check if the product type is selected
+        let productType = document.getElementById('selectType').value;
+        if (!productType) {
+            document.getElementById('errorMessage').style.display = 'block';
+            isValid = false;
+        } else {
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        // Check if an image is selected
+        let fileInput = document.getElementById('customFile');
+        if (!fileInput.files.length) {
+            document.getElementById('errorMessage1').style.display = 'block';
+            isValid = false;
+        } else {
+            document.getElementById('errorMessage1').style.display = 'none';
+        }
+
+        if (!isValid) {
+            event.preventDefault(); // Prevent form submission if validation fails
+        }
+    });
+</script>
+
+@* 
 <script>
     function displaySelectedImage(input, imgId) {
 
@@ -295,7 +324,7 @@
             errorMessage1.style.display = "none";
         }
     });
-</script>
+</script> *@
 
 @* رسالة يجب إدخال صورة التأصناف *@
 @* <script>

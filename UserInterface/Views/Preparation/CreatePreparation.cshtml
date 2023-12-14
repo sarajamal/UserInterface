@@ -56,7 +56,7 @@
                             <div class=" col-md-6 p-2">
                                 <div class="form-group">
                                     <label asp-for=" PreparationVM.VersionNumber" class="control-label">رقم النسخة</label>
-                                    <input asp-for=" PreparationVM.VersionNumber" class="form-control" readonly />
+                                    <input asp-for=" PreparationVM.VersionNumber" class="form-control" value="1" readonly />
                                     <span asp-validation-for=" PreparationVM.VersionNumber" class="text-danger"></span>
                                 </div>
                             </div>
@@ -212,63 +212,6 @@
 
                                     </td>
                                 </tr>
-                                @* else
-                                {
-
-                                <tr>
-
-                                <td>
-                                <input asp-for="@Model.PreparationVM.التحضير_ID" id="PreparationID" hidden />
-                                <input type="hidden" name="stepsVM[@step1].رقم_الخطوة1" value="${step1}" />
-                                <input type="hidden" name="stepsVM[@step1].الصورة1"  />
-
-                                <div class="row">
-                                <div class="col-12 text-center">
-
-                                <div>
-                                @step1
-                                </div>
-
-                                <div>
-                                <img id="PreviewPhoto1_@step1" src="~/images/noImage.jpg" alt="Logo"
-                                width="125" height="125" style="border:1px ; margin-top:20px" />
-                                </div>
-
-                                <div class="form-group mt-2">
-                                <input type="file" name="file1_" class="border-0 shadow mt-5" id="customFile1_@step1"
-                                onchange="displaySelectedImage(this,'PreviewPhoto1_@step1')"
-                                data-preview-id="PreviewPhoto1_@step1" />
-
-                                <textarea type="text" class="form-control" name="الخطوة1" required> </textarea>
-                                </div>
-                                </div>
-                                </div>
-                                </td>
-                                <td>
-                                <input asp-for="@Model.PreparationVM.التحضير_ID" id="PreparationID" hidden />
-                                <div class="row">
-                                <div class="col-12 text-center">
-
-                                <div>@step2</div>
-
-                                <div>
-                                <img id="PreviewPhoto2_@step2" src="~/images/noImage.jpg" alt="Logo"
-                                width="125" height="125" style="border:1px ; margin-top:20px" />
-                                </div>
-
-                                <div class="form-group mt-2">
-                                <input type="file" name="file2_" class="border-0 shadow mt-5" id="customFile2_@step2"
-                                onchange="document.getElementById('PreviewPhoto2_@step2').src= window.URL.createObjectURL(this.files[0])" />
-
-                                <textarea type="text" class="form-control" name="الخطوة2" required > </textarea>
-                                </div>
-
-                                </div>
-                                </div>
-                                </td>
-                                </tr>
-                                }
-                                *@
 
                             </tbody>
                         </table>

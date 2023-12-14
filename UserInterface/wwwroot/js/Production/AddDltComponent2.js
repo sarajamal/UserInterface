@@ -43,7 +43,7 @@ function AddRowcomponentUpdate2() { //صفحة التعديل .
     var newRowNumber = tableBody.children.length; //This line calculates the index or position at which the new row will be inserted.
     // It's based on the number of existing rows in the table body.
 
-    var componentId = document.querySelector("#tbComponant").getAttribute("data-Production-id");//This line retrieves the data-preparation-id attribute value from the table element.
+    var componentFk = document.querySelector("#tbComponant").getAttribute("data-Production-id");//This line retrieves the data-preparation-id attribute value from the table element.
     // This attribute likely holds an identifier associated with the preparation.
 
     newRow.innerHTML = `
@@ -53,7 +53,7 @@ function AddRowcomponentUpdate2() { //صفحة التعديل .
         
 
         <td style="text-align:center;">
-        <input type="hidden" name="componontVMList2[${newRowNumber}].ProductionFK" value="${componentId}" />
+        <input type="hidden" name="componontVMList2[${newRowNumber}].ProductionFK" value="${componentFk}" />
         <button type="button" class="btn btn-danger" data-row-index="${newRowNumber}" onclick="DeleteRow1(this)">حذف</button>
         </td>
             `;
@@ -92,7 +92,7 @@ function AddRowcomponentnew() {
     var tableBody = document.querySelector("#tbComponant tbody");
     var newRow = document.createElement("tr");
 
-    var componentID = document.querySelector("#tbComponant").getAttribute("data-Production-id");
+    var componentFk = document.querySelector("#tbComponant").getAttribute("data-Production-id");
 
 
     newRow.innerHTML = `
@@ -102,7 +102,7 @@ function AddRowcomponentnew() {
         
 
     <td style="text-align:center;">
-    <input type="hidden" name="componontVMList[${newIndex}].ProductionFK" value="${componentID}" />
+    <input type="hidden" name="componontVMList[${newIndex}].ProductionFK" value="${componentFk}" />
     <button type="button" class="btn btn-danger" data-row-index="${newIndex}" onclick="DeleteRow1(this)">حذف</button>
     </td>
 `;

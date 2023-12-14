@@ -11,15 +11,6 @@
             </div>
         </div>
 
-        <div>
-
-            <p>
-                <a asp-action="GeneratePdf"  asp-route-fk="@Model.Productionvm.BrandFK"
-                   asp-controller="GeneratePDF" class="btn btn-primary">Generate PDF Report</a>
-            </p>
-
-        </div>
-
         <form method="post" class="row" enctype="multipart/form-data" data-id="@TempData["ID"]" asp-action="Upsert1" asp-controller="Production" id="myForm">
             <input asp-for="Productionvm.ProductionID" hidden />
             <input asp-for="Productionvm.ProductImage" hidden />
@@ -193,11 +184,11 @@
                                     <th class="col-9"> الأدوات المستخدمة</th>
 
                                     <th style="text-align:center;">
-                                       
-                                            @*type="button" is important*@
-                                            <button type="button" class="btn btn-success " onclick="AddRowTool2('@Model.Productionvm.ProductionID')">إضافة</button>
-                                        
-                                        
+
+                                        @*type="button" is important*@
+                                        <button type="button" class="btn btn-success " onclick="AddRowTool2('@Model.Productionvm.ProductionID')">إضافة</button>
+
+
                                     </th>
                                 </tr>
                             </thead>
@@ -224,7 +215,7 @@
                                         </tr>
                                     }
                                 }
-                                
+
                             </tbody>
 
                         </table>
@@ -235,93 +226,88 @@
                         <div class="form-group col-4 py-2 ">
                             <h4 style="text-align:right"> الخطوات</h4>
                         </div>
-                        <table id="tblSteps2" class="table table-bordered table-striped" data-Production-id="@Model.Productionvm.ProductionID">
+                        <table id="tblSteps" class="table table-bordered table-striped" data-Production-id="@Model.Productionvm.ProductionID">
 
-                         @*    <tbody>
+                            <tbody>
                                 @if (Model.Productionvm.ProductionID != 0)
                                 {
                                     @for (int i = 0; i < Model.stepsVM2.Count; i++)
                                     {
                                         var itemStep = Model.stepsVM2[i];
                                         <tr>
+                                            @*  <td style="text-align:center;">
+                                    <input asp-for="@itemStep.ID" name="stepsVM[@i].ID" hidden />
+                                    <input type="hidden" asp-for="@itemStep.التحضير_ID" name="stepsVM[@i].التحضير_ID" />
+                                    <input asp-for="@itemStep.الصورة1" name="stepsVM[@i].الصورة1" hidden />
+                                    <input asp-for="@itemStep.رقم_الخطوة1" name="stepsVM[@i].رقم_الخطوة1" hidden /> @*نسوي اخفاء اذا كان الادخال تلقائي*@
+
+                                            @*  @if (!string.IsNullOrEmpty(itemStep.الخطوة1) || !string.IsNullOrEmpty(itemStep.الصورة1))
+                                    {
+
+                                    <div class="col-12 text-center">
+
+                                    <div>
+                                    @Model.stepsVM[i].رقم_الخطوة1
+                                    </div>
+
+
+                                    <div>
+                                    <img src="@Url.Content("~/IMAGES/التحضيرات/" + itemStep.رقم_الخطوة1+ "/" + itemStep.التحضير_ID + "/" +  itemStep.ID +"/"+   itemStep.الصورة1)"
+                                    width="125" height="125" style="border: 1px; margin-top: 20px;" id="PreviewPhoto1_@Model.stepsVM[i].رقم_الخطوة1">
+                                    </div>
+
+                                    <div class="form-group mt-2">
+                                    <input type="file" name="file1_@Model.stepsVM[i].رقم_الخطوة1" class="border-0 shadow mt-5" id="customFile1_@Model.stepsVM[i].رقم_الخطوة1"
+                                    data-preview-id="PreviewPhoto1_@Model.stepsVM[i].رقم_الخطوة1"
+                                    onchange="displaySelectedImage(this,'PreviewPhoto1_@Model.stepsVM[i].رقم_الخطوة1')" />
+
+                                    <textarea asp-for="@itemStep.الخطوة1" id="stepsVM_@Model.stepsVM[i].رقم_الخطوة1" class="form-control mt-2" name="stepsVM[@i].الخطوة1"></textarea>
+                                    <span asp-validation-for="@itemStep.الخطوة1" class="text-danger"></span>
+
+                                    </div>
+                                    </div> *@
+                                            @*   }
+                                    </td> *@
                                             <td style="text-align:center;">
-                                                <input asp-for="@itemStep.ID" name="stepsVM2[@i].ID" hidden />
-                                                <input type="hidden" asp-for="@itemStep.ID_الصنف" name="stepsVM2[@i].ID_الصنف" />
-                                                <input asp-for="@itemStep.الصورة1" name="stepsVM2[@i].الصورة1" hidden />
-                                                <input asp-for="@itemStep.رقم_الخطوة1" name="stepsVM2[@i].رقم_الخطوة1" hidden /> @*نسوي اخفاء اذا كان الادخال تلقائي*@
+                                                @*   @if (!string.IsNullOrEmpty(itemStep.الخطوة2) || !string.IsNullOrEmpty(itemStep.الصورة2))
+                                        {
 
-                                               @*  @if (!string.IsNullOrEmpty(itemStep.الخطوة1) || !string.IsNullOrEmpty(itemStep.الصورة1))
-                                                {
+                                        <input asp-for="@itemStep.رقم_الخطوة2" name="stepsVM[@i].رقم_الخطوة2" hidden />
+                                        <input asp-for="@itemStep.الصورة2" name="stepsVM[@i].الصورة2" hidden />
 
-                                                    <div class="col-12 text-center">
+                                        <div class="row">
+                                        <div class="col-12 text-center">
 
-                                                        <div>
-                                                            @Model.stepsVM2[i].رقم_الخطوة1
-                                                        </div>
+                                        <div>
+                                        @Model.stepsVM[i].رقم_الخطوة2
+                                        </div>
 
+                                        <div>
+                                        <img src="@Url.Content("~/IMAGES/التحضيرات/" + itemStep.رقم_الخطوة2+ "/" + itemStep.التحضير_ID + "/" +  itemStep.ID +"/"+   itemStep.الصورة2)"
+                                        width="125" height="125" id="PreviewPhoto2_@Model.stepsVM[i].رقم_الخطوة2" style="border: 1px; margin-top: 20px;">
+                                        </div>
 
-                                                        <div>
-                                                            <img id="PreviewPhoto1_@Model.stepsVM2[i].رقم_الخطوة1"
-                                                                 src="@Url.Content("~/IMAGES/الانتاج/" + itemStep.رقم_الخطوة1+ "/" + itemStep.ID_الصنف + "/" +  itemStep.ID +"/"+   itemStep.الصورة1)"
-                                                                 alt="Logo"
-                                                                 width="125" height="125" style="border: 1px; margin-top: 20px;">
-                                                        </div>
-
-                                                        <div class="form-group mt-2">
-                                                            <input type="file" name="file1_@Model.stepsVM2[i].رقم_الخطوة1" class="border-0 shadow mt-5" id="customFile1_@Model.stepsVM2[i].رقم_الخطوة1"
-                                                                   data-preview-id="PreviewPhoto1_@Model.stepsVM2[i].رقم_الخطوة1"
-                                                                   onchange="displaySelectedImage(this,'PreviewPhoto1_@Model.stepsVM2[i].رقم_الخطوة1')" />
-
-                                                            <textarea asp-for="@itemStep.الخطوة1" id="stepsVM_@Model.stepsVM2[i].رقم_الخطوة1" class="form-control mt-2" name="stepsVM2[@i].الخطوة1"></textarea>
-                                                            <span asp-validation-for="@itemStep.الخطوة1" class="text-danger"></span>
-
-                                                        </div>
-                                                    </div>
-                                                }
-                                            </td> *@
-                                          @*   <td style="text-align:center;">
-                                                @if (!string.IsNullOrEmpty(itemStep.الخطوة2) || !string.IsNullOrEmpty(itemStep.الصورة2))
-                                                {
-
-                                                    <input asp-for="@itemStep.رقم_الخطوة2" name="stepsVM2[@i].رقم_الخطوة2" hidden />
-                                                    <input asp-for="@itemStep.الصورة2" name="stepsVM2[@i].الصورة2" hidden />
-
-                                                    <div class="row">
-                                                        <div class="col-12 text-center">
-
-                                                            <div>
-                                                                @Model.stepsVM2[i].رقم_الخطوة2
-                                                            </div>
-
-                                                            <div>
-                                                                <img id="PreviewPhoto2_@Model.stepsVM2[i].رقم_الخطوة2"
-                                                                     src="@Url.Content("~/IMAGES/الانتاج/" + itemStep.رقم_الخطوة2+ "/" + itemStep.ID_الصنف + "/" + itemStep.ID +"/"+itemStep.الصورة2)"
-                                                                     alt="Logo"
-                                                                     width="125" height="125" style="border: 1px; margin-top: 20px;">
-                                                            </div>
-
-                                                            <div class="form-group mt-2">
-                                                                <input type="file" name="file2_@Model.stepsVM2[i].رقم_الخطوة2" class="border-0 shadow mt-5" id="customFile2_@Model.stepsVM2[i].رقم_الخطوة2"
-                                                                       data-preview-id="PreviewPhoto2_@Model.stepsVM2[i].رقم_الخطوة2"
-                                                                       onchange="displaySelectedImage(this,'PreviewPhoto2_@Model.stepsVM2[i].رقم_الخطوة2')"
-                                                                @* data-file-id="file2_@Model.stepsVM[i].رقم_الخطوة2"*@ />
+                                        <div class="form-group mt-2">
+                                        <input type="file" name="file2_@Model.stepsVM[i].رقم_الخطوة2" class="border-0 shadow mt-5" id="customFile2_@Model.stepsVM[i].رقم_الخطوة2"
+                                        data-preview-id="PreviewPhoto2_@Model.stepsVM[i].رقم_الخطوة2"
+                                        onchange="displaySelectedImage(this,'PreviewPhoto2_@Model.stepsVM[i].رقم_الخطوة2')" *@
+                                                @* data-file-id="file2_@Model.stepsVM[i].رقم_الخطوة2"*@ />
 
 
-                                                             @*    <textarea asp-for="@itemStep.الخطوة2" id="stepsVM_@Model.stepsVM2[i].رقم_الخطوة2" class="form-control mt-2" name="stepsVM2[@i].الخطوة2"></textarea>
-                                                                <span asp-validation-for="@itemStep.الخطوة2" class="text-danger"></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                }
-                                            </td> *@
+                                                @* <textarea asp-for="@itemStep.الخطوة2" id="stepsVM_@Model.stepsVM[i].رقم_الخطوة2" class="form-control mt-2" name="stepsVM[@i].الخطوة2"></textarea>
+                                        <span asp-validation-for="@itemStep.الخطوة2" class="text-danger"></span>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        }
+                                        </td> *@
 
-                                          @*   <td style="text-align: center;" class="py-5">
-                                                <button type="button" class="btn btn-danger delete-button" id="deleteButton" onclick="Deletestep(@Model.Productionvm.ProductionID,@itemStep.F )" abled>حذف</button>
+                                            <td style="text-align: center;" class="py-5">
+                                                <button type="button" class="btn btn-danger delete-button" id="deleteButton" onclick="Deletestep(@Model.Productionvm.ProductionID,@itemStep.ProdStepsID )" abled>حذف</button>
                                             </td>
-                                        </tr> *@
-                                   @*  }
+                                        </tr>
+                                    }
                                 }
-                            </tbody> *@
 
                             @* أزرار إضافة خطوات جديدة *@
                             <tr>

@@ -16,6 +16,7 @@
     <Folder Include="Areas\Model\Data\" />
     <Folder Include="Areas\Model\Models\" />
     <Folder Include="Areas\Model\Views\" />
+    <Folder Include="wwwroot\IMAGES\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -126,12 +126,12 @@ namespace Test12.Controllers
                     {
 
                         // Convert numeric values to strings
-                        string ID_التحضير = setFK.PreparationsID.ToString(); // Convert to string
-                        string preparationVMID = PrepaVM.tredMaeketVM.BrandID.ToString(); // Convert to string
+                        string PreparationsID = setFK.PreparationsID.ToString(); // Convert to string
+                        string preparationVMFk = PrepaVM.tredMaeketVM.BrandID.ToString(); // Convert to string
 
                         // Combine paths using Path.Combine, ensuring all arguments are strings
                         // Combine paths using Path.Combine, ensuring all arguments are strings
-                        string PreparationDirectory = Path.Combine(wwwRootPath, "IMAGES", "التحضيرات", ID_التحضير, preparationVMID);
+                        string PreparationDirectory = Path.Combine(wwwRootPath, "IMAGES", preparationVMFk, "Preparation", PreparationsID);
 
                         //اذا المسار مش موجود سو مسار جديد 
                         if (!Directory.Exists(PreparationDirectory))
@@ -215,79 +215,55 @@ namespace Test12.Controllers
                     }
                     //الخطوات
 
-                    //if (PrepaVM.stepsVM != null)
-                    //{
-                    //    foreach (var stepAdd in PrepaVM.stepsVM)
-                    //    {
+                    if (PrepaVM.stepsVM != null)
+                    {
+                        foreach (var stepAdd in PrepaVM.stepsVM)
+                        {
 
-                    //        if (stepAdd != null && stepAdd.PrepStepsID == 0)
-                    //        {
-                    //            string wwwRootstepPath = _webHostEnvironment.WebRootPath; // get us root folder
-
-
-                    //            int ID_التحضيرstep = vvv;
-                    //            var newStep = new PreparationSteps
-                    //            {
-                    //                PreparationsFK = vvv,
-                    //                PrepText = stepAdd.PrepText,
-                    //                 PrepStepsNum = stepAdd.PrepStepsNum
-                             
-                    //            };
-                    //            _unitOfWork.StepsPreparationRepository.Add(newStep);
-                    //            _unitOfWork.Save();
-
-                                //var file1Name1 = $"file1_{newStep.PrepStepsNum}";
-                                //var file1ForStep1 = HttpContext.Request.Form.Files[file1Name1];
-
-                                //string رقم_الخطوة1 = newStep.رقم_الخطوة1.ToString();
-                                //string رقم_الخطوة2 = newStep.رقم_الخطوة2.ToString();
-                                //string ID_التحضيرٍStep = newStep.التحضير_ID.ToString();
-                                //string IDstep = newStep.ID.ToString();
+                            if (stepAdd != null && stepAdd.PrepStepsID == 0)
+                            {
+                                string wwwRootstepPath = _webHostEnvironment.WebRootPath; // get us root folder
 
 
+                                int PrepStepsID = vvv;
+                                var newStep = new PreparationSteps
+                                {
+                                    PreparationsFK = PrepStepsID,
+                                    PrepText = stepAdd.PrepText,
+                                    PrepStepsNum = stepAdd.PrepStepsNum
 
-                                //string stepPath1 = Path.Combine(wwwRootPath, "IMAGES", "التحضيرات", رقم_الخطوة1, ID_التحضيرٍStep, IDstep);
-                                //string stepPath2 = Path.Combine(wwwRootPath, "IMAGES", "التحضيرات", رقم_الخطوة2, ID_التحضيرٍStep, IDstep);
+                                };
+                                _unitOfWork.StepsPreparationRepository.Add(newStep);
+                                _unitOfWork.Save();
 
-                                //if (file1ForStep1 != null && file1ForStep1.Length > 0)
-                                //{
-                                //    string fileName11 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep1.FileName);
+                                var file1Name1 = $"file1_{newStep.PrepStepsNum}";
+                                var file1ForStep1 = HttpContext.Request.Form.Files[file1Name1];
 
-                                //    if (!Directory.Exists(stepPath1))
-                                //    {
-                                //        Directory.CreateDirectory(stepPath1);
-                                //    }
+                                string preparationVMFk = setFK.BrandFK.ToString();
+                                string PrepStepsID1 = newStep.PrepStepsID.ToString();
 
-                                //    using (var fileStream = new FileStream(Path.Combine(stepPath1, fileName11), FileMode.Create)) //save images
-                                //    {
-                                //        file1ForStep1.CopyTo(fileStream);
-                                //    }
-                                //    newStep.الصورة1 = fileName11;
-                                //}
+                                string stepPath = Path.Combine(wwwRootPath, "IMAGES", preparationVMFk, "Preparation", PrepStepsID1);
 
+                                if (file1ForStep1 != null && file1ForStep1.Length > 0)
+                                {
+                                    string fileName11 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep1.FileName);
 
-                            //var fileName2 = $"file2_{newStep.رقم_الخطوة2}";
-                            //var fileStep2 = HttpContext.Request.Form.Files[fileName2];
+                                    if (!Directory.Exists(stepPath))
+                                    {
+                                        Directory.CreateDirectory(stepPath);
+                                    }
 
-                            //if (fileStep2 != null && fileStep2.Length > 0)
-                            //{
-                            //    string fileName22 = Guid.NewGuid().ToString() + Path.GetExtension(fileStep2.FileName);
+                                    using (var fileStream = new FileStream(Path.Combine(stepPath, fileName11), FileMode.Create)) //save images
+                                    {
+                                        file1ForStep1.CopyTo(fileStream);
+                                    }
+                                    newStep.PrepImage = fileName11;
+                                }
+                                _unitOfWork.Save();
+                            }
+                        }
+                    }
 
-                            //    if (!Directory.Exists(stepPath2))
-                            //    {
-                            //        Directory.CreateDirectory(stepPath2);
-                            //    }
-
-                            //    using (var filStream = new FileStream(Path.Combine(stepPath2, fileName22), FileMode.Create)) //save images
-                            //    {
-                            //        fileStep2.CopyTo(filStream);
-                            //    }
-                            //    newStep.الصورة2 = fileName22;
-                    //    }
-                    //    _unitOfWork.Save();
-                    //        }
-                    //    }
-                    //}
                     //// reOrder2 
                     if (selectedValue == 0)
                     {
@@ -337,22 +313,28 @@ namespace Test12.Controllers
                 string wwwRootPath = _webHostEnvironment.WebRootPath; // get us root folder
 
 
-                string ID_التحضير = PrepaVM.PreparationVM.PreparationsID.ToString();
+                string PreparationsID = PrepaVM.PreparationVM.PreparationsID.ToString();
                 string PreparationFK = PrepaVM.PreparationVM.BrandFK.ToString();
-
 
                 if (file != null)
                 {
                     string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
 
-                    // Construct the folder path where the image will be saved
-                    string PreparationPath = Path.Combine(wwwRootPath, "IMAGES", "التحضيرات", ID_التحضير, PreparationFK, fileName);
 
+                    // Construct the folder path where the image will be saved
+                    string folderPath = Path.Combine(wwwRootPath, "IMAGES", PreparationFK, "Preparation", PreparationsID);
+                    string PreparationPath = Path.Combine(folderPath, fileName);
+
+                    // Ensure the directory exists
+                    if (!Directory.Exists(folderPath))
+                    {
+                        Directory.CreateDirectory(folderPath);
+                    }
 
                     // Delete old image if it exists
                     if (!string.IsNullOrEmpty(PrepaVM.PreparationVM.prepareImage))
                     {
-                        var oldImagePath = Path.Combine(wwwRootPath, "IMAGES", "التحضيرات", ID_التحضير, PreparationFK, PrepaVM.PreparationVM.prepareImage);
+                        var oldImagePath = Path.Combine(folderPath, PrepaVM.PreparationVM.prepareImage);
 
                         try
                         {
@@ -372,11 +354,11 @@ namespace Test12.Controllers
                     // Use the correct file path when creating FileStream
                     using (var stream = new FileStream(PreparationPath, FileMode.Create))
                     {
-                        file.CopyToAsync(stream);
+                        file.CopyToAsync(stream); // Ensure to use await since CopyToAsync is an async method
                     }
 
                     // Store only the file name in the database
-                    PrepaVM.PreparationVM.prepareImage = fileName; // Update the ViewModel property with the file name
+                    PrepaVM.PreparationVM.prepareImage = fileName;
                 }
 
 
@@ -391,7 +373,7 @@ namespace Test12.Controllers
 
                         if (component.PreparationsFK == preparationID)
                         {
-                            var existingComponent = _unitOfWork.ComponentRepository.Get(u => u.PrepIngredientsID == component.PrepIngredientsID, incloudeProperties: "التحضيرات");
+                            var existingComponent = _unitOfWork.ComponentRepository.Get(u => u.PrepIngredientsID == component.PrepIngredientsID, incloudeProperties: "Preparation");
                             if (existingComponent != null)//if is exit from database
                             {
                                 existingComponent.PrepQuantity = component.PrepQuantity;
@@ -417,7 +399,7 @@ namespace Test12.Controllers
 
                         if (toolvariety.PreparationsFK == toolVarityID)
                         {
-                            var existingtoolvariety = _unitOfWork.PrepaToolsVarietyRepository.Get(u => u.PrepToolsID == toolvariety.PrepToolsID, incloudeProperties: "التحضيرات");
+                            var existingtoolvariety = _unitOfWork.PrepaToolsVarietyRepository.Get(u => u.PrepToolsID == toolvariety.PrepToolsID, incloudeProperties: "Preparation");
                             if (existingtoolvariety != null)//if is exit from database
                             {
                                 existingtoolvariety.PrepTools = toolvariety.PrepTools;
@@ -434,116 +416,80 @@ namespace Test12.Controllers
                     }
                 }
                 //الخطوات 
-                //if (PrepaVM.stepsVM != null)
-                //{
-                //    for (int i = 0; i < PrepaVM.stepsVM.Count; i++)
-                //    {
-                //        var Steps = PrepaVM.stepsVM[i];
-                //        string رقم_الخطوة1 = Steps.رقم_الخطوة1.ToString();
-                //        string رقم_الخطوة2 = Steps.رقم_الخطوة2.ToString();
+                if (PrepaVM.stepsVM != null)
+                {
+                    for (int i = 0; i < PrepaVM.stepsVM.Count; i++)
+                    {
+                        var Steps = PrepaVM.stepsVM[i];
 
+                        string wwwRootPathSteps = _webHostEnvironment.WebRootPath; // get the root folder
 
-                //        string wwwRootPathSteps = _webHostEnvironment.WebRootPath; // get the root folder
+                        var existingSteps9 = _unitOfWork.StepsPreparationRepository.Get(u => u.PrepStepsID == Steps.PrepStepsID, incloudeProperties: "Preparation");
+                        if (existingSteps9 == null)
+                        {
+                            _unitOfWork.StepsPreparationRepository.Add(Steps);
+                            _unitOfWork.Save();
+                        }
 
-                //        var existingSteps9 = _unitOfWork.StepsPreparationRepository.Get(u => u.ID == Steps.ID, incloudeProperties: "التحضيرات");
-                //        if (existingSteps9 == null)
-                //        {
-                //            _unitOfWork.StepsPreparationRepository.Add(Steps);
-                //            _unitOfWork.Save();
-                //        }
+                        string IDstep = Steps.PrepStepsID.ToString();
+                        string preparationVMFk = PrepaVM.PreparationVM.BrandFK.ToString();
 
-                //        string IDstep = Steps.ID.ToString();
-                //        string StepsPath = Path.Combine(wwwRootPathSteps, "IMAGES", "التحضيرات", رقم_الخطوة1, ID_التحضير, IDstep);
-                //        string StepsPath2 = Path.Combine(wwwRootPathSteps, "IMAGES", "التحضيرات", رقم_الخطوة2, ID_التحضير, IDstep);
+                        string StepsPath = Path.Combine(wwwRootPath, "IMAGES", preparationVMFk, "Preparation", IDstep);
 
-                //        var file1Name = $"file1_{Steps.رقم_الخطوة1}";
-                //        var file1ForStep = HttpContext.Request.Form.Files[file1Name];
+                        var file1Name = $"file1_{Steps.PrepStepsID}";
+                        var file1ForStep = HttpContext.Request.Form.Files[file1Name];
 
-                //        if (file1ForStep != null)
-                //        {
-                //            if (!string.IsNullOrEmpty(Steps.الصورة1)) // Check if there's an existing image path
-                //            {
-                //                var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", "التحضيرات", رقم_الخطوة1, ID_التحضير, IDstep, Steps.الصورة1);
+                        if (file1ForStep != null)
+                        {
+                            if (!string.IsNullOrEmpty(Steps.PrepImage)) // Check if there's an existing image path
+                            {
+                                var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", preparationVMFk, "Preparation", IDstep, Steps.PrepImage);
 
-                //                if (System.IO.File.Exists(OldImagePath1))
-                //                {
-                //                    System.IO.File.Delete(OldImagePath1); // Delete old image if it exists
-                //                }
-                //            }
+                                if (System.IO.File.Exists(OldImagePath1))
+                                {
+                                    System.IO.File.Delete(OldImagePath1); // Delete old image if it exists
+                                }
+                            }
 
-                //            string fileNameSteps1 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep.FileName);
+                            string fileNameSteps1 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep.FileName);
 
-                //            //اذا المسار مش موجود سو مسار جديد 
-                //            if (!Directory.Exists(StepsPath))
-                //            {
-                //                Directory.CreateDirectory(StepsPath);
-                //            }
+                            //اذا المسار مش موجود سو مسار جديد 
+                            if (!Directory.Exists(StepsPath))
+                            {
+                                Directory.CreateDirectory(StepsPath);
+                            }
 
-                //            using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
-                //            {
-                //                file1ForStep.CopyTo(fileStream1);
-                //            }
+                            using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
+                            {
+                                file1ForStep.CopyTo(fileStream1);
+                            }
 
-                //            Steps.الصورة1 = fileNameSteps1; // Update the image path
-                //        }
+                            Steps.PrepImage = fileNameSteps1; // Update the image path
+                        }
 
-                //        var file2ForStep = HttpContext.Request.Form.Files[$"file2_{Steps.رقم_الخطوة2}"];
+                        // Save or update Steps data to the database
+                        if (Steps.PreparationsFK == stepsID) // int stepsID = PrepaVM.PreparationVM.التحضير_ID;
+                        {
+                            var existingSteps = _unitOfWork.StepsPreparationRepository.Get(u => u.PrepStepsID == Steps.PrepStepsID, incloudeProperties: "Preparation");
 
-                //        if (file2ForStep != null)
-                //        {
-                //            if (!string.IsNullOrEmpty(Steps.الصورة2)) // Check if there's an existing image path
-                //            {
-                //                var OldImagePath2 = Path.Combine(wwwRootPathSteps, "IMAGES", "التحضيرات", رقم_الخطوة2, ID_التحضير, IDstep, Steps.الصورة2);
+                            if (existingSteps != null)
+                            {
 
-                //                if (System.IO.File.Exists(OldImagePath2))
-                //                {
-                //                    System.IO.File.Delete(OldImagePath2); // Delete old image if it exists
-                //                }
-                //            }
+                                existingSteps.PrepText = Steps.PrepText;
+                                existingSteps.PrepImage = Steps.PrepImage;
+                                existingSteps.PrepStepsNum = Steps.PrepStepsNum;
 
-                //            string fileNameSteps2 = Guid.NewGuid().ToString() + Path.GetExtension(file2ForStep.FileName);
-                //            //اذا المسار مش موجود سو مسار جديد 
-                //            if (!Directory.Exists(StepsPath2))
-                //            {
-                //                Directory.CreateDirectory(StepsPath2);
-                //            }
-
-                //            using (var fileStream2 = new FileStream(Path.Combine(StepsPath2, fileNameSteps2), FileMode.Create))
-                //            {
-                //                file2ForStep.CopyTo(fileStream2);
-                //            }
-
-                //            Steps.الصورة2 = fileNameSteps2; // Update the image path
-                //        }
-
-                //        // Save or update Steps data to the database
-                //        if (Steps.التحضير_ID == stepsID) // int stepsID = PrepaVM.PreparationVM.التحضير_ID;
-                //        {
-                //            var existingSteps = _unitOfWork.StepsPreparationRepository.Get(u => u.ID == Steps.ID, incloudeProperties: "التحضيرات");
-
-                //            if (existingSteps != null)
-                //            {
-
-                //                existingSteps.الخطوة1 = Steps.الخطوة1;
-                //                existingSteps.الصورة1 = Steps.الصورة1;
-                //                existingSteps.رقم_الخطوة1 = Steps.رقم_الخطوة1;
-
-                //                existingSteps.الخطوة2 = Steps.الخطوة2;
-                //                existingSteps.الصورة2 = Steps.الصورة2;
-                //                existingSteps.رقم_الخطوة2 = Steps.رقم_الخطوة2;
-
-                //                _unitOfWork.StepsPreparationRepository.Update(existingSteps);
-                //            }
-                //            else
-                //            {
-                //                _unitOfWork.StepsPreparationRepository.Add(Steps);
-                //            }
-                //            _unitOfWork.Save();
-                //        }
-                //    }
-                //}
-
-                TempData["success"] = "تم تحديث التحضيرات بشكل ناجح";
+                                _unitOfWork.StepsPreparationRepository.Update(existingSteps);
+                            }
+                            else
+                            {
+                                _unitOfWork.StepsPreparationRepository.Add(Steps);
+                            }
+                            _unitOfWork.Save();
+                        }
+                    }
+                }
+                    TempData["success"] = "تم تحديث التحضيرات بشكل ناجح";
 
                 return RedirectToAction("PreparationList", new { id = PrepaVM.PreparationVM.BrandFK });
             }
