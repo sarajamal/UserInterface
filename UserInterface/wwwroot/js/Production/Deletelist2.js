@@ -27,17 +27,17 @@ function loadDataTable(id) {
         },
         "columns": [
             {
-                data: 'اسم_الصنف',
+                data: 'productName',
                 "width": "20%",
                 "className": "text-center custom-font-bold"
             },
             {
-                data: 'نوع_الصنف',
+                data: 'productType',
                 "width": "20%",
                 "className": "text-center custom-font-bold"
             },
             {
-                data: 'صورة',
+                data: 'productImage',
                 "render": function (data, _, row) {
                     var numericID = parseInt(row.iD_المنتج, 10); // Extract numeric part
                     var numericID2 = parseInt(row.id, 10); // Extract numeric part
@@ -49,7 +49,7 @@ function loadDataTable(id) {
                 "className": "text-center"
             },
             {
-                data: 'iD_المنتج',
+                data: 'productionID',
                 "render": function (data) {
                     return `<div role="group">
                      <a href="/Production/Upsert1?id=${data}" class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i></a>               
@@ -60,12 +60,12 @@ function loadDataTable(id) {
                 "className": "text-center"
             },
             {
-                data: 'order', // Assuming 'Order' is the name of your 'Order' column
+                data: 'productionOrder', // Assuming 'Order' is the name of your 'Order' column
                 "visible": false, // Hide the "Order" column from the user interface
                 "orderable": false // Disable sorting for the "Order" column
             }
         ],
-        "order": [] // Disable initial sorting
+        "productionOrder": [] // Disable initial sorting
     });
 }
 function DeletePreparationPost(url) {

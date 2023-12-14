@@ -1,211 +1,141 @@
-﻿function AddnewRowstepsUpdate(preparationId) { //صفحة التعديل
-
+﻿ 
+function AddnewRowstepsUpdate(preparationFk) {
     var tableBody = document.querySelector("#tblSteps tbody");
-    var newRowIndex = tableBody.children.length;
+    var stepCells = tableBody.querySelectorAll("td");
+
+    newRowIndex = stepCells.length ;
+
+    console.log("Step cells length:", stepCells.length); // Debugging log
 
 
-    var lastStep1 = tableBody.lastElementChild.querySelector(`input[name^="stepsVM[${newRowIndex - 1}].رقم_الخطوة1"]`);
-    var lastStep2 = tableBody.lastElementChild.querySelector(`input[name^="stepsVM[${newRowIndex - 1}].رقم_الخطوة2"]`);
+    var lastCell = stepCells[stepCells.length - 1];
+    console.log("Step lastCell length:", lastCell); // Debugging log
 
-    // because I trying to parse the value of these elements, but if they don't exist, they will be null, and I cannot parse null as an integer.
-    var currentValueStep1 = lastStep1 ? parseInt(lastStep1.value) : 0;
-    var currentValueStep2 = lastStep2 ? parseInt(lastStep2.value) : 0;
+    var lastStepIDInput = lastCell ? lastCell.querySelector(`input[name$="PrepStepsID"]`) : null;
+    var lastStepInput = lastCell ? lastCell.querySelector(`input[name$="PrepStepsNum"]`) : null;
 
-    if (currentValueStep2 == 0) {
-        // Create a red text message
-        var textElement = document.createElement("span");
-        textElement.style.color = "red";
-        textElement.textContent = "يجب تعبئة خانة الخطوة.*";
-        textElement.classList.add("red-message"); // Add the class "red-message"
+    var lastStepIDValue = lastStepIDInput ? parseInt(lastStepIDInput.value) : 0;
+    var lastStepValue = lastStepInput ? parseInt(lastStepInput.value) : 0;
 
-        var newCurrentValueStep2 = currentValueStep1 + 1;
-        var tdElement = document.createElement("td");
+    currentStep1Value = lastStepValue + 1;
+    currentIDValue = lastStepIDValue + 1;
 
-        // Assuming NewcurrentValueStep1 is the ID of the element
+   
+    var isEven = currentStep1Value % 2 === 0;
+    var newRow, newCell;
 
-        // Create the HTML for الخطوة2 and set it as the content of the <td> element
-        tdElement.innerHTML = `
-        <input type="hidden" name="stepsVM[${newRowIndex - 1}].رقم_الخطوة2" value="${newCurrentValueStep2}" />
-        <input type="hidden" name="stepsVM[${newRowIndex - 1}].الصورة2" />
+    // Row creation logic
+    if (isEven) {
+        newRow = tableBody.lastElementChild;
+    } else {
+        newRow = document.createElement("tr");
+        tableBody.appendChild(newRow);
+     
+    }
 
+    // Create the new cell
+    newCell = document.createElement("td");
+    newCell.style.textAlign = "center";
+    newCell.innerHTML = `
+        <input type="hidden" name="stepsVM[${newRowIndex}].PreparationsFK" value="${preparationFk}" />
+        <input type="hidden" name="stepsVM[${newRowIndex}].PrepStepsNum" value="${currentStep1Value}" />
+        <input type="hidden" name="stepsVM[${newRowIndex}].PrepImage"  />
         <div class="row">
             <div class="col-12 text-center">
-                <div>${newCurrentValueStep2}</div>
-
+                <div>${currentStep1Value}</div>
                 <div>
-                    <img id="PreviewPhoto2_${newCurrentValueStep2}" document.getElementById("PreviewPhoto2_${newCurrentValueStep2}") src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
+                    <img id="PreviewPhoto1_${currentIDValue}" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
                 </div>
-
                 <div class="form-group mt-2">
-                    <input type="file" name="file2_${newCurrentValueStep2}" class="border-0 shadow mt-5" id="customFile2_${newCurrentValueStep2}" data-preview-id="PreviewPhoto2_${newCurrentValueStep2}" onchange="displaySelectedImage(this, 'PreviewPhoto2_${newCurrentValueStep2}')">
-                   <textarea asp-for="itemStep.الخطوة2" id="stepsVM_${newCurrentValueStep2}" class="form-control mt-2 @Html.ValidationClassFor(model => model.itemStep.الخطوة2)" name="stepsVM[${newRowIndex - 1}].الخطوة2" oninput="toggleAddButtonVisibility(this.value)"></textarea>
-                     ${textElement.outerHTML}
+                    <input type="file" name="file1_${currentIDValue}" class="border-0 shadow mt-5" id="customFile1_${currentIDValue}" data-preview-id="PreviewPhoto1_${currentIDValue}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${currentIDValue}')">
+                    <textarea class="form-control mt-2" id="stepsVM_${newRowIndex}" name="stepsVM[${newRowIndex}].PrepText"></textarea>
                 </div>
+                <div class="py-5"></div>
             </div>
         </div>
     `;
-        var targetPosition = 1; // Change to 2 for the third position
-        // Append the <td> element to the <tr> element
-        var lastRow = tableBody.lastElementChild;
-        lastRow.insertBefore(tdElement, lastRow.children[targetPosition]);
 
-        document.getElementById("addStepButton").disabled = true;
-    }
-    else {
-        var NewcurrentValueStep1 = currentValueStep2 + 1
-        var NewVaueStep2 = currentValueStep2 + 2
+    // Append the new cell to the current or new row
+    newRow.appendChild(newCell);
+    console.log("newCell:", newCell); // Debugging log   
 
-        // Create a red text message
-        var textElement = document.createElement("span");
-        textElement.style.color = "red";
-        textElement.textContent = "يجب تعبئة خانة الخطوة.*";
-        textElement.classList.add("red-message"); // Add the class "red-message"
+  }
 
 
-        // Add الخطوة1 row
-        var newRow = document.createElement("tr");
-        newRow.innerHTML = `
-    <input type="hidden" name="stepsVM[${newRowIndex}].التحضير_ID" value="${preparationId}" />
-    <input type="hidden" name="stepsVM[${newRowIndex}].رقم_الخطوة1" value="${NewcurrentValueStep1}" />
-    <input type="hidden" name="stepsVM[${newRowIndex}].الصورة1" />
 
-    <div class="row">
-        <div class="col-12 text-center">
-            <div>${NewcurrentValueStep1}</div>
 
-            <div>
-                <img id="PreviewPhoto1_${NewcurrentValueStep1}" document.getElementById("PreviewPhoto1_${NewcurrentValueStep1}") src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
-            </div>
 
-            <div class="form-group mt-2">
-                <input type="file" name="file1_${NewcurrentValueStep1}" class="border-0 shadow mt-5" 
-                id="customFile1_${NewcurrentValueStep1}" data-preview-id="PreviewPhoto1_${NewcurrentValueStep1}" 
-                onchange="displaySelectedImage(this, 'PreviewPhoto1_${NewcurrentValueStep1}')">
 
-                <textarea asp-for="itemStep.الخطوة1" id="stepsVM_${NewcurrentValueStep1}" class="form-control mt-2 @Html.ValidationClassFor(model => model.itemStep.الخطوة1)" name="stepsVM[${newRowIndex}].الخطوة1"></textarea>
-               ${textElement.outerHTML} <!-- Append the red text here -->
-            </div>
-
-             <td style="text-align: center;">
-
-                 <input type="hidden" name="stepsVM[${newRowIndex}].رقم_الخطوة2" value="${NewVaueStep2}" />
-                 <input type="hidden" name="stepsVM[${newRowIndex}].الصورة2"/>
-
-                <div>${NewVaueStep2}</div>
-                <div>
-                    <img id="PreviewPhoto2_${NewVaueStep2}" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
-                </div>
-                <div class="form-group mt-2">
-                    <input type="file" name="file2_${NewVaueStep2}" class="border-0 shadow mt-5" id="customFile2_${NewVaueStep2}" data-preview-id="PreviewPhoto2_${NewVaueStep2}" onchange="displaySelectedImage(this, 'PreviewPhoto2_${NewVaueStep2}')">
-                    <textarea asp-for="itemStep.الخطوة2" id="stepsVM_${NewVaueStep2}" class="form-control mt-2" name="stepsVM[${newRowIndex}].الخطوة2"oninput="toggleAddButtonVisibility(this.value)" ></textarea>
-                     ${textElement.outerHTML}
-                </div> 
-        </td>
-        </div>
-    </div>
-
-    <td style="text-align: center;">
-        <button type="button" class="btn btn-danger"  data-row-index="${newRowIndex}" onclick="DeleteRow(this)" >حذف</button>
-    </td>
-    `;
-
-        // Append the new الخطوة1 row to the table body
-        tableBody.appendChild(newRow);
-        document.getElementById("addStepButton").disabled = true;
-
-    }
-}
 
 
 
 //صفحة الاضافة..
-var currentStep1Value = 1; // Initialize رقم_الخطوة1
-var currentStep2Value = 2; // Initialize رقم_الخطوة2
-function AddnewRowstepsNew(preparationId) {
-    // Find the table body element
+var currentStep1Value = 1;
+var clickCount = 0;
+var lastID = 0; // Initialize lastID globally
+
+function AddnewRowstepsNew(preparationFk) {
+    if (clickCount === 0) {
+        // Only retrieve lastID from server on the first click
+        $.ajax({
+            url: '/Preparation/GetLastId',
+            type: 'GET',
+            success: function (response) {
+                lastID = parseInt(response) + 1;
+                addStep(preparationFk);
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching last ID:', error);
+            }
+        });
+    } else {
+        // On subsequent clicks, increment lastID locally
+        lastID++;
+        addStep(preparationFk);
+    }
+}
+
+function addStep(preparationFk) {
     var tableBody = document.querySelector("#tblSteps tbody");
 
-    // Find the last row index
-    var newRowIndex = tableBody.children.length - 1;
+    // Determine if adding to an existing row or creating a new row
+    var newRow;
+    if (clickCount % 2 === 0) { // Every two clicks, start a new row
+        newRow = document.createElement("tr");
+        tableBody.appendChild(newRow);
+    } else {
+        // Get the last row in the table to append a new <td>
+        newRow = tableBody.lastElementChild;
+    }
 
-    // Calculate the values for the new row
-    var newStep1Value = currentStep1Value;
-    var newStep2Value = currentStep2Value;
-
-
-
-    // Create a new row for الخطوة1 and الخطوة2 in the same row
-    var newRow = document.createElement("tr");
-    newRow.innerHTML = `
-       
-        <td style="text-align: center;">
-         <input type="hidden" name="stepsVM[${newRowIndex}].التحضير_ID" value="${preparationId}" />
-         <input type="hidden" name="stepsVM[${newRowIndex}].ID" value="${preparationId}" />
-         <input type="hidden" name="stepsVM[${newRowIndex}].رقم_الخطوة1" value="${newStep1Value}" />
-         <input type="hidden" name="stepsVM[${newRowIndex}].الصورة1" />
-
+    // Create a new <td> for the current step
+    var newCell = document.createElement("td");
+    newCell.style.textAlign = "center";
+    newCell.innerHTML = `
+        <input type="hidden" name="stepsVM[${clickCount}].PreparationsFK" value="${preparationFk}" />
+        <input type="hidden" name="stepsVM[${clickCount}].PrepStepsNum" value="${currentStep1Value}" />
+        <input type="hidden" name="stepsVM[${clickCount}].PrepImage" />
         <div class="row">
             <div class="col-12 text-center">
-                <div>${newStep1Value}</div>
+                <div>${currentStep1Value}</div>
                 <div>
-                    <img id="PreviewPhoto1_${newStep1Value}"  src="/IMAGES/noImage.png" document.getElementById("PreviewPhoto1_${newStep1Value}") alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
+                    <img id="PreviewPhoto1_${lastID}" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
                 </div>
                 <div class="form-group mt-2">
-                    <input type="file" name="file1_${newStep1Value}" class="border-0 shadow mt-5" id="customFile1_${newStep1Value}" data-preview-id="PreviewPhoto1_${newStep1Value}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${newStep1Value}')">
-                    <textarea asp-for="itemStep.الخطوة1" id="stepsVM_${newStep1Value}" class="form-control mt-2 " name="stepsVM[${newRowIndex}].الخطوة1"></textarea>
-                </div>
-                 </td>
-                 <td style="text-align: center;">
-
-                 <input type="hidden" name="stepsVM[${newRowIndex}].رقم_الخطوة2" value="${newStep2Value}" />
-                 <input type="hidden" name="stepsVM[${newRowIndex}].الصورة2"/>
-
-                <div>${newStep2Value}</div>
-                <div>
-                    <img id="PreviewPhoto2_${newStep2Value}" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
-                </div>
-                <div class="form-group mt-2">
-                    <input type="file" name="file2_${newStep2Value}" class="border-0 shadow mt-5" id="customFile2_${newStep2Value}" data-preview-id="PreviewPhoto2_${newStep2Value}" onchange="displaySelectedImage(this, 'PreviewPhoto2_${newStep2Value}')">
-                    <textarea asp-for="itemStep.الخطوة2" id="stepsVM_${newStep2Value}" class="form-control mt-2" name="stepsVM[${newRowIndex}].الخطوة2" ></textarea>
+                    <input type="file" name="file1_${lastID}" class="border-0 shadow mt-5" id="customFile1_${lastID}" data-preview-id="PreviewPhoto1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
+                    <textarea class="form-control mt-2" id="stepsVM_${clickCount}" name="stepsVM[${clickCount}].PrepText"></textarea>
                 </div>
             </div>
         </div>
-        </td>
-       
     `;
 
-    // Append the new الخطوة1 and الخطوة2 row to the table body
-    tableBody.appendChild(newRow);
+    // Append the new <td> to the current/new row
+    newRow.appendChild(newCell);
 
-    // Increment رقم_الخطوة1 and رقم_الخطوة2 for the next row
-    currentStep1Value = currentStep1Value + 2;
-    currentStep2Value = currentStep2Value + 2;
-
-
-    //// Disable the add button
-    //document.getElementById("addStepButton").disabled = true;
-}
-
-function displaySelectedImage(input, imgId) {
-
-    // Get the reference to the HTML img element based on the provided imgId
-    var imgElement = document.getElementById(imgId);
-
-    // Check if a file has been selected in the input element
-    if (input.files && input.files[0]) {
-
-        // Create a new FileReader object to read the selected file
-        var reader = new FileReader();
-
-        // Define an event handler for when the FileReader has finished reading the file
-        reader.onload = function (e) {
-
-            // Set the 'src' attribute of the img element to the read image data
-            imgElement.src = e.target.result;
-        };
-        // Read the selected file as a data URL (base64 encoded)
-        reader.readAsDataURL(input.files[0]);
-    }
+    // Increment values for next click
+    currentStep1Value++;
+    clickCount++;
+    console.log("newCell:", newCell); // Debugging log   
 }
 
 function toggleAddButtonVisibility(value) {
@@ -230,8 +160,33 @@ function toggleAddButtonVisibility(value) {
 
 }
 
+function displaySelectedImage(input, imgId) {
+
+    // Get the reference to the HTML img element based on the provided imgId
+    var imgElement = document.getElementById(imgId);
+
+    // Check if a file has been selected in the input element
+    if (input.files && input.files[0]) {
+
+        // Create a new FileReader object to read the selected file
+        var reader = new FileReader();
+
+        // Define an event handler for when the FileReader has finished reading the file
+        reader.onload = function (e) {
+
+            // Set the 'src' attribute of the img element to the read image data
+            imgElement.src = e.target.result;
+        };
+        // Read the selected file as a data URL (base64 encoded)
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+
+
+
 //take two parameter ID1 = ID_التحضير , id=ID for the step . 
-function Deletestep(ID1, id) { // after save in db . 
+function Deletestep( id) { // after save in db . 
     Swal.fire({
         title: 'هل أنت متأكد ؟',
         text: " هل تريد استعادة ماتم حذفه؟",
@@ -245,7 +200,6 @@ function Deletestep(ID1, id) { // after save in db .
         if (result.isConfirmed) {
             var formData = new FormData();
             formData.append("id", id);
-            formData.append("ID1", ID1);
             $.ajax({
                 url: '/Preparation/Deletesteps',
                 type: 'DELETE',

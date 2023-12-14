@@ -27,24 +27,24 @@ function loadDataTable(id) {
         },
         "columns": [
             {
-                data: 'اسم_التحضير',
+                data: 'prepareName',
                 "width": "40%",
                 "className": "text-center custom-font-bold"
             },
             {
-                data: 'الصورة_النهائية',
+                data: 'prepareImage',
                 "render": function (data, _, row) {
-                    var numericID = parseInt(row.التحضير_ID, 10); // Extract numeric part
-                    var numericID2 = parseInt(row.id, 10); // Extract numeric part
+                    var numericID = parseInt(row.brandFK, 10); // Extract numeric part
+                    var numericID2 = parseInt(row.preparationsID, 10); // Extract numeric part
 
-                    var imagePath = `/IMAGES/التحضيرات/${numericID}/${numericID2}/${data}`;
+                    var imagePath = `/IMAGES/${numericID}/Preparation/${numericID2}/${data}`;
                     return `<img src="${imagePath}" alt="Image" width="150" height="100"/>`;
                 },
                 "width": "44%",
                 "className": "text-center"
             },
             {
-                data: 'التحضير_ID',
+                data: 'preparationsID',
                 "render": function (data) {
                     return `<div role="group">
                      <a href="/Preparation/Upsert?id=${data}" class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i></a>               
@@ -55,7 +55,7 @@ function loadDataTable(id) {
                 "className": "text-center"
             },
             {
-                data: 'order', // Assuming 'Order' is the name of your 'Order' column
+                data: 'preparationsOrder', // Assuming 'Order' is the name of your 'Order' column
                 "visible": false, // Hide the "Order" column from the user interface
                 "orderable": false // Disable sorting for the "Order" column
             }

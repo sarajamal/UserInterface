@@ -1,0 +1,39 @@
+﻿body {
+    margin: 0px;
+    padding-top: 80px;
+    font-family: "Arial", sans-serif; /* Use an Arabic-supported font here */
+    background-color: #FAFAFA;
+}
+
+html {
+    direction: rtl;
+}
+
+li {
+    list-style: none;
+    text-align: center;
+    font-size: 20px;
+    padding: 4px;
+    margin: 6px;
+    font-weight: bold;
+    font-family: Cambria;
+}
+
+h4 {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: Cambria;
+}
+/* Style the error message text */
+.validation-error {
+    color: red;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Style the input field with an error */
+.input-error {
+    border-color: red;
+    background-color: #ffe6e6;
+}

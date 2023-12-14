@@ -46,7 +46,7 @@ namespace Test12.Controllers
             PrVM.tredMaeketVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
             PrVM.Productionvm = _unitOfWork.itemsRepository.Get(u => u.ProductionID == id);
             PrVM.componontVMList2 = _unitOfWork.ComponentRepository2.GetAll(incloudeProperties: "Production").Where(c => c.ProductionFK == id).ToList(); //هو يحتوي على قائمة من جدول المكونات واللي يساعده على العرض هي view
-            PrVM.ToolsVarityVM2 = _unitOfWork.PrepaToolsVarietyRepository2.GetAll(incloudeProperties: "Production").Where(c => c.ProdToolsID == id).ToList(); //هو يحتوي على قائمة من جدول الأدوات واللي يساعده على العرض هي viewD
+            PrVM.ToolsVarityVM2 = _unitOfWork.PrepaToolsVarietyRepository2.GetAll(incloudeProperties: "Production").Where(c => c.ProductionFK == id).ToList(); //هو يحتوي على قائمة من جدول الأدوات واللي يساعده على العرض هي viewD
             PrVM.stepsVM2 = _unitOfWork.StepsPreparationRepository2.GetAll(incloudeProperties: "Production").Where(c => c.ProductionFK == id).ToList(); //هو يحتوي على قائمة من جدول الأدوات واللي يساعده على العرض هي viewD
             return View(PrVM);
         }
@@ -159,9 +159,9 @@ namespace Test12.Controllers
                     var firstComponent = new ProductionIngredients
                     {
                         ProductionFK = ID_الصنف,
-                        ProdIngredientsName = Request.Form["الكمية"], // Retrieve data from form
-                        ProdUnit = Request.Form["الوحدة"],
-                        ProdQuantity = Request.Form["المكون"]
+                        ProdIngredientsName = Request.Form["ProdIngredientsName"], // Retrieve data from form
+                        ProdUnit = Request.Form["ProdUnit"],
+                        ProdQuantity = Request.Form["ProdQuantity"]
                     };
 
                     _unitOfWork.ComponentRepository2.Add(firstComponent);
@@ -192,7 +192,7 @@ namespace Test12.Controllers
                     var firstRowToolAdd = new ProductionTools
                     {
                         ProductionFK = ID_الصنف,
-                        ProdTools = Request.Form["الأدوات"],
+                        ProdTools = Request.Form["ProdTools"],
                     };
                     _unitOfWork.PrepaToolsVarietyRepository2.Add(firstRowToolAdd);
                     _unitOfWork.Save();
@@ -216,24 +216,24 @@ namespace Test12.Controllers
                     }
 
                     //2الخطوات
-                    if (PropaVM.stepsVM2 != null)
-                    {
-                        foreach (var stepAdd in PropaVM.stepsVM2)
-                        {
+                    //if (PropaVM.stepsVM2 != null)
+                    //{
+                    //    foreach (var stepAdd in PropaVM.stepsVM2)
+                    //    {
 
-                            if (stepAdd != null && stepAdd.ProdStepsID == 0)
-                            {
-                                string wwwRootstepPath = _webHostEnvironment.WebRootPath; // get us root folder
+                    //        if (stepAdd != null && stepAdd.ProdStepsID == 0)
+                    //        {
+                    //            string wwwRootstepPath = _webHostEnvironment.WebRootPath; // get us root folder
 
-                                var newStep = new ProductionSteps
-                                {
-                                    ProductionFK = ID_الصنف,
-                                    ProdText = stepAdd.ProdText,
-                                    ProdStepsNum = stepAdd.ProdStepsNum,
+                    //            var newStep = new ProductionSteps
+                    //            {
+                    //                ProductionFK = ID_الصنف,
+                    //                ProdText = stepAdd.ProdText,
+                    //                ProdStepsNum = stepAdd.ProdStepsNum,
 
-                                };
-                                _unitOfWork.StepsPreparationRepository2.Add(newStep);
-                                _unitOfWork.Save();
+                    //            };
+                    //            _unitOfWork.StepsPreparationRepository2.Add(newStep);
+                    //            _unitOfWork.Save();
 
                             //    var file1Name1 = $"file1_{newStep.رقم_الخطوة1}";
                             //    var file1ForStep1 = HttpContext.Request.Form.Files[file1Name1];
@@ -281,9 +281,9 @@ namespace Test12.Controllers
                             //        newStep.الصورة2 = fileName22;
                             //    }
                             //    _unitOfWork.Save();
-                           }
-                        }
-                    }
+                           //}
+                    //    }
+                    //}
 
                     //// reOrder2 
                     if (selectedValue == 0)
@@ -523,7 +523,7 @@ namespace Test12.Controllers
                     }
                 }
 
-                TempData["success"] = "تم تحديث Product بشكل ناجح";
+                TempData["success"] = "تم تحديث الانتاج بشكل ناجح";
                 TempData["ID"] = PropaVM.Productionvm.BrandFK;
                 return RedirectToAction("ProductionList", new { id = PropaVM.Productionvm.BrandFK });
             }
@@ -701,7 +701,7 @@ namespace Test12.Controllers
             //        _unitOfWork.StepsPreparationRepository2.Update(step);
             //    }
             //}
-            //_unitOfWork.Save();
+            _unitOfWork.Save();
             return Json(new
             {
                 success = true,

@@ -30,8 +30,11 @@
                             <span asp-validation-for="LoginVM.Username" class="text-danger"></span>
                         </div>
                         <div class="form-floating mb-3">
-                            <input asp-for=" LoginVM.Password" class="form-control" placeholder="كلمة المرور " />
+                            <input asp-for=" LoginVM.Password" id="PasswordInput" class="form-control" placeholder="كلمة المرور " />
                             <label asp-for=" LoginVM.Password" class="form-label">كلمة المرور</label>
+                            <div id="errorMessage" style="color: red; display: none;" class="py-3">
+                                . أدخل كلمة المرور *
+                            </div>
                             <span asp-validation-for=" LoginVM.Password" class="text-danger"></span>
                         </div>
                        
@@ -42,7 +45,7 @@
                         </div>
 
                         <div>
-                            <button id="login-submit" asp-controller="Home" asp-action="Index" type="submit" class="w-100 btn btn-lg btn-primary">تسجيل الدخول</button>
+                            <button id="loginsubmit" asp-controller="Home" asp-action="Index" type="submit" class="w-100 btn btn-lg btn-primary">تسجيل الدخول</button>
                         </div>
 
                     </form>
@@ -52,10 +55,27 @@
     </div>
 </div>
 
+<script>
+    document.getElementById('loginsubmit').addEventListener('click', function (event) {
+        // Get the value of the password input field using its ID
+        var passwordInput = document.getElementById('PasswordInput').value.trim();
 
+        // Get the div element for displaying the error message
+        var errorMessageDiv = document.getElementById('errorMessage');
 
+        // Check if the password is empty
+        if (!passwordInput) {
+            // Prevent form submission
+            event.preventDefault();
 
-
+            // Display the error message
+            errorMessageDiv.style.display = 'block';
+        } else {
+            // Hide the error message if the password is not empty
+            errorMessageDiv.style.display = 'none';
+        }
+    });
+</script>
 
 @* <h2>تسجيل الدخول .</h2>
 

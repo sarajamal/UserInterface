@@ -35,6 +35,19 @@ namespace Test12.DataAccess.Repository
 
          }
 
+        // New function to get the last ID
+        public int GetLastStepId()
+        {
+            // If there are no entries in the table, return 0 or an appropriate default value
+            if (!_context.PreparationSteps.Any())
+            {
+                return 0;
+            }
+
+            // Retrieve and return the max PrepStepsID
+            return _context.PreparationSteps.Max(p => p.PrepStepsID);
+        }
+
         //public void Delete (الخطوات obj)
         //{
         //   var objFormDb = _context.الخطوات.FirstOrDefault(u => u.ID == obj.ID); 
