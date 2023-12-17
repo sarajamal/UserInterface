@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Net.NetworkInformation;
 using Test12.DataAccess.Repository.IRepository;
+using Test12.Models.Models.Preparation;
 using Test12.Models.Models.Production;
 using Test12.Models.Models.trade_mark;
 using Test12.Models.ViewModel;
@@ -127,12 +128,12 @@ namespace Test12.Controllers
                     {
 
                         // Convert numeric values to strings
-                        string ID_المنتج = setFK.ProductionID.ToString(); // Convert to string
-                        string ProductionVMID = PropaVM.tredMaeketVM.BrandID.ToString(); // Convert to string
+                        string ProductionID = setFK.ProductionID.ToString(); // Convert to string
+                        string ProductionVMFK = PropaVM.tredMaeketVM.BrandID.ToString(); // Convert to string
 
                         // Combine paths using Path.Combine, ensuring all arguments are strings
                         // Combine paths using Path.Combine, ensuring all arguments are strings
-                        string ProductionDirectory = System.IO.Path.Combine(wwwRootPath, "IMAGES", "الانتاج", ID_المنتج, ProductionVMID);
+                        string ProductionDirectory = System.IO.Path.Combine(wwwRootPath, "IMAGES", ProductionVMFK, "Production", ProductionID);
 
                         //اذا المسار مش موجود سو مسار جديد 
                         if (!Directory.Exists(ProductionDirectory))
@@ -216,74 +217,54 @@ namespace Test12.Controllers
                     }
 
                     //2الخطوات
-                    //if (PropaVM.stepsVM2 != null)
-                    //{
-                    //    foreach (var stepAdd in PropaVM.stepsVM2)
-                    //    {
+                    if (PropaVM.stepsVM2 != null)
+                    {
+                        foreach (var stepAdd in PropaVM.stepsVM2)
+                        {
 
-                    //        if (stepAdd != null && stepAdd.ProdStepsID == 0)
-                    //        {
-                    //            string wwwRootstepPath = _webHostEnvironment.WebRootPath; // get us root folder
+                            if (stepAdd != null && stepAdd.ProdStepsID == 0)
+                            {
+                                string wwwRootstepPath = _webHostEnvironment.WebRootPath; // get us root folder
 
-                    //            var newStep = new ProductionSteps
-                    //            {
-                    //                ProductionFK = ID_الصنف,
-                    //                ProdText = stepAdd.ProdText,
-                    //                ProdStepsNum = stepAdd.ProdStepsNum,
+                                var newStep = new ProductionSteps
+                                {
+                                    ProductionFK = ID_الصنف,
+                                    ProdText = stepAdd.ProdText,
+                                    ProdStepsNum = stepAdd.ProdStepsNum,
 
-                    //            };
-                    //            _unitOfWork.StepsPreparationRepository2.Add(newStep);
-                    //            _unitOfWork.Save();
+                                };
+                                _unitOfWork.StepsPreparationRepository2.Add(newStep);
+                                _unitOfWork.Save();
 
-                            //    var file1Name1 = $"file1_{newStep.رقم_الخطوة1}";
-                            //    var file1ForStep1 = HttpContext.Request.Form.Files[file1Name1];
+                                var file1Name1 = $"file1_{newStep.ProdStepsID}";
+                                var file1ForStep1 = HttpContext.Request.Form.Files[file1Name1];
 
-                            //    string رقم_الخطوة1 = newStep.رقم_الخطوة1.ToString();
-                            //    string رقم_الخطوة2 = newStep.رقم_الخطوة2.ToString();
-                            //    string ID_المنتجStep = newStep.ID_الصنف.ToString();
-                            //    string IDstep = newStep.ID.ToString();
+                                 
+                                string BrandFK = setFK.BrandFK.ToString();
+                                string PropIDstep = newStep.ProdStepsID.ToString();
 
-                            //    string stepPath1 = System.IO.Path.Combine(wwwRootPath, "IMAGES", "الانتاج", رقم_الخطوة1, ID_المنتجStep, IDstep);
-                            //    string stepPath2 = System.IO.Path.Combine(wwwRootPath, "IMAGES", "الانتاج", رقم_الخطوة2, ID_المنتجStep, IDstep);
+                                string stepPath1 = System.IO.Path.Combine(wwwRootPath, "IMAGES", BrandFK, "Production", PropIDstep);
 
-                            //    if (file1ForStep1 != null && file1ForStep1.Length > 0)
-                            //    {
-                            //        string fileName11 = Guid.NewGuid().ToString() + System.IO.Path.GetExtension(file1ForStep1.FileName);
+                                if (file1ForStep1 != null && file1ForStep1.Length > 0)
+                                {
+                                    string fileName11 = Guid.NewGuid().ToString() + System.IO.Path.GetExtension(file1ForStep1.FileName);
 
-                            //        if (!Directory.Exists(stepPath1))
-                            //        {
-                            //            Directory.CreateDirectory(stepPath1);
-                            //        }
+                                    if (!Directory.Exists(stepPath1))
+                                    {
+                                        Directory.CreateDirectory(stepPath1);
+                                    }
 
-                            //        using (var fileStream = new FileStream(System.IO.Path.Combine(stepPath1, fileName11), FileMode.Create)) //save images
-                            //        {
-                            //            file1ForStep1.CopyTo(fileStream);
-                            //        }
-                            //        newStep.الصورة1 = fileName11;
-                            //    }
+                                    using (var fileStream = new FileStream(System.IO.Path.Combine(stepPath1, fileName11), FileMode.Create)) //save images
+                                    {
+                                        file1ForStep1.CopyTo(fileStream);
+                                    }
+                                    newStep.ProdSImage = fileName11;
+                                }
 
-                            //    var fileName2 = $"file2_{newStep.رقم_الخطوة2}";
-                            //    var fileStep2 = HttpContext.Request.Form.Files[fileName2];
-
-                            //    if (fileStep2 != null && fileStep2.Length > 0)
-                            //    {
-                            //        string fileName22 = Guid.NewGuid().ToString() + System.IO.Path.GetExtension(fileStep2.FileName);
-
-                            //        if (!Directory.Exists(stepPath2))
-                            //        {
-                            //            Directory.CreateDirectory(stepPath2);
-                            //        }
-
-                            //        using (var filStream = new FileStream(System.IO.Path.Combine(stepPath2, fileName22), FileMode.Create)) //save images
-                            //        {
-                            //            fileStep2.CopyTo(filStream);
-                            //        }
-                            //        newStep.الصورة2 = fileName22;
-                            //    }
-                            //    _unitOfWork.Save();
-                           //}
-                    //    }
-                    //}
+                                _unitOfWork.Save();
+                            }
+                        }
+                    }
 
                     //// reOrder2 
                     if (selectedValue == 0)
