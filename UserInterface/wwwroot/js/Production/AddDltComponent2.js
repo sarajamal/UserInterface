@@ -54,14 +54,14 @@ function AddRowcomponentUpdate2() { //صفحة التعديل .
 
         <td style="text-align:center;">
         <input type="hidden" name="componontVMList2[${newRowNumber}].ProductionFK" value="${componentFk}" />
-        <button type="button" class="btn btn-danger" data-row-index="${newRowNumber}" onclick="DeleteRow1(this)">حذف</button>
+        <button type="button" class="btn btn-danger" data-row-index="${newRowNumber}" onclick="DeleteRow99(this)">حذف</button>
         </td>
             `;
     tableBody.appendChild(newRow);
     newRowNumber++;
 }
 // صفحة التعديل قبل الحفظ في قاعدة البيانات 
-function DeleteRow1(button) {
+function DeleteRow99(button) {
     /*var rowIndex = button.getAttribute("data-row-index");*/
 
     Swal.fire({
@@ -103,7 +103,7 @@ function AddRowcomponentnew() {
 
     <td style="text-align:center;">
     <input type="hidden" name="componontVMList[${newIndex}].ProductionFK" value="${componentFk}" />
-    <button type="button" class="btn btn-danger" data-row-index="${newIndex}" onclick="DeleteRow1(this)">حذف</button>
+    <button type="button" class="btn btn-danger" data-row-index="${newIndex}" onclick="DeleteRow99(this)">حذف</button>
     </td>
 `;
 
