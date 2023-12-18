@@ -239,7 +239,7 @@ namespace Test12.Controllers
                                 var file1Name1 = $"file1_{newStep.ProdStepsID}";
                                 var file1ForStep1 = HttpContext.Request.Form.Files[file1Name1];
 
-                                 
+
                                 string BrandFK = setFK.BrandFK.ToString();
                                 string PropIDstep = newStep.ProdStepsID.ToString();
 
@@ -408,7 +408,7 @@ namespace Test12.Controllers
                     for (int i = 0; i < PropaVM.stepsVM2.Count; i++)
                     {
                         var Steps = PropaVM.stepsVM2[i];
-                       
+
                         string wwwRootPathSteps = _webHostEnvironment.WebRootPath; // get the root folder
 
                         var existingSteps9 = _unitOfWork.StepsPreparationRepository2.Get(u => u.ProdStepsID == Steps.ProdStepsID);
@@ -419,7 +419,7 @@ namespace Test12.Controllers
                         }
 
                         string IDstep = Steps.ProdStepsID.ToString();
-                        string StepsPath = System.IO.Path.Combine(wwwRootPathSteps, "IMAGES", ProductionFK, "Production", IDstep);
+                        string StepsPath = Path.Combine(wwwRootPathSteps, "IMAGES", ProductionFK, "Production", IDstep);
 
                         var file1Name = $"file1_{Steps.ProdStepsID}";
                         var file1ForStep = HttpContext.Request.Form.Files[file1Name];
@@ -428,7 +428,7 @@ namespace Test12.Controllers
                         {
                             if (!string.IsNullOrEmpty(Steps.ProdSImage)) // Check if there's an existing image path
                             {
-                                var OldImagePath1 = System.IO.Path.Combine(wwwRootPathSteps, "IMAGES", ProductionFK, "Production", IDstep, Steps.ProdSImage);
+                                var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", ProductionFK, "Production", IDstep, Steps.ProdSImage);
 
                                 if (System.IO.File.Exists(OldImagePath1))
                                 {
@@ -436,7 +436,7 @@ namespace Test12.Controllers
                                 }
                             }
 
-                            string fileNameSteps1 = Guid.NewGuid().ToString() + System.IO.Path.GetExtension(file1ForStep.FileName);
+                            string fileNameSteps1 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep.FileName);
 
 
                             //اذا المسار مش موجود سو مسار جديد 
@@ -445,7 +445,7 @@ namespace Test12.Controllers
                                 Directory.CreateDirectory(StepsPath);
                             }
 
-                            using (var fileStream1 = new FileStream(System.IO.Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
+                            using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
                             {
                                 file1ForStep.CopyTo(fileStream1);
                             }
@@ -453,11 +453,11 @@ namespace Test12.Controllers
                             Steps.ProdSImage = fileNameSteps1; // Update the image path
                         }
 
-                       
+
                         // Save or update Steps data to the database
                         if (Steps.ProductionFK == stepsID)
                         {
-                            var existingSteps = _unitOfWork.StepsPreparationRepository2.Get(u => u.ProdStepsID == Steps.ProdStepsID, incloudeProperties: "Product");
+                            var existingSteps = _unitOfWork.StepsPreparationRepository2.Get(u => u.ProdStepsID == Steps.ProdStepsID);
 
                             if (existingSteps != null)
                             {
@@ -487,7 +487,20 @@ namespace Test12.Controllers
             }
         }
 
-
+        [HttpGet]
+        public IActionResult GetLastId()
+        {
+            try
+            {
+                int lastId = _unitOfWork.StepsPreparationRepository2.GetLastStepId();
+                return Ok(lastId);
+            }
+            catch (Exception ex)
+            {
+                // Handle exception appropriately
+                return StatusCode(500, ex.Message);
+            }
+        }
 
         //زر حذف صفحة تعديل الأدوات2 
         #region API CALLS 
@@ -543,7 +556,7 @@ namespace Test12.Controllers
         [HttpDelete]
         public IActionResult DeletePreparationPost(int? id)
         {
-            var DeleteTools = _unitOfWork.PrepaToolsVarietyRepository2.GetAll(incloudeProperties:"Production").Where(u => u.ProductionFK == id).ToList();
+            var DeleteTools = _unitOfWork.PrepaToolsVarietyRepository2.GetAll(incloudeProperties: "Production").Where(u => u.ProductionFK == id).ToList();
             _unitOfWork.PrepaToolsVarietyRepository2.RemoveRange(DeleteTools);
 
 
@@ -575,7 +588,7 @@ namespace Test12.Controllers
                         }
                     }
 
-                    
+
                     // Remove the entity from the repository
                     _unitOfWork.StepsPreparationRepository2.Remove(delet);
                 }
@@ -598,7 +611,7 @@ namespace Test12.Controllers
         //زر الحذف تبع صفحة تعديل الخطوات
         #region API CALLS
         [HttpDelete]
-        public IActionResult Deletesteps(int? id)
+        public IActionResult Deletestep(int? id)
         {
             var stepsToDelete = _unitOfWork.StepsPreparationRepository2.Get(u => u.ProdStepsID == id);
             var BrandFK = _unitOfWork.itemsRepository.Get(u => u.ProductionID == stepsToDelete.ProductionFK);
@@ -645,7 +658,7 @@ namespace Test12.Controllers
                     _unitOfWork.StepsPreparationRepository2.Update(step);
                 }
             }
-            
+
             _unitOfWork.Save();
             return Json(new
             {
