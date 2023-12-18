@@ -14,6 +14,7 @@ namespace Test12.DataAccess.RepositoryPro.IRepositoryPro1
 
         void Update(ProductionSteps obj);
         void Delete(ProductionSteps obl);
-    
+        int GetLastStepId();
+
     }
 }
