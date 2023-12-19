@@ -27,64 +27,30 @@ function loadDataTable(id) {
         },
         "columns": [
             {
-                data: 'اسم_الجهاز_أو_الأداة1',
+                data: 'devicesAndTools_Name',
                 "width": "30%",
                 "className": "text-center custom-font-bold",
-                render: function (data, _, row) {
-                    var numericID1 = parseInt(row.iD1, 10);
-                    var nameDevice1 = row.اسم_الجهاز_أو_الأداة1;
-                    var numericID11 = parseInt(row.id, 10);
-                    var imagePath1 = `/IMAGES/DEVICE/${nameDevice1}/${numericID1}/${numericID11}/${row.صورة3}`;
+ 
+            },
+
+            {
+                data: 'devicesAndTools_Image',
+               
+                "render": function (data, _, row) {
+                    var numericID = parseInt(row.devicesAndToolsID, 10);
+                    var numericFK = parseInt(row.brandFK, 10);
+    
+                    var imagePath2 = `/IMAGES/${numericFK}/DeviceAndTools/${numericID}/${row.devicesAndTools_Image}`;
 
                     // Customize the content of the cell with both text and image
-                    return `<div>
-                                <p>${data}</p>
-                                <img src="${imagePath1}" alt="Image" width="150" height="100"/>
-                            </div>`;
+                    return `<img src="${imagePath2}" alt="Image" width="150" height="100"/>`;
                 },
                 "width": "30%",
                 "className": "text-center"
             },
+           
             {
-                data: 'اسم_الجهاز_أو_الأداة2',
-                "width": "30%",
-                "className": "text-center custom-font-bold",
-                render: function (data, _, row) {
-                    var numericID2 = parseInt(row.iD1, 10);
-                    var nameDevice2 = row.اسم_الجهاز_أو_الأداة2;
-                    var numericID22 = parseInt(row.id, 10);
-                    var imagePath2 = `/IMAGES/DEVICE/${nameDevice2}/${numericID2}/${numericID22}/${row.صورة2}`;
-
-                    // Customize the content of the cell with both text and image
-                    return `<div>
-                                <p>${data}</p>
-                                <img src="${imagePath2}" alt="Image" width="150" height="100"/>
-                            </div>`;
-                },
-                "width": "30%",
-                "className": "text-center"
-            },
-            {
-                data: 'اسم_الجهاز_أو_الأداة3',
-                "width": "30%",
-                "className": "text-center custom-font-bold",
-                render: function (data, _, row) {
-                    var numericID3 = parseInt(row.iD1, 10);
-                    var nameDevice3 = row.اسم_الجهاز_أو_الأداة3;
-                    var numericID33 = parseInt(row.id, 10);
-                    var imagePath3 = `/IMAGES/DEVICE/${nameDevice3}/${numericID3}/${numericID33}/${row.صورة1}`;
-
-                    // Customize the content of the cell with both text and image
-                    return `<div>
-                                <p>${data}</p>
-                                <img src="${imagePath3}" alt="Image" width="150" height="100"/>
-                            </div>`;
-                },
-                "width": "30%",
-                "className": "text-center"
-            },
-            {
-                data: 'iD1',
+                data: 'devicesAndToolsID',
                 "render": function (data) {
                     return `<div role="group">
                      <a href="/Device_tool/Index?id=${data}" class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i></a>               
@@ -95,7 +61,7 @@ function loadDataTable(id) {
                 "className": "text-center"
             },
             {
-                data: 'order', // Assuming 'Order' is the name of your 'Order' column
+                data: 'devicesAndToolsOrder', // Assuming 'Order' is the name of your 'Order' column
                 "visible": false, // Hide the "Order" column from the user interface
                 "orderable": false // Disable sorting for the "Order" column
             }

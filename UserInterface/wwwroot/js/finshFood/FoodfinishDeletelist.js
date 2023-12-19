@@ -26,18 +26,18 @@ function loadDataTable(id) {
         },
         "columns": [
             {
-                data: 'اسم_المنتج',
+                data: 'readyProductsName',
                 "width": "40%",
                 "className": "text-center custom-font-bold"
             },
             {
-                data: 'صورة',
+                data: 'readyProductsImage',
                 "render": function (data, _, row) {
 
-                    var numericID1 = parseInt(row.iD3, 10);
-                    var nameFoodfinish1 = row.اسم_المنتج;
-                    var numericID11 = parseInt(row.id, 10);
-                    var imagePath3 = `/IMAGES/منتجات_جاهزة/${nameFoodfinish1}/${numericID1}/${numericID11}/${data}`;
+                    var numericID = parseInt(row.readyProductsID, 10);
+                    var numericFK = parseInt(row.brandFK, 10);
+                    
+                    var imagePath3 = `/IMAGES/${numericFK}/ReadyProduct/${numericID}/${data}`;
 
                     return `<img src="${imagePath3}" alt="Image" width="150" height="100"/>`;
                 },
@@ -45,7 +45,7 @@ function loadDataTable(id) {
                 "className": "text-center"
             },
             {
-                data: 'iD3',
+                data: 'readyProductsID',
                 "render": function (data) {
                     return `<div role="group">
                      <a href="/FinishProducts/FinishProductsIndex?id=${data}" class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i></a>               
@@ -56,7 +56,7 @@ function loadDataTable(id) {
                 "className": "text-center"
             },
             {
-                data: 'order', // Assuming 'Order' is the name of your 'Order' column
+                data: 'readyProductsOrder', // Assuming 'Order' is the name of your 'Order' column
                 "visible": false, // Hide the "Order" column from the user interface
                 "orderable": false // Disable sorting for the "Order" column
             }

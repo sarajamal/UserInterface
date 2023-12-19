@@ -26,86 +26,34 @@ function loadDataTable(id) {
         },
         "columns": [
             {
-                data: 'اسم_المادة_الغذئية1',
+                data: 'foodStuffsName',
                 "width": "20%",
                 "className": "text-center custom-font-bold",
-                render: function (data, _, row) {
-                    var numericID1 = parseInt(row.iD2, 10);
-                    var nameFood1 = row.اسم_المادة_الغذئية1;
-                    var numericID11 = parseInt(row.id, 10);
-                    var imagePath1 = `/IMAGES/مواد/${nameFood1}/${numericID1}/${numericID11}/${row.صورة1}`;
+
+            },
+            {
+                data: 'foodStuffsImage',
+
+                "render": function (data, _, row) {
+                    var numericID = parseInt(row.foodStuffsID, 10);
+                    var numericFK = parseInt(row.brandFK, 10);
+
+                    var imagePath2 = `/IMAGES/${numericFK}/FoodStuffs/${numericID}/${row.foodStuffsImage}`;
 
                     // Customize the content of the cell with both text and image
-                    return `<div>
-                                <p>${data}</p>
-                                <img src="${imagePath1}" alt="Image" width="150" height="100"/>
-                            </div>`;
+                    return `<img src="${imagePath2}" alt="Image" width="150" height="100"/>`;
                 },
                 "width": "20%",
                 "className": "text-center"
             },
-            {
-                data: 'اسم_المادة_الغذئية2',
-                "width": "20%",
-                "className": "text-center custom-font-bold",
-                render: function (data, _, row) {
-                    var numericID2 = parseInt(row.iD2, 10);
-                    var nameFood2 = row.اسم_المادة_الغذئية2;
-                    var numericID22 = parseInt(row.id, 10);
-                    var imagePath2 = `/IMAGES/مواد/${nameFood2}/${numericID2}/${numericID22}/${row.صورة2}`;
 
-                    // Customize the content of the cell with both text and image
-                    return `<div>
-                                <p>${data}</p>
-                                <img src="${imagePath2}" alt="Image" width="150" height="100"/>
-                            </div>`;
-                },
-                "width": "20%",
-                "className": "text-center"
-            },
             {
-                data: 'اسم_المادة_الغذئية3',
-                "width": "20%",
-                "className": "text-center custom-font-bold",
-                render: function (data, _, row) {
-                    var numericID3 = parseInt(row.iD2, 10);
-                    var nameFood3 = row.اسم_المادة_الغذئية3;
-                    var numericID33 = parseInt(row.id, 10);
-                    var imagePath3 = `/IMAGES/مواد/${nameFood3}/${numericID3}/${numericID33}/${row.صورة3}`;
-
-                    // Customize the content of the cell with both text and image
-                    return `<div>
-                                <p>${data}</p>
-                                <img src="${imagePath3}" alt="Image" width="150" height="100"/>
-                            </div>`;
-                },
-                "width": "20%",
-                "className": "text-center"
-            },
-            {
-                data: 'اسم_المادة_الغذئية4',
-                "width": "20%",
-                "className": "text-center custom-font-bold",
-                render: function (data, _, row) {
-                    var numericID4 = parseInt(row.iD2, 10);
-                    var nameFood4 = row.اسم_المادة_الغذئية4;
-                    var numericID44 = parseInt(row.id, 10);
-                    var imagePath4 = `/IMAGES/مواد/${nameFood4}/${numericID4}/${numericID44}/${row.صورة4}`;
-
-                    // Customize the content of the cell with both text and image
-                    return `<div>
-                                <p>${data}</p>
-                                <img src="${imagePath4}" alt="Image" width="150" height="100"/>
-                            </div>`;
-                },
-                "width": "20%",
-                "className": "text-center"
-            },
-            {
-                data: 'iD2',
+                data: 'foodStuffsID',
                 "render": function (data) {
                     return `<div role="group">
-                     <a href="/Food/FoodIndex?id=${data}" class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i></a>               
+                           < button type="button" class="btn btn-primary mx-2 edit-button" data-id="${data}" data-toggle="modal" data-target="#editFoodModal">
+                           <i class="bi bi-pencil-square"></i>
+                     </button>                        
                      <a onClick=DelteFooodSave('/Food/DelteFooodSave/${data}') class="btn btn-danger "> <i class="bi bi-trash-fill"></i></a>
                     </div>`;
                 },
@@ -113,7 +61,7 @@ function loadDataTable(id) {
                 "className": "text-center"
             },
             {
-                data: 'order', // Assuming 'Order' is the name of your 'Order' column
+                data: 'foodStuffsOrder', // Assuming 'Order' is the name of your 'Order' column
                 "visible": false, // Hide the "Order" column from the user interface
                 "orderable": false // Disable sorting for the "Order" column
             }
@@ -183,3 +131,24 @@ function validateForm() {
     // If everything is valid, allow form submission
     return true;
 }
+
+$(document).ready(function () {
+    $('#tblFood').on('click', '.edit-button', function () {
+        var foodId = $(this).data('id');
+
+        // Optionally, make an AJAX request to get the details of the food item
+        $.ajax({
+            url: '/Food/FoodIndex', // Update with the correct URL
+            type: 'GET',
+            data: { id: foodId },
+            success: function (response) {
+                // Populate the modal with the response
+                // Assuming the server returns the HTML content to be displayed in the modal
+                $('#editFoodModal .modal-body').html(response);
+            }
+        });
+
+        // Open the modal
+        $('#editFoodModal').modal('show');
+    });
+});
