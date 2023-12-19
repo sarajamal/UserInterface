@@ -244,14 +244,14 @@ namespace Test12.Controllers
             string wwwRootPathSteps = _webHostEnvironment.WebRootPath;
 
             var deleteFinshFoodPicture = _unitOfWork.readyFoodRepository.Get(u => u.ReadyProductsID == id);
-            string اسم_المنتج = deleteFinshFoodPicture.ReadyProductsName != null ? deleteFinshFoodPicture.ReadyProductsName.ToString() : string.Empty;
-            string Id1 = deleteFinshFoodPicture.ReadyProductsID.ToString();
-            string ID = deleteFinshFoodPicture.BrandFK.ToString();
+
+            string ReadyProductsID = deleteFinshFoodPicture.ReadyProductsID.ToString();
+            string BrandFK = deleteFinshFoodPicture.BrandFK.ToString();
 
             // Delete the associated image file
             if (!string.IsNullOrEmpty(deleteFinshFoodPicture.ReadyProductsImage))
             {
-                string imagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", "منتجات_جاهزة", اسم_المنتج, Id1, ID, deleteFinshFoodPicture.ReadyProductsImage );
+                string imagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", BrandFK, "ReadyProduct", ReadyProductsID, deleteFinshFoodPicture.ReadyProductsImage );
                 if (System.IO.File.Exists(imagePath1))
                 {
                     System.IO.File.Delete(imagePath1);

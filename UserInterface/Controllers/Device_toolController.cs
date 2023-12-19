@@ -369,59 +369,33 @@ namespace Test12.Controllers
 
 
         //زر الحذف في صفحة قائمة  الأدوات والأجهزة 
-        //#region
-        //[HttpDelete]
-        //public IActionResult DelteToolsdevice(int? id)
-        //{
-        //    string wwwRootPathSteps = _webHostEnvironment.WebRootPath;
+        #region
+        [HttpDelete]
+        public IActionResult DelteToolsdevice(int? id)
+        {
+            string wwwRootPathSteps = _webHostEnvironment.WebRootPath;
 
-        //    var deleteDeviceToolPicture = _unitOfWork.Device_tools1.Get(u => u.ID1 == id);
+            var deleteDeviceToolPicture = _unitOfWork.Device_tools1.Get(u => u.DevicesAndToolsID == id);
+ 
+            string DevicesAndToolsID = deleteDeviceToolPicture.DevicesAndToolsID.ToString();
+            string BrandFK = deleteDeviceToolPicture.BrandFK.ToString();
 
-        //    string اسم_الجهاز_أو_الأداة1 = deleteDeviceToolPicture.اسم_الجهاز_أو_الأداة1 != null ? deleteDeviceToolPicture.اسم_الجهاز_أو_الأداة1.ToString() : string.Empty;
-        //    string اسم_الجهاز_أو_الأداة2 = deleteDeviceToolPicture.اسم_الجهاز_أو_الأداة2 != null ? deleteDeviceToolPicture.اسم_الجهاز_أو_الأداة2.ToString() : string.Empty;
-        //    string اسم_الجهاز_أو_الأداة3 = deleteDeviceToolPicture.اسم_الجهاز_أو_الأداة3 != null ? deleteDeviceToolPicture.اسم_الجهاز_أو_الأداة3.ToString() : string.Empty;
-        //    string Id1 = deleteDeviceToolPicture.ID1.ToString();
-        //    string ID = deleteDeviceToolPicture.ID.ToString();
-
-        //    // Delete the associated image file
-        //    if (!string.IsNullOrEmpty(deleteDeviceToolPicture.صورة3))
-        //    {
-        //        string imagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", "DEVICE", اسم_الجهاز_أو_الأداة1, Id1, ID, deleteDeviceToolPicture.صورة3);
-        //        if (System.IO.File.Exists(imagePath1))
-        //        {
-        //            System.IO.File.Delete(imagePath1);
-        //        }
-        //    }
-        //    if (!string.IsNullOrEmpty(deleteDeviceToolPicture.صورة2))
-        //    {
-        //        string imagePath2 = Path.Combine(wwwRootPathSteps, "IMAGES", "DEVICE", اسم_الجهاز_أو_الأداة2, Id1, ID, deleteDeviceToolPicture.صورة2);
-        //        if (System.IO.File.Exists(imagePath2))
-        //        {
-        //            System.IO.File.Delete(imagePath2);
-        //        }
-        //    }
-        //    if (!string.IsNullOrEmpty(deleteDeviceToolPicture.صورة1))
-        //    {
-        //        string imagePath3 = Path.Combine(wwwRootPathSteps, "IMAGES", "DEVICE", اسم_الجهاز_أو_الأداة3, Id1, ID, deleteDeviceToolPicture.صورة1);
-        //        if (System.IO.File.Exists(imagePath3))
-        //        {
-        //            System.IO.File.Delete(imagePath3);
-        //        }
-        //    }
-        //    _unitOfWork.Device_tools1.Remove(deleteDeviceToolPicture);
-        //    _unitOfWork.Save();
-        //    //var DeleteoneOflist = _unitOfWork.PreparationRepository.Get(u => u.التحضير_ID == id);
-        //    //if (DeleteoneOflist == null)
-        //    //{
-
-        //    //    return Json(new { success = false, Message = "Error While Deleting" });
-        //    //}
-
-        //    //_unitOfWork.PreparationRepository.Remove(DeleteoneOflist);
-        //    //_unitOfWork.Save();
-        //    return Json(new { success = true });
-        //}
-        //#endregion
+            // Delete the associated image file
+            if (!string.IsNullOrEmpty(deleteDeviceToolPicture.DevicesAndTools_Image))
+            {
+                string imagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES",  BrandFK, "DeviceAndTools", DevicesAndToolsID, deleteDeviceToolPicture.DevicesAndTools_Image);
+                if (System.IO.File.Exists(imagePath1))
+                {
+                    System.IO.File.Delete(imagePath1);
+                }
+            }
+            
+            _unitOfWork.Device_tools1.Remove(deleteDeviceToolPicture);
+            _unitOfWork.Save();
+     
+            return Json(new { success = true });
+        }
+        #endregion
 
     }
 }
