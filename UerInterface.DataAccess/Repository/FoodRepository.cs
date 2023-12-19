@@ -24,6 +24,16 @@ namespace Test12.DataAccess.Repository
             //_context.Update(obj);
 
         }
-     
+        public int GetLastStepId()
+        {
+            // If there are no entries in the table, return 0 or an appropriate default value
+            if (!_context.FoodStuffs.Any())
+            {
+                return 0;
+            }
+            // Retrieve and return the max PrepStepsID
+            return _context.FoodStuffs.Max(p => p.FoodStuffsID);
+        }
+
     }
 }
