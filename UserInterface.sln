@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.7.34302.85
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32630.194
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserInterface", "UserInterface\UserInterface.csproj", "{FFF40C90-AD5E-406F-A951-1FDDC5F84CC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserInterface", "UserInterface\UserInterface.csproj", "{FFF40C90-AD5E-406F-A951-1FDDC5F84CC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UerInterface.DataAccess", "UerInterface.DataAccess\UerInterface.DataAccess.csproj", "{510440D4-F392-43D3-B215-D11D368A5E29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UerInterface.DataAccess", "UerInterface.DataAccess\UerInterface.DataAccess.csproj", "{510440D4-F392-43D3-B215-D11D368A5E29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserInterface.Models", "UserInterface.Models\UserInterface.Models.csproj", "{02E18729-9871-4CEB-9ECC-9105C1492292}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserInterface.Models", "UserInterface.Models\UserInterface.Models.csproj", "{02E18729-9871-4CEB-9ECC-9105C1492292}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
