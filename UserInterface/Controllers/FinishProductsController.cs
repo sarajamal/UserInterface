@@ -169,22 +169,21 @@ namespace Test12.Controllers
                     for (int i = 0; i < foodReadyViewModel.readyfoodlistVM.Count; i++)
                     {
                         var foodready = foodReadyViewModel.readyfoodlistVM[i];
-                        string اسم_المنتج = foodready.ReadyProductsName != null ? foodready.ReadyProductsName.ToString() : string.Empty;
-                       
-                        string ID3 = foodready.ReadyProductsID.ToString();
-                        string id = foodready.BrandFK.ToString();
+                        
+                        string ReadyProductsID = foodready.ReadyProductsID.ToString();
+                        string BrandFK = foodready.BrandFK.ToString();
 
                         string wwwRootPathSteps = _webHostEnvironment.WebRootPath; // get the root folder
-                        var FoodPath1 = Path.Combine(wwwRootPathSteps, "IMAGES", "منتجات_جاهزة", اسم_المنتج ?? "", ID3, id);
+                        var FoodPath1 = Path.Combine(wwwRootPathSteps,  "IMAGES", BrandFK, "ReadyProducts", ReadyProductsID);
 
-                        var file1Name = $"file1_{foodready.ReadyProductsName}";
+                        var file1Name = $"file1_{foodready.ReadyProductsID}";
                         var file1Forfoods = HttpContext.Request.Form.Files[file1Name];
 
                         if (file1Forfoods != null)
                         {
                             if (!string.IsNullOrEmpty(foodready.ReadyProductsImage)) // Check if there's an existing image path
                             {
-                                var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", "منتجات_جاهزة", اسم_المنتج ?? "", ID3, id, foodready.ReadyProductsImage);
+                                var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", BrandFK, "ReadyProducts", ReadyProductsID, foodready.ReadyProductsImage);
 
                                 if (System.IO.File.Exists(OldImagePath1))
                                 {
@@ -207,17 +206,13 @@ namespace Test12.Controllers
 
                             foodready.ReadyProductsImage = fileNamefood1; // Update the image path
                         }
-                      
+                       
                         var existingFoodٌReady = _unitOfWork.readyFoodRepository.Get(u => u.ReadyProductsID == foodready.ReadyProductsID);
 
                         if (existingFoodٌReady != null)
                         {
-
                             existingFoodٌReady.ReadyProductsName = foodready.ReadyProductsName;
-
                             existingFoodٌReady.ReadyProductsImage = foodready.ReadyProductsImage;
-                             
-
                             _unitOfWork.readyFoodRepository.Update(existingFoodٌReady);
                         }
                         else
