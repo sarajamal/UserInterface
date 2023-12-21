@@ -47,7 +47,7 @@ function toggleAddButtonVisibility(value) {
 }
 
 
-//صفحة الاضافة اجهزة وادوات جديدة 
+//صفحة الاضافة مواد غذائية جديدة 
 var clickCount = 0;
 var lastID = 0; // Initialize lastID globally
 function AddnewFoods(FoodsFK) {
@@ -143,7 +143,7 @@ function DeleteFoodRow1(button) {
     }
 });
 
- 
+
 //زر الحذف في صفحة الاضافة
 //function DeleteRow3(button) {
 //    var tableBody = document.querySelector("#tblSteps tbody");

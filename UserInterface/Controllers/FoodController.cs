@@ -41,8 +41,8 @@ namespace Test12.Controllers
             };
 
             FDVM.tredMaeketFoodsVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
-            FDVM.FoodViewM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == id);
-            FDVM.FoodViewMList = _unitOfWork.FoodRepository.GetAll(incloudeProperties: "Brand").Where(u => u.BrandFK == id).ToList(); //هو يحتوي على قائمة من جدول المكونات واللي يساعده على العرض هي view
+            FDVM.FoodViewM = _unitOfWork.FoodRepository.Get(u => u.FoodStuffsID == id);
+            FDVM.FoodViewMList = _unitOfWork.FoodRepository.GetAll(incloudeProperties: "Brand").Where(u => u.FoodStuffsID == id).ToList(); //هو يحتوي على قائمة من جدول المكونات واللي يساعده على العرض هي view
 
             return View(FDVM);
         }

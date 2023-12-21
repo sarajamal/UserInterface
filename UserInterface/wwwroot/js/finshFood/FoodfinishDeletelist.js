@@ -48,7 +48,13 @@ function loadDataTable(id) {
                 data: 'readyProductsID',
                 "render": function (data) {
                     return `<div role="group">
-                     <a href="/FinishProducts/FinishProductsIndex?id=${data}" class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i></a>               
+                       <button type="button" class="btn btn-primary px-4 finsh-index-button"
+                            data-toggle="modal"
+                            data-target="#FinishProductIndex"
+                            data-controller="FinishProducts"
+                            data-action="FinishProductsIndex"
+                            data-id="${data}">   
+                            <i class="bi bi-pencil-square"></i> </button>    
                      <a onClick=DeleteFinshFood('/FinishProducts/DeleteFinshFood/${data}') class="btn btn-danger "> <i class="bi bi-trash-fill"></i></a>
                     </div>`;
                 },
@@ -107,23 +113,29 @@ function loadAndShowModal(button) {
     var action = button.getAttribute('data-action');
     var id = button.getAttribute('data-id');
     var url = `/${controller}/${action}?id=${id}`;
+    var targetModalId = button.getAttribute('data-target');
 
     fetch(url)
         .then(response => response.text())
         .then(html => {
-            console.log("Received HTML:", html); // Add this line to log the HTML
-            // Dynamically add the modal HTML to the page
+            console.log("Received HTML:", html); // For debugging purposes
             document.body.insertAdjacentHTML('beforeend', html);
 
-            // Now that the modal is part of the document, show it
-            $('#CreateFinshFoods').modal('show');
+            // Show the appropriate modal based on the targetModalId
+            if (targetModalId === '#CreateFinshFoods') {
+                $('#CreateFinshFoods').modal('show');
+            } else if (targetModalId === '#FinishProductIndex') {
+                $('#FinishProductIndex').modal('show');
+            }
         })
         .catch(error => console.error('Error:', error));
 }
+
 document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.add-button').forEach(function (button) {
-        button.addEventListener('click', function () {
-            loadAndShowModal(this);
-        });
+    document.body.addEventListener('click', function (event) {
+        if (event.target.matches('.add-button, .finsh-index-button') || event.target.closest('.add-button, .finsh-index-button')) {
+            const button = event.target.matches('.add-button, .finsh-index-button') ? event.target : event.target.closest('.add-button, .finsh-index-button');
+            loadAndShowModal(button);
+        }
     });
 });

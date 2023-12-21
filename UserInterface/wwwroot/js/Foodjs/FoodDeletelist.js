@@ -50,16 +50,16 @@ function loadDataTable(id) {
             {
                 data: 'foodStuffsID',
                 "render": function (data) {
-                    return `<button type="button" class="btn btn-primary mx-2 update-button"
-                                    data-toggle="modal"
-                                    data-target="#FoodIndex"
-                                    data-controller="Food"
-                                    data-action="FoodIndex"
-                                    data-id="${data}">
-                                <i class="bi bi-pencil-square"></i>
-                            </button>                           
-                     <a onClick=DelteFooodSave('/Food/DelteFooodSave/${data}') class="btn btn-danger "> <i class="bi bi-trash-fill"></i></a>
-                     `;
+                    return `<div role="group">
+                            <button type="button" class="btn btn-primary px-4 food-index-button"
+                            data-toggle="modal"
+                            data-target="#FoodsIndex"
+                            data-controller="Food"
+                            data-action="FoodIndex"
+                            data-id="${data}">
+                       <i class="bi bi-pencil-square"></i> </button>             
+                       <a onClick=DelteFooodSave('/Food/DelteFooodSave/${data}') class="btn btn-danger "> <i class="bi bi-trash-fill"></i></a>
+                    </div>`;
                 },
                 "width": "20%",
                 "className": "text-center"
@@ -111,29 +111,35 @@ function DelteFooodSave(url) {
     })
 }
 
-//لعرض popup مع id الخاص بالعلامة التجارية 
+
 function loadAndShowModal(button) {
     var controller = button.getAttribute('data-controller');
     var action = button.getAttribute('data-action');
     var id = button.getAttribute('data-id');
-    var targetModalId = button.getAttribute('data-target');
-
     var url = `/${controller}/${action}?id=${id}`;
+    var targetModalId = button.getAttribute('data-target');
 
     fetch(url)
         .then(response => response.text())
         .then(html => {
-            console.log("Received HTML:", html);
+            console.log("Received HTML:", html); // For debugging purposes
             document.body.insertAdjacentHTML('beforeend', html);
-            $(targetModalId).modal('show');
+
+            // Show the appropriate modal based on the targetModalId
+            if (targetModalId === '#CreateFoods') {
+                $('#CreateFoods').modal('show');
+            } else if (targetModalId === '#FoodsIndex') {
+                $('#FoodsIndex').modal('show');
+            }
         })
         .catch(error => console.error('Error:', error));
 }
 
 document.addEventListener('DOMContentLoaded', function () {
     document.body.addEventListener('click', function (event) {
-        if (event.target.matches('.add-button, .update-button')) {
-            loadAndShowModal(event.target.closest('.add-button, .update-button'));
+        if (event.target.matches('.add-button, .food-index-button') || event.target.closest('.add-button, .food-index-button')) {
+            const button = event.target.matches('.add-button, .food-index-button') ? event.target : event.target.closest('.add-button, .food-index-button');
+            loadAndShowModal(button);
         }
     });
 });
@@ -183,5 +189,4 @@ document.addEventListener('DOMContentLoaded', function () {
 //        $('#editFoodModal').modal('show');
 //    });
 //});
-
 
