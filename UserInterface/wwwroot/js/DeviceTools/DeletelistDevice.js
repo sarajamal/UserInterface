@@ -53,7 +53,13 @@ function loadDataTable(id) {
                 data: 'devicesAndToolsID',
                 "render": function (data) {
                     return `<div role="group">
-                     <a href="/Device_tool/Index?id=${data}" class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i></a>               
+                    <button type="button" class="btn btn-primary px-4 device-index-button"
+                            data-toggle="modal"
+                            data-target="#Index"
+                            data-controller="Device_tool"
+                            data-action="Index"
+                            data-id="${data}">
+                       <i class="bi bi-pencil-square"></i> </button>            
                      <a onClick=DelteToolsdevice('/Device_tool/DelteToolsdevice/${data}') class="btn btn-danger "> <i class="bi bi-trash-fill"></i></a>
                     </div>`;
                 },
@@ -130,5 +136,37 @@ document.addEventListener('DOMContentLoaded', function () {
         button.addEventListener('click', function () {
             loadAndShowModal(this);
         });
+    });
+});
+
+function loadAndShowModal(button) {
+    var controller = button.getAttribute('data-controller');
+    var action = button.getAttribute('data-action');
+    var id = button.getAttribute('data-id');
+    var url = `/${controller}/${action}?id=${id}`;
+    var targetModalId = button.getAttribute('data-target');
+
+    fetch(url)
+        .then(response => response.text())
+        .then(html => {
+            console.log("Received HTML:", html); // For debugging purposes
+            document.body.insertAdjacentHTML('beforeend', html);
+
+            // Show the appropriate modal based on the targetModalId
+            if (targetModalId === '#CreateFoods') {
+                $('#CreateFoods').modal('show');
+            } else if (targetModalId === '#Index') {
+                $('#Index').modal('show');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    document.body.addEventListener('click', function (event) {
+        if (event.target.matches('.add-button, .device-index-button') || event.target.closest('.add-button, .device-index-button')) {
+            const button = event.target.matches('.add-button, .device-index-button') ? event.target : event.target.closest('.add-button, .device-index-button');
+            loadAndShowModal(button);
+        }
     });
 });

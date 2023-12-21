@@ -1,27 +1,19 @@
 ﻿@model Device_toolsVM
 
-<div class="row pb-3">
+<div class="modal fade" id="Index" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-center font-weight-bold" id="exampleModalLongTitle">إضافة الأجهزة والأدوات</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
 
-    <div class="card shadow border-0 my-4 py-4">
-        <div class="card-header bg-secondary bg-gradient ml-0 py-3">
-            <div class="row">
-                <div class="col-12 text-center">
-                    <h2 class="text-white py-2">
-                        تعديل الأجهزة والادوات
-                    </h2>
-                </div>
             </div>
-        </div>
-
+            <div class="modal-body">
 
         <form method="post" class="row" enctype="multipart/form-data" asp-action="Index" asp-controller="Device_tool">
-            <div style="text-align:center">
-            </div>
-            <div class="col-lg-3 col-sm-6">
-                <div class="row p-2">
-                    <div class="col-12 p-1">
-                        <div class="card border-0 p-3 shadow  border-top border-5 rounded">
-
+            
                             <input asp-for="Device_toolVM.DevicesAndToolsID" hidden />
                             <input asp-for="Device_toolVM.BrandFK" hidden />
 
@@ -36,155 +28,58 @@
                                             <tr>
                                                 <td style="text-align:center;">
 
-                                                  @*   <input asp-for="@itemDevice.ID" name="Devices_toolsVM[@i].ID" hidden />
-                                                    <input asp-for="@itemDevice.ID1" name="Devices_toolsVM[@i].ID1" hidden />
-                                                    <input asp-for="@itemDevice.صورة1" name="Devices_toolsVM[@i].صورة1" hidden />
-                                                    <input asp-for="@itemDevice.صورة2" name="Devices_toolsVM[@i].صورة2" hidden />
-                                                    <input asp-for="@itemDevice.صورة3" name="Devices_toolsVM[@i].صورة3" hidden />
- *@
+                                            <input asp-for="@itemDevice.DevicesAndToolsID" name="Devices_toolsVM[@i].DevicesAndToolsID" hidden />
+                                            <input asp-for="@itemDevice.BrandFK" name="Devices_toolsVM[@i].BrandFK" hidden />
+                                            <input asp-for="@itemDevice.DevicesAndTools_Image" name="Devices_toolsVM[@i].DevicesAndTools_Image" hidden />
+                        
 
-                                                 @*    @if (!string.IsNullOrEmpty(itemDevice.اسم_الجهاز_أو_الأداة1) || !string.IsNullOrEmpty(itemDevice.صورة3))
+                                                    @if (!string.IsNullOrEmpty(itemDevice.DevicesAndTools_Name) || !string.IsNullOrEmpty(itemDevice.DevicesAndTools_Image))
                                                     {
 
                                                         <div class="col-12 text-center">
                                                             <div>
-                                                                <img id="PreviewPhoto1_@Model.Devices_toolsVM[i].اسم_الجهاز_أو_الأداة1"
-                                                                     src="@Url.Content("~/IMAGES/DEVICE/" + itemDevice.اسم_الجهاز_أو_الأداة1+ "/"+ itemDevice.ID1 + "/" + itemDevice.ID +"/" +  itemDevice.صورة3)"
-                                                                     alt="Logo"
+                                                        <img id="PreviewPhoto1_@itemDevice.DevicesAndToolsID"
+                                                             src="@Url.Content("~/IMAGES/" + Model.Device_toolVM.BrandFK + "/DevicesAndTools/" + Model.Device_toolVM.DevicesAndToolsID + "/" + Model.Device_toolVM.DevicesAndTools_Image)"
+                                                             alt="Logo"
                                                                      width="125" height="125" style="border: 1px; margin-top: 20px;">
                                                             </div>
 
                                                             <div class="form-group mt-2">
-                                                                <input asp-for="@itemDevice.اسم_الجهاز_أو_الأداة1" id="اسم_الجهاز_أو_الأداة1_@Model.Devices_toolsVM[i]" oninput="updateFileNameInput(this)" class="form-control mt-2" name="Devices_toolsVM[@i].اسم_الجهاز_أو_الأداة1">
-                                                                <input type="file" name="file1_@Model.Devices_toolsVM[i]" class="border-0 shadow mt-5" id="customFile1_@Model.Devices_toolsVM[i]" onchange="displaySelectedImage(this, 'PreviewPhoto1_@Model.Devices_toolsVM[i].اسم_الجهاز_أو_الأداة1')">
+                                                         <input type="file" name="file1_@itemDevice.DevicesAndToolsID" class="border-0 shadow mt-5" id="customFile1_@itemDevice.DevicesAndToolsID" onchange="displaySelectedImage(this, 'PreviewPhoto1_@itemDevice.DevicesAndToolsID')">
 
-                                                                <span asp-validation-for="@itemDevice.اسم_الجهاز_أو_الأداة1" class="text-danger"></span>
+                                                        <textarea asp-for="@itemDevice.DevicesAndTools_Name" class="form-control mt-2" name="Devices_toolsVM[@i].DevicesAndTools_Name"></textarea>
+                                                        <span asp-validation-for="@itemDevice.DevicesAndTools_Name" class="text-danger"></span>
 
                                                             </div>
                                                         </div>
-                                                    } *@
+                                                    }  
                                                 </td>
-                                              @*   <td style="text-align:center;">
-                                                    @if (!string.IsNullOrEmpty(itemDevice.اسم_الجهاز_أو_الأداة2) || !string.IsNullOrEmpty(itemDevice.صورة2))
-                                                    {
-
-                                                        <div class="col-12 text-center">
-
-
-                                                            <div>
-                                                                <img id="PreviewPhoto2_@Model.Devices_toolsVM[i].اسم_الجهاز_أو_الأداة2"
-                                                                     src="@Url.Content("~/IMAGES/DEVICE/"+itemDevice.اسم_الجهاز_أو_الأداة2+"/"+itemDevice.ID1+"/"+itemDevice.ID +"/"+itemDevice.صورة2)"
-                                                                     alt="Logo"
-                                                                     width="125" height="125" style="border: 1px; margin-top: 20px;">
-                                                            </div>
-
-                                                            <div class="form-group mt-2">
-                                                                <input asp-for="@itemDevice.اسم_الجهاز_أو_الأداة2" id="اسم_الجهاز_أو_الأداة2_@Model.Devices_toolsVM[i]" oninput="updateFileNameInput2(this)" class="form-control mt-2" name="Devices_toolsVM[@i].اسم_الجهاز_أو_الأداة2">
-                                                                <input type="file" name="file2_@Model.Devices_toolsVM[i]" class="border-0 shadow mt-5" id="customFile2_@Model.Devices_toolsVM[i]" onchange="displaySelectedImage(this, 'PreviewPhoto2_@Model.Devices_toolsVM[i].اسم_الجهاز_أو_الأداة2')">
-
-                                                                <span asp-validation-for="@itemDevice.اسم_الجهاز_أو_الأداة2" class="text-danger"></span>
-
-                                                            </div>
-                                                        </div>
-                                                    }
-                                                </td> *@
-                                              @*   <td style="text-align:center;">
-                                                    @if (!string.IsNullOrEmpty(itemDevice.اسم_الجهاز_أو_الأداة3) || !string.IsNullOrEmpty(itemDevice.صورة1))
-                                                    {
-
-                                                        <div class="col-12 text-center">
-
-
-                                                            <div>
-                                                                <img id="PreviewPhoto3_@Model.Devices_toolsVM[i].اسم_الجهاز_أو_الأداة3"
-                                                                     src="@Url.Content("~/IMAGES/DEVICE/" + itemDevice.اسم_الجهاز_أو_الأداة3+ "/" + itemDevice.ID1 + "/" +  itemDevice.ID +"/"+   itemDevice.صورة1)"
-                                                                     alt="Logo"
-                                                                     width="125" height="125" style="border: 1px; margin-top: 20px;">
-                                                            </div>
-
-                                                            <div class="form-group mt-2">
-                                                                <input asp-for="@itemDevice.اسم_الجهاز_أو_الأداة3" id="اسم_الجهاز_أو_الأداة3_@Model.Devices_toolsVM[i]" oninput="updateFileNameInput3(this)" class="form-control mt-2" name="Devices_toolsVM[@i].اسم_الجهاز_أو_الأداة3">
-                                                                <input type="file" name="file3_@Model.Devices_toolsVM[i]" class="border-0 shadow mt-5" id="customFile3_@Model.Devices_toolsVM[i]" onchange="displaySelectedImage(this, 'PreviewPhoto3_@Model.Devices_toolsVM[i].اسم_الجهاز_أو_الأداة3')">
-
-                                                                <span asp-validation-for="@itemDevice.اسم_الجهاز_أو_الأداة3" class="text-danger"></span>
-
-                                                            </div>
-                                                        </div>
-                                                    }
-                                                </td> *@
-                                            </tr>
+                                             </tr>
                                         }
                                     }
 
                                 </tbody>
                             </table>
 
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-            <div class="form-group col-12 py-2">
-                <div style="text-align: left;">
-                    @if (Model.Device_toolVM.BrandFK != 0)
-                    {
-                        <div class="form-group col-12 py-3">
+                            <div class="modal-footer">
                             <input type="submit" id="saveChange" value=" حفظ التغييرات"
                                    asp-action="Index" asp-route-id="@Model.Device_toolVM.BrandFK"
                                    style="text-align:center" class="btn btn-primary me-3" abled />
                         </div>
                     }
 
-                </div>
-            </div>
+                
+            
         </form>
+    </div>
+
+        </div>
     </div>
 </div>
 
 
-<!-- Your JavaScript code here -->
-<script>
-    function updateFileNameInput(input) {
-        var dynamicValue = input.value;
-        var fileInput = input.closest('form').querySelector('[name^="file1_"]');
 
-        // Check if the fileInput element is found before setting its name
-        if (fileInput) {
-            fileInput.name = `file1_${dynamicValue}`;
-        } else {
-            console.error("File input element not found.");
-        }
-    }
-</script>
-
-<script>
-function updateFileNameInput2(input) {
-    var dynamicValue = input.value;
-    var fileInput = input.closest('form').querySelector('[name^="file2_"]');
-
-    // Check if the fileInput element is found before setting its name
-    if (fileInput) {
-        fileInput.name = `file2_${dynamicValue}`;
-    } else {
-        console.error("File input element not found.");
-    }
-}
-</script>
-
-<script>
-function updateFileNameInput3(input) {
-    var dynamicValue = input.value;
-    var fileInput = input.closest('form').querySelector('[name^="file3_"]');
-
-    // Check if the fileInput element is found before setting its name
-    if (fileInput) {
-        fileInput.name = `file3_${dynamicValue}`;
-    } else {
-        console.error("File input element not found.");
-    }
-}
-</script>
+ 
 
 <script>
     function displaySelectedImage(input, imgId) {
@@ -210,9 +105,9 @@ function updateFileNameInput3(input) {
     }
 </script>
 
-@* @section Scripts {
+  @section Scripts {
 
     <script src="~/Js/DeviceTools/DeviceToolsDeletelist.js"></script>
     <script src="~/Js/DeviceTools/AdddeleteToolsDevice.js"></script>
-} *@
+}  
 

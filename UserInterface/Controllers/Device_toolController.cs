@@ -163,138 +163,71 @@ namespace Test12.Controllers
 
             if (ModelState.IsValid)
             {
-        //        if (device_ToolsVM.Devices_toolsVM != null)
-        //        {
-        //            for (int i = 0; i < device_ToolsVM.Devices_toolsVM.Count; i++)
-        //            {
-        //                var devices = device_ToolsVM.Devices_toolsVM[i];
-        //                string اسم_الجهاز_أو_الأداة1 = devices.اسم_الجهاز_أو_الأداة1?.ToString();
-        //                string اسم_الجهاز_أو_الأداة2 = devices.اسم_الجهاز_أو_الأداة2?.ToString();
-        //                string اسم_الجهاز_أو_الأداة3 = devices.اسم_الجهاز_أو_الأداة3?.ToString();
-        //                string ID = devices.ID.ToString();
-        //                string ID1 = devices.ID1.ToString();
+                if (device_ToolsVM.Devices_toolsVM != null)
+                {
+                    for (int i = 0; i < device_ToolsVM.Devices_toolsVM.Count; i++)
+                    {
+                        var devices = device_ToolsVM.Devices_toolsVM[i];
+                       
+                        string DevicesAndToolsID = devices.DevicesAndToolsID.ToString();
+                        string BrandFK = devices.BrandFK.ToString();
 
 
-        //                string wwwRootPathSteps = _webHostEnvironment.WebRootPath;
-        //                get the root folder
+                        string wwwRootPathSteps = _webHostEnvironment.WebRootPath;
+                        
 
-        //var devicePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", "DEVICE", اسم_الجهاز_أو_الأداة1 ?? "", ID1, ID);
+                       var devicePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", BrandFK, "DevicesAndTools", DevicesAndToolsID);
 
-        //                var devicePath2 = Path.Combine(wwwRootPathSteps, "IMAGES", "DEVICE", اسم_الجهاز_أو_الأداة2 ?? "", ID1, ID);
+                        
 
-        //                var devicePath3 = Path.Combine(wwwRootPathSteps, "IMAGES", "DEVICE", اسم_الجهاز_أو_الأداة3 ?? "", ID1, ID);
+                        var file1Name = $"file1_{devices.DevicesAndToolsID}";
+                        var file1ForDevice = HttpContext.Request.Form.Files[file1Name];
 
-        //                var file1Name = $"file1_{devices.اسم_الجهاز_أو_الأداة1}";
-        //                var file1ForDevice = HttpContext.Request.Form.Files[file1Name];
+                        if (file1ForDevice != null)
+                        {
+                            if (!string.IsNullOrEmpty(devices.DevicesAndTools_Image)) // Check if there's an existing image path
+                            {
+                                var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", BrandFK, "DevicesAndTools", DevicesAndToolsID, devices.DevicesAndTools_Image);
 
-        //                if (file1ForDevice != null)
-        //                {
-        //                    if (!string.IsNullOrEmpty(devices.صورة3)) // Check if there's an existing image path
-        //                    {
-        //                        var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", "DEVICE", اسم_الجهاز_أو_الأداة1 ?? "", ID1, ID, devices.صورة3);
+                                if (System.IO.File.Exists(OldImagePath1))
+                                {
+                                    System.IO.File.Delete(OldImagePath1); // Delete old image if it exists
+                                }
+                            }
 
-        //                        if (System.IO.File.Exists(OldImagePath1))
-        //                        {
-        //                            System.IO.File.Delete(OldImagePath1); // Delete old image if it exists
-        //                        }
-        //                    }
+                            string fileNameSteps1 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForDevice.FileName);
 
-        //                    string fileNameSteps1 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForDevice.FileName);
+                            //اذا المسار مش موجود سو مسار جديد 
+                            if (!Directory.Exists(devicePath1))
+                            {
+                                Directory.CreateDirectory(devicePath1);
+                            }
+                            using (var fileStream1 = new FileStream(Path.Combine(devicePath1, fileNameSteps1), FileMode.Create))
+                            {
+                                file1ForDevice.CopyTo(fileStream1);
+                            }
 
-        //                    //اذا المسار مش موجود سو مسار جديد 
-        //                    if (!Directory.Exists(devicePath1))
-        //                    {
-        //                        Directory.CreateDirectory(devicePath1);
-        //                    }
-        //                    using (var fileStream1 = new FileStream(Path.Combine(devicePath1, fileNameSteps1), FileMode.Create))
-        //                    {
-        //                        file1ForDevice.CopyTo(fileStream1);
-        //                    }
+                            devices.DevicesAndTools_Image = fileNameSteps1; // Update the image path
+                        }
 
-        //                    devices.صورة3 = fileNameSteps1; // Update the image path
-        //                }
+                        var existingDevices = _unitOfWork.Device_tools1.Get(u => u.DevicesAndToolsID == devices.DevicesAndToolsID);
 
-        //                var file2Fordevice = HttpContext.Request.Form.Files[$"file2_{devices.اسم_الجهاز_أو_الأداة2 ?? "".ToString()}"];
+                        if (existingDevices != null)
+                        {
 
-        //                if (file2Fordevice != null)
-        //                {
-        //                    if (!string.IsNullOrEmpty(devices.صورة2)) // Check if there's an existing image path
-        //                    {
-        //                        var OldImagePath2 = Path.Combine(wwwRootPathSteps, "IMAGES", "DEVICE", اسم_الجهاز_أو_الأداة2 ?? "", ID1, ID, devices.صورة2);
-
-        //                        if (System.IO.File.Exists(OldImagePath2))
-        //                        {
-        //                            System.IO.File.Delete(OldImagePath2); // Delete old image if it exists
-        //                        }
-        //                    }
-
-        //                    string fileNameDevice2 = Guid.NewGuid().ToString() + Path.GetExtension(file2Fordevice.FileName);
-
-        //                    اذا المسار مش موجود سو مسار جديد
-        //                    if (!Directory.Exists(devicePath2))
-        //                    {
-        //                        Directory.CreateDirectory(devicePath2);
-        //                    }
-        //                    using (var fileStream2 = new FileStream(Path.Combine(devicePath2, fileNameDevice2), FileMode.Create))
-        //                    {
-        //                        file2Fordevice.CopyTo(fileStream2);
-        //                    }
-
-        //                    devices.صورة2 = fileNameDevice2; // Update the image path
-        //                }
-
-        //                var file3Name = $"file3_{devices.اسم_الجهاز_أو_الأداة3}";
-        //                var file3ForDevice = HttpContext.Request.Form.Files[file3Name];
-
-        //                if (file3ForDevice != null)
-        //                {
-        //                    if (!string.IsNullOrEmpty(devices.صورة1)) // Check if there's an existing image path
-        //                    {
-        //                        var OldImagePath3 = Path.Combine(wwwRootPathSteps, "IMAGES", "DEVICE", اسم_الجهاز_أو_الأداة3 ?? "", ID1, ID, devices.صورة1);
-
-        //                        if (System.IO.File.Exists(OldImagePath3))
-        //                        {
-        //                            System.IO.File.Delete(OldImagePath3); // Delete old image if it exists
-        //                        }
-        //                    }
-
-        //                    string fileNameDevice3 = Guid.NewGuid().ToString() + Path.GetExtension(file3ForDevice.FileName);
-        //                    //اذا المسار مش موجود سو مسار جديد 
-        //                    if (!Directory.Exists(devicePath3))
-        //                    {
-        //                        Directory.CreateDirectory(devicePath3);
-        //                    }
-
-        //                    using (var fileStream1 = new FileStream(Path.Combine(devicePath3, fileNameDevice3), FileMode.Create))
-        //                    {
-        //                        file3ForDevice.CopyTo(fileStream1);
-        //                    }
-
-        //                    devices.صورة1 = fileNameDevice3; // Update the image path
-        //                }
-
-        //                var existingDevices = _unitOfWork.Device_tools1.Get(u => u.ID1 == devices.ID1);
-
-        //                if (existingDevices != null)
-        //                {
-
-        //                    existingDevices.اسم_الجهاز_أو_الأداة1 = devices.اسم_الجهاز_أو_الأداة1;
-        //                    existingDevices.اسم_الجهاز_أو_الأداة2 = devices.اسم_الجهاز_أو_الأداة2;
-        //                    existingDevices.اسم_الجهاز_أو_الأداة3 = devices.اسم_الجهاز_أو_الأداة3;
-        //                    existingDevices.صورة3 = devices.صورة3;
-        //                    existingDevices.صورة2 = devices.صورة2;
-        //                    existingDevices.صورة1 = devices.صورة1;
-
-
-        //                    _unitOfWork.Device_tools1.Update(existingDevices);
-        //                }
-        //                else
-        //                {
-        //                    _unitOfWork.Device_tools1.Add(devices);
-        //                }
-        //                _unitOfWork.Save();
-        //            }
-                //}
+                            existingDevices.DevicesAndTools_Name = devices.DevicesAndTools_Name;
+                          
+                            existingDevices.DevicesAndTools_Image = devices.DevicesAndTools_Image;
+                 
+                            _unitOfWork.Device_tools1.Update(existingDevices);
+                        }
+                        else
+                        {
+                            _unitOfWork.Device_tools1.Add(devices);
+                        }
+                        _unitOfWork.Save();
+                    }
+                }
                 TempData["success"] = "تم تحديث الأجهزة والأدوات بشكل ناجح";
                 return RedirectToAction("DeviceToolsList", new
                 {
