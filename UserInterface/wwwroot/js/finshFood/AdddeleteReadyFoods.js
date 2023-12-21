@@ -48,84 +48,95 @@ function toggleAddButtonVisibility(value) {
 
 
 //صفحة الاضافة منتجات جاهزة جديدة 
-function AddnewFoodReady(FoodsId) {
-    // Find the table body element
-    var tableBody = document.querySelector("#tblFinishFood tbody");
+var clickCount = 0;
+var lastID = 0; // Initialize lastID globally
+function AddnewFoodReady(ReadyFoodFk) {
+    if (clickCount === 0) {
+        // Only retrieve lastID from server on the first click
+        $.ajax({
+            url: '/FinishProducts/GetLastId',
+            type: 'GET',
+            success: function (response) {
+                lastID = parseInt(response) + 1;
+                addStep(ReadyFoodFk);
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching last ID:', error);
+            }
+        });
+    } else {
+        // On subsequent clicks, increment lastID locally
+        lastID++;
+        addStep(ReadyFoodFk);
+    }
+    function addStep(ReadyFoodFk) {
 
-    var addButton = document.getElementById("addToolButton5");
-    addButton.disabled = true;
-    // Find the last row index
-    var newRowIndex = tableBody.children.length - 1;
+        // Find the table body element
+        var tableBody = document.querySelector("#tblFinishFood tbody");
+ 
+        // Find the last row index
+        var newRowIndex = tableBody.children.length - 1;
 
-    // Create a new row for الخطوة1 and الخطوة2 in the same row
-    var newRow = document.createElement("tr");
-    newRow.innerHTML = `
+        // Create a new row for الخطوة1 and الخطوة2 in the same row
+        var newRow = document.createElement("tr");
+        newRow.innerHTML = `
        <td style="text-align:center;">
-            <input type="hidden" name="readyfoodlistVM[${newRowIndex}].ID" value="${FoodsId}" />
-            <input type="hidden" name="readyfoodlistVM[${newRowIndex}].صورة" />
+            <input type="hidden" name="readyfoodlistVM[${newRowIndex}].BrandFK" value="${ReadyFoodFk}" />
+            <input type="hidden" name="readyfoodlistVM[${newRowIndex}].ReadyProductsImage" />
           
-      
-       <div class="row">
+        <div class="form-group">
+            <textarea class="form-control" id="readyfoodlistVM_${newRowIndex}" name="readyfoodlistVM[${newRowIndex}].ReadyProductsName"></textarea>
+         </div>
+     </td>
+        
+      <td style="text-align:center;">
+        <div class="row">
             <div class="col-12 text-center">
-                <div>
-                    <img id="PreviewPhoto1_${newRowIndex}.اسم_المنتج" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
-                </div>
-              <div class="form-group mt-2">
-               <input asp-for="itemFinshFood.اسم_المنتج" id="اسم_المنتج_${newRowIndex}" oninput="updateFileNameInput(this, '${newRowIndex}')" class="form-control mt-2" name="readyfoodlistVM[${newRowIndex}].اسم_المنتج">
-               <input type="file" name="file1_${newRowIndex}" class="border-0 shadow mt-5" id="customFile1_${newRowIndex}"  onchange="displaySelectedImage(this, 'PreviewPhoto1_${newRowIndex}.اسم_المنتج')">
-
-             </div> 
+                <img id="PreviewPhoto1_${lastID}" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
+                <input type="file" name="file1_${lastID}" class="border-0 shadow mt-5" id="customFile1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
             </div>
-
         </div>
-            
+    </td>
+
+        <td style="text-align: center;">
+        <button type="button" class="btn btn-danger" data-row-index="${newRowIndex}" onclick="DeleteReadyFood1(this)">حذف</button>
+    </td>      
+      
 </tr>
     `;
 
-    // Append the new الخطوة1 and الخطوة2 row to the table body
-    tableBody.appendChild(newRow);
-
-    //// Disable the add button
-    //document.getElementById("addStepButton").disabled = true;
-}
-
-function updateFileNameInput(input) {
-    var dynamicValue = input.value;
-    var fileInput = input.closest('form').querySelector('[name^="file1_"]');
-
-    // Check if the fileInput element is found before setting its name
-    if (fileInput) {
-        fileInput.name = `file1_${dynamicValue}`;
-    } else {
-        console.error("File input element not found.");
+        // Append the new الخطوة1 and الخطوة2 row to the table body
+        tableBody.appendChild(newRow);
+        clickCount++;
+        console.log("newCell:", newRow); // Debugging log 
     }
 }
+ 
 
 ////زر الحذ في صفحة التعديل قبل الحفظ في قاعدة البيانات .
-//function DeleteFoodRow1(button) {
-//    /*var rowIndex = button.getAttribute("data-row-index");*/
+function DeleteReadyFood1(button) {
 
-//    Swal.fire({
-//        title: 'هل أنت متأكد؟',
-//        icon: 'warning',
-//        showCancelButton: true,
-//        cancelButtonText: 'الغاء',
-//        confirmButtonColor: '#d33',
-//        cancelButtonColor: '#3085d6',
-//        confirmButtonText: 'نعم!'
-//    }).then((result) => {
-//        if (result.isConfirmed) {
-//            var row = button.closest("tr");
-//            row.remove();
-//            Swal.fire('Deleted!', 'تم الحذف بنجاح!', 'success');
-//        }
-//    });
-//}
-//document.querySelector("#tblDeviceTools tbody").addEventListener("click", function (event) {
-//    if (event.target.classList.contains("data-row-index")) {
-//        DeleteRow1(event.target);
-//    }
-//});
+    Swal.fire({
+        title: 'هل أنت متأكد؟',
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText: 'الغاء',
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'نعم!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            var row = button.closest("tr");
+            row.remove();
+            Swal.fire('Deleted!', 'تم الحذف بنجاح!', 'success');
+        }
+    });
+}
+document.querySelector("#tblFinishFood tbody").addEventListener("click", function (event) {
+    if (event.target.classList.contains("data-row-index")) {
+        DeleteRow1(event.target);
+    }
+});
 
 
 //زر الحذف في صفحة الاضافة

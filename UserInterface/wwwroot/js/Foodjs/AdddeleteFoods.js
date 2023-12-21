@@ -48,159 +48,102 @@ function toggleAddButtonVisibility(value) {
 
 
 //صفحة الاضافة اجهزة وادوات جديدة 
-function AddnewFoods(FoodsId) {
-    // Find the table body element
-    var tableBody = document.querySelector("#tblFoods tbody");
+var clickCount = 0;
+var lastID = 0; // Initialize lastID globally
+function AddnewFoods(FoodsFK) {
+    if (clickCount === 0) {
+        // Only retrieve lastID from server on the first click
+        $.ajax({
+            url: '/Food/GetLastId',
+            type: 'GET',
+            success: function (response) {
+                lastID = parseInt(response) + 1;
+                addStep(FoodsFK);
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching last ID:', error);
+            }
+        });
+    } else {
+        // On subsequent clicks, increment lastID locally
+        lastID++;
+        addStep(FoodsFK);
+    }
 
-    var addButton = document.getElementById("addToolButton4");
-    addButton.disabled = true;
-    // Find the last row index
-    var newRowIndex = tableBody.children.length - 1;
+    function addStep(FoodsFK) {
 
-    // Create a new row for الخطوة1 and الخطوة2 in the same row
-    var newRow = document.createElement("tr");
-    newRow.innerHTML = `
+        // Find the table body element
+        var tableBody = document.querySelector("#tblFoods tbody");
+
+        // Find the last row index
+        var newRowIndex = tableBody.children.length - 1;
+
+        // Create a new row for الخطوة1 and الخطوة2 in the same row
+        var newRow = document.createElement("tr");
+        newRow.innerHTML = `
        <td style="text-align:center;">
-            <input type="hidden" name="FoodViewMList[${newRowIndex}].ID" value="${FoodsId}" />
-            <input type="hidden" name="FoodViewMList[${newRowIndex}].صورة1" />
-            <input type="hidden" name="FoodViewMList[${newRowIndex}].صورة2" />
-            <input type="hidden" name="FoodViewMList[${newRowIndex}].صورة3" />
-            <input type="hidden" name="FoodViewMList[${newRowIndex}].صورة4" />
-      
-       <div class="row">
+            <input type="hidden" name="FoodViewMList[${newRowIndex}].BrandFK" value="${FoodsFK}" />
+            <input type="hidden" name="FoodViewMList[${newRowIndex}].FoodStuffsImage" />
+        
+             <div class="form-group">
+            <textarea class="form-control" id="FoodViewMList_${newRowIndex}" name="FoodViewMList[${newRowIndex}].FoodStuffsName"></textarea>
+         </div>
+     </td>
+        
+      <td style="text-align:center;">
+        <div class="row">
             <div class="col-12 text-center">
-                <div>
-                    <img id="PreviewPhoto1_${newRowIndex}.اسم_المادة_الغذئية1" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
-                </div>
-              <div class="form-group mt-2">
-               <input asp-for="itemFood.اسم_المادة_الغذئية1" id="اسم_المادة_الغذئية1_${newRowIndex}" oninput="updateFileNameInput(this, '${newRowIndex}')" class="form-control mt-2" name="FoodViewMList[${newRowIndex}].اسم_المادة_الغذئية1">
-               <input type="file" name="file1_${newRowIndex}" class="border-0 shadow mt-5" id="customFile1_${newRowIndex}"  onchange="displaySelectedImage(this, 'PreviewPhoto1_${newRowIndex}.اسم_المادة_الغذئية1')">
-
-             </div> 
+                <img id="PreviewPhoto1_${lastID}" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
+                <input type="file" name="file1_${lastID}" class="border-0 shadow mt-5" id="customFile1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
             </div>
-
-              <td style="text-align: center;">
-                <div>
-                    <img id="PreviewPhoto2_${newRowIndex}.اسم_المادة_الغذئية2" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;" >
-                </div>
-                <div class="form-group mt-2">
-                    <input asp-for="itemFood.اسم_المادة_الغذئية2" id="اسم_المادة_الغذئية2_${newRowIndex}" oninput="updateFileNameInput2(this, '${newRowIndex}')" class="form-control mt-2" name="FoodViewMList[${newRowIndex}].اسم_المادة_الغذئية2">
-                    <input type="file" name="file2_${newRowIndex}" class="border-0 shadow mt-5" id="customFile2_${newRowIndex}"  onchange="displaySelectedImage(this, 'PreviewPhoto2_${newRowIndex}.اسم_المادة_الغذئية2')">
-
-                </div>
-            </td>
-            <td style="text-align: center;">
-                <div>
-                    <img id="PreviewPhoto3_${newRowIndex}.اسم_المادة_الغذئية3" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
-                </div>
-                <div class="form-group mt-2">
-                    <input asp-for="itemFood.اسم_المادة_الغذئية3" id="اسم_المادة_الغذئية3_${newRowIndex}" oninput="updateFileNameInput3(this, '${newRowIndex}')" class="form-control mt-2" name="FoodViewMList[${newRowIndex}].اسم_المادة_الغذئية3">
-                    <input type="file" name="file3_${newRowIndex}" class="border-0 shadow mt-5" id="customFile3_${newRowIndex}"  onchange="displaySelectedImage(this, 'PreviewPhoto3_${newRowIndex}.اسم_المادة_الغذئية3')">
-
-                </div>
-            </td>
-              <td style="text-align: center;">
-                <div>
-                    <img id="PreviewPhoto4_${newRowIndex}.اسم_المادة_الغذئية4" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
-                </div>
-                <div class="form-group mt-2">
-                    <input asp-for="itemFood.اسم_المادة_الغذئية4" id="اسم_المادة_الغذئية4_${newRowIndex}" oninput="updateFileNameInput4(this, '${newRowIndex}')" class="form-control mt-2" name="FoodViewMList[${newRowIndex}].اسم_المادة_الغذئية4">
-                    <input type="file" name="file4_${newRowIndex}" class="border-0 shadow mt-5" id="customFile4_${newRowIndex}"  onchange="displaySelectedImage(this, 'PreviewPhoto4_${newRowIndex}.اسم_المادة_الغذئية4')">
-
-                </div>
-            </td>
         </div>
-            
+    </td>
+
+        <td style="text-align: center;">
+        <button type="button" class="btn btn-danger" data-row-index="${newRowIndex}" onclick="DeleteFoodRow1(this)">حذف</button>
+    </td>      
+      
 </tr>
     `;
 
-    // Append the new الخطوة1 and الخطوة2 row to the table body
-    tableBody.appendChild(newRow);
-
-    //// Disable the add button
-    //document.getElementById("addStepButton").disabled = true;
-}
-
-function updateFileNameInput(input) {
-    var dynamicValue = input.value;
-    var fileInput = input.closest('form').querySelector('[name^="file1_"]');
-
-    // Check if the fileInput element is found before setting its name
-    if (fileInput) {
-        fileInput.name = `file1_${dynamicValue}`;
-    } else {
-        console.error("File input element not found.");
+        // Append the new الخطوة1 and الخطوة2 row to the table body
+        tableBody.appendChild(newRow);
+        clickCount++;
+        console.log("newCell:", newRow); // Debugging log 
     }
-}
+} 
 
 
 
-function updateFileNameInput2(input) {
-    var dynamicValue = input.value;
-    var fileInput = input.closest('form').querySelector('[name^="file2_"]');
-
-    // Check if the fileInput element is found before setting its name
-    if (fileInput) {
-        fileInput.name = `file2_${dynamicValue}`;
-    } else {
-        console.error("File input element not found.");
-    }
-}
-
-
-
-function updateFileNameInput3(input) {
-    var dynamicValue = input.value;
-    var fileInput = input.closest('form').querySelector('[name^="file3_"]');
-
-    // Check if the fileInput element is found before setting its name
-    if (fileInput) {
-        fileInput.name = `file3_${dynamicValue}`;
-    } else {
-        console.error("File input element not found.");
-    }
-}
-
-function updateFileNameInput4(input) {
-    var dynamicValue = input.value;
-    var fileInput = input.closest('form').querySelector('[name^="file4_"]');
-
-    // Check if the fileInput element is found before setting its name
-    if (fileInput) {
-        fileInput.name = `file4_${dynamicValue}`;
-    } else {
-        console.error("File input element not found.");
-    }
-}
-
+ 
 
 ////زر الحذ في صفحة التعديل قبل الحفظ في قاعدة البيانات .
-//function DeleteFoodRow1(button) {
-//    /*var rowIndex = button.getAttribute("data-row-index");*/
+function DeleteFoodRow1(button) {
+    /*var rowIndex = button.getAttribute("data-row-index");*/
 
-//    Swal.fire({
-//        title: 'هل أنت متأكد؟',
-//        icon: 'warning',
-//        showCancelButton: true,
-//        cancelButtonText: 'الغاء',
-//        confirmButtonColor: '#d33',
-//        cancelButtonColor: '#3085d6',
-//        confirmButtonText: 'نعم!'
-//    }).then((result) => {
-//        if (result.isConfirmed) {
-//            var row = button.closest("tr");
-//            row.remove();
-//            Swal.fire('Deleted!', 'تم الحذف بنجاح!', 'success');
-//        }
-//    });
-//}
-//document.querySelector("#tblDeviceTools tbody").addEventListener("click", function (event) {
-//    if (event.target.classList.contains("data-row-index")) {
-//        DeleteRow1(event.target);
-//    }
-//});
+    Swal.fire({
+        title: 'هل أنت متأكد؟',
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText: 'الغاء',
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'نعم!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            var row = button.closest("tr");
+            row.remove();
+            Swal.fire('Deleted!', 'تم الحذف بنجاح!', 'success');
+        }
+    });
+}
+    document.querySelector("#tblFoods tbody").addEventListener("click", function (event) {
+    if (event.target.classList.contains("data-row-index")) {
+        DeleteRow1(event.target);
+    }
+});
 
-
+ 
 //زر الحذف في صفحة الاضافة
 //function DeleteRow3(button) {
 //    var tableBody = document.querySelector("#tblSteps tbody");

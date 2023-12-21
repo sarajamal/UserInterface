@@ -40,7 +40,7 @@ function loadDataTable(id) {
                     var numericID = parseInt(row.devicesAndToolsID, 10);
                     var numericFK = parseInt(row.brandFK, 10);
     
-                    var imagePath2 = `/IMAGES/${numericFK}/DeviceAndTools/${numericID}/${row.devicesAndTools_Image}`;
+                    var imagePath2 = `/IMAGES/${numericFK}/DevicesAndTools/${numericID}/${row.devicesAndTools_Image}`;
 
                     // Customize the content of the cell with both text and image
                     return `<img src="${imagePath2}" alt="Image" width="150" height="100"/>`;
@@ -105,3 +105,30 @@ function DelteToolsdevice(url) {
         }
     })
 }
+
+function loadAndShowModal(button) {
+    var controller = button.getAttribute('data-controller');
+    var action = button.getAttribute('data-action');
+    var id = button.getAttribute('data-id');
+    var url = `/${controller}/${action}?id=${id}`;
+
+    fetch(url)
+        .then(response => response.text())
+        .then(html => {
+            console.log("Received HTML:", html); // Add this line to log the HTML
+            // Dynamically add the modal HTML to the page
+            document.body.insertAdjacentHTML('beforeend', html);
+
+            // Now that the modal is part of the document, show it
+            $('#CreateDeviceTools').modal('show');
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.add-button').forEach(function (button) {
+        button.addEventListener('click', function () {
+            loadAndShowModal(this);
+        });
+    });
+});

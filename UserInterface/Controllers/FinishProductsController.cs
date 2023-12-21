@@ -97,16 +97,15 @@ namespace Test12.Controllers
                             string wwwRootFoodPath = _webHostEnvironment.WebRootPath; // get us root folder
 
 
-                            var file1Name1 = $"file1_{newfoods.ReadyProductsName}";
+                            var file1Name1 = $"file1_{newfoods.ReadyProductsID}";
                             var file1ForFood1 = HttpContext.Request.Form.Files[file1Name1];
 
-                            string اسم_المنتج = newfoods.ReadyProductsName != null ? newfoods.ReadyProductsName.ToString() : string.Empty;
-                           
-                            string id = newfoods.BrandFK.ToString();
-                            string ID3 = newfoods.ReadyProductsID.ToString();
+                            
+                            string BrandFK = newfoods.BrandFK.ToString();
+                            string ReadyProductsID = newfoods.ReadyProductsID.ToString();
 
 
-                            var FoodPath1 = Path.Combine(wwwRootFoodPath, "IMAGES", "منتجات_جاهزة", اسم_المنتج ?? "", ID3, id);
+                            var FoodPath1 = Path.Combine(wwwRootFoodPath, "IMAGES",BrandFK, "ReadyProducts", ReadyProductsID);
  
                             if (file1ForFood1 != null && file1ForFood1.Length > 0)
                             {
@@ -278,6 +277,20 @@ namespace Test12.Controllers
             return Json(new { data = objfoodList });
         }
         #endregion
+        [HttpGet]
+        public IActionResult GetLastId()
+        {
+            try
+            {
+                int lastId = _unitOfWork.readyFoodRepository.GetLastStepId();
+                return Ok(lastId);
+            }
+            catch (Exception ex)
+            {
+                // Handle exception appropriately
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }
 

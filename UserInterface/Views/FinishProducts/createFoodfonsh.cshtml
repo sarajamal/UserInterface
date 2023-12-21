@@ -1,96 +1,83 @@
 ﻿@model ReadyFoodViewmodel
 
-<body>
-    <div class="card shadow border-0 my-4 py-4">
-        <div class="card-header bg-secondary bg-gradient ml-0 py-3">
-            <div class="row">
-                <div class="col-12 text-center">
-                    <h2 class="text-white py-2">
-                        إضافة المنتجات الجاهزة
-                    </h2>
-                </div>
+<div class="modal fade" id="CreateFinshFoods" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-center font-weight-bold" id="exampleModalLongTitle">إضافة مواد غذائية </h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+            <div class="modal-body">
+
+                <form method="post" class="row" enctype="multipart/form-data" asp-action="createFoodfonsh" asp-controller="FinishProducts">
+
+
+
+
+
+                    <input asp-for="tredMaeketReadyfoodVM.BrandID" hidden />
+                    <input asp-for="tredMaeketReadyfoodVM.ID_Login" hidden />
+                    <input asp-for="tredMaeketReadyfoodVM.BrandName" hidden />
+                    <input asp-for="tredMaeketReadyfoodVM.Date" hidden />
+                    <input asp-for="tredMaeketReadyfoodVM.BrandCoverImage" hidden />
+                    <input asp-for="tredMaeketReadyfoodVM.BrandFooterImage" hidden />
+                    <input asp-for="tredMaeketReadyfoodVM.BrandLogoImage" hidden />
+                    <input asp-for="ReadyfoodVM.ReadyProductsID" hidden />
+
+
+                    <table id="tblFinishFood" class="table table-bordered table-striped" data-FinshFood-id="@Model.ReadyfoodVM.ReadyProductsID">
+                        <thead>
+                            <tr class=" py-5 mb-3 pb-4">
+                                <th style="text-align:center  ;width:40%">
+                                    اسم المنتج
+                                </th>
+                                <th style="text-align:center ;width:40%">
+                                    صورة المنتج
+                                </th>
+
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+                                <td colspan="1" style="text-align:right;">
+
+                                    <button type="button" id="addToolButton5" class="btn btn-success my-3 " onclick="AddnewFoodReady('@Model.tredMaeketReadyfoodVM.BrandID')" abled>إضافة منتجات جاهزة جديدة</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="form-floating py-2 col-12">
+                        @{
+                            var sortedFoodsName = Model.FoodReadyVMorder.OrderBy(item => item.ReadyProductsOrder).ToList();
+                        }
+                        <select asp-for="ReadyfoodVM.ReadyProductsID" class="form-select" id="selectFoodvalues" name="selectFoodReadyValue">
+                            <option value="" disabled selected>-- اختر مكان الصف الجديد--</option>
+                            @foreach (var item in sortedFoodsName)
+                            {
+                                <option value="@item.ReadyProductsID"> @item.ReadyProductsName  </option>
+                            }
+                            <option value="0">اخر صف</option> <!-- The "Other" option -->
+                        </select>
+                    </div>
+
+                    <div class="modal-footer">
+
+                        <input type="submit" value=" حفظ" asp-route-id="@Model.tredMaeketReadyfoodVM.BrandID"
+                               style="text-align:center" class="btn btn-primary me-3" id="submitButton5" />
+                    </div>
+
+                </form>
+
             </div>
         </div>
-
-
-        <form method="post" class="row" enctype="multipart/form-data" asp-action="createFoodfonsh" asp-controller="FinishProducts">
-
-            <div class="card-body p-4 py-4">
-                <div class="border p-3">
-
-                    @*added this class main-container-table*@
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="row p-2">
-                            <div class="col-12 p-1">
-                                <div class="card border-0 p-3 shadow  border-top border-5 rounded">
-
-                                    <input asp-for="tredMaeketReadyfoodVM.BrandID" hidden />
-                                    <input asp-for="tredMaeketReadyfoodVM.ID_Login" hidden />
-                                    <input asp-for="tredMaeketReadyfoodVM.BrandName" hidden />
-                                    <input asp-for="tredMaeketReadyfoodVM.Date" hidden />
-                                    <input asp-for="tredMaeketReadyfoodVM.BrandCoverImage" hidden />
-                                    <input asp-for="tredMaeketReadyfoodVM.BrandFooterImage" hidden />
-                                    <input asp-for="tredMaeketReadyfoodVM.BrandLogoImage" hidden />
-                                    <input asp-for="ReadyfoodVM.ReadyProductsID" hidden />
-                                 
-
-                                    <table id="tblFinishFood" class="table table-bordered table-striped" data-FinshFood-id="@Model.ReadyfoodVM.ReadyProductsID">
-                                        <thead>
-                                            <tr class=" py-5 mb-3 pb-4">
-                                                <th style="text-align:center  ;width:40%">
-                                                    اسم المنتج
-                                                </th>
-                                                <th style="text-align:center ;width:40%">
-                                                    صورة المنتج
-                                                </th>
-
-                                            </tr>
-                                        </thead>
-
-                                        <tbody>
-
-                                            <tr>
-                                                <td colspan="1" style="text-align:right;">
-
-                                                    <button type="button" id="addToolButton5" class="btn btn-success my-3 " onclick="AddnewFoodReady('@Model.tredMaeketReadyfoodVM.BrandID')" abled>إضافة منتجات جاهزة جديدة</button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <div class="form-floating py-2 col-12">
-                                        @{
-                                            var sortedFoodsName = Model.FoodReadyVMorder.OrderBy(item => item.ReadyProductsOrder).ToList();
-                                        }
-                                        <select asp-for="ReadyfoodVM.ReadyProductsID" class="form-select" id="selectFoodvalues" name="selectFoodReadyValue">
-                                            <option value="" disabled selected>-- اختر مكان الصف الجديد--</option>
-                                            @foreach (var item in sortedFoodsName)
-                                            {
-                                                <option value="@item.ReadyProductsID">@* @item.اسم_المنتج *@ </option>
-                                            }
-                                            <option value="0">اخر صف</option> <!-- The "Other" option -->
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group col-12 py-2">
-                                    <div style="text-align: left;">
-
-                                        <div class="form-group col-12 py-5">
-
-                                            <input type="submit" value=" حفظ" asp-route-id="@Model.tredMaeketReadyfoodVM.BrandID"
-                                                   style="text-align:center" class="btn btn-primary me-3" id="submitButton5" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
-            </div>
-        </form>
     </div>
-</body>
+</div>
+
 
 
 <script>

@@ -1,99 +1,79 @@
 ﻿@model FoodVM
 
-<div class="row pb-3">
+<div class="modal fade" id="CreateFoods" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-center font-weight-bold" id="exampleModalLongTitle">إضافة مواد غذائية </h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
 
-    <div class="card shadow border-0 my-4 py-4">
-        <div class="card-header bg-secondary bg-gradient ml-0 py-3">
-            <div class="row">
-                <div class="col-12 text-center">
-                    <h2 class="text-white py-2">
-                        إضافة المواد الغذائية
-                    </h2>
-                </div>
             </div>
-        </div>
+            <div class="modal-body">
 
-        <form method="post" class="row" enctype="multipart/form-data" asp-action="CreateFood" asp-controller="Food">
-
-            <div class="col-lg-3 col-sm-6">
-                <div class="row p-2">
-                    <div class="col-12 p-1">
-                        <div class="card border-0 p-3 shadow  border-top border-5 rounded">
+                <form method="post" class="row" enctype="multipart/form-data" asp-action="CreateFood" asp-controller="Food">
 
 
-                            <input asp-for="tredMaeketFoodsVM.BrandID" hidden />
-                            <input asp-for="tredMaeketFoodsVM.ID_Login" hidden />
-                            <input asp-for="tredMaeketFoodsVM.BrandName" hidden />
-                            <input asp-for="tredMaeketFoodsVM.Date" hidden />
-                            <input asp-for="tredMaeketFoodsVM.BrandCoverImage" hidden />
-                            <input asp-for="tredMaeketFoodsVM.BrandFooterImage" hidden />
-                            <input asp-for="tredMaeketFoodsVM.BrandLogoImage" hidden />
-                            <input asp-for="FoodViewM.FoodStuffsID" hidden />
 
-                            <table id="tblFoods" class="table table-bordered table-striped" data-DeviceTools-id="@Model.tredMaeketFoodsVM.BrandID">
-                                <thead>
-                                    <tr class=" py-5 mb-3 pb-4">
-                                        <th style="text-align:center ;font-size:medium">
-                                            المادة الغذائية الأولى
-                                        </th>
-                                        <th style="text-align:center ;font-size:medium">
-                                            المادة الغذائية الثانية
-                                        </th>
-                                        <th style="text-align:center ;font-size:medium">
-                                            المادة الغذائية الثالثة
-                                        </th>
-                                        <th style="text-align:center ;font-size:medium">
-                                            المادة الغذائية الرابعة
-                                        </th>
-                                    </tr>
-                                </thead>
+                    <input asp-for="tredMaeketFoodsVM.BrandID" hidden />
+                    <input asp-for="tredMaeketFoodsVM.ID_Login" hidden />
+                    <input asp-for="tredMaeketFoodsVM.BrandName" hidden />
+                    <input asp-for="tredMaeketFoodsVM.Date" hidden />
+                    <input asp-for="tredMaeketFoodsVM.BrandCoverImage" hidden />
+                    <input asp-for="tredMaeketFoodsVM.BrandFooterImage" hidden />
+                    <input asp-for="tredMaeketFoodsVM.BrandLogoImage" hidden />
+                    <input asp-for="FoodViewM.FoodStuffsID" hidden />
 
-                                <tbody>
+                    <table id="tblFoods" class="table table-bordered table-striped" data-DeviceTools-id="@Model.tredMaeketFoodsVM.BrandID">
+                        <thead>
+                            <tr class=" py-5 mb-3 pb-4">
+                                <th style="text-align:center ;font-size:medium">
+                                    اسم المادة الغذائية
+                                </th>
+                                <th style="text-align:center ;font-size:medium">
+                                    صورة المادة الغذائية
+                                </th>
+                            </tr>
+                        </thead>
 
-                                    <tr>
-                                        <td colspan="1" style="text-align:right;">
+                        <tbody>
 
-                                            <button type="button" id="addToolButton4" class="btn btn-success my-3 " onclick="AddnewFoods('@Model.tredMaeketFoodsVM.BrandID')" abled>إضافة مواد غذائية جديدة</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <tr>
+                                <td colspan="1" style="text-align:right;">
 
-                            <div class="form-floating py-2 col-12">
-                                @{
-                                    var sortedFoodsName = Model.FoodsVMorder.OrderBy(item => item.FoodStuffsOrder).ToList();
-                                }
-                                <select asp-for="FoodViewM.FoodStuffsID" class="form-select" id="selectFoodvalues" name="selectFoodvalue">
-                                    <option value="" disabled selected>-- اختر مكان الصف الجديد--</option>
-                                    @foreach (var item in sortedFoodsName)
-                                    {
-                                        <option value="@item.FoodStuffsID">@* @item.اسم_المادة_الغذئية1 ,@item.اسم_المادة_الغذئية2 , @item.اسم_المادة_الغذئية3, @item.اسم_المادة_الغذئية4 *@ </option>
-                                    }
-                                    <option value="0">اخر صف</option> <!-- The "Other" option -->
-                                </select>
-                            </div>
+                                    <button type="button" id="addToolButton4" class="btn btn-success my-3 " onclick="AddnewFoods('@Model.tredMaeketFoodsVM.BrandID')" abled>إضافة مواد غذائية جديدة</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                            <div class="form-group col-12 py-2">
-                                <div style="text-align: left;">
-
-                                    <div class="form-group col-12 py-5">
-
-                                        <input type="submit" value=" حفظ" asp-route-id="@Model.tredMaeketFoodsVM.BrandID"
-                                               style="text-align:center" class="btn btn-primary me-3" id="submitButton5" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="form-floating py-2 col-12">
+                        @{
+                            var sortedFoodsName = Model.FoodsVMorder.OrderBy(item => item.FoodStuffsOrder).ToList();
+                        }
+                        <select asp-for="FoodViewM.FoodStuffsID" class="form-select" id="selectFoodvalues" name="selectFoodvalue">
+                            <option value="" disabled selected>-- اختر مكان الصف الجديد--</option>
+                            @foreach (var item in sortedFoodsName)
+                            {
+                                <option value="@item.FoodStuffsID"> @item.FoodStuffsName  </option>
+                            }
+                            <option value="0">اخر صف</option> <!-- The "Other" option -->
+                        </select>
                     </div>
 
-                </div>
+                    <div class="modal-footer">
+                        <input type="submit" value=" حفظ" asp-route-id="@Model.tredMaeketFoodsVM.BrandID"
+                               style="text-align:center" class="btn btn-primary me-3" id="submitButton5" />
+
+                    </div>
+
+                </form>
 
             </div>
-
-        </form>
+        </div>
     </div>
 </div>
-
 
 
 <script>
@@ -123,5 +103,7 @@
 @section Scripts {
 
     <script src="~/Js/Foodjs/AdddeleteFoods.js"></script>
+    <script src="~/Js/Foodjs/FoodDeletelist.js"></script>
+
 }
 

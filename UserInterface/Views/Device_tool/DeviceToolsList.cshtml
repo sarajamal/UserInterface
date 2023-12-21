@@ -34,9 +34,14 @@
 
                         <div style="text-align:center">
                             <div style="text-align:center">
-                                <a asp-controller="Device_tool" asp-action="CreateIndex" asp-route-id="@TempData["ID"]" name="AddButtonItem" class=" btn btn-primary px-4 add-button">
+                                <button type="button" class="btn btn-primary px-4 add-button"
+                                        data-toggle="modal"
+                                        data-target="#CreateDeviceToolsModal"
+                                        data-controller="Device_tool"
+                                        data-action="CreateIndex"
+                                        data-id="@TempData["ID"]">
                                     <i class="bi bi-plus-circle"></i>
-                                </a>
+                                </button>
                             </div>
 
                         </div>
@@ -81,6 +86,7 @@
 @section Scripts {
 
     <script src="~/Js/DeviceTools/DeletelistDevice.js"></script>
+    <script src="~/Js/DeviceTools/AdddeleteToolsDevice.js"></script>
 }
 
 

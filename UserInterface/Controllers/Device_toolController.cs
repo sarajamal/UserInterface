@@ -63,7 +63,7 @@ namespace Test12.Controllers
             PrVM.Device_toolVM = new DevicesAndTools();
             PrVM.Devices_toolsVM = new List<DevicesAndTools>();
 
-            return View(PrVM);
+            return View( PrVM);
 
         }
 
@@ -86,11 +86,9 @@ namespace Test12.Controllers
 
                             var newDevice = new DevicesAndTools
                             {
-                                //ID = DeviceFK,
-                                //اسم_الجهاز_أو_الأداة1 = deviceAdd.اسم_الجهاز_أو_الأداة1,
-                                //اسم_الجهاز_أو_الأداة2 = deviceAdd.اسم_الجهاز_أو_الأداة2,
-                                //اسم_الجهاز_أو_الأداة3 = deviceAdd.اسم_الجهاز_أو_الأداة3,
-
+                                BrandFK = DeviceFK,
+                                DevicesAndTools_Name = deviceAdd.DevicesAndTools_Name,
+                                
                             };
                             _unitOfWork.Device_tools1.Add(newDevice);
                             _unitOfWork.Save();
@@ -98,71 +96,33 @@ namespace Test12.Controllers
                             string wwwRootDevicePath = _webHostEnvironment.WebRootPath; // get us root folder
 
 
-                            //var file1Name1 = $"file1_{newDevice.اسم_الجهاز_أو_الأداة1}";
-                            //var file1ForDevice1 = HttpContext.Request.Form.Files[file1Name1];
+                            var file1Name1 = $"file1_{newDevice.DevicesAndToolsID}";
+                            var file1ForDevice1 = HttpContext.Request.Form.Files[file1Name1];
 
-                            //string اسم_الجهاز_أو_الأداة1 = newDevice.اسم_الجهاز_أو_الأداة1?.ToString();
-                            //string اسم_الجهاز_أو_الأداة2 = newDevice.اسم_الجهاز_أو_الأداة2?.ToString();
-                            //string اسم_الجهاز_أو_الأداة3 = newDevice.اسم_الجهاز_أو_الأداة3?.ToString();
-                            //string ID = newDevice.ID.ToString();
-                            //string ID1 = newDevice.ID1.ToString();
+                          
+                            string DevicesAndToolsID = newDevice.DevicesAndToolsID.ToString();
+                            string BrandFK = newDevice.BrandFK.ToString();
 
 
-                            //var devicePath1 = Path.Combine(wwwRootDevicePath, "IMAGES", "DEVICE", اسم_الجهاز_أو_الأداة1 ?? "", ID1, ID);
-                            //var devicePath2 = Path.Combine(wwwRootDevicePath, "IMAGES", "DEVICE", اسم_الجهاز_أو_الأداة2 ?? "", ID1, ID);
-                            //var devicePath3 = Path.Combine(wwwRootDevicePath, "IMAGES", "DEVICE", اسم_الجهاز_أو_الأداة3 ?? "", ID1, ID);
+                            var devicePath1 = Path.Combine(wwwRootDevicePath, "IMAGES", BrandFK, "DevicesAndTools"  , DevicesAndToolsID);
+                            
 
-                            //if (file1ForDevice1 != null && file1ForDevice1.Length > 0)
-                            //{
-                            //    string fileName11 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForDevice1.FileName);
+                            if (file1ForDevice1 != null && file1ForDevice1.Length > 0)
+                            {
+                                string fileName11 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForDevice1.FileName);
 
-                            //    if (!Directory.Exists(devicePath1))
-                            //    {
-                            //        Directory.CreateDirectory(devicePath1);
-                            //    }
+                                if (!Directory.Exists(devicePath1))
+                                {
+                                    Directory.CreateDirectory(devicePath1);
+                                }
 
-                            //    using (var fileStream = new FileStream(Path.Combine(devicePath1, fileName11), FileMode.Create)) //save images
-                            //    {
-                            //        file1ForDevice1.CopyTo(fileStream);
-                            //    }
-                            //    newDevice.صورة3 = fileName11;
-                            //}
-
-                            //var fileName2 = $"file2_{newDevice.اسم_الجهاز_أو_الأداة2}";
-                            //var fileDevice2 = HttpContext.Request.Form.Files[fileName2];
-
-                            //if (fileDevice2 != null && fileDevice2.Length > 0)
-                            //{
-                            //    string fileName22 = Guid.NewGuid().ToString() + Path.GetExtension(fileDevice2.FileName);
-
-                            //    if (!Directory.Exists(devicePath2))
-                            //    {
-                            //        Directory.CreateDirectory(devicePath2);
-                            //    }
-                            //    using (var filStream = new FileStream(Path.Combine(devicePath2, fileName22), FileMode.Create)) //save images
-                            //    {
-                            //        fileDevice2.CopyTo(filStream);
-                            //    }
-                            //    newDevice.صورة2 = fileName22;
-                            //}
-                            //var fileName3 = $"file3_{newDevice.اسم_الجهاز_أو_الأداة3}";
-                            //var fileDevice3 = HttpContext.Request.Form.Files[fileName3];
-
-                            //if (fileDevice3 != null && fileDevice3.Length > 0)
-                            //{
-                            //    string fileName33 = Guid.NewGuid().ToString() + Path.GetExtension(fileDevice3.FileName);
-
-                            //    if (!Directory.Exists(devicePath3))
-                            //    {
-                            //        Directory.CreateDirectory(devicePath3);
-                            //    }
-                            //    using (var filStream = new FileStream(Path.Combine(devicePath3, fileName33), FileMode.Create)) //save images
-                            //    {
-                            //        fileDevice3.CopyTo(filStream);
-                            //    }
-                            //    newDevice.صورة1 = fileName33;
-                            //}
-                            //_unitOfWork.Save();
+                                using (var fileStream = new FileStream(Path.Combine(devicePath1, fileName11), FileMode.Create)) //save images
+                                {
+                                    file1ForDevice1.CopyTo(fileStream);
+                                }
+                                newDevice.DevicesAndTools_Image = fileName11;
+                            }                          
+                            _unitOfWork.Save();
                             //// reOrder2 
                             if (selectDevicetools == 0)
                             {
@@ -397,5 +357,19 @@ namespace Test12.Controllers
         }
         #endregion
 
+        [HttpGet]
+        public IActionResult GetLastId()
+        {
+            try
+            {
+                int lastId = _unitOfWork.Device_tools1.GetLastStepId();
+                return Ok(lastId);
+            }
+            catch (Exception ex)
+            {
+                // Handle exception appropriately
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }

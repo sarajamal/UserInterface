@@ -50,12 +50,16 @@ function loadDataTable(id) {
             {
                 data: 'foodStuffsID',
                 "render": function (data) {
-                    return `<div role="group">
-                           < button type="button" class="btn btn-primary mx-2 edit-button" data-id="${data}" data-toggle="modal" data-target="#editFoodModal">
-                           <i class="bi bi-pencil-square"></i>
-                     </button>                        
+                    return `<button type="button" class="btn btn-primary mx-2 update-button"
+                                    data-toggle="modal"
+                                    data-target="#FoodIndex"
+                                    data-controller="Food"
+                                    data-action="FoodIndex"
+                                    data-id="${data}">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>                           
                      <a onClick=DelteFooodSave('/Food/DelteFooodSave/${data}') class="btn btn-danger "> <i class="bi bi-trash-fill"></i></a>
-                    </div>`;
+                     `;
                 },
                 "width": "20%",
                 "className": "text-center"
@@ -107,48 +111,77 @@ function DelteFooodSave(url) {
     })
 }
 
-function validateForm() {
-    // Get the text input and file input elements
-    var textInput = document.getElementById('اسم_المادة_الغذئية1_@Model.FoodViewMList[i]');
-    var fileInput = document.getElementById('customFile1_@Model.FoodViewMList[i]');
+//لعرض popup مع id الخاص بالعلامة التجارية 
+function loadAndShowModal(button) {
+    var controller = button.getAttribute('data-controller');
+    var action = button.getAttribute('data-action');
+    var id = button.getAttribute('data-id');
+    var targetModalId = button.getAttribute('data-target');
 
-    // Check if the user has added new text
-    var textInputValue = textInput.value.trim();
+    var url = `/${controller}/${action}?id=${id}`;
 
-    if (!textInputValue) {
-        // Alert the user or show an error message
-        alert('Please add new text before submitting.');
-        return false; // Prevent form submission
-    }
-
-    // If new text is added, update the file input name attribute
-    if (textInputValue) {
-        fileInput.name = 'file1_' + textInputValue;
-    }
-
-    // Additional validation logic if needed
-
-    // If everything is valid, allow form submission
-    return true;
+    fetch(url)
+        .then(response => response.text())
+        .then(html => {
+            console.log("Received HTML:", html);
+            document.body.insertAdjacentHTML('beforeend', html);
+            $(targetModalId).modal('show');
+        })
+        .catch(error => console.error('Error:', error));
 }
 
-$(document).ready(function () {
-    $('#tblFood').on('click', '.edit-button', function () {
-        var foodId = $(this).data('id');
-
-        // Optionally, make an AJAX request to get the details of the food item
-        $.ajax({
-            url: '/Food/FoodIndex', // Update with the correct URL
-            type: 'GET',
-            data: { id: foodId },
-            success: function (response) {
-                // Populate the modal with the response
-                // Assuming the server returns the HTML content to be displayed in the modal
-                $('#editFoodModal .modal-body').html(response);
-            }
-        });
-
-        // Open the modal
-        $('#editFoodModal').modal('show');
+document.addEventListener('DOMContentLoaded', function () {
+    document.body.addEventListener('click', function (event) {
+        if (event.target.matches('.add-button, .update-button')) {
+            loadAndShowModal(event.target.closest('.add-button, .update-button'));
+        }
     });
 });
+
+//function validateForm() {
+//    // Get the text input and file input elements
+//    var textInput = document.getElementById('اسم_المادة_الغذئية1_@Model.FoodViewMList[i]');
+//    var fileInput = document.getElementById('customFile1_@Model.FoodViewMList[i]');
+
+//    // Check if the user has added new text
+//    var textInputValue = textInput.value.trim();
+
+//    if (!textInputValue) {
+//        // Alert the user or show an error message
+//        alert('Please add new text before submitting.');
+//        return false; // Prevent form submission
+//    }
+
+//    // If new text is added, update the file input name attribute
+//    if (textInputValue) {
+//        fileInput.name = 'file1_' + textInputValue;
+//    }
+
+//    // Additional validation logic if needed
+
+//    // If everything is valid, allow form submission
+//    return true;
+//}
+
+//$(document).ready(function () {
+//    $('#tblFood').on('click', '.edit-button', function () {
+//        var foodId = $(this).data('id');
+
+//        // Optionally, make an AJAX request to get the details of the food item
+//        $.ajax({
+//            url: '/Food/FoodIndex', // Update with the correct URL
+//            type: 'GET',
+//            data: { id: foodId },
+//            success: function (response) {
+//                // Populate the modal with the response
+//                // Assuming the server returns the HTML content to be displayed in the modal
+//                $('#editFoodModal .modal-body').html(response);
+//            }
+//        });
+
+//        // Open the modal
+//        $('#editFoodModal').modal('show');
+//    });
+//});
+
+

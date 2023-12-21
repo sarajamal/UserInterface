@@ -32,9 +32,15 @@
                          
                         <div style="text-align:center">
                             <div style="text-align:center">
-                                <a asp-controller="FinishProducts" asp-action="createFoodfonsh" asp-route-id="@TempData["ID"]" name="AddButtonItem" class=" btn btn-primary px-4 add-button">
+                                <button type="button" class="btn btn-primary px-4 add-button"
+                                        data-toggle="modal"
+                                        data-target="#CreateFinshFoods"
+                                        data-controller="FinishProducts"
+                                        data-action="createFoodfonsh"
+                                        data-id="@TempData["ID"]">
                                     <i class="bi bi-plus-circle"></i>
-                                </a>
+                                </button>
+                                
                             </div>
 
                         </div>
@@ -79,4 +85,5 @@
 @section Scripts {
 
     <script src="~/Js/finshFood/FoodfinishDeletelist.js"></script>
+    <script src="~/Js/finshFood/AdddeleteReadyFoods.js"></script>
 }

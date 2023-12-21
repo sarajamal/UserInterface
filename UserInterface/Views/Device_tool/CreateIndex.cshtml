@@ -1,91 +1,77 @@
 ﻿@model Device_toolsVM
 
-<div class="row pb-3">
+<div class="modal fade" id="CreateDeviceTools" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-center font-weight-bold" id="exampleModalLongTitle">إضافة الأجهزة والأدوات</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
 
-    <div class="card shadow border-0 my-4 py-4">
-        <div class="card-header bg-secondary bg-gradient ml-0 py-3">
-            <div class="row">
-                <div class="col-12 text-center">
-                    <h2 class="text-white py-2">
-                        إضافة الأجهزة والأدوات
-                    </h2>
-                </div>
             </div>
-        </div>
-
-        <form method="post" class="row" enctype="multipart/form-data" asp-action="CreateIndex" asp-controller="Device_tool">
-
-            <div class="col-lg-3 col-sm-6">
-                <div class="row p-2">
-                    <div class="col-12 p-1">
-                        <div class="card border-0 p-3 shadow  border-top border-5 rounded">
+            <div class="modal-body">
+                <form method="post" class="row" enctype="multipart/form-data" asp-action="CreateIndex" asp-controller="Device_tool">
 
 
-                            <input asp-for="tredMaeketToolsVM.BrandID" hidden />
-                            <input asp-for="tredMaeketToolsVM.ID_Login" hidden />
-                            <input asp-for="tredMaeketToolsVM.BrandName" hidden />
-                            <input asp-for="tredMaeketToolsVM.Date" hidden />
-                            <input asp-for="tredMaeketToolsVM.BrandCoverImage" hidden />
-                            <input asp-for="tredMaeketToolsVM.BrandLogoImage" hidden />
-                            <input asp-for="tredMaeketToolsVM.BrandFooterImage" hidden />
-                            <input asp-for="Device_toolVM.DevicesAndToolsID" hidden />
-                            <input asp-for="Device_toolVM.BrandFK" hidden />
 
-                            <table id="tblDeviceTools" class="table table-bordered table-striped" data-DeviceTools-id="@Model.tredMaeketToolsVM.BrandID">
-                                <thead>
-                                    <tr>
-                                        <th> الجهاز أو الأداة الأول</th>
-                                        <th>الجهازأو الأداة الثاني</th>
-                                        <th>الجهاز أو الأداة الثالث </th>
 
-                                    </tr>
-                                </thead>
+                    <input asp-for="tredMaeketToolsVM.BrandID" hidden />
+                    <input asp-for="tredMaeketToolsVM.ID_Login" hidden />
+                    <input asp-for="tredMaeketToolsVM.BrandName" hidden />
+                    <input asp-for="tredMaeketToolsVM.Date" hidden />
+                    <input asp-for="tredMaeketToolsVM.BrandCoverImage" hidden />
+                    <input asp-for="tredMaeketToolsVM.BrandLogoImage" hidden />
+                    <input asp-for="tredMaeketToolsVM.BrandFooterImage" hidden />
+                    
+                    <input asp-for="Device_toolVM.BrandFK" hidden />
 
-                                <tbody>
+                    <table id="tblDeviceTools" class="table table-bordered table-striped" data-DeviceTools-id="@Model.tredMaeketToolsVM.BrandID">
+                        <thead>
+                            <tr>
+                                <th>اسم الجهاز أو الأداة</th>
+                                <th>صورة الجهاز أو الأداة</th>
+                                <th></th>
+                            </tr>
+                        </thead>
 
-                                    <tr>
-                                        <td colspan="1" style="text-align:right;">
-                                          
-                                            <button type="button" id="addToolButton6" class="btn btn-success my-3 " onclick="AddnewtoolsDeviceNew('@Model.tredMaeketToolsVM.BrandID')" abled>إضافة أجهزة جديدة</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <tbody>
 
-                            <div class="form-floating py-2 col-12">
-                                @{
-                                    var sortedDeviceToolsName = Model.Devices_toolsVMorder.OrderBy(item => item.DevicesAndToolsOrder).ToList();
-                                }
-                                <select asp-for="Device_toolVM.DevicesAndToolsID" class="form-select" id="selectDevicetools" name="selectDevicetools">
-                                    <option value="" disabled selected>-- اختر مكان الصف الجديد--</option>
-                                    @foreach (var item in sortedDeviceToolsName)
-                                    {
-                                        <option value="@item.DevicesAndToolsID">@* @item.اسم_الجهاز_أو_الأداة1 ,@item.اسم_الجهاز_أو_الأداة2 , @item.اسم_الجهاز_أو_الأداة3 *@ </option>
-                                    }
-                                    <option value="0">اخر صف</option> <!-- The "Other" option -->
-                                </select>
-                            </div>
+                            <tr>
+                                <td colspan="1" style="text-align:right;">
 
-                            <div class="form-group col-12 py-2">
-                                <div style="text-align: left;">
+                                    <button type="button" id="addToolButton6" class="btn btn-success my-3 " onclick="AddnewtoolsDeviceNew('@Model.tredMaeketToolsVM.BrandID')" abled>إضافة أجهزة جديدة</button>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                                    <div class="form-group col-12 py-5">
-
-                                        <input type="submit" value=" حفظ" asp-route-id="@Model.tredMaeketToolsVM.BrandID"
-                                       style="text-align:center" class="btn btn-primary me-3" id="submitButton2" />
-                                     </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="form-floating py-2 col-12">
+                        @{
+                            var sortedDeviceToolsName = Model.Devices_toolsVMorder.OrderBy(item => item.DevicesAndToolsOrder).ToList();
+                        }
+                        <select asp-for="Device_toolVM.DevicesAndToolsID" class="form-select" id="selectDevicetools" name="selectDevicetools">
+                            <option value="" disabled selected>-- اختر مكان الصف الجديد--</option>
+                            @foreach (var item in sortedDeviceToolsName)
+                            {
+                                <option value="@item.DevicesAndToolsID">  @item.DevicesAndTools_Name   </option>
+                            }
+                            <option value="0">اخر صف</option> <!-- The "Other" option -->
+                        </select>
                     </div>
 
-                </div>
+                    <div class="modal-footer">
 
+                        <input type="submit" value=" حفظ" asp-route-id="@Model.tredMaeketToolsVM.BrandID"
+                               style="text-align:center" class="btn btn-primary me-3" id="submitButton2" />
+                    </div>
+                </form>
             </div>
-
-        </form>
+        </div>
     </div>
 </div>
+
 
 
 
