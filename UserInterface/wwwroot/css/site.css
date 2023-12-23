@@ -5,6 +5,7 @@ html {
 @media (min-width: 768px) {
     html {
         font-size: 16px;
+        font-family: "Almarai";
     }
 }
 
@@ -20,3 +21,178 @@ html {
 body {
     margin-bottom: 60px;
 }
+
+
+
+/*Generel CSS*/
+
+/*flex column Center  */
+.fxcc {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.btn-container-style1 {
+    display: flex;
+    flex-direction: column;
+}
+.btn-style1 {
+    font-family: "Almarai";
+    background-color: #35A8DF; /*blue*/
+    /*background-color: #676869; grey*/
+}
+
+.btn-style1:hover {
+        background-color: #676869;
+}
+
+.bg-white{
+        background-color:#ffffff;
+}
+
+.bg-grey {
+    background-color: #676869;
+}
+.bg-blue {
+    background-color: #35A8DF;
+}
+
+/*fonts*/
+.fnt-white {
+    color: #ffffff;
+}
+.fnt-balck {
+    color: #000000;
+}
+.fnt-blue {
+    color: #35A8DF;
+}
+.fnt-grey {
+    color: #676869;
+}
+/*text alignment*/
+.text-right{
+    text-align: right;
+}
+.text-left {
+    text-align: left;
+}
+.text-center {
+    text-align: center;
+}
+
+/*input fields*/
+form-control:focus {
+    border: solid 1px #ebebeb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+
+.field-lgrey {
+    background-color: #fcfcfc;
+}
+
+
+/*======================= Custom CSS ============================================*/
+/*------------------Home index Page*/
+.login-sec{
+    max-width: 600px;
+}
+.login-fld:focus .login-lbl{
+    display:none;
+}
+login-lbl{
+
+}
+/*------------------Home userInformation Page*/
+.main-container {
+    display: flex;
+    flex-direction: row;
+    
+    background-color: #35A8DF;
+    color: #fff;
+}
+.main-container .main-sec {
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    background-color: #35A8DF;
+    color: #fff;
+
+}
+.main-container h1 {
+    font-size: 20px;
+    padding:10px;
+}
+    .main-container .main-sec .row {
+        padding: 10px 5px;
+        border-bottom: solid;
+        border-bottom-width: 2px;
+        border-bottom-color: #676869;
+    }
+
+        .main-container .main-sec .row a {
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 18px;
+            justify-content: space-around;
+            cursor: pointer;
+        }
+
+.last-login-div {
+    background-color: #35A8DF;
+    color: #fff;
+    
+    margin:0;
+    padding :10px;
+    font-size:16px;
+    font-weight:500;
+}
+/*------------------Forget Password Page*/
+section.forget-pass {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+    section.forget-pass form#account {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+
+div .container.frgt {
+    max-width: 600px;
+}
+
+.frgt .card-header, .login-sec .card-header {
+    border-bottom-style: solid;
+    border-bottom-color: #35A8DF;
+    border-bottom-width: 2px;
+    
+}
+
+
+
+.footer {
+    height: 50px; /* Adjust this value based on the footer height */
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    margin: 0;
+    padding: 10px;
+    background-color: #676869;
+    color:#fff;
+}
+
+    .footer .footer-container {
+        
+        display: flex;
+        flex-direction: row;
+        align-content: center;
+        bottom: 0;
+    }
