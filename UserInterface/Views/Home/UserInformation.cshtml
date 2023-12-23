@@ -1,10 +1,10 @@
 ﻿@model LoginTredMarktViewModel
 
-<div style="text-align: center;">
+<div class="main-container" style="text-align: center;">
     <h1> مرحبا , @Model.LoginVM.Username!</h1>
 
 
-    <div>
+    <div class="container main-sec">
         @foreach (var item in Model.tredList)
         {
             <div class="row">
@@ -16,7 +16,7 @@
         }
     </div>
  
-    <div>
+    <div class="last-login-div"> 
         <p> اخر تسجيل للدخول كان في :  @(Model.TredMarktVM.Date.HasValue ? Model.TredMarktVM.Date.Value.ToString("dd/MM/yyyy HH:mm:ss") : "No previous login recorded")</p>
     </div>
 </div>
