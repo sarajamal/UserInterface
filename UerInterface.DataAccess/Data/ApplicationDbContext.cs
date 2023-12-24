@@ -27,7 +27,7 @@ namespace Test12.DataAccess.Data
         public DbSet<ProductionTools> ProductionTools { get; set; }
         public DbSet<PreparationSteps> PreparationSteps { get; set; }
         public DbSet<ProductionSteps> ProductionSteps { get; set; }
-        public DbSet<الخطوات3> الخطوات3 { get; set; }
+        public DbSet<CleaningSteps> CleaningSteps { get; set; }
         public DbSet<Brands> Brands { get; set; }
         public DbSet<LoginModels> LoginModels { get; set; }
         public DbSet<Cleaning> Cleaning { get; set; }
@@ -49,7 +49,7 @@ namespace Test12.DataAccess.Data
             modelBuilder.Entity<ProductionTools>().ToTable("ProductionTools");
             modelBuilder.Entity<PreparationSteps>().ToTable("PreparationSteps");
             modelBuilder.Entity<ProductionSteps>().ToTable("ProductionSteps");
-            modelBuilder.Entity<الخطوات3>().ToTable("الخطوات3");
+            modelBuilder.Entity<CleaningSteps>().ToTable("CleaningSteps");
             modelBuilder.Entity<Brands>().ToTable("Brands");
             modelBuilder.Entity<LoginModels>().ToTable("LoginModels");
             modelBuilder.Entity<Cleaning>().ToTable("Cleaning");

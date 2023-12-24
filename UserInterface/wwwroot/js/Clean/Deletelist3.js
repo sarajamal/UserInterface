@@ -1,9 +1,12 @@
 ﻿
 $(document).ready(function () {
-    loadDataTable();
+
+    // Retrieve the id value from the data attribute in the thead element
+    var id = document.querySelector("thead").getAttribute("data-id");
+    loadDataTable(id);
 });
 
-function loadDataTable() {
+function loadDataTable(id) {
 
     // Create a <style> element
     var style = document.createElement('style');
@@ -22,19 +25,26 @@ function loadDataTable() {
 
     dataTable = $('#tblDataClean').dataTable({
         "ajax": {
-            "url": '/Clean/GetAll'
+            "url": `/Clean/GetAll?id=${id}`,
         },
         "columns": [
             {
-                data: 'اسم_الجهاز_أو_الأداة',
+                data: 'deviceName',
                 "width": "40%",
                 "className": "text-center custom-font-bold"
             },
+        
             {
-                data: 'iD_Tandeef',
+                data: 'cleaningID',
                 "render": function (data) {
                     return `<div role="group">
-                     <a href="/Clean/Upsert3?id=${data}" class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i></a>               
+                    <button type="button" class="btn btn-primary px-4 clean-index-button"
+                            data-toggle="modal"
+                            data-target="#Upsert3"
+                            data-controller="Clean"
+                            data-action="Upsert3"
+                            data-id="${data}">
+                       <i class="bi bi-pencil-square"></i> </button>   
                      <a onClick=DeleteCleanPost('/Clean/DeleteCleanPost/${data}') class="btn btn-danger "> <i class="bi bi-trash-fill"></i></a>
                     </div>`;
                 },
@@ -42,7 +52,7 @@ function loadDataTable() {
                 "className": "text-center"
             },
             {
-                data: 'order', // Assuming 'Order' is the name of your 'Order' column
+                data: 'cleaningOrder', // Assuming 'Order' is the name of your 'Order' column
                 "visible": false, // Hide the "Order" column from the user interface
                 "orderable": false // Disable sorting for the "Order" column
             }
@@ -86,3 +96,35 @@ function DeleteCleanPost(url) {
         }
     })
 }
+
+function loadAndShowModal(button) {
+    var controller = button.getAttribute('data-controller');
+    var action = button.getAttribute('data-action');
+    var id = button.getAttribute('data-id');
+    var url = `/${controller}/${action}?id=${id}`;
+    var targetModalId = button.getAttribute('data-target');
+
+    fetch(url)
+        .then(response => response.text())
+        .then(html => {
+            console.log("Received HTML:", html); // For debugging purposes
+            document.body.insertAdjacentHTML('beforeend', html);
+
+            // Show the appropriate modal based on the targetModalId
+            if (targetModalId === '#Upsert3') {
+                $('#Upsert3').modal('show');
+            } else if (targetModalId === '#Index') {
+                $('#Index').modal('show');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    document.body.addEventListener('click', function (event) {
+        if (event.target.matches('.add-button, .clean-index-button') || event.target.closest('.add-button, .clean-index-button')) {
+            const button = event.target.matches('.add-button, .clean-index-button') ? event.target : event.target.closest('.add-button, .clean-index-button');
+            loadAndShowModal(button);
+        }
+    });
+});

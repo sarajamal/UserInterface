@@ -22,9 +22,12 @@ namespace Test12.Controllers
         }
 
 
-        public IActionResult CleanList() //this for display List Of التحضيرات Page1
+        public IActionResult CleanList(int? id) //this for display List Of التحضيرات Page1
         {
-            IEnumerable<Cleaning> objCleanList = _unitOfWork.CleanRepository.GetAll().OrderBy(item => item.CleaningOrder).ToList();
+            IEnumerable<Cleaning> objCleanList = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == id).OrderBy(item => item.CleaningOrder).ToList();
+
+            // Store the FK value in TempData
+            TempData["ID"] = id;
 
             // Display the updated list
             return View(objCleanList);
@@ -33,9 +36,11 @@ namespace Test12.Controllers
         // تبع List  قائمة التنظيف
         #region API CALLS 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll(int? id)
         {
-            IEnumerable<Cleaning> objCleanList = _unitOfWork.CleanRepository.GetAll().OrderBy(item => item.CleaningOrder).ToList();
+            IEnumerable<Cleaning> objCleanList = _unitOfWork.CleanRepository.GetAll()
+                .Where(u => u.BrandFK == id).OrderBy(item => item.CleaningOrder).ToList();
+
             return Json(new { data = objCleanList });
         }
         #endregion
@@ -47,36 +52,31 @@ namespace Test12.Controllers
         public IActionResult DeleteCleanPost(int? id)
         {
 
-            var Deletesteps = _unitOfWork.StepsCleanRepository3.Get(u => u.ID_Tandeef1 == id);
-
-            // Delete the associated image file
-            if (!string.IsNullOrEmpty(Deletesteps?.الصورة1))
+            var Deletesteps = _unitOfWork.StepsCleanRepository3.GetAll(incloudeProperties: "Cleaning").Where(u => u.CleaningFK == id).ToList();
+            if (Deletesteps != null)
             {
-                string imagePath = _webHostEnvironment.WebRootPath + Deletesteps.الصورة1;
-                if (System.IO.File.Exists(imagePath))
+                for (int i = 0; i < Deletesteps.Count; i++)
                 {
-                    System.IO.File.Delete(imagePath);
-                }
-            }
-            else
-            {
-                _unitOfWork.StepsCleanRepository3.Remove(Deletesteps);
-            }
+                    var delet = Deletesteps[i];
+                    var BrandId = _unitOfWork.CleanRepository.Get(u => u.CleaningID == delet.CleaningFK);
+                    var IDstep = _unitOfWork.StepsCleanRepository3.Get(u => u.CleaStepsID == delet.CleaStepsID);
 
-            if (!string.IsNullOrEmpty(Deletesteps?.الصورة2))
-            {
-                string imagePath2 = _webHostEnvironment.WebRootPath + Deletesteps.الصورة2;
-                if (System.IO.File.Exists(imagePath2))
-                {
-                    System.IO.File.Delete(imagePath2);
-                }
-            }
+                    string IDStep = IDstep.CleaStepsID.ToString();
+                    string FKBrand = BrandId.BrandFK.ToString();
+                    // Delete the associated image file
+                    if (!string.IsNullOrEmpty(delet.CleaStepsImage))
+                    {
+                        string imagePath = Path.Combine(_webHostEnvironment.WebRootPath, "IMAGES", FKBrand, "Cleaning", IDStep, delet.CleaStepsImage);
 
-            else
-            {
-                _unitOfWork.StepsCleanRepository3.Remove(Deletesteps);
+                        if (System.IO.File.Exists(imagePath))
+                        {
+                            System.IO.File.Delete(imagePath);
+                        }
+                    }
+                    _unitOfWork.StepsCleanRepository3.Remove(delet);
+                }
+
             }
-            _unitOfWork.StepsCleanRepository3.Remove(Deletesteps);
 
             var DeleteoneOflist = _unitOfWork.CleanRepository.Get(u => u.CleaningID == id);
             if (DeleteoneOflist == null)
@@ -98,226 +98,108 @@ namespace Test12.Controllers
             {
                 CleanViewModel = new Cleaning(),
                 CleanList = new List<Cleaning>(),
-                stepsVM3 = new List<الخطوات3>(),
+                CleaningSteps = new List<CleaningSteps>(),
                 tredMaeketCleanVM = new Brands(),
 
             };
 
-            if (id == null || id == 0)
-            {
-                CLVM.CleanViewModel = new Cleaning();
-                CLVM.CleanList = new List<Cleaning>();
-                CLVM.stepsVM3 = new List<الخطوات3>();
-                CLVM.tredMaeketCleanVM = new Brands();
+            CLVM.CleanList = _unitOfWork.CleanRepository.GetAll().Where(c => c.CleaningID == id).ToList();
+            CLVM.tredMaeketCleanVM = _unitOfWork.TredMarketRepository.Get(c => c.BrandID == id);
+            CLVM.CleanViewModel = _unitOfWork.CleanRepository.Get(c => c.CleaningID == id);
+            CLVM.CleaningSteps = _unitOfWork.StepsCleanRepository3.GetAll().Where(c => c.CleaningFK == id).ToList();
 
-                CLVM.CleanList = _unitOfWork.CleanRepository.GetAll().ToList(); ;
-
-                return View(CLVM);
-            }
-            else //Update.
-            {
-                CLVM.CleanViewModel = _unitOfWork.CleanRepository.Get(u => u.CleaningID == id);
-                CLVM.stepsVM3 = _unitOfWork.StepsCleanRepository3.GetAll().Where(c => c.ID_Tandeef1 == id).ToList(); //هو يحتوي على قائمة من جدول المكونات واللي يساعده على العرض هي view
-
-                return View(CLVM);
-            };
+            return View(CLVM);
         }
 
         [HttpPost] //This for Add Or Update Page . 
-        public IActionResult Upsert3(CleanVM cleanVM, int selectedValue3) // should insert name in Upsert view
+        public IActionResult Upsert3(CleanVM cleanVM) // should insert name in Upsert view
         {
             if (ModelState.IsValid)
             {
                 //for update .. 
-                //int preparationID = PrepaVM.PreparationVM.التحضير_ID;
-                //int toolVarityID = PrepaVM.PreparationVM.التحضير_ID;
                 int stepsID = cleanVM.CleanViewModel.CleaningID;
 
-                //this code for image if add or update.
-                string wwwRootPath = _webHostEnvironment.WebRootPath; // get us root folder
+                _unitOfWork.CleanRepository.Update(cleanVM.CleanViewModel);
+                _unitOfWork.Save();
 
-
-
-                if (cleanVM.CleanViewModel.CleaningID == 0)  // if Add 
+                //الخطوات
+                if (cleanVM.CleaningSteps != null)
                 {
-
-                    _unitOfWork.CleanRepository.Add(cleanVM.CleanViewModel);
-                    //_unitOfWork.PreparationRepository.Add(PrepaVM.PreparationName.Select());
-                    _unitOfWork.Save();
-
-
-                    //الخطوات
-                    if (cleanVM.stepsVM3 != null)
+                    for (int i = 0; i < cleanVM.CleaningSteps.Count; i++)
                     {
-                        foreach (var stepAdd in cleanVM.stepsVM3)
+                        var Steps = cleanVM.CleaningSteps[i];
+
+                        string wwwRootPathSteps = _webHostEnvironment.WebRootPath;
+
+                        var existingSteps9 = _unitOfWork.StepsCleanRepository3.Get(u => u.CleaStepsID == Steps.CleaStepsID, incloudeProperties: "Cleaning");
+                        if (existingSteps9 == null)
                         {
+                            _unitOfWork.StepsCleanRepository3.Add(Steps);
+                            _unitOfWork.Save();
+                        }
 
-                            if (stepAdd != null && stepAdd.ID == 0)
+                        string IDstep = Steps.CleaStepsID.ToString();
+                        string CleanVMFk = cleanVM.CleanViewModel.BrandFK.ToString();
+
+                        string StepsPath = Path.Combine(wwwRootPathSteps, "IMAGES", CleanVMFk, "Cleaning", IDstep);
+
+                        var file1Name = $"file1_{Steps.CleaStepsID}";
+                        var file1ForStep = HttpContext.Request.Form.Files[file1Name];
+
+                        if (file1ForStep != null)
+                        {
+                            if (!string.IsNullOrEmpty(Steps.CleaStepsImage)) // Check if there's an existing image path
                             {
-                                string wwwRootstepPath = _webHostEnvironment.WebRootPath; // get us root folder
-                                string stepPath = Path.Combine(wwwRootPath, @"images\DEVICE");
+                                var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", CleanVMFk, "Cleaning", IDstep, Steps.CleaStepsImage);
 
-                                int stepID = cleanVM.CleanViewModel.CleaningID;
-                                var newStep = new الخطوات3
+                                if (System.IO.File.Exists(OldImagePath1))
                                 {
-                                    ID_Tandeef1 = stepID,
-                                    الخطوة1 = stepAdd.الخطوة1,
-                                    الخطوة2 = stepAdd.الخطوة2,
-                                    رقم_الخطوة1 = stepAdd.رقم_الخطوة1,
-                                    رقم_الخطوة2 = stepAdd.رقم_الخطوة2,
-
-                                };
-                                var file1Name1 = $"file1_{newStep.رقم_الخطوة1}";
-                                var file1ForStep1 = HttpContext.Request.Form.Files[file1Name1];
-
-                                if (file1ForStep1 != null && file1ForStep1.Length > 0)
-                                {
-                                    string fileName11 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep1.FileName);
-
-                                    using (var fileStream = new FileStream(Path.Combine(stepPath, fileName11), FileMode.Create)) //save images
-                                    {
-                                        file1ForStep1.CopyTo(fileStream);
-                                    }
-                                    newStep.الصورة1 = @"\images\DEVICE\" + fileName11;
+                                    System.IO.File.Delete(OldImagePath1); // Delete old image if it exists
                                 }
-
-                                var fileName2 = $"file2_{newStep.رقم_الخطوة2}";
-                                var fileStep2 = HttpContext.Request.Form.Files[fileName2];
-
-                                if (fileStep2 != null && fileStep2.Length > 0)
-                                {
-                                    string fileName22 = Guid.NewGuid().ToString() + Path.GetExtension(fileStep2.FileName);
-
-                                    using (var filStream = new FileStream(Path.Combine(stepPath, fileName22), FileMode.Create)) //save images
-                                    {
-                                        fileStep2.CopyTo(filStream);
-                                    }
-                                    newStep.الصورة2 = @"\images\DEVICE\" + fileName22;
-                                }
-                                _unitOfWork.StepsCleanRepository3.Add(newStep);
-                                _unitOfWork.Save();
                             }
+                            string fileNameSteps1 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep.FileName);
+
+                            //اذا المسار مش موجود سو مسار جديد 
+                            if (!Directory.Exists(StepsPath))
+                            {
+                                Directory.CreateDirectory(StepsPath);
+                            }
+
+                            using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
+                            {
+                                file1ForStep.CopyTo(fileStream1);
+                            }
+
+                            Steps.CleaStepsImage = fileNameSteps1; // Update the image path
+                        }
+
+                        // Save or update Steps data to the database
+                        if (Steps.CleaningFK == stepsID) // int stepsID = PrepaVM.PreparationVM.التحضير_ID;
+                        {
+                            var existingSteps = _unitOfWork.StepsCleanRepository3.Get(u => u.CleaStepsID == Steps.CleaStepsID, incloudeProperties: "Cleaning");
+
+                            if (existingSteps != null)
+                            {
+
+                                existingSteps.CleaStepsImage = Steps.CleaStepsImage;
+                                existingSteps.CleaText = Steps.CleaText;
+                                existingSteps.CleaStepsNum = Steps.CleaStepsNum;
+
+                                _unitOfWork.StepsCleanRepository3.Update(existingSteps);
+                            }
+                            else
+                            {
+                                _unitOfWork.StepsCleanRepository3.Add(Steps);
+                            }
+
+                            _unitOfWork.Save();
                         }
                     }
-                    //// reOrder2 
-                    if (selectedValue3 == 0)
-                    {
-                        // Get the maximum order value in the existing list
-                        double maxOrder = _unitOfWork.CleanRepository.GetAll()
-                            .Max(item => item.CleaningOrder) ?? 0.0f; // Default to 0.0f if there are no existing items
-
-                        // Round down the maxOrder value to the nearest integer
-                        int maxOrderAsInt = (int)Math.Floor(maxOrder);
-
-                        // Set the new order value for the "اخرى" (Other) item
-                        double newOrder = maxOrderAsInt + 1.0f;
-                        cleanVM.CleanViewModel.CleaningOrder = newOrder;
-                    }
-                    else
-                    {
-                        var getIdOrder = _unitOfWork.CleanRepository.Get(u => u.CleaningID == selectedValue3);
-                        double OldOrder = getIdOrder.CleaningOrder ?? 0.0f; // Default to 0.0f if Order is null
-                        double newOrder = OldOrder + 0.1f;
-                        cleanVM.CleanViewModel.CleaningOrder = newOrder;
-                    }
-
-                    List<Cleaning> objcleanList = _unitOfWork.CleanRepository.GetAll().OrderBy(item => item.CleaningOrder).ToList();
-                    _unitOfWork.Save();
-                    TempData["success"] = "تم إضافة التحضيرات بشكل ناجح";
                 }
 
-                else //for update التحضيرات,المكونات,الخطوات,الأدوات
-                {
-                    _unitOfWork.CleanRepository.Update(cleanVM.CleanViewModel); // تحديث التحضيرات
-                    _unitOfWork.Save();
+                TempData["success"] = "تم تحديث التنظيف بشكل ناجح";
 
-
-                    //الخطوات 
-                    if (cleanVM.stepsVM3 != null)
-                    {
-                        for (int i = 0; i < cleanVM.stepsVM3.Count; i++)
-                        {
-                            var Steps = cleanVM.stepsVM3[i];
-
-                            string wwwRootPathSteps = _webHostEnvironment.WebRootPath; // get the root folder
-                            string StepsPath = Path.Combine(wwwRootPathSteps, @"images\DEVICE");
-
-                            var file1Name = $"file1_{Steps.رقم_الخطوة1}";
-                            var file1ForStep = HttpContext.Request.Form.Files[file1Name];
-
-                            if (file1ForStep != null)
-                            {
-                                if (!string.IsNullOrEmpty(Steps.الصورة1)) // Check if there's an existing image path
-                                {
-                                    var OldImagePath1 = Path.Combine(wwwRootPathSteps, Steps.الصورة1.TrimStart('\\'));
-
-                                    if (System.IO.File.Exists(OldImagePath1))
-                                    {
-                                        System.IO.File.Delete(OldImagePath1); // Delete old image if it exists
-                                    }
-                                }
-
-                                string fileNameSteps1 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep.FileName);
-                                using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
-                                {
-                                    file1ForStep.CopyTo(fileStream1);
-                                }
-
-                                Steps.الصورة1 = @"\images\DEVICE\" + fileNameSteps1; // Update the image path
-                            }
-
-                            var file2ForStep = HttpContext.Request.Form.Files[$"file2_{Steps.رقم_الخطوة2}"];
-
-                            if (file2ForStep != null)
-                            {
-                                if (!string.IsNullOrEmpty(Steps.الصورة2)) // Check if there's an existing image path
-                                {
-                                    var OldImagePath2 = Path.Combine(wwwRootPathSteps, Steps.الصورة2.TrimStart('\\'));
-
-                                    if (System.IO.File.Exists(OldImagePath2))
-                                    {
-                                        System.IO.File.Delete(OldImagePath2); // Delete old image if it exists
-                                    }
-                                }
-
-                                string fileNameSteps2 = Guid.NewGuid().ToString() + Path.GetExtension(file2ForStep.FileName);
-                                using (var fileStream2 = new FileStream(Path.Combine(StepsPath, fileNameSteps2), FileMode.Create))
-                                {
-                                    file2ForStep.CopyTo(fileStream2);
-                                }
-
-                                Steps.الصورة2 = @"\images\DEVICE\" + fileNameSteps2; // Update the image path
-                            }
-                            // Save or update Steps data to the database
-                            if (Steps.ID_Tandeef1 == stepsID)
-                            {
-                                var existingSteps = _unitOfWork.StepsCleanRepository3.Get(u => u.ID == Steps.ID);
-
-                                if (existingSteps != null)
-                                {
-
-                                    existingSteps.الخطوة1 = Steps.الخطوة1;
-                                    existingSteps.الصورة1 = Steps.الصورة1;
-                                    existingSteps.رقم_الخطوة1 = Steps.رقم_الخطوة1;
-
-                                    existingSteps.الخطوة2 = Steps.الخطوة2;
-                                    existingSteps.الصورة2 = Steps.الصورة2;
-                                    existingSteps.رقم_الخطوة2 = Steps.رقم_الخطوة2;
-
-                                    _unitOfWork.StepsCleanRepository3.Update(existingSteps);
-                                }
-                                else
-                                {
-                                    _unitOfWork.StepsCleanRepository3.Add(Steps);
-                                }
-                                _unitOfWork.Save();
-                            }
-                        }
-                    }
-
-                    TempData["success"] = "تم تحديث التنظيف بشكل ناجح";
-                }
-                return RedirectToAction("CleanList");
+                return RedirectToAction("CleanList", new { id = cleanVM.CleanViewModel.BrandFK });
             }
 
             else
@@ -331,7 +213,14 @@ namespace Test12.Controllers
         [HttpDelete]
         public IActionResult Deletestep3(int? id)
         {
-            var stepsToDelete = _unitOfWork.StepsCleanRepository3.Get(u => u.ID == id);
+            var stepsToDelete = _unitOfWork.StepsCleanRepository3.Get(u => u.CleaStepsID == id);
+
+            var BrandFK = _unitOfWork.CleanRepository.Get(u => u.CleaningID == stepsToDelete.CleaningFK);
+
+            string IDStep = stepsToDelete.CleaStepsID.ToString();
+            string FKBrand = BrandFK.BrandFK.ToString();
+
+            string wwwRootPathSteps = _webHostEnvironment.WebRootPath;
 
             if (stepsToDelete == null)
             {
@@ -339,50 +228,37 @@ namespace Test12.Controllers
             }
 
             // Delete the associated image file
-            if (!string.IsNullOrEmpty(stepsToDelete.الصورة1))
+            if (!string.IsNullOrEmpty(stepsToDelete.CleaStepsImage))
             {
-                string imagePath = _webHostEnvironment.WebRootPath + stepsToDelete.الصورة1;
+                string imagePath = Path.Combine(wwwRootPathSteps, "IMAGES", FKBrand, "Cleaning", IDStep, stepsToDelete.CleaStepsImage);
                 if (System.IO.File.Exists(imagePath))
                 {
                     System.IO.File.Delete(imagePath);
                 }
             }
-            if (!string.IsNullOrEmpty(stepsToDelete.الصورة2))
-            {
-                string imagePath2 = _webHostEnvironment.WebRootPath + stepsToDelete.الصورة2;
-                if (System.IO.File.Exists(imagePath2))
-                {
-                    System.IO.File.Delete(imagePath2);
-                }
-            }
-
-            int LastStep1 = (stepsToDelete?.رقم_الخطوة1 ?? 0) - 2;
-            int LastStep2 = (stepsToDelete?.رقم_الخطوة2 ?? 0) - 2;
-
-            // Delete the selected step
             _unitOfWork.StepsCleanRepository3.Remove(stepsToDelete);
             _unitOfWork.Save();
 
-            var StepId = stepsToDelete.ID_Tandeef1;
-            var stepsInPreparation = _unitOfWork.StepsCleanRepository3.GetAll().Where(c => c.ID_Tandeef1 == StepId).ToList();
+            // Find all steps with a higher PrepStepsNum
+            var CleaningFK = stepsToDelete.CleaningFK;
 
-            //هنا لتغيير الرقم ضروري يصير فيه لوب والشرط أن ضروري id اصغر منه الموجود 
-            for (int i = 0; i < stepsInPreparation.Count; i++)
+            var subsequentSteps = _unitOfWork.StepsCleanRepository3
+                .GetAll(incloudeProperties: "Cleaning").Where(u => u.CleaningFK == CleaningFK).ToList(); // Add ToList() to materialize the query;
+
+            // Decrement PrepStepsNum for each subsequent step
+            for (int i = 0; i < subsequentSteps.Count; i++)
             {
-                var step = stepsInPreparation[i];
+                var step = subsequentSteps[i];
 
-                if (step.ID > id)
+                if (step.CleaStepsID > id)
                 {
-                    step.رقم_الخطوة1 = LastStep1 + 2;
-                    step.رقم_الخطوة2 = LastStep2 + 2;
-
-                    LastStep1 += 2;
-                    LastStep2 += 2;
-
+                    var getOld = _unitOfWork.StepsCleanRepository3.Get(u => u.CleaStepsID == step.CleaStepsID);
+                    getOld.CleaStepsNum -= 1;
                     _unitOfWork.StepsCleanRepository3.Update(step);
                 }
             }
             _unitOfWork.Save();
+
             return Json(new
             {
                 success = true,

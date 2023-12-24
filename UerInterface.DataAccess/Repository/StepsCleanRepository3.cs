@@ -11,7 +11,7 @@ using Test12.Models.Models.Preparation;
 
 namespace Test12.DataAccess.Repository
 {
-    public class StepsCleanRepository3 : Repository<الخطوات3>, IStepsCleanRepository3
+    public class StepsCleanRepository3 : Repository<CleaningSteps>, IStepsCleanRepository3
     {
         private readonly ApplicationDbContext _context;
         public StepsCleanRepository3(ApplicationDbContext context) : base(context)
@@ -19,25 +19,20 @@ namespace Test12.DataAccess.Repository
             _context = context;
         }
 
-        public void Update(الخطوات3 obj)
+        public void Update(CleaningSteps obj)
         {
-            var objFormDb = _context.الخطوات3.FirstOrDefault(u => u.ID == obj.ID);
+            var objFormDb = _context.CleaningSteps.FirstOrDefault(u => u.CleaStepsID == obj.CleaStepsID);
             if (objFormDb != null)
             {
                 // Update properties for Step 1
-                objFormDb.الخطوة1 = obj.الخطوة1;
+                objFormDb.CleaText = obj.CleaText;
 
-                if (obj.الصورة1 != null)
+                if (obj.CleaStepsImage != null)
                 {
-                    objFormDb.الصورة1 = obj.الصورة1;
+                    objFormDb.CleaStepsImage = obj.CleaStepsImage;
                 }
                 // Update properties for Step 2
-                objFormDb.الخطوة2 = obj.الخطوة2;
-
-                if (obj.الصورة2 != null)
-                {
-                    objFormDb.الصورة2 = obj.الصورة2;
-                }
+                
                 // Save changes to the database
                 _context.Entry(objFormDb).State = EntityState.Modified;
                 _context.SaveChanges();

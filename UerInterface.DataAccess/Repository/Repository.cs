@@ -30,7 +30,7 @@ namespace Test12.DataAccess.Repository
             _context.ProductionSteps.Include(u => u.Production);
             _context.LoginModels.Include(u => u.Login_ID);
             _context.Cleaning.Include(u => u.Brand);
-            _context.الخطوات3.Include(u => u.التنظيف);
+            _context.CleaningSteps.Include(u => u.Cleaning);
             _context.DevicesAndTools.Include(u => u.Brand);
             _context.FoodStuffs.Include(u => u.Brand);
             _context.ReadyProducts.Include(u => u.Brand);

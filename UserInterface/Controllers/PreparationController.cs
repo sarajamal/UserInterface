@@ -575,8 +575,6 @@ namespace Test12.Controllers
             var stepsToDelete = _unitOfWork.StepsPreparationRepository.Get(u => u.PrepStepsID == id);
             var BrandFK = _unitOfWork.PreparationRepository.Get(u => u.PreparationsID == stepsToDelete.PreparationsFK);
 
-            string PreStepNum = stepsToDelete.PrepStepsNum != null ? stepsToDelete.PrepStepsNum.ToString() : string.Empty;
-
             string IDStep = stepsToDelete.PrepStepsID.ToString();
             string FKBrand = BrandFK.BrandFK.ToString();
 

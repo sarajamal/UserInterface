@@ -227,7 +227,7 @@ function toggleAddButtonVisibility(value) {
 }
 
 //take two parameter ID1 = ID_التحضير , id=ID for the step . 
-function Deletestep3(ID1, id) { // after save in db . 
+function Deletestep3(id) { // after save in db . 
     Swal.fire({
         title: 'هل أنت متأكد ؟',
         text: " هل تريد استعادة ماتم حذفه؟",
@@ -241,9 +241,8 @@ function Deletestep3(ID1, id) { // after save in db .
         if (result.isConfirmed) {
             var formData = new FormData();
             formData.append("id", id);
-            formData.append("ID1", ID1);
             $.ajax({
-                url: '/Clean/Deletesteps3',
+                url:'/Clean/Deletestep3',
                 type: 'DELETE',
                 data: formData,
                 processData: false,
@@ -310,43 +309,43 @@ function DeleteRow10(button) {
 }
 
 //زر الحذف في صفحة الاضافة
-function DeleteRow3(button) {
-    var tableBody = document.querySelector("#tblSteps tbody");
-    var rows = tableBody.children;
-    var rowIndex = button.getAttribute("data-row-index");
+//function DeleteRow3(button) {
+//    var tableBody = document.querySelector("#tblSteps tbody");
+//    var rows = tableBody.children;
+//    var rowIndex = button.getAttribute("data-row-index");
 
-    // Check if the button click corresponds to the last row
-    if (rowIndex == rows.length - 1) {
-        Swal.fire({
-            title: 'هل أنت متأكد؟',
-            icon: 'warning',
-            showCancelButton: true,
-            cancelButtonText: 'الغاء',
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'نعم!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Remove the last row from the table
-                tableBody.removeChild(rows[rowIndex]);
+//    // Check if the button click corresponds to the last row
+//    if (rowIndex == rows.length - 1) {
+//        Swal.fire({
+//            title: 'هل أنت متأكد؟',
+//            icon: 'warning',
+//            showCancelButton: true,
+//            cancelButtonText: 'الغاء',
+//            confirmButtonColor: '#d33',
+//            cancelButtonColor: '#3085d6',
+//            confirmButtonText: 'نعم!'
+//        }).then((result) => {
+//            if (result.isConfirmed) {
+//                // Remove the last row from the table
+//                tableBody.removeChild(rows[rowIndex]);
 
-                // Display a success message
-                Swal.fire({
-                    icon: 'success',
-                    title: 'تم الحذف بنجاح',
+//                // Display a success message
+//                Swal.fire({
+//                    icon: 'success',
+//                    title: 'تم الحذف بنجاح',
 
-                });
-            }
-        });
-    } else {
-        // Display a message that you cannot delete rows until they are saved in the database
-        Swal.fire({
-            icon: 'error',
-            title: 'أنت قادر على حذف الصف الأخير فقط ',
-            text: 'يجب حفظ التغييرات أولا والعودة الى صفحة التعديل لحذف الصف.',
-        });
-    }
-}
+//                });
+//            }
+//        });
+//    } else {
+//        // Display a message that you cannot delete rows until they are saved in the database
+//        Swal.fire({
+//            icon: 'error',
+//            title: 'أنت قادر على حذف الصف الأخير فقط ',
+//            text: 'يجب حفظ التغييرات أولا والعودة الى صفحة التعديل لحذف الصف.',
+//        });
+//    }
+//}
 
 
 //function DeleteRow(button) {

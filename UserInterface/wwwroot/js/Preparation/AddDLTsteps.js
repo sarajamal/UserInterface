@@ -186,7 +186,7 @@ function displaySelectedImage(input, imgId) {
 
 
 //take two parameter ID1 = ID_التحضير , id=ID for the step . 
-function Deletestep( id) { // after save in db . 
+function Deletestep(id) { // after save in db . 
     Swal.fire({
         title: 'هل أنت متأكد ؟',
         text: " هل تريد استعادة ماتم حذفه؟",

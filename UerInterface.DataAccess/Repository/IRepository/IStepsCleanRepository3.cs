@@ -8,10 +8,10 @@ using Test12.Models.Models.Preparation;
 
 namespace Test12.DataAccess.Repository.IRepository
 {
-    public interface IStepsCleanRepository3 : IRepository<الخطوات3>
+    public interface IStepsCleanRepository3 : IRepository<CleaningSteps>
     {
 
-        void Update(الخطوات3 obj);
+        void Update(CleaningSteps obj);
      
     }
 }

@@ -17,9 +17,9 @@ namespace Test12.Models.ViewModel
         public Cleaning CleanViewModel { get; set; }
         [ValidateNever]
         [JsonIgnore]
-        public IEnumerable<Cleaning> CleanList { get; set; }
+        public List<Cleaning> CleanList { get; set; }
 
-        public List<الخطوات3> stepsVM3 { get; set; }
+        public List<CleaningSteps> CleaningSteps { get; set; }
 
         [ValidateNever]
         public Brands tredMaeketCleanVM { get; set; }

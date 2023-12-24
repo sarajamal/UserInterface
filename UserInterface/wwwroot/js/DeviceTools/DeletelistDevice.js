@@ -112,32 +112,7 @@ function DelteToolsdevice(url) {
     })
 }
 
-function loadAndShowModal(button) {
-    var controller = button.getAttribute('data-controller');
-    var action = button.getAttribute('data-action');
-    var id = button.getAttribute('data-id');
-    var url = `/${controller}/${action}?id=${id}`;
-
-    fetch(url)
-        .then(response => response.text())
-        .then(html => {
-            console.log("Received HTML:", html); // Add this line to log the HTML
-            // Dynamically add the modal HTML to the page
-            document.body.insertAdjacentHTML('beforeend', html);
-
-            // Now that the modal is part of the document, show it
-            $('#CreateDeviceTools').modal('show');
-        })
-        .catch(error => console.error('Error:', error));
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.add-button').forEach(function (button) {
-        button.addEventListener('click', function () {
-            loadAndShowModal(this);
-        });
-    });
-});
+ 
 
 function loadAndShowModal(button) {
     var controller = button.getAttribute('data-controller');
