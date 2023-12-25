@@ -38,13 +38,7 @@ function loadDataTable(id) {
                 data: 'cleaningID',
                 "render": function (data) {
                     return `<div role="group">
-                    <button type="button" class="btn btn-primary px-4 clean-index-button"
-                            data-toggle="modal"
-                            data-target="#Upsert3"
-                            data-controller="Clean"
-                            data-action="Upsert3"
-                            data-id="${data}">
-                       <i class="bi bi-pencil-square"></i> </button>   
+                     <a href="/Clean/Upsert3?id=${data}" class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i></a> 
                      <a onClick=DeleteCleanPost('/Clean/DeleteCleanPost/${data}') class="btn btn-danger "> <i class="bi bi-trash-fill"></i></a>
                     </div>`;
                 },
@@ -97,34 +91,34 @@ function DeleteCleanPost(url) {
     })
 }
 
-function loadAndShowModal(button) {
-    var controller = button.getAttribute('data-controller');
-    var action = button.getAttribute('data-action');
-    var id = button.getAttribute('data-id');
-    var url = `/${controller}/${action}?id=${id}`;
-    var targetModalId = button.getAttribute('data-target');
+//function loadAndShowModal(button) {
+//    var controller = button.getAttribute('data-controller');
+//    var action = button.getAttribute('data-action');
+//    var id = button.getAttribute('data-id');
+//    var url = `/${controller}/${action}?id=${id}`;
+//    var targetModalId = button.getAttribute('data-target');
 
-    fetch(url)
-        .then(response => response.text())
-        .then(html => {
-            console.log("Received HTML:", html); // For debugging purposes
-            document.body.insertAdjacentHTML('beforeend', html);
+//    fetch(url)
+//        .then(response => response.text())
+//        .then(html => {
+//            console.log("Received HTML:", html); // For debugging purposes
+//            document.body.insertAdjacentHTML('beforeend', html);
 
-            // Show the appropriate modal based on the targetModalId
-            if (targetModalId === '#Upsert3') {
-                $('#Upsert3').modal('show');
-            } else if (targetModalId === '#Index') {
-                $('#Index').modal('show');
-            }
-        })
-        .catch(error => console.error('Error:', error));
-}
+//            // Show the appropriate modal based on the targetModalId
+//            if (targetModalId === '#Upsert3') {
+//                $('#Upsert3').modal('show');
+//            } else if (targetModalId === '#CreateClean') {
+//                $('#CreateClean').modal('show');
+//            }
+//        })
+//        .catch(error => console.error('Error:', error));
+//}
 
-document.addEventListener('DOMContentLoaded', function () {
-    document.body.addEventListener('click', function (event) {
-        if (event.target.matches('.add-button, .clean-index-button') || event.target.closest('.add-button, .clean-index-button')) {
-            const button = event.target.matches('.add-button, .clean-index-button') ? event.target : event.target.closest('.add-button, .clean-index-button');
-            loadAndShowModal(button);
-        }
-    });
-});
+//document.addEventListener('DOMContentLoaded', function () {
+//    document.body.addEventListener('click', function (event) {
+//        if (event.target.matches('.add-button, .clean-index-button') || event.target.closest('.add-button, .clean-index-button')) {
+//            const button = event.target.matches('.add-button, .clean-index-button') ? event.target : event.target.closest('.add-button, .clean-index-button');
+//            loadAndShowModal(button);
+//        }
+//    });
+//});

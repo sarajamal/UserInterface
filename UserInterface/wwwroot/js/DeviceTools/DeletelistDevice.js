@@ -128,8 +128,8 @@ function loadAndShowModal(button) {
             document.body.insertAdjacentHTML('beforeend', html);
 
             // Show the appropriate modal based on the targetModalId
-            if (targetModalId === '#CreateFoods') {
-                $('#CreateFoods').modal('show');
+            if (targetModalId === '#CreateDeviceTools') {
+                $('#CreateDeviceTools').modal('show');
             } else if (targetModalId === '#Index') {
                 $('#Index').modal('show');
             }

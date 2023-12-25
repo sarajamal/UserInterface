@@ -37,7 +37,7 @@ function AddnewRowstepsUpdate(preparationFk) {
     newCell = document.createElement("td");
     newCell.style.textAlign = "center";
     newCell.innerHTML = `
-        <input type="hidden" name="stepsVM[${newRowIndex}].PreparationsFK" value="${preparationFk}" />
+        <input type="hidden" name="stepsVM[${newRowIndex}].PrepStepsID" value="${preparationFk}" />
         <input type="hidden" name="stepsVM[${newRowIndex}].PrepStepsNum" value="${currentStep1Value}" />
         <input type="hidden" name="stepsVM[${newRowIndex}].PrepImage"  />
         <div class="row">

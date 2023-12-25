@@ -1,16 +1,15 @@
 ﻿@model CleanVM;
 
-<div class="modal fade" id="Upsert3" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title text-center font-weight-bold" id="exampleModalLongTitle"> تعديل خطوات التنظيف  </h3>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+<body>
+    <div class="card shadow border-0 my-4 py-4">
+        <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+            <div class="row">
+                <div class="col-12 text-center">
 
-            <div class="modal-body">
+                    <h2 class="text-white py-2"> تعديل التنظيف </h2>
+                </div>
+            </div>
+        </div>
 
                 <form method="post" class="row" enctype="multipart/form-data" asp-action="Upsert3" asp-controller="Clean">
 
@@ -125,10 +124,8 @@
                         </div>
                     </div>
                 </form>
-            </div>
-        </div>
     </div>
-</div>
+</body>
 
 @section Scripts{
 
