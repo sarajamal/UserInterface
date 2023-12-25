@@ -91,7 +91,7 @@ namespace Test12.Controllers
         }
         #endregion
 
-
+        //صفحة التعديل   
         public IActionResult Upsert3(int? id) // After Enter تعديل Display التحضيرات والمكونات...
         {
             CleanVM CLVM = new()
@@ -109,6 +109,134 @@ namespace Test12.Controllers
             CLVM.CleaningSteps = _unitOfWork.StepsCleanRepository3.GetAll().Where(c => c.CleaningFK == id).ToList();
 
             return View(CLVM);
+        } 
+
+
+        //صفحة الاضافة
+        public IActionResult CreateClean(int? id) // After Enter تعديل Display التحضيرات والمكونات...
+        {
+            CleanVM CLVM = new()
+            {
+                CleanViewModel = new Cleaning(),
+                CleaningVMorder = new List<Cleaning>(),
+                CleaningSteps = new List<CleaningSteps>(),
+                tredMaeketCleanVM = new Brands(),
+
+            };
+
+            CLVM.CleaningVMorder = _unitOfWork.CleanRepository.GetAll().Where(c => c.BrandFK == id).ToList();
+            CLVM.tredMaeketCleanVM = _unitOfWork.TredMarketRepository.Get(c => c.BrandID == id);
+            CLVM.CleanViewModel = new Cleaning();
+            CLVM.CleaningSteps = new List<CleaningSteps>();
+
+            return View(CLVM);
+        }
+
+        //POST صفحة الاضافة 
+        [HttpPost]
+        public IActionResult CreateClean(CleanVM clean, int selectCleaning) // After Enter تعديل Display التحضيرات والمكونات...
+        {
+            if (ModelState.IsValid)
+            {
+
+                var FK = clean.tredMaeketCleanVM.BrandID;
+                //for update .. 
+
+                if (clean.CleanViewModel.CleaningID == 0)  // if Add 
+                {
+
+                    var setFK = new Cleaning
+                    {
+                        BrandFK = FK,
+                        DeviceName = clean.CleanViewModel.DeviceName,
+
+                    };
+                    _unitOfWork.CleanRepository.Add(setFK);
+                    _unitOfWork.Save();
+                    int FKClean = setFK.CleaningID;
+
+                    //الخطوات
+
+                    if (clean.CleaningSteps != null)
+                    {
+                        foreach (var stepAdd in clean.CleaningSteps)
+                        {
+
+                            if (stepAdd != null && stepAdd.CleaStepsID == 0)
+                            {
+                                string wwwRootstepPath = _webHostEnvironment.WebRootPath; // get us root folder
+
+
+                                int CleaningFK = FKClean;
+                                var newStep = new CleaningSteps
+                                {
+                                    CleaningFK = CleaningFK,
+                                    CleaText = stepAdd.CleaText,
+                                    CleaStepsNum = stepAdd.CleaStepsNum
+
+                                };
+                                _unitOfWork.StepsCleanRepository3.Add(newStep);
+                                _unitOfWork.Save();
+
+                                var file1Name1 = $"file1_{newStep.CleaStepsID}";
+                                var file1ForStep1 = HttpContext.Request.Form.Files[file1Name1];
+
+                                string BrandVMFk = setFK.BrandFK.ToString();
+                                string CleanStepsID1 = newStep.CleaStepsID.ToString();
+
+                                string stepPath = Path.Combine(wwwRootstepPath, "IMAGES", BrandVMFk, "Cleaning", CleanStepsID1);
+
+                                if (file1ForStep1 != null && file1ForStep1.Length > 0)
+                                {
+                                    string fileName11 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep1.FileName);
+
+                                    if (!Directory.Exists(stepPath))
+                                    {
+                                        Directory.CreateDirectory(stepPath);
+                                    }
+
+                                    using (var fileStream = new FileStream(Path.Combine(stepPath, fileName11), FileMode.Create)) //save images
+                                    {
+                                        file1ForStep1.CopyTo(fileStream);
+                                    }
+                                    newStep.CleaStepsImage = fileName11;
+                                }
+                                _unitOfWork.Save();
+                            }
+                        }
+                    }
+
+                    //// reOrder2 
+                    if (selectCleaning == 0)
+                    {
+                        // Get the maximum order value in the existing list
+                        double maxOrder = _unitOfWork.CleanRepository.GetAll()
+                            .Max(item => item.CleaningOrder) ?? 0.0f; // Default to 0.0f if there are no existing items
+
+                        // Round down the maxOrder value to the nearest integer
+                        int maxOrderAsInt = (int)Math.Floor(maxOrder);
+
+                        // Set the new order value for the "اخرى" (Other) item
+                        double newOrder = maxOrderAsInt + 1.0f;
+                        setFK.CleaningOrder = newOrder;
+                    }
+                    else
+                    {
+                        var getIdOrder = _unitOfWork.CleanRepository.Get(u => u.CleaningID == selectCleaning);
+                        double OldOrder = getIdOrder.CleaningOrder ?? 0.0f; // Default to 0.0f if Order is null
+                        double newOrder = OldOrder + 0.1f;
+                        setFK.CleaningOrder = newOrder;
+                    }
+
+                    List<Cleaning> objCleanList = _unitOfWork.CleanRepository.GetAll().OrderBy(item => item.CleaningOrder).ToList();
+                    _unitOfWork.Save();
+                    TempData["success"] = "تم إضافة التنظيف بشكل ناجح";
+                }
+
+
+
+            }
+            return RedirectToAction("CleanList", new { id = clean.tredMaeketCleanVM.BrandID });
         }
 
         [HttpPost] //This for Add Or Update Page . 
@@ -266,5 +394,20 @@ namespace Test12.Controllers
             });
         }
         #endregion
+
+        [HttpGet]
+        public IActionResult GetLastId()
+        {
+            try
+            {
+                int lastId = _unitOfWork.CleanRepository.GetLastStepId();
+                return Ok(lastId);
+            }
+            catch (Exception ex)
+            {
+                // Handle exception appropriately
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }
