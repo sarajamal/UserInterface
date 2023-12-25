@@ -11,5 +11,6 @@ namespace Test12.DataAccess.Repository.IRepository
     public interface ICleanRepository : IRepository<Cleaning>
     {
         void Update(Cleaning obj);
+        int GetLastStepId();
     }
 }
