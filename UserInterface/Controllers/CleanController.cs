@@ -149,6 +149,7 @@ namespace Test12.Controllers
                     {
                         BrandFK = FK,
                         DeviceName = clean.CleanViewModel.DeviceName,
+                        Note = clean.CleanViewModel.Note,
 
                     };
                     _unitOfWork.CleanRepository.Add(setFK);
@@ -178,7 +179,7 @@ namespace Test12.Controllers
                                 _unitOfWork.StepsCleanRepository3.Add(newStep);
                                 _unitOfWork.Save();
 
-                                var file1Name1 = $"file1_{newStep.CleaStepsID}";
+                                var file1Name1 = $"file1_{newStep.CleaStepsNum}";
                                 var file1ForStep1 = HttpContext.Request.Form.Files[file1Name1];
 
                                 string BrandVMFk = setFK.BrandFK.ToString();
@@ -271,7 +272,7 @@ namespace Test12.Controllers
 
                         string StepsPath = Path.Combine(wwwRootPathSteps, "IMAGES", CleanVMFk, "Cleaning", IDstep);
 
-                        var file1Name = $"file1_{Steps.CleaStepsID}";
+                        var file1Name = $"file1_{Steps.CleaStepsNum}";
                         var file1ForStep = HttpContext.Request.Form.Files[file1Name];
 
                         if (file1ForStep != null)

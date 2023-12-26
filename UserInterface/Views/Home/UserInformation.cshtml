@@ -10,7 +10,8 @@
             <div class="row">
                 <a href="@Url.Action("WelcomTredMarket", "Home", new { id = item.BrandID })">
                     @item.BrandName
-                    <img class="card-img-right flex-auto d-none d-md-block" src="@Url.Content("~/IMAGES/BRAND/" + item.BrandID + "/" + item.BrandLogoImage)" alt="Card image cap" style="width: 150px; height: 100px">
+                    <img class="card-img-right flex-auto d-none d-md-block" src="@Url.Content("~/IMAGES/" + item.BrandID + "/BRAND/" +   item.BrandLogoImage)" alt="Card image cap" style="width: 150px; height: 100px">
+ 
                 </a>
             </div>
         }

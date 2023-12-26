@@ -6,17 +6,25 @@
     newRowIndex = stepCells.length;
 
     var lastCell = stepCells[stepCells.length - 1];
-    console.log("Step lastCell length:", lastCell); // Debugging log
+    console.log("Step lastCell:", lastCell); // Debugging log
 
     var lastStepIDInput = lastCell ? lastCell.querySelector(`input[name$="CleaStepsID"]`) : null;
-    var lastStepInput = lastCell ? lastCell.querySelector(`input[name$="CleaStepsNum"]`) : null;
+    console.log("lastStepIDInputBefor:", lastStepIDInput); // Debugging log
 
     var lastStepIDValue = lastStepIDInput ? parseInt(lastStepIDInput.value) : 0;
+    console.log("lastStepIDValue:", lastStepIDValue); // Debugging log
+
+    var lastStepInput = lastCell ? lastCell.querySelector(`input[name$="CleaStepsNum"]`) : null;
+    console.log("lastStepInput:", lastStepInput); // Debugging log
+
     var lastStepValue = lastStepInput ? parseInt(lastStepInput.value) : 0;
+    console.log("lastStepValue:", lastStepValue); // Debugging log
 
     currentStep1Value = lastStepValue + 1;
     currentIDValue = lastStepIDValue + 1;
 
+    console.log("currentStep1Value:", currentStep1Value); // Debugging log
+    console.log("currentIDValue:", currentIDValue); // Debugging log
 
     var isEven = currentStep1Value % 2 === 0;
     var newRow, newCell;
@@ -40,10 +48,10 @@
             <div class="col-12 text-center">
                 <div>${currentStep1Value}</div>
                 <div>
-                    <img id="PreviewPhoto1_${currentIDValue}" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
+                    <img id="PreviewPhoto1_${currentStep1Value}" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
                 </div>
                 <div class="form-group mt-2">
-                    <input type="file" name="file1_${currentIDValue}" class="border-0 shadow mt-5" id="customFile1_${currentIDValue}" data-preview-id="PreviewPhoto1_${currentIDValue}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${currentIDValue}')">
+                    <input type="file" name="file1_${currentStep1Value}" class="border-0 shadow mt-5" id="customFile1_${currentStep1Value}" data-preview-id="PreviewPhoto1_${currentStep1Value}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${currentStep1Value}')">
                     <textarea class="form-control mt-2" id="CleaningSteps_${newRowIndex}" name="CleaningSteps[${newRowIndex}].CleaText"></textarea>
                 </div>
                 <div class="py-5"></div>
@@ -62,7 +70,7 @@
 var currentStep1Value = 1;
 var clickCount = 0;
 var lastID = 0; // Initialize lastID globally
-function AddnewRowstepsNew3(CleanFK) {
+function AddnewRowstepsNew3() {
     if (clickCount === 0) {
         // Only retrieve lastID from server on the first click
         $.ajax({
@@ -70,7 +78,7 @@ function AddnewRowstepsNew3(CleanFK) {
             type: 'GET',
             success: function (response) {
                 lastID = parseInt(response) + 1;
-                addStep(CleanFK);
+                addStep();
             },
             error: function (xhr, status, error) {
                 console.error('Error fetching last ID:', error);
@@ -79,10 +87,10 @@ function AddnewRowstepsNew3(CleanFK) {
     } else {
         // On subsequent clicks, increment lastID locally
         lastID++;
-        addStep(CleanFK);
+        addStep();
     }
 }
-function addStep(CleanFK) {
+function addStep() {
     // Find the table body element
     var tableBody = document.querySelector("#tblSteps3 tbody");
 
@@ -100,7 +108,6 @@ function addStep(CleanFK) {
     var newCell = document.createElement("td");
     newCell.style.textAlign = "center";
     newCell.innerHTML = `
-         <input type="hidden" name="CleaningSteps[${clickCount}].BrandFK" value="${CleanFK}" />
          <input type="hidden" name="CleaningSteps[${clickCount}].CleaStepsImage" />
          <input type="hidden" name="CleaningSteps[${clickCount}].CleaStepsNum" value="${currentStep1Value}" />
 
@@ -108,10 +115,10 @@ function addStep(CleanFK) {
             <div class="col-12 text-center">
                 <div>${currentStep1Value}</div>
                 <div>
-                    <img id="PreviewPhoto1_${lastID}" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
+                    <img id="PreviewPhoto1_${currentStep1Value}" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
                 </div>
                 <div class="form-group mt-2">
-                    <input type="file" name="file1_${lastID}" class="border-0 shadow mt-5" id="customFile1_${lastID}" data-preview-id="PreviewPhoto1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
+                    <input type="file" name="file1_${currentStep1Value}" class="border-0 shadow mt-5" id="customFile1_${currentStep1Value}" data-preview-id="PreviewPhoto1_${currentStep1Value}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${currentStep1Value}')">
                     <textarea class="form-control mt-2" id="CleaningSteps_${clickCount}" name="CleaningSteps[${clickCount}].CleaText"></textarea>
                 </div>
             </div>

@@ -28,5 +28,6 @@ namespace Test12.DataAccess.Repository.IRepository
        
 
         void Save();
+        void Save111();
     }
 }

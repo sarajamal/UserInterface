@@ -59,6 +59,11 @@ namespace Test12.DataAccess.Repository
         {
             _context.SaveChanges();
         }
+
+        public void Save111()
+        {
+            _context.SaveChangesAsync();
+        }
     }
 
 }
