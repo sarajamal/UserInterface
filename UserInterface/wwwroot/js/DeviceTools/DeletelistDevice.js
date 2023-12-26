@@ -87,7 +87,7 @@ function loadDataTable(id) {
                 data: 'iD1',
                 "render": function (data) {
                     return `<div role="group">
-                     <a href="/Device_tool/Index?id=${data}" class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i></a>               
+                     <a href="/Device_tool/Index?id=${data}" class="btn btn-style1 mx-2"> <i class="bi bi-pencil-square"></i></a>               
                      <a onClick=DelteToolsdevice('/Device_tool/DelteToolsdevice/${data}') class="btn btn-danger "> <i class="bi bi-trash-fill"></i></a>
                     </div>`;
                 },

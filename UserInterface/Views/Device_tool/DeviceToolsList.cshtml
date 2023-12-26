@@ -5,8 +5,9 @@
 }
 
 
+
 <div class="card shadow border-0 my-4">
-    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+    <div class="card-header bg-blue bg-gradient ml-0 py-3">
         <div class="row">
             <div class="col-12 text-center">
                 <h2 class="text-white py-2"> قائمة الأدوات والأجهزة </h2>
@@ -17,8 +18,8 @@
 
     <div class="card-body p-4">
 
-        <table class="table table-bordered table-striped py-5 mb-3 pb-4" id="tblDatadevice" style="width:100%">
-            <thead data-id="@TempData["ID"]">
+        <table class="table table-style1 table-bordered  table-striped py-5 mb-3 pb-4" id="tblDatadevice" style="width:100%">
+            <thead class="tbhead-style1" data-id="@TempData["ID"]">
 
                 <tr class=" py-5 mb-3 pb-4">
                     <th style="text-align:center ;font-size:medium">
@@ -36,7 +37,7 @@
 
                         <div style="text-align:center">
                             <div style="text-align:center">
-                                <a asp-controller="Device_tool" asp-action="CreateIndex" asp-route-id="@TempData["ID"]" name="AddButtonItem" class=" btn btn-primary px-4 add-button">
+                                <a asp-controller="Device_tool" asp-action="CreateIndex" asp-route-id="@TempData["ID"]" name="AddButtonItem" class=" btn btn-style2 fnt-white px-4 add-button">
                                     <i class="bi bi-plus-circle"></i>
                                 </a>
                             </div>
@@ -60,7 +61,7 @@
             </td>
             <td class="mb-3" style="text-align:center">
             <div class="w-75 btn-group py-4" role="group">
-            <a asp-controller="Preparation" asp-action="Upsert" asp-route-id="@item.التحضير_ID" class="btn btn-primary mx-2">
+            <a asp-controller="Preparation" asp-action="Upsert" asp-route-id="@item.التحضير_ID" class="btn btn-style2 mx-2">
             <i class="bi bi-pencil-square"> </i> تعديل
             </a>
 

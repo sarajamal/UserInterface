@@ -3,7 +3,7 @@
 <div class="row pb-3">
 
     <div class="card shadow border-0 my-4 py-4">
-        <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="card-header bg-blue bg-gradient ml-0 py-3">
             <div class="row">
                 <div class="col-12 text-center">
                     <h2 class="text-white py-2">
@@ -15,10 +15,10 @@
 
         <form method="post" class="row" enctype="multipart/form-data" asp-action="CreateFood" asp-controller="Food">
 
-            <div class="col-lg-3 col-sm-6">
+            <div class="col-lg-12">
                 <div class="row p-2">
                     <div class="col-12 p-1">
-                        <div class="card border-0 p-3 shadow  border-top border-5 rounded">
+                        <div class="card fxcc border-0 p-3 shadow  border-top border-5 rounded">
 
 
                             <input asp-for="tredMaeketFoodsVM.BrandID" hidden />
@@ -59,7 +59,7 @@
                                 </tbody>
                             </table>
 
-                            <div class="form-floating py-2 col-12">
+                            <div class="form-floating py-2 col-6">
                                 @{
                                     var sortedFoodsName = Model.FoodsVMorder.OrderBy(item => item.FoodStuffsOrder).ToList();
                                 }
@@ -73,14 +73,14 @@
                                 </select>
                             </div>
 
-                            <div class="form-group col-12 py-2">
+                            <div class="form-group col-6 py-2">
                                 <div style="text-align: left;">
 
-                                    <div class="form-group col-12 py-5">
+
 
                                         <input type="submit" value=" حفظ" asp-route-id="@Model.tredMaeketFoodsVM.BrandID"
-                                               style="text-align:center" class="btn btn-primary me-3" id="submitButton5" />
-                                    </div>
+                                               style="text-align:center" class="btn btn-style1 fnt-white me-3" id="submitButton5" />
+
                                 </div>
                             </div>
                         </div>

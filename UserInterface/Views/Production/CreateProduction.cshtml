@@ -2,7 +2,7 @@
 
 <body>
     <div class="card shadow border-0 my-4 py-4">
-        <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="card-header bg-blue bg-gradient ml-0 py-3">
             <div class="row">
                 <div class="col-12 text-center">
 
@@ -165,7 +165,7 @@
                             <h4 style="text-align:right">الأدوات</h4>
                         </div>
                         @* id is important!!*@
-                        <table id="tblToolVarity2" class="table table-bordered table-striped" data-Production-id="@Model.Productionvm.ProductionID">
+                        <table id="tblToolVarity2" class="table table-style1 table-bordered table-striped" data-Production-id="@Model.Productionvm.ProductionID">
                             <thead>
                                 <tr>
                                     <th class="col-1">رقم الأداة</th>
@@ -200,7 +200,7 @@
                         <div class="form-group col-4 py-2 ">
                             <h4 style="text-align:right"> الخطوات</h4>
                         </div>
-                        <table id="tblSteps2" class="table table-bordered table-striped" data-Production-id="@Model.Productionvm.ProductionID">
+                        <table id="tblSteps2" class="table table-style1 table-bordered table-striped" data-Production-id="@Model.Productionvm.ProductionID">
 
                             <tbody>
                                 <tr>
@@ -238,7 +238,7 @@
                             <div style="text-align: left;">
 
                                 <div class="form-group col-12 py-5">
-                                    <input type="submit" value=" حفظ" asp-action="CreateProduction" asp-route-id="@Model.Productionvm.ProductionID" style="text-align:center" class="btn btn-primary me-3" id="submitButton" />
+                                    <input type="submit" value=" حفظ" asp-action="CreateProduction" asp-route-id="@Model.Productionvm.ProductionID" style="text-align:center" class="btn btn-style1 me-3" id="submitButton" />
                                 </div>
 
                             </div>

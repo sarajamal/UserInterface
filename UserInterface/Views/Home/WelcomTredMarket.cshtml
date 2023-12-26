@@ -1,8 +1,8 @@
 ﻿@model LoginTredMarktViewModel
 
 <header>
-    <nav class="navbar navbar-dark bg-primary me-auto">
-        <div class="container-fluid bg-primary">
+    <nav class="navbar navbar-dark me-auto">
+        <div class="container-fluid bg-blue">
             <a class="navbar-brand" href="#">
                 <img src="@Url.Content("~/IMAGES/BRAND/" + Model.TredMarktVM.BrandID + "/" + Model.TredMarktVM.BrandCoverImage)"
                      class="me-2"
@@ -15,20 +15,20 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-4" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
-                <div class="offcanvas-header bg-primary">
-                    <h4 class="bg-primary" id="offcanvasDarkNavbarLabel" style="color:white">قم بالتعديل</h4>
+                <div class="offcanvas-header bg-blue">
+                    <h4 class="bg-blue" id="offcanvasDarkNavbarLabel" style="color:white">قم بالتعديل</h4>
                     <button type="button" class="btn-close btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
-                <div class="offcanvas-body bg-primary">
-                    <nav id="TableOfContents me-auto " class="bg-primary">
+                <div class="offcanvas-body bg-blue">
+                    <nav id="TableOfContents me-auto " class="bg-blue">
                         <div class="bd-toc mt-3 mb-4 my-md-0 ps-xl-2 mb-lg-4 text-muted">
                             <strong class="d-block h6 my-2 pb-2 border-bottom"></strong>
 
-                            <nav id="TableOfContents " class="bg-primary">
+                            <nav id="TableOfContents " class="bg-blue">
                                 <ul class="navbar-nav flex-grow-1">
                                     @if (Model.DeviceToolsLoginVM == null || Model.DeviceToolsLoginVM.BrandFK == null || Model.DeviceToolsLoginVM.BrandFK == 0)
                                     {
-                                        <li class="nav-item border p-2 mt-2  "><a class="nav-link  " >الأجهزةوالأدوات</a></li>
+                                        <li class="nav-item border p-2 mt-2  "><a class="nav-link  " >الأجهزة والأدوات</a></li>
                                     }
                                     else
                                     {
@@ -102,7 +102,7 @@
 
 
 <body>
-    <div class="row">
+    <div class="row nm">
 
         @Model.TredMarktVM.BrandName
         <img class="card-img-right flex-auto d-none d-md-block" src="@Url.Content("~/IMAGES/BRAND/" + Model.TredMarktVM.BrandID + "/" + Model.TredMarktVM.BrandLogoImage)" alt="Card image cap" style="width: 150px; height: 100px">
