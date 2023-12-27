@@ -13,7 +13,6 @@ namespace Test12.Models.Models.Clean
     public class CleaningSteps
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CleaStepsID { get; set; }
 
         public string? CleaText { get; set; }

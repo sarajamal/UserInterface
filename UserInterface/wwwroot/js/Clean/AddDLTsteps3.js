@@ -1,46 +1,55 @@
-﻿function AddnewRowstepsUpdate3(CleaningFK) { //صفحة التعديل
+﻿
+var clickCount = 0;
+var lastID = 0; // Initialize lastID globally
+function AddnewRowstepsUpdate3(CleaningFK) { //صفحة التعديل
 
-    var tableBody = document.querySelector("#tblSteps3 tbody");
-    var stepCells = tableBody.querySelectorAll("td");
-
-    newRowIndex = stepCells.length;
-
-    var lastCell = stepCells[stepCells.length - 1];
-    console.log("Step lastCell:", lastCell); // Debugging log
-
-    var lastStepIDInput = lastCell ? lastCell.querySelector(`input[name$="CleaStepsID"]`) : null;
-    console.log("lastStepIDInputBefor:", lastStepIDInput); // Debugging log
-
-    var lastStepIDValue = lastStepIDInput ? parseInt(lastStepIDInput.value) : 0;
-    console.log("lastStepIDValue:", lastStepIDValue); // Debugging log
-
-    var lastStepInput = lastCell ? lastCell.querySelector(`input[name$="CleaStepsNum"]`) : null;
-    console.log("lastStepInput:", lastStepInput); // Debugging log
-
-    var lastStepValue = lastStepInput ? parseInt(lastStepInput.value) : 0;
-    console.log("lastStepValue:", lastStepValue); // Debugging log
-
-    currentStep1Value = lastStepValue + 1;
-    currentIDValue = lastStepIDValue + 1;
-
-    console.log("currentStep1Value:", currentStep1Value); // Debugging log
-    console.log("currentIDValue:", currentIDValue); // Debugging log
-
-    var isEven = currentStep1Value % 2 === 0;
-    var newRow, newCell;
-
-    // Row creation logic
-    if (isEven) {
-        newRow = tableBody.lastElementChild;
+    if (clickCount === 0) {
+        // Only retrieve lastID from server on the first click
+        $.ajax({
+            url: '/Clean/GetLastId',
+            type: 'GET',
+            success: function (response) {
+                lastID = parseInt(response) + 1;
+                addStep(CleaningFK);
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching last ID:', error);
+            }
+        });
     } else {
-        newRow = document.createElement("tr");
-        tableBody.appendChild(newRow);
-
+        // On subsequent clicks, increment lastID locally
+        lastID++;
+        addStep(CleaningFK);
     }
+    function addStep(CleaningFK) {
 
-    newCell = document.createElement("td");
-    newCell.style.textAlign = "center";
-    newCell.innerHTML = `
+        // Find the table body element
+        var tableBody = document.querySelector("#tblSteps3 tbody");
+        var stepCells = tableBody.querySelectorAll("td");
+        var stepCellsCount = stepCells.length;
+
+        // Determine if adding to an existing row or creating a new row
+        var newRow;
+        if (stepCellsCount % 2 === 0) { // Every two clicks, start a new row
+            newRow = document.createElement("tr");
+            tableBody.appendChild(newRow);
+        } else {
+            // Get the last row in the table to append a new <td>
+            newRow = tableBody.lastElementChild;
+        }
+
+        var newRowIndex = stepCellsCount;
+
+        var lastCell = stepCells[stepCellsCount - 1];
+        var lastStepInput = lastCell ? lastCell.querySelector(`input[name$="CleaStepsNum"]`) : null;
+        var lastStepValue = lastStepInput ? parseInt(lastStepInput.value) : 0;
+
+        var currentStep1Value = lastStepValue + 1;
+
+
+        newCell = document.createElement("td");
+        newCell.style.textAlign = "center";
+        newCell.innerHTML = `
         <input type="hidden" name="CleaningSteps[${newRowIndex}].CleaningFK" value="${CleaningFK}" />
         <input type="hidden" name="CleaningSteps[${newRowIndex}].CleaStepsNum" value="${currentStep1Value}" />
         <input type="hidden" name="CleaningSteps[${newRowIndex}].CleaStepsImage"  />
@@ -48,23 +57,24 @@
             <div class="col-12 text-center">
                 <div>${currentStep1Value}</div>
                 <div>
-                    <img id="PreviewPhoto1_${currentStep1Value}" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
+                    <img id="PreviewPhoto1_${lastID}" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
                 </div>
                 <div class="form-group mt-2">
-                    <input type="file" name="file1_${currentStep1Value}" class="border-0 shadow mt-5" id="customFile1_${currentStep1Value}" data-preview-id="PreviewPhoto1_${currentStep1Value}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${currentStep1Value}')">
+                    <input type="file" name="file1_${lastID}" class="border-0 shadow mt-5" id="customFile1_${lastID}" data-preview-id="PreviewPhoto1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
                     <textarea class="form-control mt-2" id="CleaningSteps_${newRowIndex}" name="CleaningSteps[${newRowIndex}].CleaText"></textarea>
                 </div>
                 <div class="py-5"></div>
             </div>
         </div>
     `;
-    // Append the new cell to the current or new row
-    newRow.appendChild(newCell);
-    console.log("newCell:", newCell); // Debugging log   
+        // Append the new cell to the current or new row
+        newRow.appendChild(newCell);
+        console.log("newCell:", newCell); // Debugging log 
+          clickCount++;
+
+    }
 
 }
-   
-
 
 //صفحة الاضافة..
 var currentStep1Value = 1;
@@ -115,10 +125,10 @@ function addStep() {
             <div class="col-12 text-center">
                 <div>${currentStep1Value}</div>
                 <div>
-                    <img id="PreviewPhoto1_${currentStep1Value}" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
+                    <img id="PreviewPhoto1_${lastID}" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
                 </div>
                 <div class="form-group mt-2">
-                    <input type="file" name="file1_${currentStep1Value}" class="border-0 shadow mt-5" id="customFile1_${currentStep1Value}" data-preview-id="PreviewPhoto1_${currentStep1Value}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${currentStep1Value}')">
+                    <input type="file" name="file1_${lastID}" class="border-0 shadow mt-5" id="customFile1_${lastID}" data-preview-id="PreviewPhoto1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
                     <textarea class="form-control mt-2" id="CleaningSteps_${clickCount}" name="CleaningSteps[${clickCount}].CleaText"></textarea>
                 </div>
             </div>
@@ -156,28 +166,7 @@ function displaySelectedImage(input, imgId) {
     }
 }
 
-function toggleAddButtonVisibility(value) {
-
-    var addButton = document.getElementById("addStepButton3");
-    var redMessage = document.querySelector(".red-message");
-    var saveButton = document.getElementById("saveChange");
-
-
-    if (value.trim() !== "") {
-        addButton.disabled = false; // Enable the button if text is entered
-        saveButton.disabled = false; // Enable the button if text is entered
-
-        redMessage.style.display = "none"; // Hide the red message
-    }
-
-    // Disable all delete buttons with the class 'delete-button'
-    var deleteButtons = document.querySelectorAll(".delete-button");
-    deleteButtons.forEach(function (button) {
-        button.disabled = true;
-    });
-
-}
-
+ 
 //take two parameter ID1 = ID_التحضير , id=ID for the step . 
 function Deletestep3(id) { // after save in db . 
     Swal.fire({
