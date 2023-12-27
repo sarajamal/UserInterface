@@ -7,6 +7,7 @@ using Test12.DataAccess.Data;
 using Test12.DataAccess.Repository.IRepository;
 using Test12.DataAccess.RepositoryPro;
 using Test12.DataAccess.RepositoryPro.IRepositoryPro1;
+using Test12.Models.Models.Clean;
 
 namespace Test12.DataAccess.Repository
 {
@@ -59,11 +60,7 @@ namespace Test12.DataAccess.Repository
         {
             _context.SaveChanges();
         }
-
-        public void Save111()
-        {
-            _context.SaveChangesAsync();
-        }
+ 
     }
 
 }

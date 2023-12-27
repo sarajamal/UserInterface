@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Test12.DataAccess.RepositoryPro.IRepositoryPro1;
+using Test12.Models.Models.Clean;
 
 namespace Test12.DataAccess.Repository.IRepository
 {
@@ -28,6 +29,6 @@ namespace Test12.DataAccess.Repository.IRepository
        
 
         void Save();
-        void Save111();
+      
     }
 }
