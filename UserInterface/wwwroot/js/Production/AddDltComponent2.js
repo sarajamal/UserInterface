@@ -110,3 +110,47 @@ function AddRowcomponentnew() {
     tableBody.appendChild(newRow);
     newIndex++;
 }
+
+function validateFormAndSubmit() {
+    console.log("Submit button clicked"); // Add this line
+
+    // Check if the product type is selected
+    var productType = document.getElementById('selectType').value;
+    if (!productType) {
+        document.getElementById('errorMessage').style.display = 'block';
+        scrollToElement(productType);
+        return  ; // Prevent form submission
+    } else {
+        document.getElementById('errorMessage').style.display = 'none';
+    }
+
+    // Check if an image is selected
+    var fileInput = document.getElementById('customFile1');
+    if (fileInput.files.length === 0) {
+        document.getElementById('errorMessage1').style.display = 'block';
+        scrollToElement(fileInput);
+        return  ; // Prevent form submission
+    } else {
+        document.getElementById('errorMessage1').style.display = 'none';
+    }
+
+    // Check if at least one step is added
+    var stepCount = document.querySelectorAll('#tblSteps2 tbody tr').length;
+    if (stepCount === 1) {
+        document.getElementById('redMessage1').style.display = 'block';
+        scrollToElement(document.getElementById('addStepButton2'));
+        return  ; // Prevent form submission
+    } else {
+        document.getElementById('redMessage1').style.display = 'none';
+    }
+    // If all validations pass, submit the form
+    document.getElementById("myForm1").submit();
+}
+
+function scrollToElement(element) {
+    var elementOffset = element.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({
+        top: elementOffset,
+        behavior: "smooth"
+    });
+}

@@ -61,7 +61,7 @@ function AddnewRowstepsUpdate(preparationFk) {
                 </div>
                 <div class="form-group mt-2">
                     <input type="file" name="file1_${lastID}" class="border-0 shadow mt-5" id="customFile1_${lastID}" data-preview-id="PreviewPhoto1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
-                    <textarea class="form-control mt-2" id="stepsVM_${newRowIndex}" name="stepsVM[${newRowIndex}].PrepText"></textarea>
+                    <textarea class="form-control mt-2" id="stepsVM_${newRowIndex}" name="stepsVM[${newRowIndex}].PrepText" placeholder="وصف الخطوة" ></textarea>
                 </div>
                 <div class="py-5"></div>
             </div>
@@ -128,11 +128,11 @@ function AddnewRowstepsUpdate(preparationFk) {
             <div class="col-12 text-center">
                 <div>${currentStep1Value}</div>
                 <div>
-                    <img id="PreviewPhoto1_${currentStep1Value}" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
+                    <img id="PreviewPhoto1_${lastID}" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
                 </div>
                 <div class="form-group mt-2">
-                    <input type="file" name="file1_${currentStep1Value}" class="border-0 shadow mt-5" id="customFile1_${currentStep1Value}" data-preview-id="PreviewPhoto1_${currentStep1Value}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${currentStep1Value}')">
-                    <textarea class="form-control mt-2" id="stepsVM_${clickCount}" name="stepsVM[${clickCount}].PrepText"></textarea>
+                    <input type="file" name="file1_${lastID}" class="border-0 shadow mt-5" id="customFile1_${lastID}" data-preview-id="PreviewPhoto1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
+                    <textarea class="form-control mt-2" id="stepsVM_${clickCount}" name="stepsVM[${clickCount}].PrepText" placeholder="وصف الخطوة"></textarea>
                 </div>
             </div>
         </div>

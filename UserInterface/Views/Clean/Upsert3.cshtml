@@ -59,7 +59,7 @@
                                                         <input asp-for="@itemStep.CleaStepsImage" name="CleaningSteps[@j].CleaStepsImage" hidden />
                                                         <input asp-for="@itemStep.CleaStepsNum" name="CleaningSteps[@j].CleaStepsNum" hidden />
 
-                                                        @if (!string.IsNullOrEmpty(itemStep.CleaStepsImage) || !string.IsNullOrEmpty(itemStep.CleaText))
+                                                @if (!string.IsNullOrEmpty(itemStep.CleaStepsImage) || !string.IsNullOrEmpty(itemStep.CleaText) || itemStep.CleaStepsNum != 0)
                                                         {
                                                             <div class="py-5">
                                                                 <button type="button" class="btn btn-danger delete-button"

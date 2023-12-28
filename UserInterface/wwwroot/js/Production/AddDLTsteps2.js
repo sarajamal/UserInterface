@@ -1,4 +1,4 @@
-﻿
+﻿var clickCount = 0;
 var lastID = 0; // Initialize lastID globally
 function AddnewRowstepsUpdate2(ProductionFK) { //صفحة التعديل
 
@@ -24,23 +24,25 @@ function AddnewRowstepsUpdate2(ProductionFK) { //صفحة التعديل
     function addStep(ProductionFK) {
         var tableBody = document.querySelector("#tblSteps2 tbody");
         var stepCells = tableBody.querySelectorAll("td");
-
-        newRowIndex = stepCells.length;
-        var lastCell = stepCells[stepCells.length - 1];
-
-        var lastStepInput = lastCell ? lastCell.querySelector(`input[name$="PrepStepsNum"]`) : null;
-        var lastStepValue = lastStepInput ? parseInt(lastStepInput.value) : 0;
-        currentStep1Value = lastStepValue + 1;
+        var stepCellsCount = stepCells.length;
 
         // Determine if adding to an existing row or creating a new row
         var newRow;
-        if (clickCount % 2 === 0) { // Every two clicks, start a new row
+        if (stepCellsCount % 2 === 0) { // Every two clicks, start a new row
             newRow = document.createElement("tr");
             tableBody.appendChild(newRow);
         } else {
             // Get the last row in the table to append a new <td>
             newRow = tableBody.lastElementChild;
         }
+
+        newRowIndex = stepCellsCount;
+        var lastCell = stepCells[stepCells.length - 1];
+
+        var lastStepInput = lastCell ? lastCell.querySelector(`input[name$="ProdStepsNum"]`) : null;
+        var lastStepValue = lastStepInput ? parseInt(lastStepInput.value) : 0;
+        currentStep1Value = lastStepValue + 1;
+
 
         // Create a new <td> for the current step
         var newCell = document.createElement("td");
@@ -57,7 +59,7 @@ function AddnewRowstepsUpdate2(ProductionFK) { //صفحة التعديل
                 </div>
                 <div class="form-group mt-2">
                     <input type="file" name="file1_${lastID}" class="border-0 shadow mt-5" id="customFile1_${lastID}" data-preview-id="PreviewPhoto1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
-                    <textarea class="form-control mt-2" id="stepsVM2_${newRowIndex}" name="stepsVM2[${newRowIndex}].ProdText"></textarea>
+                    <textarea class="form-control mt-2" id="stepsVM2_${newRowIndex}" name="stepsVM2[${newRowIndex}].ProdText" placeholder="وصف الخطوة"></textarea>
                 </div>
             </div>
         </div>
@@ -67,8 +69,7 @@ function AddnewRowstepsUpdate2(ProductionFK) { //صفحة التعديل
         newRow.appendChild(newCell);
 
         // Increment values for next click
-        currentStep1Value++;
-        clickCount++;
+         clickCount++;
         console.log("newCell:", newCell); // Debugging log   
     }
 }
@@ -130,7 +131,7 @@ function addStep(productionFk) {
                 </div>
                 <div class="form-group mt-2">
                     <input type="file" name="file1_${lastID}" class="border-0 shadow mt-5" id="customFile1_${lastID}" data-preview-id="PreviewPhoto1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
-                    <textarea class="form-control mt-2" id="stepsVM2_${clickCount}" name="stepsVM2[${clickCount}].ProdText"></textarea>
+                    <textarea class="form-control mt-2" id="stepsVM2_${clickCount}" name="stepsVM2[${clickCount}].ProdText" placeholder="وصف الخطوة"></textarea>
                 </div>
             </div>
         </div>
@@ -193,7 +194,7 @@ function toggleAddButtonVisibility(value) {
 
 
 //take two parameter ID1 = ID_التحضير , id=ID for the step . 
-function Deletestep( id) { // after save in db . 
+function Deletestep(id) { // after save in db . 
     Swal.fire({
         title: 'هل أنت متأكد ؟',
         text: " هل تريد استعادة ماتم حذفه؟",

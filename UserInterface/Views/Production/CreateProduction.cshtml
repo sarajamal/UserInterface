@@ -12,7 +12,7 @@
         </div>
 
 
-        <form method="post" class="row" enctype="multipart/form-data" asp-action="CreateProduction" asp-controller="Production" id="myForm">
+        <form method="post" class="row" enctype="multipart/form-data" asp-action="CreateProduction" asp-controller="Production" id="myForm1">
             <input asp-for="Productionvm.ProductionID" hidden />
             <input asp-for="Productionvm.ProductImage" hidden />
             
@@ -205,7 +205,10 @@
                             <tbody>
                                 <tr>
                                     <td colspan="1" style="text-align:right;">
-                                        <button type="button" id="addStepButton1" class="btn btn-success my-3 " onclick="AddnewRowstepsNew2('@Model.Productionvm.ProductionID'); addButtonClicked = true; ">إضافة خطوات جديدة</button>
+                                        <button type="button" id="addStepButton2" class="btn btn-success my-3 " onclick="AddnewRowstepsNew2('@Model.Productionvm.ProductionID')">إضافة خطوات جديدة</button>
+                                        <div id="redMessage1" style="display:none; color:red;">
+                                            يجب إدخال خطوة واحدة على الأقل
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -238,7 +241,8 @@
                             <div style="text-align: left;">
 
                                 <div class="form-group col-12 py-5">
-                                    <input type="submit" value=" حفظ" asp-action="CreateProduction" asp-route-id="@Model.Productionvm.ProductionID" style="text-align:center" class="btn btn-primary me-3" id="submitButton" />
+                                    <input type="submit" value=" حفظ" 
+                                    asp-action="CreateProduction" asp-route-id="@Model.Productionvm.ProductionID" style="text-align:center" class="btn btn-primary me-3" id="submitButton" />
                                 </div>
 
                             </div>
@@ -253,7 +257,7 @@
 
 @* يجب إدخال نوع الصنف والصورة *@
 <script>
-    document.getElementById('submitButton').addEventListener('click', function(event) {
+    document.getElementById('submitButton').addEventListener('click', function (event) {
         let isValid = true;
 
         // Check if the product type is selected

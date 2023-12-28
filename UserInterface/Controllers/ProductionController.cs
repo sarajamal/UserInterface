@@ -24,13 +24,13 @@ namespace Test12.Controllers
 
         public IActionResult ProductionList(int? id) //this for display List Of التحضيرات Page1
         {
-            IEnumerable<Production> objPreparationList = _unitOfWork.itemsRepository.GetAll(incloudeProperties: "component2")
-                .Where(u => u.BrandFK == id).OrderBy(item => item.ProductionOrder).ToList();
+            List<Production> objReorderlist = _unitOfWork.itemsRepository.GetAll()
+                .OrderBy(item => item.ProductionOrder).ToList();
 
             // Store the FK value in TempData
             TempData["ID"] = id;
             // Display the updated list
-            return View(objPreparationList);
+            return View(objReorderlist);
         }
 
         public IActionResult Upsert1(int? id) // After Enter تعديل Display التحضيرات والمكونات...
@@ -131,9 +131,8 @@ namespace Test12.Controllers
                         string ProductionID = setFK.ProductionID.ToString(); // Convert to string
                         string ProductionVMFK = PropaVM.tredMaeketVM.BrandID.ToString(); // Convert to string
 
-                        // Combine paths using Path.Combine, ensuring all arguments are strings
-                        // Combine paths using Path.Combine, ensuring all arguments are strings
-                        string ProductionDirectory = System.IO.Path.Combine(wwwRootPath, "IMAGES", ProductionVMFK, "Production", ProductionID);
+                        // Combine paths using Path.Combine, ensuring all arguments are strings 
+                        string ProductionDirectory = Path.Combine(wwwRootPath, "IMAGES", ProductionVMFK, "Production", ProductionID);
 
                         //اذا المسار مش موجود سو مسار جديد 
                         if (!Directory.Exists(ProductionDirectory))
@@ -141,9 +140,9 @@ namespace Test12.Controllers
                             Directory.CreateDirectory(ProductionDirectory);
                         }
 
-                        string fileName = Guid.NewGuid().ToString() + System.IO.Path.GetExtension(file.FileName);
+                        string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
 
-                        string ProductionPath = System.IO.Path.Combine(ProductionDirectory, fileName);
+                        string ProductionPath = Path.Combine(ProductionDirectory, fileName);
 
                         // Use the correct file path when creating FileStream
                         using (var stream = new FileStream(ProductionPath, FileMode.Create))
@@ -225,16 +224,18 @@ namespace Test12.Controllers
                             if (stepAdd != null && stepAdd.ProdStepsID == 0)
                             {
                                 string wwwRootstepPath = _webHostEnvironment.WebRootPath; // get us root folder
+                                int LastId = _unitOfWork.StepsPreparationRepository2.GetLastStepId();
+                                int LastId1 = LastId + 1;
 
                                 var newStep = new ProductionSteps
                                 {
+                                    ProdStepsID = LastId1,
                                     ProductionFK = ID_الصنف,
                                     ProdText = stepAdd.ProdText,
                                     ProdStepsNum = stepAdd.ProdStepsNum,
 
                                 };
-                                _unitOfWork.StepsPreparationRepository2.Add(newStep);
-                                _unitOfWork.Save();
+                              
 
                                 var file1Name1 = $"file1_{newStep.ProdStepsID}";
                                 var file1ForStep1 = HttpContext.Request.Form.Files[file1Name1];
@@ -243,24 +244,24 @@ namespace Test12.Controllers
                                 string BrandFK = setFK.BrandFK.ToString();
                                 string PropIDstep = newStep.ProdStepsID.ToString();
 
-                                string stepPath1 = System.IO.Path.Combine(wwwRootPath, "IMAGES", BrandFK, "Production", PropIDstep);
+                                string stepPath1 = Path.Combine(wwwRootPath, "IMAGES", BrandFK, "Production", PropIDstep);
 
                                 if (file1ForStep1 != null && file1ForStep1.Length > 0)
                                 {
-                                    string fileName11 = Guid.NewGuid().ToString() + System.IO.Path.GetExtension(file1ForStep1.FileName);
+                                    string fileName11 = Guid.NewGuid().ToString() +Path.GetExtension(file1ForStep1.FileName);
 
                                     if (!Directory.Exists(stepPath1))
                                     {
                                         Directory.CreateDirectory(stepPath1);
                                     }
 
-                                    using (var fileStream = new FileStream(System.IO.Path.Combine(stepPath1, fileName11), FileMode.Create)) //save images
+                                    using (var fileStream = new FileStream(Path.Combine(stepPath1, fileName11), FileMode.Create)) //save images
                                     {
                                         file1ForStep1.CopyTo(fileStream);
                                     }
                                     newStep.ProdSImage = fileName11;
                                 }
-
+                                _unitOfWork.StepsPreparationRepository2.Add(newStep);
                                 _unitOfWork.Save();
                             }
                         }
@@ -288,7 +289,7 @@ namespace Test12.Controllers
                         setFK.ProductionOrder = newOrder;
                     }
 
-                    List<Production> objReorderlist = _unitOfWork.itemsRepository.GetAll().OrderBy(item => item.ProductionOrder).ToList();
+                    
                     _unitOfWork.Save();
                     TempData["success"] = "تم إضافة الاصناف بشكل ناجح";
                 }
@@ -411,72 +412,118 @@ namespace Test12.Controllers
 
                         string wwwRootPathSteps = _webHostEnvironment.WebRootPath; // get the root folder
 
+
+                        int LastId = _unitOfWork.StepsPreparationRepository2.GetLastStepId();
+                        int LastId1 = LastId + 1;
+
                         var existingSteps9 = _unitOfWork.StepsPreparationRepository2.Get(u => u.ProdStepsID == Steps.ProdStepsID);
                         if (existingSteps9 == null)
                         {
-                            _unitOfWork.StepsPreparationRepository2.Add(Steps);
-                            _unitOfWork.Save();
-                        }
-
-                        string IDstep = Steps.ProdStepsID.ToString();
-                        string StepsPath = Path.Combine(wwwRootPathSteps, "IMAGES", ProductionFK, "Production", IDstep);
-
-                        var file1Name = $"file1_{Steps.ProdStepsID}";
-                        var file1ForStep = HttpContext.Request.Form.Files[file1Name];
-
-                        if (file1ForStep != null)
-                        {
-                            if (!string.IsNullOrEmpty(Steps.ProdSImage)) // Check if there's an existing image path
+                            var newStep = new ProductionSteps
                             {
-                                var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", ProductionFK, "Production", IDstep, Steps.ProdSImage);
+                                ProdStepsID = LastId1,
+                                ProductionFK = Steps.ProductionFK,
+                                ProdText = Steps.ProdText,
+                                ProdStepsNum = Steps.ProdStepsNum
 
-                                if (System.IO.File.Exists(OldImagePath1))
+                            };
+
+                            string IDstep = newStep.ProdStepsID.ToString();
+                            string ProductionVMFK = PropaVM.Productionvm.BrandFK.ToString();
+                            string StepsPath = Path.Combine(wwwRootPathSteps, "IMAGES", ProductionVMFK, "Production", IDstep);
+
+                            var file1Name = $"file1_{newStep.ProdStepsID}";
+                            var file1ForStep = HttpContext.Request.Form.Files[file1Name];
+
+                            if (file1ForStep != null)
+                            {
+                                if (!string.IsNullOrEmpty(Steps.ProdSImage)) // Check if there's an existing image path
                                 {
-                                    System.IO.File.Delete(OldImagePath1); // Delete old image if it exists
+                                    var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", ProductionVMFK, "Production", IDstep, newStep.ProdSImage);
+
+                                    if (System.IO.File.Exists(OldImagePath1))
+                                    {
+                                        System.IO.File.Delete(OldImagePath1); // Delete old image if it exists
+                                    }
                                 }
+
+                                string fileNameSteps1 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep.FileName);
+
+
+                                //اذا المسار مش موجود سو مسار جديد 
+                                if (!Directory.Exists(StepsPath))
+                                {
+                                    Directory.CreateDirectory(StepsPath);
+                                }
+
+                                using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
+                                {
+                                    file1ForStep.CopyTo(fileStream1);
+                                }
+
+                                newStep.ProdSImage = fileNameSteps1; // Update the image path
+                                _unitOfWork.StepsPreparationRepository2.Add(newStep);
+                                _unitOfWork.Save();
+
                             }
 
-                            string fileNameSteps1 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep.FileName);
-
-
-                            //اذا المسار مش موجود سو مسار جديد 
-                            if (!Directory.Exists(StepsPath))
-                            {
-                                Directory.CreateDirectory(StepsPath);
-                            }
-
-                            using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
-                            {
-                                file1ForStep.CopyTo(fileStream1);
-                            }
-
-                            Steps.ProdSImage = fileNameSteps1; // Update the image path
                         }
-
-
-                        // Save or update Steps data to the database
-                        if (Steps.ProductionFK == stepsID)
+                        else
                         {
-                            var existingSteps = _unitOfWork.StepsPreparationRepository2.Get(u => u.ProdStepsID == Steps.ProdStepsID);
+                            string IDstep = Steps.ProdStepsID.ToString();
+                            string ProductionVMFK = PropaVM.Productionvm.BrandFK.ToString();
+                            string StepsPath = Path.Combine(wwwRootPathSteps, "IMAGES", ProductionVMFK, "Production", IDstep);
 
-                            if (existingSteps != null)
+                            var file1Name = $"file1_{Steps.ProdStepsID}";
+                            var file1ForStep = HttpContext.Request.Form.Files[file1Name];
+
+                            if (file1ForStep != null)
                             {
+                                if (!string.IsNullOrEmpty(Steps.ProdSImage)) // Check if there's an existing image path
+                                {
+                                    var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", ProductionVMFK, "Production", IDstep, Steps.ProdSImage);
 
-                                existingSteps.ProdText = Steps.ProdText;
-                                existingSteps.ProdSImage = Steps.ProdSImage;
-                                existingSteps.ProdStepsNum = Steps.ProdStepsNum;
+                                    if (System.IO.File.Exists(OldImagePath1))
+                                    {
+                                        System.IO.File.Delete(OldImagePath1); // Delete old image if it exists
+                                    }
+                                }
 
-                                _unitOfWork.StepsPreparationRepository2.Update(existingSteps);
+                                string fileNameSteps1 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep.FileName);
+
+
+                                //اذا المسار مش موجود سو مسار جديد 
+                                if (!Directory.Exists(StepsPath))
+                                {
+                                    Directory.CreateDirectory(StepsPath);
+                                }
+
+                                using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
+                                {
+                                    file1ForStep.CopyTo(fileStream1);
+                                }
+                                Steps.ProdSImage = fileNameSteps1;
                             }
-                            else
+
+                            // Save or update Steps data to the database
+                            if (Steps.ProductionFK == stepsID)
                             {
-                                _unitOfWork.StepsPreparationRepository2.Add(Steps);
+                                var existingSteps = _unitOfWork.StepsPreparationRepository2.Get(u => u.ProdStepsID == Steps.ProdStepsID);
+
+                                if (existingSteps != null)
+                                {
+                                    existingSteps.ProdText = Steps.ProdText;
+                                    existingSteps.ProdSImage = Steps.ProdSImage;
+                                    existingSteps.ProdStepsNum = Steps.ProdStepsNum;
+
+                                    _unitOfWork.StepsPreparationRepository2.Update(existingSteps);
+                                }
+                               
+                                _unitOfWork.Save();
                             }
-                            _unitOfWork.Save();
                         }
                     }
                 }
-
                 TempData["success"] = "تم تحديث الانتاج بشكل ناجح";
                 TempData["ID"] = PropaVM.Productionvm.BrandFK;
                 return RedirectToAction("ProductionList", new { id = PropaVM.Productionvm.BrandFK });
@@ -572,7 +619,7 @@ namespace Test12.Controllers
                 {
                     var delet = Deletesteps[i];
 
-                    var BrandId = _unitOfWork.itemsRepository.Get(u => u.ProductionID == delet.ProdStepsID);
+                    var BrandId = _unitOfWork.itemsRepository.Get(u => u.ProductionID == delet.ProductionFK);
                     var IDstep = _unitOfWork.StepsPreparationRepository2.Get(u => u.ProdStepsID == delet.ProdStepsID);
 
                     string IDStep = IDstep.ProdStepsID.ToString();
@@ -591,6 +638,7 @@ namespace Test12.Controllers
 
                     // Remove the entity from the repository
                     _unitOfWork.StepsPreparationRepository2.Remove(delet);
+                    _unitOfWork.Save();
                 }
             }
 
@@ -615,8 +663,6 @@ namespace Test12.Controllers
         {
             var stepsToDelete = _unitOfWork.StepsPreparationRepository2.Get(u => u.ProdStepsID == id);
             var BrandFK = _unitOfWork.itemsRepository.Get(u => u.ProductionID == stepsToDelete.ProductionFK);
-
-            string ProStepNum = stepsToDelete.ProdStepsNum != null ? stepsToDelete.ProdStepsNum.ToString() : string.Empty;
 
             string IDStep = stepsToDelete.ProdStepsID.ToString();
             string FKBrand = BrandFK.BrandFK.ToString();
@@ -669,199 +715,7 @@ namespace Test12.Controllers
         #endregion
 
 
-        //public IActionResult GeneratePdf(int? id)
-        //{
-        //    string wwwRootPath = _webHostEnvironment.WebRootPath; // get us root folder
-
-
-        //    ProductionVM PrVM = new()
-        //    {
-        //        Productionvm = new Product(),
-        //        tredMaeketVM = new العلامة_التجارية(),
-        //    };
-        //    PrVM.Productionvm = _unitOfWork.itemsRepository.Get(u => u.ID_المنتج == id);
-
-        //    string المنتج_Id = PrVM.Productionvm.ID_المنتج.ToString();
-        //    string fkProduct = PrVM.Productionvm.ID.ToString();
-
-        //    using (var stream = new MemoryStream())
-        //    {
-        //        // Set the page size to A4
-        //        var pageSize = new iText.Kernel.Geom.PageSize(595, 842); // Width x Height in points (1 inch = 72 points)
-
-        //        using (var writer = new PdfWriter(stream))
-        //        {
-        //            using (var pdf = new PdfDocument(writer))
-        //            {
-        //                pdf.SetDefaultPageSize(pageSize);
-
-        //                using (var document = new Document(pdf))
-        //                {
-        //                    // HEADER . 
-        //                    // Assuming your header image file is named "header_image.jpg" and is placed in the "Images" folder
-        //                    var headerImageFileName = PrVM.Productionvm.صورة;
-        //                    var fullHeaderImagePath = System.IO.Path.Combine(wwwRootPath, "IMAGES", "الانتاج", المنتج_Id, fkProduct, headerImageFileName);
-
-        //                    // Use the full path to create the Image
-        //                    var headerImage = new Image(ImageDataFactory.Create(fullHeaderImagePath));
-
-        //                    // Set the size of the header image to span the full width of A4
-        //                    headerImage.SetWidth(pageSize.GetWidth());
-        //                    headerImage.SetHeight(70); // Set the height in points
-        //                                               // Set the top margin of the header image to 0
-        //                    headerImage.SetMarginTop(-40);
-        //                    headerImage.SetMarginBottom(0);
-        //                    headerImage.SetMarginLeft(-36);
-        //                    headerImage.SetMarginRight(10);
-
-        //                    // Add the header image to the document
-        //                    document.Add(headerImage);
-
-        //                    // Content . 
-        //                    var fontFileName = "NotoNaskhArabic-VariableFont_wght.ttf";
-        //                    var fontPath = System.IO.Path.Combine("Font", fontFileName);
-        //                    var fullFontPath = System.IO.Path.Combine(_webHostEnvironment.ContentRootPath, fontPath);
-
-        //                    // Use the full path to create the font
-        //                    var arabicFont = PdfFontFactory.CreateFont(fullFontPath, PdfEncodings.IDENTITY_H);
-        //                    var fontMetrics = arabicFont.GetFontProgram().GetFontMetrics();
-
-        //                    document.SetFont(arabicFont);
-
-        //                    // Set styles for text
-        //                    var titleStyle = new Style()
-        //                        .SetFontSize(18)
-        //                        .SetFont(arabicFont)
-        //                        .SetTextAlignment(TextAlignment.CENTER);
-
-        //                    var labelStyle = new Style()
-        //                        .SetFontSize(28)
-        //                        .SetFont(arabicFont)
-        //                        .SetTextAlignment(TextAlignment.RIGHT)
-        //                        .SetBaseDirection(BaseDirection.RIGHT_TO_LEFT);
-
-        //                    var invertedArabicStyle = new Style()
-        //                        .SetFont(arabicFont)
-        //                        .SetFontSize(14)
-        //                        .SetBaseDirection(BaseDirection.LEFT_TO_RIGHT);
-
-        //                    //var inputStyle = new Style()
-        //                    //    .SetFontSize(16)
-        //                    //    .SetFont(arabicFont)
-        //                    //    .SetBaseDirection(BaseDirection.RIGHT_TO_LEFT);
-
-        //                    document.Add(new Paragraph("مرحبا بك في العالم").AddStyle(invertedArabicStyle));
-
-        //                    document.Add(new Paragraph("Production Information").AddStyle(titleStyle));
-        //                    document.Add(new Paragraph($"اسم الصنف: {PrVM.Productionvm.اسم_الصنف}").AddStyle(labelStyle));
-        //                    document.Add(new Paragraph($"رقم النسخة: {PrVM.Productionvm.رقم_النسخة}").AddStyle(labelStyle));
-        //                    document.Add(new Paragraph($"مدة الصلاحية: {PrVM.Productionvm.مدة_الصلاحية}").AddStyle(labelStyle));
-        //                    document.Add(new Paragraph($"نوع الصنف: {PrVM.Productionvm.نوع_الصنف}").AddStyle(labelStyle));
-        //                    //document.Add(new Paragraph($"المحطة: {productionData.المحطة}").AddStyle(inputStyle));
-        //                    //document.Add(new Paragraph($"وقت التحضير: {productionData.وقت_التحضير}").AddStyle(inputStyle));
-
-        //                    // Add more iText7 content as needed
-        //                }
-        //            }
-        //        }
-
-        //        // Return the PDF as a FileResult
-        //        return File(stream.ToArray(), "application/pdf", "ProductionInfo.pdf");
-        //    }
-        //}
-        //} public IActionResult generatePdf(int? id)
-        //{
-        //    string wwwRootPath = _webHostEnvironment.WebRootPath; // get us root folder
-        //    var productionData = _unitOfWork.itemsRepository.Get(u => u.ID_المنتج == id);
-
-        //    string المنتج_Id = productionData.ID_المنتج.ToString();
-        //    string fkProduct = productionData.ID.ToString();
-        //    // Create a MemoryStream to store the PDF content
-
-        //    using (var stream = new MemoryStream())
-        //    {
-        //        // Set the page size to A4
-        //        var pageSize = new iText.Kernel.Geom.PageSize(595, 842); // Width x Height in points (1 inch = 72 points)
-
-        //        using (var writer = new PdfWriter(stream))
-        //        {
-        //            using (var pdf = new PdfDocument(writer))
-        //            {
-        //                pdf.SetDefaultPageSize(pageSize);
-
-        //                using (var document = new Document(pdf))
-        //                {
-        //                    // HEADER . 
-        //                    // Assuming your header image file is named "header_image.jpg" and is placed in the "Images" folder
-        //                    var headerImageFileName = productionData.صورة;
-        //                    var fullHeaderImagePath = System.IO.Path.Combine(wwwRootPath, "IMAGES", "الانتاج", المنتج_Id, fkProduct, headerImageFileName);
-
-        //                    // Use the full path to create the Image
-        //                    var headerImage = new Image(ImageDataFactory.Create(fullHeaderImagePath));
-
-        //                    // Set the size of the header image to span the full width of A4
-        //                    headerImage.SetWidth(pageSize.GetWidth());
-        //                    headerImage.SetHeight(70); // Set the height in points
-        //                                               // Set the top margin of the header image to 0
-        //                    headerImage.SetMarginTop(-40);
-        //                    headerImage.SetMarginBottom(0);
-        //                    headerImage.SetMarginLeft(-36);
-        //                    headerImage.SetMarginRight(10);
-
-        //                    // Add the header image to the document
-        //                    document.Add(headerImage);
-
-        //                    // Content . 
-        //                    // Assuming your font file is named "aldhabi.ttf" and is placed in the "Fonts" folder
-        //                    var fontFileName = "arabtype.ttf";
-        //                    var fontPath = System.IO.Path.Combine("Font","Fonts", fontFileName);
-
-
-        //                    // Combine with the ContentRootPath or WebRootPath, depending on your project structure
-        //                    // With this line
-        //                    var fullFontPath = System.IO.Path.Combine(_webHostEnvironment.ContentRootPath, fontPath);
-
-        //                    // Use the full path to create the font
-        //                    var arabicFont = PdfFontFactory.CreateFont(fullFontPath, PdfEncodings.IDENTITY_H);
-
-        //                    document.SetFont(arabicFont);
-
-        //                    // Set styles for text
-        //                    var titleStyle = new Style()
-        //                        .SetFontSize(18)
-        //                        .SetFont(arabicFont)
-        //                        .SetTextAlignment(TextAlignment.CENTER)
-        //                        .SetBaseDirection(BaseDirection.NO_BIDI);
-
-        //                    var labelStyle = new Style()
-        //                        .SetFontSize(16)
-        //                        .SetFont(arabicFont)
-        //                        .SetBaseDirection(BaseDirection.LEFT_TO_RIGHT);
-
-        //                    var inputStyle = new Style()
-        //                        .SetFontSize(16)
-        //                        .SetFont(arabicFont)
-        //                        .SetBaseDirection(BaseDirection.RIGHT_TO_LEFT);
-
-
-        //                    document.Add(new Paragraph("Production Information").AddStyle(titleStyle));
-        //                    document.Add(new Paragraph($"اسم الصنف: {productionData.اسم_الصنف}").AddStyle(labelStyle));
-        //                    document.Add(new Paragraph($"رقم النسخة: {productionData.رقم_النسخة}").AddStyle(labelStyle));
-        //                    document.Add(new Paragraph($"مدة الصلاحية: {productionData.مدة_الصلاحية}").AddStyle(labelStyle));
-        //                    document.Add(new Paragraph($"نوع الصنف: {productionData.نوع_الصنف}").AddStyle(labelStyle));
-        //                    document.Add(new Paragraph($"المحطة: {productionData.المحطة}").AddStyle(inputStyle));
-        //                    document.Add(new Paragraph($"وقت التحضير: {productionData.وقت_التحضير}").AddStyle(inputStyle));
-
-        //                    // Add more iText7 content as needed
-        //                }
-        //            }
-        //        }
-
-        //        // Return the PDF as a FileResult
-        //        return File(stream.ToArray(), "application/pdf", "ProductionInfo.pdf");
-        //    }
-        //}
-
+      
     }
 }
 

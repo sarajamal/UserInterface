@@ -61,7 +61,7 @@ function AddnewRowstepsUpdate3(CleaningFK) { //صفحة التعديل
                 </div>
                 <div class="form-group mt-2">
                     <input type="file" name="file1_${lastID}" class="border-0 shadow mt-5" id="customFile1_${lastID}" data-preview-id="PreviewPhoto1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
-                    <textarea class="form-control mt-2" id="CleaningSteps_${newRowIndex}" name="CleaningSteps[${newRowIndex}].CleaText"></textarea>
+                    <textarea class="form-control mt-2" id="CleaningSteps_${newRowIndex}" name="CleaningSteps[${newRowIndex}].CleaText" placeholder="وصف الخطوة"></textarea>
                 </div>
                 <div class="py-5"></div>
             </div>
@@ -129,7 +129,7 @@ function addStep() {
                 </div>
                 <div class="form-group mt-2">
                     <input type="file" name="file1_${lastID}" class="border-0 shadow mt-5" id="customFile1_${lastID}" data-preview-id="PreviewPhoto1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
-                    <textarea class="form-control mt-2" id="CleaningSteps_${clickCount}" name="CleaningSteps[${clickCount}].CleaText"></textarea>
+                    <textarea class="form-control mt-2" id="CleaningSteps_${clickCount}" name="CleaningSteps[${clickCount}].CleaText" placeholder="وصف الخطوة"></textarea>
                 </div>
             </div>
         </div>

@@ -1,19 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Hosting;
+﻿
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.IdentityModel.Tokens;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
-using Test12.DataAccess.Repository;
 using Test12.DataAccess.Repository.IRepository;
-using Test12.Models.Models.Clean;
 using Test12.Models.Models.Preparation;
-using Test12.Models.Models.Production;
 using Test12.Models.Models.trade_mark;
 using Test12.Models.ViewModel;
 
@@ -153,6 +141,7 @@ namespace Test12.Controllers
 
                         setFK.prepareImage = fileName; // Save only the file name in the database
                         _unitOfWork.Save();
+
                     }
 
                     int vvv = setFK.PreparationsID;
@@ -228,15 +217,18 @@ namespace Test12.Controllers
 
 
                                 int PrepStepsID = vvv;
+                                int LastId = _unitOfWork.StepsPreparationRepository.GetLastStepId();
+                                int LastId1 = LastId + 1;
+
                                 var newStep = new PreparationSteps
                                 {
+                                    PrepStepsID = LastId1 ,
                                     PreparationsFK = PrepStepsID,
                                     PrepText = stepAdd.PrepText,
                                     PrepStepsNum = stepAdd.PrepStepsNum
 
                                 };
-                                _unitOfWork.StepsPreparationRepository.Add(newStep);
-                                _unitOfWork.Save();
+                               
 
                                 var file1Name1 = $"file1_{newStep.PrepStepsID}";
                                 var file1ForStep1 = HttpContext.Request.Form.Files[file1Name1];
@@ -261,6 +253,7 @@ namespace Test12.Controllers
                                     }
                                     newStep.PrepImage = fileName11;
                                 }
+                                _unitOfWork.StepsPreparationRepository.Add(newStep);
                                 _unitOfWork.Save();
                             }
                         }
@@ -301,7 +294,7 @@ namespace Test12.Controllers
 
 
         [HttpPost] //This for Add Or Update Page . 
-        public IActionResult Upsert(PreComViewModel PrepaVM, IFormFile? file, int selectedValue) // should insert name in Upsert view
+        public IActionResult Upsert(PreComViewModel PrepaVM, IFormFile? file) // should insert name in Upsert view
         {
             if (!ModelState.IsValid)
             {

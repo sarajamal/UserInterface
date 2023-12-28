@@ -170,15 +170,17 @@ namespace Test12.Controllers
 
 
                                 int CleaningFK = FKClean;
+                                int LastId = _unitOfWork.CleanRepository.GetLastStepId();
+                                int LastId1 = LastId + 1;
                                 var newStep = new CleaningSteps
                                 {
+                                    CleaStepsID = LastId1,
                                     CleaningFK = CleaningFK,
                                     CleaText = stepAdd.CleaText,
                                     CleaStepsNum = stepAdd.CleaStepsNum
 
                                 };
-                                _unitOfWork.StepsCleanRepository3.Add(newStep);
-                                _unitOfWork.Save();
+                          
 
                                 var file1Name1 = $"file1_{newStep.CleaStepsID}";
                                 var file1ForStep1 = HttpContext.Request.Form.Files[file1Name1];
@@ -203,6 +205,7 @@ namespace Test12.Controllers
                                     }
                                     newStep.CleaStepsImage = fileName11;
                                 }
+                                _unitOfWork.StepsCleanRepository3.Add(newStep);
                                 _unitOfWork.Save();
                             }
                         }

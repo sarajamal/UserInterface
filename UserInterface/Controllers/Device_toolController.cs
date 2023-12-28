@@ -83,15 +83,16 @@ namespace Test12.Controllers
 
                         if (deviceAdd != null && deviceAdd.DevicesAndToolsID == 0)
                         {
-
+                            int LastId = _unitOfWork.Device_tools1.GetLastStepId();
+                            int LastId1 = LastId + 1;
                             var newDevice = new DevicesAndTools
                             {
+                                DevicesAndToolsID = LastId1,
                                 BrandFK = DeviceFK,
                                 DevicesAndTools_Name = deviceAdd.DevicesAndTools_Name,
                                 
                             };
-                            _unitOfWork.Device_tools1.Add(newDevice);
-                            _unitOfWork.Save();
+                          
 
                             string wwwRootDevicePath = _webHostEnvironment.WebRootPath; // get us root folder
 
@@ -121,8 +122,11 @@ namespace Test12.Controllers
                                     file1ForDevice1.CopyTo(fileStream);
                                 }
                                 newDevice.DevicesAndTools_Image = fileName11;
-                            }                          
+                               
+                            }
+                            _unitOfWork.Device_tools1.Add(newDevice);
                             _unitOfWork.Save();
+
                             //// reOrder2 
                             if (selectDevicetools == 0)
                             {

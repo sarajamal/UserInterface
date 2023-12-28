@@ -84,16 +84,16 @@ namespace Test12.Controllers
 
                         if (ReadyfoodAdd != null && ReadyfoodAdd.ReadyProductsID == 0)
                         {
-
+                            int LastId = _unitOfWork.readyFoodRepository.GetLastStepId();
+                            int LastId1 = LastId + 1;
                             var newfoods = new ReadyProducts
                             {
+                                ReadyProductsID = LastId1,
                                 BrandFK = foodFK,
                                 ReadyProductsName = ReadyfoodAdd.ReadyProductsName,
                                 
                             };
-                            _unitOfWork.readyFoodRepository.Add(newfoods);
-                            _unitOfWork.Save();
-
+                        
                             string wwwRootFoodPath = _webHostEnvironment.WebRootPath; // get us root folder
 
 
@@ -122,6 +122,7 @@ namespace Test12.Controllers
                                 }
                                 newfoods.ReadyProductsImage = fileName11;
                             }
+                            _unitOfWork.readyFoodRepository.Add(newfoods);
                             _unitOfWork.Save();
                             //// reOrder2 
                             if (selectFoodReadyValue == 0)

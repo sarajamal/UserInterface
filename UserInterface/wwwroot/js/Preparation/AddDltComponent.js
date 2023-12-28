@@ -111,7 +111,7 @@ function AddRowcomponentnew() {
     newIndex++;
 }
 
-
+//يجب إضافة خطوة واحدة على الأقل 
 function validateAndSubmit() {
     var stepCount = document.querySelectorAll("#tblSteps tbody td").length;
     var customFileInput = document.getElementById("customFile");
