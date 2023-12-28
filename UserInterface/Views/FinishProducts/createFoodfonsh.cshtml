@@ -28,9 +28,9 @@
                     <input asp-for="ReadyfoodVM.ReadyProductsID" hidden />
 
 
-                    <table id="tblFinishFood" class="table table-bordered table-striped" data-FinshFood-id="@Model.ReadyfoodVM.ReadyProductsID">
+                    <table id="tblFinishFood" class="table table-style1 table-bordered table-striped" data-FinshFood-id="@Model.ReadyfoodVM.ReadyProductsID">
                         <thead>
-                            <tr class=" py-5 mb-3 pb-4">
+                            <tr >
                                 <th style="text-align:center  ;width:40%">
                                     اسم المنتج
                                 </th>
@@ -68,7 +68,7 @@
                     <div class="modal-footer">
 
                         <input type="submit" value=" حفظ" asp-route-id="@Model.tredMaeketReadyfoodVM.BrandID"
-                               style="text-align:center" class="btn btn-primary me-3" id="submitButton5" />
+                               style="text-align:center" class="btn btn-style1 fnt-white me-3" id="submitButton5" />
                     </div>
 
                 </form>

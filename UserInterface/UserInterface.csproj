@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -17,7 +17,6 @@
     <Folder Include="Areas\Model\Data\" />
     <Folder Include="Areas\Model\Models\" />
     <Folder Include="Areas\Model\Views\" />
-    <Folder Include="wwwroot\IMAGES\" />
   </ItemGroup>
 
   <ItemGroup>

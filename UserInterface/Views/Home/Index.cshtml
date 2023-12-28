@@ -5,25 +5,26 @@
 
 <div class="container login-sec">
 <div class="card shadow border-0 mt-4">
-    <div class="card-header bg-white  bg-primary mb-3  ml-0 py-4 custom-dark-bg ">
+    <div class="card-header bg-white  bg-primary mb-3  ml-0 pt-4 custom-dark-bg ">
         <div class="row">
-            <div class="col-12 text-center">
-                <h2 class="py-2 fnt-blue">تسجيل الدخول</h2>
+                <div class="col-12 text-center py-2">
+                    <div>
+                        <img class="bf-logo" src="../IMAGES/BeFranchisor_FinalLogo.png" alt="befranchisor logo" width="100" height="100">
+                    </div>
+                </div>
+                <div class="col-12 text-center pt-4">
+                    <h2 class=" bf-title1">تسجيل الدخول</h2>
             </div>
         </div>
     </div>
     <div class="card-body p-4">
         <div class="row">
             <div class="col-md-12">
-                <section>
+               @*  <section>
                     <form id="account" method="post" enctype="multipart/form-data">
 
                         <input asp-for="LoginVM.Login_ID" hidden />
                         <input asp-for="LoginVM.BrandFK " hidden />
-
-                      @*   <h3 class="border-bottom pb-3 mb-4 text-secondary text-center">
-
-                        </h3> *@
                         <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                         <div class="form-floating mb-3">
                                 <label asp-for="LoginVM.Username" class="form-label">اسم المستخدم </label>
@@ -50,7 +51,72 @@
                         </div>
 
                     </form>
-                </section>
+                </section> *@
+         @*            <section>
+                        <form id="account" method="post" enctype="multipart/form-data">
+                            <input asp-for="LoginVM.Login_ID" hidden />
+                            <input asp-for="LoginVM.BrandFK" hidden />
+
+                            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                            <div class="form-floating mb-3">
+                                <input asp-for="LoginVM.Username" class="form-control" id="username" />
+                                <label asp-for="LoginVM.Username" class="form-label">اسم المستخدم</label>
+                                <span asp-validation-for="LoginVM.Username" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input asp-for="LoginVM.Password" class="form-control" id="PasswordInput" placeholder="كلمة المرور" />
+                                <label asp-for="LoginVM.Password" class="form-label">كلمة المرور</label>
+                                <div id="errorMessage" style="color: red; display: none;" class="py-3">أدخل كلمة المرور *</div>
+                                <span asp-validation-for="LoginVM.Password" class="text-danger"></span>
+                            </div>
+
+                            <div>
+                                <p>
+                                    <a asp-controller="Forget" asp-action="ForgetPassword" class="fnt-blue">هل نسيت كلمة المرور؟</a>
+                                </p>
+                            </div>
+
+                            <div>
+                                <button id="loginsubmit" asp-controller="Home" asp-action="Index" type="submit"
+                                        class="w-100 btn btn-lg  btn-style1">
+                                    تسجيل الدخول
+                                </button>
+                            </div>
+                        </form>
+                    </section> *@
+                    <section>
+                        <form id="account" method="post" enctype="multipart/form-data">
+
+                            <div class="form-floating mb-3">
+                                <input asp-for="LoginVM.Username" class="form-control" id="floatingInput" placeholder="اسم المستخدم">
+                                <label asp-for="LoginVM.Username" class="form-label">اسم المستخدم</label>
+                                <span asp-validation-for="LoginVM.Username" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input asp-for="LoginVM.Password" class="form-control" id="floatingPassword" placeholder="كلمة المرور">
+                                <label asp-for="LoginVM.Password" class="form-label">كلمة المرور</label>
+                                <div id="errorMessage" style="color: red; display: none;" class="py-3">
+                                    . أدخل كلمة المرور *
+                                </div>
+                                <span asp-validation-for="LoginVM.Password" class="text-danger"></span>
+                            </div>
+                            <div>
+                                <p>
+                                    <a asp-controller="Forget" asp-action="ForgetPassword" class="fnt-blue">هل نسيت كلمة المرور ؟</a>
+                                </p>
+                            </div>
+                            <div>
+                                <button id="loginsubmit" asp-controller="Home" asp-action="Index" type="submit"
+                                        class="w-100 btn btn-lg fnt-white btn-style1">
+                                    تسجيل الدخول
+                                </button>
+                            </div>
+
+                        </form>
+                    </section>
             </div>
         </div>
     </div>

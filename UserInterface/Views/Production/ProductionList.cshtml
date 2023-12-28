@@ -7,10 +7,10 @@
 
 
 <div class="card shadow border-0 my-4">
-    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+    <div class="card-header bg-navbar bf-bb bg-gradient ml-0 py-3">
         <div class="row">
             <div class="col-12 text-center">
-                <h2 class="text-white py-2"> قائمة  الإنتاج</h2>
+                <h2 class="fnt-blue py-2"> قائمة  الإنتاج</h2>
             </div>
         </div>
     </div>
@@ -18,7 +18,7 @@
 
     <div class="card-body p-4">
 
-        <table class="table table-bordered table-striped py-5 mb-3 pb-4" id="tblData" style="width:100%">
+        <table class="table table-style1 table-bordered table-striped py-5 mb-3 pb-4" id="tblData" style="width:100%">
             <thead data-id="@TempData["ID"]">
                 <tr class=" py-5 mb-3 pb-4">
                     <th style="text-align:center ;font-size:medium">
@@ -37,7 +37,7 @@
                         <div class="row pb-3">
                         </div>
                         <div style="text-align:center">
-                            <a asp-controller="Production" asp-action="CreateProduction" name="AddButtonItem" class=" btn btn-primary px-4 add-button" asp-route-id="@TempData["ID"]" onclick="saveItemId(this)">
+                            <a asp-controller="Production" asp-action="CreateProduction" name="AddButtonItem" class=" btn btn-style2 fnt-white px-4 add-button" asp-route-id="@TempData["ID"]" onclick="saveItemId(this)">
                                 <i class="bi bi-plus-circle"></i>
                             </a>
                         </div>

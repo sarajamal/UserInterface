@@ -2,11 +2,11 @@
 
 <body>
     <div class="card shadow border-0 my-4 py-4">
-        <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="card-header bg-navbar bf-bb bg-gradient ml-0 py-3">
             <div class="row">
                 <div class="col-12 text-center">
 
-                    <h2 class="text-white py-2">   تعديل الأصناف </h2>
+                    <h2 class="fnt-blue py-2">   تعديل الأصناف </h2>
                 </div>
             </div>
         </div>
@@ -120,7 +120,7 @@
 
                         <h4 style="text-align:right" class="px-2 py-3">المكونات</h4>
                         @* id is important!!*@
-                        <table id="tbComponant" class="table table-bordered table-striped" data-Production-id="@Model.Productionvm.ProductionID">
+                        <table id="tbComponant" class="table table-style1 table-bordered table-striped" data-Production-id="@Model.Productionvm.ProductionID">
                             <thead>
                                 <tr>
                                     <th> المكون</th>
@@ -128,8 +128,8 @@
                                     <th>الوحدة</th>
                                     <th style="text-align:center;">
                                         @*type="button" is important*@
-                                        
-                                            <button type="button" class="btn btn-success" onclick="AddRowcomponentUpdate2()">إضافة</button>
+
+                                        <button type="button" class="btn btn-style2 fnt-white" onclick="AddRowcomponentUpdate2()">إضافة</button>
 
                                     </th>
                                 </tr>
@@ -177,7 +177,7 @@
                             <h4 style="text-align:right">الأدوات</h4>
                         </div>
                         @* id is important!!*@
-                        <table id="tblToolVarity2" class="table table-bordered table-striped" data-Production-id="@Model.Productionvm.ProductionID">
+                        <table id="tblToolVarity2" class="table table-style1 table-bordered table-striped" data-Production-id="@Model.Productionvm.ProductionID">
                             <thead>
                                 <tr>
                                     <th class="col-1">رقم الأداة</th>
@@ -186,7 +186,7 @@
                                     <th style="text-align:center;">
 
                                         @*type="button" is important*@
-                                        <button type="button" class="btn btn-success " onclick="AddRowTool2('@Model.Productionvm.ProductionID')">إضافة</button>
+                                        <button type="button" class="btn btn-style2 fnt-white " onclick="AddRowTool2('@Model.Productionvm.ProductionID')">إضافة</button>
 
 
                                     </th>
@@ -284,7 +284,7 @@
                             <tr>
                                 <td colspan="1" style="text-align:right;">
 
-                                        <button type="button" id="addStepButton" class="btn btn-success my-3" onclick="AddnewRowstepsUpdate2('@Model.Productionvm.ProductionID')" abled>إضافة خطوات جديدة </button>
+                                <button type="button" id="addStepButton" class="btn btn-style3 my-3" onclick="AddnewRowstepsUpdate2('@Model.Productionvm.ProductionID')" abled>إضافة خطوات جديدة </button>
 
                                 </td>
                             </tr>
@@ -297,8 +297,8 @@
                         <div class="form-group col-12 py-2">
                             <div style="text-align: left;">
                                 
-                                    <div class="form-group col-12 py-3">
-                                        <input type="submit" id="saveChange" value="حفظ التغييرات" asp-action="Upsert1" asp-route-id="@Model.Productionvm.ProductionID" style="text-align:center" class="btn btn-primary me-3" abled />
+                                    <div class="form-group col-12 py-3 fxcc">
+                                    <input type="submit" id="saveChange" value="حفظ التغييرات" asp-action="Upsert1" asp-route-id="@Model.Productionvm.ProductionID" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
                                     </div>
                             </div>
                         </div>

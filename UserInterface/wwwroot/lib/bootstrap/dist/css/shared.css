@@ -1,9 +1,43 @@
-﻿body {
-    margin: 0px;
-    padding-top: 80px;
-    font-family: "Arial", sans-serif; /* Use an Arabic-supported font here */
-    background-color: #FAFAFA;
+﻿
+@font-face {
+    font-family: 'Almarai';
+    src: local('Almarai Regular'), url('../../../../fonts/Almarai-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
 }
+
+@font-face {
+    font-family: 'Almarai';
+    src: local('Almarai Light'), url('../../../../fonts/Almarai-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Almarai';
+    src: local('Almarai Bold'), url('../../../../fonts/Almarai-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Almarai';
+    src: local('Almarai ExtraBold'), url('../../../../fonts/Almarai-ExtraBold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+}
+
+
+body {
+    margin: 0 0 40px 0;
+    padding-top: 0 !important;
+
+    font-family: "Almarai", sans-serif; /* Use an Arabic-supported font here */
+    background-color: rgba(240, 247, 250, 1);
+}
+
+
+
 
 html {
     direction: rtl;
@@ -16,14 +50,15 @@ li {
     padding: 4px;
     margin: 6px;
     font-weight: bold;
-    font-family: Cambria;
+    /*font-family: Cambria;*/
+    font-family: "Almarai", sans-serif; /* Use an Arabic-supported font here */
 }
 
 h4 {
     text-align: center;
     font-size: 20px;
     font-weight: bold;
-    font-family: Cambria;
+    font-family: "Almarai", sans-serif; /* Use an Arabic-supported font here */
 }
 /* Style the error message text */
 .validation-error {
