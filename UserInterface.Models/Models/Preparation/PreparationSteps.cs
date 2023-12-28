@@ -12,8 +12,7 @@ namespace Test12.Models.Models.Preparation
     public class PreparationSteps
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int PrepStepsID { get; set; }
+         public int PrepStepsID { get; set; }
         
         public string? PrepText { get; set; }
         public int? PrepStepsNum { get; set; }

@@ -78,18 +78,18 @@ namespace Test12.Controllers
 
                     foreach (var foodAdd in FoodsVM.FoodViewMList)
                     {
-
+                        int lastId = _unitOfWork.FoodRepository.GetLastStepId();
+                        int LastId1 = lastId + 1;
                         if (foodAdd != null && foodAdd.FoodStuffsID == 0)
                         {
 
                             var newfoods = new FoodStuffs
                             {
+                                FoodStuffsID = LastId1, 
                                 BrandFK = foodFK,
                                 FoodStuffsName = foodAdd.FoodStuffsName,
-                             
+
                             };
-                            _unitOfWork.FoodRepository.Add(newfoods);
-                            _unitOfWork.Save();
 
                             string wwwRootFoodPath = _webHostEnvironment.WebRootPath; // get us root folder
 
@@ -97,13 +97,13 @@ namespace Test12.Controllers
                             var file1Name1 = $"file1_{newfoods.FoodStuffsID}";
                             var file1ForFood1 = HttpContext.Request.Form.Files[file1Name1];
 
-                          
+
                             string FoodStuffsID = newfoods.FoodStuffsID.ToString();
                             string BrandFK = newfoods.BrandFK.ToString();
 
 
-                            var FoodPath1 = Path.Combine(wwwRootFoodPath, "IMAGES", BrandFK,"FoodStuffs", FoodStuffsID);
-                           
+                            var FoodPath1 = Path.Combine(wwwRootFoodPath, "IMAGES", BrandFK, "FoodStuffs", FoodStuffsID);
+
 
                             if (file1ForFood1 != null && file1ForFood1.Length > 0)
                             {
@@ -120,7 +120,7 @@ namespace Test12.Controllers
                                 }
                                 newfoods.FoodStuffsImage = fileName11;
                             }
-
+                            _unitOfWork.FoodRepository.Add(newfoods);
                             _unitOfWork.Save();
                             //// reOrder2 
                             if (selectFoodvalue == 0)
@@ -169,7 +169,7 @@ namespace Test12.Controllers
                     for (int i = 0; i < foodViewModel.FoodViewMList.Count; i++)
                     {
                         var foods = foodViewModel.FoodViewMList[i];
-                 
+
                         string FoodStuffsID = foods.FoodStuffsID.ToString();
                         string BrandFK = foods.BrandFK.ToString();
 
@@ -206,16 +206,16 @@ namespace Test12.Controllers
                             }
                             foods.FoodStuffsImage = fileNamefood1; // Update the image path
                         }
-                        
+
                         var existingFoods = _unitOfWork.FoodRepository.Get(u => u.FoodStuffsID == foods.FoodStuffsID);
 
                         if (existingFoods != null)
                         {
 
                             existingFoods.FoodStuffsName = foods.FoodStuffsName;
-                           
+
                             existingFoods.FoodStuffsImage = foods.FoodStuffsImage;
-                         
+
                             _unitOfWork.FoodRepository.Update(existingFoods);
                         }
                         else
@@ -241,14 +241,14 @@ namespace Test12.Controllers
             string wwwRootPathSteps = _webHostEnvironment.WebRootPath;
 
             var deleteFoodPicture = _unitOfWork.FoodRepository.Get(u => u.FoodStuffsID == id);
-             
+
             string FoodStuffsID = deleteFoodPicture.FoodStuffsID.ToString();
             string BrandFK = deleteFoodPicture.BrandFK.ToString();
 
             // Delete the associated image file
             if (!string.IsNullOrEmpty(deleteFoodPicture.FoodStuffsImage))
             {
-                string imagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", BrandFK , "FoodStuffs", FoodStuffsID, deleteFoodPicture.FoodStuffsImage);
+                string imagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", BrandFK, "FoodStuffs", FoodStuffsID, deleteFoodPicture.FoodStuffsImage);
                 if (System.IO.File.Exists(imagePath1))
                 {
                     System.IO.File.Delete(imagePath1);

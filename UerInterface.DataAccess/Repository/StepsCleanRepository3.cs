@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,14 +33,24 @@ namespace Test12.DataAccess.Repository
                     objFormDb.CleaStepsImage = obj.CleaStepsImage;
                 }
                 // Update properties for Step 2
-                
-                // Save changes to the database
-                _context.Entry(objFormDb).State = EntityState.Modified;
+
+
                 _context.SaveChanges();
 
                 //_context.Update(obj);
 
             }
+
+        }
+        public int GetLastStepId()
+        {
+            // If there are no entries in the table, return 0 or an appropriate default value
+            if (!_context.CleaningSteps.Any())
+            {
+                return 0;
+            }
+            // Retrieve and return the max CleaStepsID
+            return _context.CleaningSteps.Max(p => p.CleaStepsID);
         }
     }
 }

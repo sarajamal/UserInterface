@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Test12.DataAccess.Repository.IRepository;
 using Test12.Models.Models.Clean;
 using Test12.Models.Models.Preparation;
@@ -149,6 +150,7 @@ namespace Test12.Controllers
                     {
                         BrandFK = FK,
                         DeviceName = clean.CleanViewModel.DeviceName,
+                        Note = clean.CleanViewModel.Note,
 
                     };
                     _unitOfWork.CleanRepository.Add(setFK);
@@ -168,15 +170,17 @@ namespace Test12.Controllers
 
 
                                 int CleaningFK = FKClean;
+                                int LastId = _unitOfWork.CleanRepository.GetLastStepId();
+                                int LastId1 = LastId + 1;
                                 var newStep = new CleaningSteps
                                 {
+                                    CleaStepsID = LastId1,
                                     CleaningFK = CleaningFK,
                                     CleaText = stepAdd.CleaText,
                                     CleaStepsNum = stepAdd.CleaStepsNum
 
                                 };
-                                _unitOfWork.StepsCleanRepository3.Add(newStep);
-                                _unitOfWork.Save();
+                          
 
                                 var file1Name1 = $"file1_{newStep.CleaStepsID}";
                                 var file1ForStep1 = HttpContext.Request.Form.Files[file1Name1];
@@ -201,6 +205,7 @@ namespace Test12.Controllers
                                     }
                                     newStep.CleaStepsImage = fileName11;
                                 }
+                                _unitOfWork.StepsCleanRepository3.Add(newStep);
                                 _unitOfWork.Save();
                             }
                         }
@@ -258,73 +263,121 @@ namespace Test12.Controllers
                         var Steps = cleanVM.CleaningSteps[i];
 
                         string wwwRootPathSteps = _webHostEnvironment.WebRootPath;
-
+                        int LastId = _unitOfWork.CleanRepository.GetLastStepId();
+                        int LastId1 = LastId + 1;
                         var existingSteps9 = _unitOfWork.StepsCleanRepository3.Get(u => u.CleaStepsID == Steps.CleaStepsID, incloudeProperties: "Cleaning");
                         if (existingSteps9 == null)
                         {
-                            _unitOfWork.StepsCleanRepository3.Add(Steps);
-                            _unitOfWork.Save();
-                        }
-
-                        string IDstep = Steps.CleaStepsID.ToString();
-                        string CleanVMFk = cleanVM.CleanViewModel.BrandFK.ToString();
-
-                        string StepsPath = Path.Combine(wwwRootPathSteps, "IMAGES", CleanVMFk, "Cleaning", IDstep);
-
-                        var file1Name = $"file1_{Steps.CleaStepsID}";
-                        var file1ForStep = HttpContext.Request.Form.Files[file1Name];
-
-                        if (file1ForStep != null)
-                        {
-                            if (!string.IsNullOrEmpty(Steps.CleaStepsImage)) // Check if there's an existing image path
+                            var newStep = new CleaningSteps
                             {
-                                var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", CleanVMFk, "Cleaning", IDstep, Steps.CleaStepsImage);
+                                CleaStepsID = LastId1,
+                                CleaningFK = Steps.CleaningFK,
+                                CleaText = Steps.CleaText,
+                                CleaStepsNum = Steps.CleaStepsNum
 
-                                if (System.IO.File.Exists(OldImagePath1))
+                            };
+                     
+                            string IDstep = newStep.CleaStepsID.ToString();
+                            string CleanVMFk = cleanVM.CleanViewModel.BrandFK.ToString();
+
+                            string StepsPath = Path.Combine(wwwRootPathSteps, "IMAGES", CleanVMFk, "Cleaning", IDstep);
+
+                            var file1Name = $"file1_{newStep.CleaStepsID}";
+                            var file1ForStep = HttpContext.Request.Form.Files[file1Name];
+
+                            if (file1ForStep != null)
+                            {
+                                if (!string.IsNullOrEmpty(Steps.CleaStepsImage)) // Check if there's an existing image path
                                 {
-                                    System.IO.File.Delete(OldImagePath1); // Delete old image if it exists
+                                    var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", CleanVMFk, "Cleaning", IDstep, newStep.CleaStepsImage);
+
+                                    if (System.IO.File.Exists(OldImagePath1))
+                                    {
+                                        System.IO.File.Delete(OldImagePath1); // Delete old image if it exists
+                                    }
                                 }
-                            }
-                            string fileNameSteps1 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep.FileName);
+                                string fileNameSteps1 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep.FileName);
 
-                            //اذا المسار مش موجود سو مسار جديد 
-                            if (!Directory.Exists(StepsPath))
-                            {
-                                Directory.CreateDirectory(StepsPath);
+                                //اذا المسار مش موجود سو مسار جديد 
+                                if (!Directory.Exists(StepsPath))
+                                {
+                                    Directory.CreateDirectory(StepsPath);
+                                }
+
+                                using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
+                                {
+                                    file1ForStep.CopyTo(fileStream1);
+                                }
+
+                                newStep.CleaStepsImage = fileNameSteps1; // Update the image path
+                                _unitOfWork.StepsCleanRepository3.Add(newStep);
+                                _unitOfWork.Save();
+
                             }
 
-                            using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
-                            {
-                                file1ForStep.CopyTo(fileStream1);
-                            }
-
-                            Steps.CleaStepsImage = fileNameSteps1; // Update the image path
                         }
-
-                        // Save or update Steps data to the database
-                        if (Steps.CleaningFK == stepsID) // int stepsID = PrepaVM.PreparationVM.التحضير_ID;
+                        else
                         {
-                            var existingSteps = _unitOfWork.StepsCleanRepository3.Get(u => u.CleaStepsID == Steps.CleaStepsID, incloudeProperties: "Cleaning");
 
-                            if (existingSteps != null)
+                            string IDstep = Steps.CleaStepsID.ToString();
+                            string CleanVMFk = cleanVM.CleanViewModel.BrandFK.ToString();
+
+                            string StepsPath = Path.Combine(wwwRootPathSteps, "IMAGES", CleanVMFk, "Cleaning", IDstep);
+
+                            var file1Name = $"file1_{Steps.CleaStepsID}";
+                            var file1ForStep = HttpContext.Request.Form.Files[file1Name];
+
+                            if (file1ForStep != null)
                             {
+                                if (!string.IsNullOrEmpty(Steps.CleaStepsImage)) // Check if there's an existing image path
+                                {
+                                    var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", CleanVMFk, "Cleaning", IDstep, Steps.CleaStepsImage);
 
-                                existingSteps.CleaStepsImage = Steps.CleaStepsImage;
-                                existingSteps.CleaText = Steps.CleaText;
-                                existingSteps.CleaStepsNum = Steps.CleaStepsNum;
+                                    if (System.IO.File.Exists(OldImagePath1))
+                                    {
+                                        System.IO.File.Delete(OldImagePath1); // Delete old image if it exists
+                                    }
+                                }
+                                string fileNameSteps1 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep.FileName);
 
-                                _unitOfWork.StepsCleanRepository3.Update(existingSteps);
+                                //اذا المسار مش موجود سو مسار جديد 
+                                if (!Directory.Exists(StepsPath))
+                                {
+                                    Directory.CreateDirectory(StepsPath);
+                                }
+
+                                using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
+                                {
+                                    file1ForStep.CopyTo(fileStream1);
+                                }
+
+                                Steps.CleaStepsImage = fileNameSteps1; // Update the image path
                             }
-                            else
+
+                            // Save or update Steps data to the database
+                            if (Steps.CleaningFK == stepsID) // int stepsID = PrepaVM.PreparationVM.التحضير_ID;
                             {
-                                _unitOfWork.StepsCleanRepository3.Add(Steps);
-                            }
+                                var existingSteps = _unitOfWork.StepsCleanRepository3.Get(u => u.CleaStepsID == Steps.CleaStepsID, incloudeProperties: "Cleaning");
 
-                            _unitOfWork.Save();
+                                if (existingSteps != null)
+                                {
+
+                                    existingSteps.CleaStepsImage = Steps.CleaStepsImage;
+                                    existingSteps.CleaText = Steps.CleaText;
+                                    existingSteps.CleaStepsNum = Steps.CleaStepsNum;
+
+                                    _unitOfWork.StepsCleanRepository3.Update(existingSteps);
+                                }
+                                else
+                                {
+                                    _unitOfWork.StepsCleanRepository3.Add(Steps);
+                                }
+
+                                _unitOfWork.Save();
+                            }
                         }
                     }
                 }
-
                 TempData["success"] = "تم تحديث التنظيف بشكل ناجح";
 
                 return RedirectToAction("CleanList", new { id = cleanVM.CleanViewModel.BrandFK });
@@ -401,6 +454,8 @@ namespace Test12.Controllers
             try
             {
                 int lastId = _unitOfWork.CleanRepository.GetLastStepId();
+                _unitOfWork.Save();
+
                 return Ok(lastId);
             }
             catch (Exception ex)

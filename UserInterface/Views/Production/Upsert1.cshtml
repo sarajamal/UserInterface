@@ -13,9 +13,8 @@
 
         <form method="post" class="row" enctype="multipart/form-data" data-id="@TempData["ID"]" asp-action="Upsert1" asp-controller="Production" id="myForm">
             <input asp-for="Productionvm.ProductionID" hidden />
-            <input asp-for="Productionvm.ProductImage" hidden />
             <input asp-for="Productionvm.ProductType" hidden />
-
+            <input asp-for="Productionvm.ProductImage" hidden />
             <input asp-for="Productionvm.BrandFK" hidden />
             <input asp-for="tredMaeketVM.BrandID" hidden />
             <input asp-for="tredMaeketVM.ID_Login" hidden />
@@ -244,7 +243,7 @@
                                                     <input asp-for="@itemStep.ProdSImage" name="stepsVM2[@j].ProdSImage" hidden />
                                                     <input asp-for="@itemStep.ProdStepsNum" name="stepsVM2[@j].ProdStepsNum" hidden />
 
-                                                    @if (!string.IsNullOrEmpty(itemStep.ProdText) || !string.IsNullOrEmpty(itemStep.ProdSImage))
+                                                    @if (!string.IsNullOrEmpty(itemStep.ProdText) || !string.IsNullOrEmpty(itemStep.ProdSImage) ||  itemStep.ProdStepsNum != 0)
                                                     {
                                                         <div class="py-5">
                                                             <button type="button" class="btn btn-danger delete-button"

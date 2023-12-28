@@ -12,6 +12,7 @@ namespace Test12.DataAccess.Repository.IRepository
     {
 
         void Update(CleaningSteps obj);
-     
+        int GetLastStepId();
+
     }
 }

@@ -65,7 +65,7 @@ function loadDataTable(id) {
                 "orderable": false // Disable sorting for the "Order" column
             }
         ],
-        "productionOrder": [] // Disable initial sorting
+        "order": [] // Disable initial sorting
     });
 }
 function DeletePreparationPost(url) {

@@ -17,7 +17,7 @@ namespace Test12.Models.Models.Clean
 
         public string? CleaText { get; set; }
         public int? CleaStepsNum { get; set; }
-
+        [ValidateNever]
         [MaxLength(255)]
         public string? CleaStepsImage { get; set; }
 
