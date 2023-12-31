@@ -196,8 +196,8 @@ function toggleAddButtonVisibility(value) {
 //take two parameter ID1 = ID_التحضير , id=ID for the step . 
 function Deletestep(id) { // after save in db . 
     Swal.fire({
-        title: 'هل أنت متأكد ؟',
-        text: " هل تريد استعادة ماتم حذفه؟",
+        title: 'تأكيد !!',
+        text: "تأكد من حفظ المتغيرات على المعلومات - المكونات - الأجهزة والأدوات ",
         icon: 'warning',
         showCancelButton: true,
         cancelButtonText: 'الغاء',

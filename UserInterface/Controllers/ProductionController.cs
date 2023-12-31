@@ -526,7 +526,7 @@ namespace Test12.Controllers
                 }
                 TempData["success"] = "تم تحديث الانتاج بشكل ناجح";
                 TempData["ID"] = PropaVM.Productionvm.BrandFK;
-                return RedirectToAction("ProductionList", new { id = PropaVM.Productionvm.BrandFK });
+                return RedirectToAction("Upsert1", new { id = PropaVM.Productionvm.ProductionID });
             }
             else
             {
