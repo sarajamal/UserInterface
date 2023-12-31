@@ -45,10 +45,10 @@ function AddRowTool(PreparationsFK) { //صفحة التعديل
     newRow.innerHTML = `
         <td>${newRowNumber}</td>
 
-        <td><input name="ToolsVarityVM[${newRowNumber - 1}].PrepTools" class="form-control" /></td>
+        <td><input name="ToolsVarityVM[${newRowNumber - 1}].PrepTools" class="form-control"placeholder="الأدات المستخدمة"  /></td>
 
        <td style="text-align:center;" >
-            <input type="hidden" name="ToolsVarityVM[${newRowNumber - 1}].PreparationsFK" value="${PreparationsFK}" />
+            <input type="hidden" name="ToolsVarityVM[${newRowNumber - 1}].PreparationsFK" value="${PreparationsFK}"   />
             <button type="button" class="btn btn-danger" data-row-index="${newRowNumber}" onclick="DeleteRow6(this)">حذف</button>
         </td>
          `;
@@ -95,9 +95,9 @@ function AddRowToolnew(PreparationsFK) { //صفحة الإضافة
     newRow.innerHTML = `
 
         <td style="text-align:center;">${numeric}</td>
-        <td><input name="ToolsVarityVM[${newRowNumber - 1}].PrepTools" class="form-control"  /></td>
+        <td><input name="ToolsVarityVM[${newRowNumber - 1}].PrepTools" class="form-control"  placeholder="الأدات المستخدمة" /></td>
        <td style="text-align:center;" >
-            <input type="hidden" name="ToolsVarityVM[${newRowNumber - 1}].PreparationsFK" value="${PreparationsFK}" />
+            <input type="hidden" name="ToolsVarityVM[${newRowNumber - 1}].PreparationsFK" value="${PreparationsFK}"  />
               
             <button type="button" class="btn btn-danger" data-row-index="${newRowNumber}" onclick="DeleteRow6(this)">حذف</button> 
         </td>
