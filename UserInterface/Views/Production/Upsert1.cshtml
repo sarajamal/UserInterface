@@ -265,7 +265,7 @@
                                                     <input asp-for="@itemStep.ProdSImage" name="stepsVM2[@j].ProdSImage" hidden />
                                                     <input asp-for="@itemStep.ProdStepsNum" name="stepsVM2[@j].ProdStepsNum" hidden />
 
-                                                    @if (!string.IsNullOrEmpty(itemStep.ProdText) || !string.IsNullOrEmpty(itemStep.ProdSImage) ||  itemStep.ProdStepsNum != 0)
+                                                    @if (!string.IsNullOrEmpty(itemStep.ProdText) || !string.IsNullOrEmpty(itemStep.ProdSImage) || itemStep.ProdStepsNum != 0)
                                                     {
                                                         <div class="py-5">
                                                             <button type="button" class="btn btn-danger delete-button"
@@ -298,6 +298,7 @@
                                         </tr>
                                     }
                                 }
+
                             </tbody>
                         </table>
 

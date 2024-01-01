@@ -464,7 +464,7 @@ namespace Test12.Controllers
 
                                 using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
                                 {
-                                    file1ForStep.CopyTo(fileStream1);
+                                    file1ForStep.CopyToAsync(fileStream1);
                                 }
 
                                 newStep.PrepImage = fileNameSteps1; // Update the image path
@@ -504,7 +504,7 @@ namespace Test12.Controllers
 
                                 using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
                                 {
-                                    file1ForStep.CopyTo(fileStream1);
+                                    file1ForStep.CopyToAsync(fileStream1);
                                 }
                                 Steps.PrepImage = fileNameSteps1;
                             }

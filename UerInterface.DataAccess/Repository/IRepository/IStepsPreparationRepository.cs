@@ -11,7 +11,6 @@ namespace Test12.DataAccess.Repository.IRepository
     {
 
         void Update(PreparationSteps obj);
-        void Delete(PreparationSteps obl);
         int GetLastStepId();
 
        
