@@ -274,9 +274,8 @@ namespace Test12.Controllers
             LoMarket.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u=>u.BrandFK == id).ToList();
             LoMarket.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u=>u.BrandFK == id).ToList();
             LoMarket.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            LoMarket.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == id).ToList(); //هو يحتوي على قائمة من جدول المكونات واللي يساعده على العرض هي view
             ViewBag.IsAuthenticated = true;
-            //LoMarket.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.ID_Login == id).ToList(); //هو يحتوي على قائمة من جدول المكونات واللي يساعده على العرض هي view
-
             // Populate the model
 
             return View(LoMarket);

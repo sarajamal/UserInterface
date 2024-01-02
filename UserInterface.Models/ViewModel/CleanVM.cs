@@ -25,6 +25,8 @@ namespace Test12.Models.ViewModel
         [ValidateNever]
         public Brands tredMaeketCleanVM { get; set; }
         [ValidateNever]
+        public LoginTredMarktViewModel WelcomTredMarketClean { get; set; }
+        [ValidateNever]
         [JsonIgnore]
         public IEnumerable<Cleaning> CleaningVMorder { get; set; }
     }

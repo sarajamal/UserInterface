@@ -1,5 +1,11 @@
 ﻿@model CleanVM;
 
+<header>
+    <div>
+        @await Html.PartialAsync("_HeaderPartial", Model.WelcomTredMarketClean)
+    </div>
+</header>
+
 <body>
     <div class="card shadow border-0 my-4 py-4">
         <div class="card-header bg-secondary bg-gradient ml-0 py-3">

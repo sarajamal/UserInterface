@@ -1,5 +1,10 @@
 ﻿@model PreComViewModel;
 
+<header>
+    <div>
+        @await Html.PartialAsync("_HeaderPartial", Model.WelcomTredMarketPrecomponent)
+    </div>
+</header>
 <body>
     <div class="card shadow border-0 my-4 py-4">
         <div class="card-header bg-navbar bf-bb bg-gradient ml-0 py-3">

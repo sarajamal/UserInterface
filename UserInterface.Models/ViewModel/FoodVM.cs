@@ -24,5 +24,7 @@ namespace Test12.Models.ViewModel
         public IEnumerable<FoodStuffs> FoodsVMorder { get; set; }
         [ValidateNever]
         public Brands tredMaeketFoodsVM { get; set; }
+        [ValidateNever]
+        public LoginTredMarktViewModel WelcomTredmarketFood { get; set; }
     }
 }

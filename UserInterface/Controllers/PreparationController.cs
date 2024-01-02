@@ -24,16 +24,34 @@ namespace Test12.Controllers
 
         public IActionResult PreparationList(int? id) //this for display List Of التحضيرات Page1
         {
-
-            IEnumerable<Preparations> objPreparationList = _unitOfWork.PreparationRepository.GetAll(incloudeProperties: "component").Where(u => u.BrandFK == id).OrderBy(item => item.PreparationsOrder).ToList();
-
-            // Store the FK value in TempData
+            PreComViewModel PrVM = new PreComViewModel
+            {
+                PreparationList = _unitOfWork.PreparationRepository.GetAll(incloudeProperties: "component")
+                            .Where(u => u.BrandFK == id).OrderBy(item => item.PreparationsOrder).ToList(),
+                WelcomTredMarketPrecomponent = new LoginTredMarktViewModel()
+                
+            };
+            PrVM.WelcomTredMarketPrecomponent.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
+            PrVM.WelcomTredMarketPrecomponent.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == id);
+            PrVM.WelcomTredMarketPrecomponent.ProductionLoginVM = _unitOfWork.itemsRepository.Get(u => u.BrandFK == id);
+            PrVM.WelcomTredMarketPrecomponent.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == id);
+            PrVM.WelcomTredMarketPrecomponent.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == id);
+            PrVM.WelcomTredMarketPrecomponent.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == id);
+            PrVM.WelcomTredMarketPrecomponent.PreparatonLoginVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == id);
+            PrVM.WelcomTredMarketPrecomponent.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.WelcomTredMarketPrecomponent.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.WelcomTredMarketPrecomponent.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.WelcomTredMarketPrecomponent.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.WelcomTredMarketPrecomponent.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.WelcomTredMarketPrecomponent.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.WelcomTredMarketPrecomponent.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == id).ToList();
             TempData["ID"] = id;
-            // Display the updated list
-            return View(objPreparationList);
+            // Assuming you handle the header through layout or another mechanism
+            return View(PrVM);
+
         }
 
-        public IActionResult Upsert(int? id) // After Enter تعديل Display التحضيرات والمكونات...
+        public IActionResult Upsert(int? id, int? brandFk) // After Enter تعديل Display التحضيرات والمكونات...
         {
             PreComViewModel PrVM = new()
             {
@@ -42,9 +60,24 @@ namespace Test12.Controllers
                 ToolsVarityVM = new List<PreparationTools>(),
                 stepsVM = new List<PreparationSteps>(),
                 tredMaeketVM = new Brands(),
+                WelcomTredMarketPrecomponent = new LoginTredMarktViewModel()
 
             };
 
+            PrVM.WelcomTredMarketPrecomponent.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFk);
+            PrVM.WelcomTredMarketPrecomponent.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == brandFk);
+            PrVM.WelcomTredMarketPrecomponent.ProductionLoginVM = _unitOfWork.itemsRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.WelcomTredMarketPrecomponent.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.WelcomTredMarketPrecomponent.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.WelcomTredMarketPrecomponent.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.WelcomTredMarketPrecomponent.PreparatonLoginVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.WelcomTredMarketPrecomponent.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.WelcomTredMarketPrecomponent.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.WelcomTredMarketPrecomponent.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.WelcomTredMarketPrecomponent.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.WelcomTredMarketPrecomponent.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.WelcomTredMarketPrecomponent.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.WelcomTredMarketPrecomponent.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == brandFk).ToList();
             PrVM.tredMaeketVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
             PrVM.PreparationVM = _unitOfWork.PreparationRepository.Get(u => u.PreparationsID == id);
             PrVM.componontVMList = _unitOfWork.ComponentRepository.GetAll(incloudeProperties: "Preparation").Where(c => c.PreparationsFK == id).ToList(); //هو يحتوي على قائمة من جدول المكونات واللي يساعده على العرض هي view
@@ -63,10 +96,24 @@ namespace Test12.Controllers
                 ToolsVarityVM = new List<PreparationTools>(),
                 stepsVM = new List<PreparationSteps>(),
                 tredMaeketVM = new Brands(),
-
-
+                WelcomTredMarketPrecomponent = new LoginTredMarktViewModel()
 
             };
+
+            PrVM.WelcomTredMarketPrecomponent.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
+            PrVM.WelcomTredMarketPrecomponent.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == id);
+            PrVM.WelcomTredMarketPrecomponent.ProductionLoginVM = _unitOfWork.itemsRepository.Get(u => u.BrandFK == id);
+            PrVM.WelcomTredMarketPrecomponent.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == id);
+            PrVM.WelcomTredMarketPrecomponent.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == id);
+            PrVM.WelcomTredMarketPrecomponent.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == id);
+            PrVM.WelcomTredMarketPrecomponent.PreparatonLoginVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == id);
+            PrVM.WelcomTredMarketPrecomponent.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.WelcomTredMarketPrecomponent.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.WelcomTredMarketPrecomponent.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.WelcomTredMarketPrecomponent.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.WelcomTredMarketPrecomponent.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.WelcomTredMarketPrecomponent.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.WelcomTredMarketPrecomponent.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == id).ToList();
             PrVM.PreparationVM = new Preparations();
             PrVM.componontVMList = new List<PreparationIngredients>();
             PrVM.ToolsVarityVM = new List<PreparationTools>();
@@ -222,13 +269,13 @@ namespace Test12.Controllers
 
                                 var newStep = new PreparationSteps
                                 {
-                                    PrepStepsID = LastId1 ,
+                                    PrepStepsID = LastId1,
                                     PreparationsFK = PrepStepsID,
                                     PrepText = stepAdd.PrepText,
                                     PrepStepsNum = stepAdd.PrepStepsNum
 
                                 };
-                               
+
 
                                 var file1Name1 = $"file1_{newStep.PrepStepsID}";
                                 var file1ForStep1 = HttpContext.Request.Form.Files[file1Name1];
@@ -532,263 +579,262 @@ namespace Test12.Controllers
                         }
                     }
                 }
-                    TempData["success"] = "تم تحديث التحضيرات بشكل ناجح";
+                TempData["success"] = "تم تحديث التحضيرات بشكل ناجح";
 
-                    return RedirectToAction("Upsert", new { id = PrepaVM.PreparationVM.PreparationsID });
-                }
-
-                else
-                {
-                    return View(PrepaVM);
-                }
+                return RedirectToAction("Upsert", new { id = PrepaVM.PreparationVM.PreparationsID });
             }
 
-            [HttpGet]
-            public IActionResult GetLastId()
+            else
             {
-                try
-                {
-                    int lastId = _unitOfWork.StepsPreparationRepository.GetLastStepId();
-                    return Ok(lastId);
-                }
-                catch (Exception ex)
-                {
-                    // Handle exception appropriately
-                    return StatusCode(500, ex.Message);
-                }
+                return View(PrepaVM);
             }
-
-
-            // تبع List 
-            #region API CALLS 
-            [HttpGet]
-            public IActionResult GetAll(int? id)
-            {
-
-                IEnumerable<Preparations> objPreparationList = _unitOfWork.PreparationRepository.GetAll(incloudeProperties: "component")
-                    .Where(u => u.BrandFK == id).OrderBy(item => item.PreparationsOrder).ToList();
-
-                return Json(new { data = objPreparationList });
-            }
-            #endregion
-
-
-            // زر الحذف تبع المكونات 
-            #region API CALLS 
-            [HttpDelete]
-            public IActionResult Delete(int? id) //this is for delete button in rows component 
-            {
-                var ComponentDelete = _unitOfWork.ComponentRepository.Get(u => u.PrepIngredientsID == id);
-                if (ComponentDelete == null)
-                {
-                    return Json(new { success = false, Message = "Error While Deleting" });
-                }
-
-                _unitOfWork.ComponentRepository.Remove(ComponentDelete);
-                _unitOfWork.Save();
-                return Json(new { success = true });
-            }
-            #endregion
-
-            //زر حذف صفحة تعديل الأدوات 
-            #region API CALLS 
-            [HttpDelete]
-            public IActionResult DeleteToolVariety(int? id) //this is for delete button in rows أدوات التحضير والصنف
-            {
-
-                var toolsVarityDelete = _unitOfWork.PrepaToolsVarietyRepository.Get(u => u.PrepToolsID == id);
-                if (toolsVarityDelete == null)
-                {
-
-                    return Json(new { success = false, Message = "Error While Deleting" });
-                }
-
-                _unitOfWork.PrepaToolsVarietyRepository.Remove(toolsVarityDelete);
-                _unitOfWork.Save();
-                return Json(new { success = true });
-            }
-            #endregion
-
-            //زر الحذف تبع صفحة تعديل الخطوات
-            #region API CALLS
-            [HttpDelete]
-            public IActionResult Deletesteps(int? id)
-            {
-                var stepsToDelete = _unitOfWork.StepsPreparationRepository.Get(u => u.PrepStepsID == id);
-                var BrandFK = _unitOfWork.PreparationRepository.Get(u => u.PreparationsID == stepsToDelete.PreparationsFK);
-
-                string IDStep = stepsToDelete.PrepStepsID.ToString();
-                string FKBrand = BrandFK.BrandFK.ToString();
-
-                string wwwRootPathSteps = _webHostEnvironment.WebRootPath;
-
-                if (stepsToDelete == null)
-                {
-                    return Json(new { success = false, Message = "Error While Deleting" });
-                }
-
-                // Delete the associated image file
-                if (!string.IsNullOrEmpty(stepsToDelete.PrepImage))
-                {
-                    string imagePath = Path.Combine(wwwRootPathSteps, "IMAGES", FKBrand, "Preparation", IDStep, stepsToDelete.PrepImage);
-                    if (System.IO.File.Exists(imagePath))
-                    {
-                        System.IO.File.Delete(imagePath);
-                    }
-                }
-                _unitOfWork.StepsPreparationRepository.Remove(stepsToDelete);
-                _unitOfWork.Save();
-
-                // Find all steps with a higher PrepStepsNum
-                var preparationFK = stepsToDelete.PreparationsFK;
-
-                var subsequentSteps = _unitOfWork.StepsPreparationRepository
-                    .GetAll(incloudeProperties: "Preparation").Where(u => u.PreparationsFK == preparationFK).ToList(); // Add ToList() to materialize the query;
-
-                // Decrement PrepStepsNum for each subsequent step
-                for (int i = 0; i < subsequentSteps.Count; i++)
-                {
-                    var step = subsequentSteps[i];
-
-                    if (step.PrepStepsID > id)
-                    {
-                        var getOld = _unitOfWork.StepsPreparationRepository.Get(u => u.PrepStepsID == step.PrepStepsID);
-                        getOld.PrepStepsNum -= 1;
-                        _unitOfWork.StepsPreparationRepository.Update(step);
-                    }
-                }
-                _unitOfWork.Save();
-                //var preparationId = stepsToDelete.التحضير_ID;
-                //var stepsInPreparation = _unitOfWork.StepsPreparationRepository.GetAll(incloudeProperties: "Preparation").Where(c => c.التحضير_ID == preparationId).ToList();
-
-                ////هنا لتغيير الرقم ضروري يصير فيه لوب والشرط أن ضروري id اصغر منه الموجود 
-                //for (int i = 0; i < stepsInPreparation.Count; i++)
-                //{
-                //    var step = stepsInPreparation[i];
-
-                //    if (step.ID > id)
-                //    {
-                //        var getOld = _unitOfWork.StepsPreparationRepository.Get(u => u.ID == step.ID);
-
-                //        string IDstep1old = getOld.ID.ToString();
-
-                //        string رقم_الخطوة11old = getOld.رقم_الخطوة1 != null ? getOld.رقم_الخطوة1.ToString() : string.Empty;
-                //        string oldرقم_الخطوة22 = getOld.رقم_الخطوة2 != null ? getOld.رقم_الخطوة2.ToString() : string.Empty;
-
-                //        string imagePathold1 = Path.Combine(wwwRootPathSteps, "IMAGES", "التحضيرات", رقم_الخطوة11old, ID_التحضير, IDstep1old, getOld.الصورة1);
-                //        string imagePathold2 = Path.Combine(wwwRootPathSteps, "IMAGES", "التحضيرات", oldرقم_الخطوة22, ID_التحضير, IDstep1old, getOld.الصورة2);
-
-
-                //        step.رقم_الخطوة1 = LastStep1 + 2;
-                //        step.رقم_الخطوة2 = LastStep2 + 2;
-
-                //        var getStep = _unitOfWork.StepsPreparationRepository.Get(u => u.ID == step.ID);
-
-                //        string IDstep1 = getStep.ID.ToString();
-
-                //        string رقم_الخطوة11 = getStep.رقم_الخطوة1.ToString();
-                //        string رقم_الخطوة22 = getStep.رقم_الخطوة2.ToString();
-
-                //        // Construct the full file path
-                //        string imagePath = Path.Combine(wwwRootPathSteps, "IMAGES", "التحضيرات", رقم_الخطوة11, ID_التحضير, IDstep1, getStep.الصورة1);
-
-                //        // Ensure the destination directory exists, create it if necessary
-                //        string destinationDirectory = Path.GetDirectoryName(imagePath);
-                //        if (!Directory.Exists(destinationDirectory))
-                //        {
-                //            Directory.CreateDirectory(destinationDirectory);
-                //        }
-
-                //        // Move the old image file to the new path
-                //        if (System.IO.File.Exists(imagePathold1))
-                //        {
-                //            System.IO.File.Move(imagePathold1, imagePath);
-                //        }
-
-
-                //        string imagePath2 = Path.Combine(wwwRootPathSteps, "IMAGES", "التحضيرات", رقم_الخطوة22, ID_التحضير, IDstep1, getStep.الصورة2);
-
-                //        // Ensure the destination directory exists, create it if necessary
-                //        string destinationDirectory2 = Path.GetDirectoryName(imagePath2);
-                //        if (!Directory.Exists(destinationDirectory2))
-                //        {
-                //            Directory.CreateDirectory(destinationDirectory2);
-                //        }
-
-                //        // Move the old image file to the new path
-                //        if (System.IO.File.Exists(imagePathold2))
-                //        {
-                //            System.IO.File.Move(imagePathold2, imagePath2);
-                //        }
-
-
-                //        LastStep1 += 2;
-                //        LastStep2 += 2;
-
-                //        _unitOfWork.StepsPreparationRepository.Update(step);
-                //    }
-                //}
-                //_unitOfWork.Save();
-                return Json(new
-                {
-                    success = true,
-                    message = ""
-                });
-            }
-            #endregion
-
-            //زر الحذف في صفحة قائمة التحضيرات 
-            #region
-            [HttpDelete]
-            public IActionResult DeletePreparationPost(int? id)
-            {
-                var DeleteTools = _unitOfWork.PrepaToolsVarietyRepository.GetAll(incloudeProperties: "Preparation").Where(u => u.PreparationsFK == id).ToList();
-                _unitOfWork.PrepaToolsVarietyRepository.RemoveRange(DeleteTools);
-
-
-                var DelteComponent = _unitOfWork.ComponentRepository.GetAll(incloudeProperties: "Preparation").Where(u => u.PreparationsFK == id).ToList();
-                _unitOfWork.ComponentRepository.RemoveRange(DelteComponent);
-
-                var Deletesteps = _unitOfWork.StepsPreparationRepository.GetAll(incloudeProperties: "Preparation").Where(u => u.PreparationsFK == id).ToList();
-                if (Deletesteps != null)
-                {
-                    for (int i = 0; i < Deletesteps.Count; i++)
-                    {
-                        var delet = Deletesteps[i];
-                        var BrandId = _unitOfWork.PreparationRepository.Get(u => u.PreparationsID == delet.PreparationsFK);
-                        var IDstep = _unitOfWork.StepsPreparationRepository.Get(u => u.PrepStepsID == delet.PrepStepsID);
-
-                        string IDStep = IDstep.PrepStepsID.ToString();
-                        string FKBrand = BrandId.BrandFK.ToString();
-
-                        if (!string.IsNullOrEmpty(delet.PrepImage))
-                        {
-                            string imagePath = Path.Combine(_webHostEnvironment.WebRootPath, "IMAGES", FKBrand, "Preparation", IDStep, delet.PrepImage);
-                            if (System.IO.File.Exists(imagePath))
-                            {
-                                System.IO.File.Delete(imagePath);
-                            }
-                        }
-
-                        _unitOfWork.StepsPreparationRepository.Remove(delet);
-                    }
-
-
-                }
-                var DeleteoneOflist = _unitOfWork.PreparationRepository.Get(u => u.PreparationsID == id);
-                if (DeleteoneOflist == null)
-                {
-
-                    return Json(new { success = false, Message = "Error While Deleting" });
-                }
-
-                _unitOfWork.PreparationRepository.Remove(DeleteoneOflist);
-                _unitOfWork.Save();
-                return Json(new { success = true });
-            }
-            #endregion
-
         }
+
+        [HttpGet]
+        public IActionResult GetLastId()
+        {
+            try
+            {
+                int lastId = _unitOfWork.StepsPreparationRepository.GetLastStepId();
+                return Ok(lastId);
+            }
+            catch (Exception ex)
+            {
+                // Handle exception appropriately
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+
+        // تبع List 
+        #region API CALLS 
+        [HttpGet]
+        public IActionResult GetAll(int? id)
+        {
+            var preparations = _unitOfWork.PreparationRepository.GetAll(incloudeProperties: "component")
+          .Where(u => u.BrandFK == id).OrderBy(item => item.PreparationsOrder).ToList();
+
+            return Json(new { data = preparations });
+        }
+        #endregion
+
+
+        // زر الحذف تبع المكونات 
+        #region API CALLS 
+        [HttpDelete]
+        public IActionResult Delete(int? id) //this is for delete button in rows component 
+        {
+            var ComponentDelete = _unitOfWork.ComponentRepository.Get(u => u.PrepIngredientsID == id);
+            if (ComponentDelete == null)
+            {
+                return Json(new { success = false, Message = "Error While Deleting" });
+            }
+
+            _unitOfWork.ComponentRepository.Remove(ComponentDelete);
+            _unitOfWork.Save();
+            return Json(new { success = true });
+        }
+        #endregion
+
+        //زر حذف صفحة تعديل الأدوات 
+        #region API CALLS 
+        [HttpDelete]
+        public IActionResult DeleteToolVariety(int? id) //this is for delete button in rows أدوات التحضير والصنف
+        {
+
+            var toolsVarityDelete = _unitOfWork.PrepaToolsVarietyRepository.Get(u => u.PrepToolsID == id);
+            if (toolsVarityDelete == null)
+            {
+
+                return Json(new { success = false, Message = "Error While Deleting" });
+            }
+
+            _unitOfWork.PrepaToolsVarietyRepository.Remove(toolsVarityDelete);
+            _unitOfWork.Save();
+            return Json(new { success = true });
+        }
+        #endregion
+
+        //زر الحذف تبع صفحة تعديل الخطوات
+        #region API CALLS
+        [HttpDelete]
+        public IActionResult Deletesteps(int? id)
+        {
+            var stepsToDelete = _unitOfWork.StepsPreparationRepository.Get(u => u.PrepStepsID == id);
+            var BrandFK = _unitOfWork.PreparationRepository.Get(u => u.PreparationsID == stepsToDelete.PreparationsFK);
+
+            string IDStep = stepsToDelete.PrepStepsID.ToString();
+            string FKBrand = BrandFK.BrandFK.ToString();
+
+            string wwwRootPathSteps = _webHostEnvironment.WebRootPath;
+
+            if (stepsToDelete == null)
+            {
+                return Json(new { success = false, Message = "Error While Deleting" });
+            }
+
+            // Delete the associated image file
+            if (!string.IsNullOrEmpty(stepsToDelete.PrepImage))
+            {
+                string imagePath = Path.Combine(wwwRootPathSteps, "IMAGES", FKBrand, "Preparation", IDStep, stepsToDelete.PrepImage);
+                if (System.IO.File.Exists(imagePath))
+                {
+                    System.IO.File.Delete(imagePath);
+                }
+            }
+            _unitOfWork.StepsPreparationRepository.Remove(stepsToDelete);
+            _unitOfWork.Save();
+
+            // Find all steps with a higher PrepStepsNum
+            var preparationFK = stepsToDelete.PreparationsFK;
+
+            var subsequentSteps = _unitOfWork.StepsPreparationRepository
+                .GetAll(incloudeProperties: "Preparation").Where(u => u.PreparationsFK == preparationFK).ToList(); // Add ToList() to materialize the query;
+
+            // Decrement PrepStepsNum for each subsequent step
+            for (int i = 0; i < subsequentSteps.Count; i++)
+            {
+                var step = subsequentSteps[i];
+
+                if (step.PrepStepsID > id)
+                {
+                    var getOld = _unitOfWork.StepsPreparationRepository.Get(u => u.PrepStepsID == step.PrepStepsID);
+                    getOld.PrepStepsNum -= 1;
+                    _unitOfWork.StepsPreparationRepository.Update(step);
+                }
+            }
+            _unitOfWork.Save();
+            //var preparationId = stepsToDelete.التحضير_ID;
+            //var stepsInPreparation = _unitOfWork.StepsPreparationRepository.GetAll(incloudeProperties: "Preparation").Where(c => c.التحضير_ID == preparationId).ToList();
+
+            ////هنا لتغيير الرقم ضروري يصير فيه لوب والشرط أن ضروري id اصغر منه الموجود 
+            //for (int i = 0; i < stepsInPreparation.Count; i++)
+            //{
+            //    var step = stepsInPreparation[i];
+
+            //    if (step.ID > id)
+            //    {
+            //        var getOld = _unitOfWork.StepsPreparationRepository.Get(u => u.ID == step.ID);
+
+            //        string IDstep1old = getOld.ID.ToString();
+
+            //        string رقم_الخطوة11old = getOld.رقم_الخطوة1 != null ? getOld.رقم_الخطوة1.ToString() : string.Empty;
+            //        string oldرقم_الخطوة22 = getOld.رقم_الخطوة2 != null ? getOld.رقم_الخطوة2.ToString() : string.Empty;
+
+            //        string imagePathold1 = Path.Combine(wwwRootPathSteps, "IMAGES", "التحضيرات", رقم_الخطوة11old, ID_التحضير, IDstep1old, getOld.الصورة1);
+            //        string imagePathold2 = Path.Combine(wwwRootPathSteps, "IMAGES", "التحضيرات", oldرقم_الخطوة22, ID_التحضير, IDstep1old, getOld.الصورة2);
+
+
+            //        step.رقم_الخطوة1 = LastStep1 + 2;
+            //        step.رقم_الخطوة2 = LastStep2 + 2;
+
+            //        var getStep = _unitOfWork.StepsPreparationRepository.Get(u => u.ID == step.ID);
+
+            //        string IDstep1 = getStep.ID.ToString();
+
+            //        string رقم_الخطوة11 = getStep.رقم_الخطوة1.ToString();
+            //        string رقم_الخطوة22 = getStep.رقم_الخطوة2.ToString();
+
+            //        // Construct the full file path
+            //        string imagePath = Path.Combine(wwwRootPathSteps, "IMAGES", "التحضيرات", رقم_الخطوة11, ID_التحضير, IDstep1, getStep.الصورة1);
+
+            //        // Ensure the destination directory exists, create it if necessary
+            //        string destinationDirectory = Path.GetDirectoryName(imagePath);
+            //        if (!Directory.Exists(destinationDirectory))
+            //        {
+            //            Directory.CreateDirectory(destinationDirectory);
+            //        }
+
+            //        // Move the old image file to the new path
+            //        if (System.IO.File.Exists(imagePathold1))
+            //        {
+            //            System.IO.File.Move(imagePathold1, imagePath);
+            //        }
+
+
+            //        string imagePath2 = Path.Combine(wwwRootPathSteps, "IMAGES", "التحضيرات", رقم_الخطوة22, ID_التحضير, IDstep1, getStep.الصورة2);
+
+            //        // Ensure the destination directory exists, create it if necessary
+            //        string destinationDirectory2 = Path.GetDirectoryName(imagePath2);
+            //        if (!Directory.Exists(destinationDirectory2))
+            //        {
+            //            Directory.CreateDirectory(destinationDirectory2);
+            //        }
+
+            //        // Move the old image file to the new path
+            //        if (System.IO.File.Exists(imagePathold2))
+            //        {
+            //            System.IO.File.Move(imagePathold2, imagePath2);
+            //        }
+
+
+            //        LastStep1 += 2;
+            //        LastStep2 += 2;
+
+            //        _unitOfWork.StepsPreparationRepository.Update(step);
+            //    }
+            //}
+            //_unitOfWork.Save();
+            return Json(new
+            {
+                success = true,
+                message = ""
+            });
+        }
+        #endregion
+
+        //زر الحذف في صفحة قائمة التحضيرات 
+        #region
+        [HttpDelete]
+        public IActionResult DeletePreparationPost(int? id)
+        {
+            var DeleteTools = _unitOfWork.PrepaToolsVarietyRepository.GetAll(incloudeProperties: "Preparation").Where(u => u.PreparationsFK == id).ToList();
+            _unitOfWork.PrepaToolsVarietyRepository.RemoveRange(DeleteTools);
+
+
+            var DelteComponent = _unitOfWork.ComponentRepository.GetAll(incloudeProperties: "Preparation").Where(u => u.PreparationsFK == id).ToList();
+            _unitOfWork.ComponentRepository.RemoveRange(DelteComponent);
+
+            var Deletesteps = _unitOfWork.StepsPreparationRepository.GetAll(incloudeProperties: "Preparation").Where(u => u.PreparationsFK == id).ToList();
+            if (Deletesteps != null)
+            {
+                for (int i = 0; i < Deletesteps.Count; i++)
+                {
+                    var delet = Deletesteps[i];
+                    var BrandId = _unitOfWork.PreparationRepository.Get(u => u.PreparationsID == delet.PreparationsFK);
+                    var IDstep = _unitOfWork.StepsPreparationRepository.Get(u => u.PrepStepsID == delet.PrepStepsID);
+
+                    string IDStep = IDstep.PrepStepsID.ToString();
+                    string FKBrand = BrandId.BrandFK.ToString();
+
+                    if (!string.IsNullOrEmpty(delet.PrepImage))
+                    {
+                        string imagePath = Path.Combine(_webHostEnvironment.WebRootPath, "IMAGES", FKBrand, "Preparation", IDStep, delet.PrepImage);
+                        if (System.IO.File.Exists(imagePath))
+                        {
+                            System.IO.File.Delete(imagePath);
+                        }
+                    }
+
+                    _unitOfWork.StepsPreparationRepository.Remove(delet);
+                }
+
+
+            }
+            var DeleteoneOflist = _unitOfWork.PreparationRepository.Get(u => u.PreparationsID == id);
+            if (DeleteoneOflist == null)
+            {
+
+                return Json(new { success = false, Message = "Error While Deleting" });
+            }
+
+            _unitOfWork.PreparationRepository.Remove(DeleteoneOflist);
+            _unitOfWork.Save();
+            return Json(new { success = true });
+        }
+        #endregion
+
     }
+}
 
 

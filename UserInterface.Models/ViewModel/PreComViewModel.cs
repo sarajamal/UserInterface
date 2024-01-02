@@ -26,6 +26,7 @@ namespace Test12.Models.ViewModel
         [ValidateNever]
         [JsonIgnore]
         public IEnumerable<Brands> tredMaeketVMList { get; set; }
-
+        [ValidateNever]
+        public LoginTredMarktViewModel WelcomTredMarketPrecomponent { set; get; }
     }
 }

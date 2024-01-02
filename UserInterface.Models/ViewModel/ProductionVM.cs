@@ -32,6 +32,9 @@ namespace Test12.Models.ViewModel
         [ValidateNever]
         [JsonIgnore]
         public IEnumerable<Production> itemList33333 { get; set; }
+        [ValidateNever]
+        [JsonIgnore]
+        public LoginTredMarktViewModel welcomTredmarketProduction { get; set; } 
 
     }
 }

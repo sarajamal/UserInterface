@@ -25,13 +25,34 @@ namespace Test12.Controllers
 
         public IActionResult CleanList(int? id) //this for display List Of التحضيرات Page1
         {
-            IEnumerable<Cleaning> objCleanList = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == id).OrderBy(item => item.CleaningOrder).ToList();
+            CleanVM CLVM = new()
+            {
 
+                CleaningVMorder = _unitOfWork.CleanRepository.GetAll()
+                .Where(u => u.BrandFK == id).OrderBy(item => item.CleaningOrder).ToList(),
+                WelcomTredMarketClean = new LoginTredMarktViewModel(),
+
+            };
+
+            CLVM.WelcomTredMarketClean.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
+            CLVM.WelcomTredMarketClean.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == id);
+            CLVM.WelcomTredMarketClean.ProductionLoginVM = _unitOfWork.itemsRepository.Get(u => u.BrandFK == id);
+            CLVM.WelcomTredMarketClean.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == id);
+            CLVM.WelcomTredMarketClean.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == id);
+            CLVM.WelcomTredMarketClean.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == id);
+            CLVM.WelcomTredMarketClean.PreparatonLoginVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == id);
+            CLVM.WelcomTredMarketClean.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            CLVM.WelcomTredMarketClean.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            CLVM.WelcomTredMarketClean.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            CLVM.WelcomTredMarketClean.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            CLVM.WelcomTredMarketClean.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            CLVM.WelcomTredMarketClean.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            CLVM.WelcomTredMarketClean.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == id).ToList();
             // Store the FK value in TempData
             TempData["ID"] = id;
 
             // Display the updated list
-            return View(objCleanList);
+            return View(CLVM);
         }
 
         // تبع List  قائمة التنظيف
@@ -93,7 +114,7 @@ namespace Test12.Controllers
         #endregion
 
         //صفحة التعديل   
-        public IActionResult Upsert3(int? id) // After Enter تعديل Display التحضيرات والمكونات...
+        public IActionResult Upsert3(int? id,int? brandFk) // After Enter تعديل Display التحضيرات والمكونات...
         {
             CleanVM CLVM = new()
             {
@@ -101,8 +122,24 @@ namespace Test12.Controllers
                 CleanList = new List<Cleaning>(),
                 CleaningSteps = new List<CleaningSteps>(),
                 tredMaeketCleanVM = new Brands(),
+                WelcomTredMarketClean = new LoginTredMarktViewModel()
 
             };
+
+            CLVM.WelcomTredMarketClean.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFk);
+            CLVM.WelcomTredMarketClean.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == brandFk);
+            CLVM.WelcomTredMarketClean.ProductionLoginVM = _unitOfWork.itemsRepository.Get(u => u.BrandFK == brandFk);
+            CLVM.WelcomTredMarketClean.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == brandFk);
+            CLVM.WelcomTredMarketClean.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == brandFk);
+            CLVM.WelcomTredMarketClean.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == brandFk);
+            CLVM.WelcomTredMarketClean.PreparatonLoginVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == brandFk);
+            CLVM.WelcomTredMarketClean.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            CLVM.WelcomTredMarketClean.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            CLVM.WelcomTredMarketClean.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            CLVM.WelcomTredMarketClean.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            CLVM.WelcomTredMarketClean.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            CLVM.WelcomTredMarketClean.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            CLVM.WelcomTredMarketClean.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == brandFk).ToList();
 
             CLVM.CleanList = _unitOfWork.CleanRepository.GetAll().Where(c => c.CleaningID == id).ToList();
             CLVM.tredMaeketCleanVM = _unitOfWork.TredMarketRepository.Get(c => c.BrandID == id);
@@ -110,7 +147,7 @@ namespace Test12.Controllers
             CLVM.CleaningSteps = _unitOfWork.StepsCleanRepository3.GetAll().Where(c => c.CleaningFK == id).ToList();
 
             return View(CLVM);
-        } 
+        }
 
 
         //صفحة الاضافة
@@ -122,8 +159,29 @@ namespace Test12.Controllers
                 CleaningVMorder = new List<Cleaning>(),
                 CleaningSteps = new List<CleaningSteps>(),
                 tredMaeketCleanVM = new Brands(),
+                WelcomTredMarketClean = new LoginTredMarktViewModel()
 
             };
+
+            CLVM.WelcomTredMarketClean.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
+            CLVM.WelcomTredMarketClean.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == id);
+            CLVM.WelcomTredMarketClean.ProductionLoginVM = _unitOfWork.itemsRepository.Get(u => u.BrandFK == id);
+            CLVM.WelcomTredMarketClean.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == id);
+            CLVM.WelcomTredMarketClean.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == id);
+            CLVM.WelcomTredMarketClean.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == id);
+            CLVM.WelcomTredMarketClean.PreparatonLoginVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == id);
+            CLVM.WelcomTredMarketClean.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            CLVM.WelcomTredMarketClean.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            CLVM.WelcomTredMarketClean.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            CLVM.WelcomTredMarketClean.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            CLVM.WelcomTredMarketClean.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            CLVM.WelcomTredMarketClean.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            CLVM.WelcomTredMarketClean.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == id).ToList();
+
+            CLVM.CleanList = _unitOfWork.CleanRepository.GetAll().Where(c => c.CleaningID == id).ToList();
+            CLVM.tredMaeketCleanVM = _unitOfWork.TredMarketRepository.Get(c => c.BrandID == id);
+            CLVM.CleanViewModel = _unitOfWork.CleanRepository.Get(c => c.CleaningID == id);
+            CLVM.CleaningSteps = _unitOfWork.StepsCleanRepository3.GetAll().Where(c => c.CleaningFK == id).ToList();
 
             CLVM.CleaningVMorder = _unitOfWork.CleanRepository.GetAll().Where(c => c.BrandFK == id).ToList();
             CLVM.tredMaeketCleanVM = _unitOfWork.TredMarketRepository.Get(c => c.BrandID == id);
@@ -180,7 +238,7 @@ namespace Test12.Controllers
                                     CleaStepsNum = stepAdd.CleaStepsNum
 
                                 };
-                          
+
 
                                 var file1Name1 = $"file1_{newStep.CleaStepsID}";
                                 var file1ForStep1 = HttpContext.Request.Form.Files[file1Name1];
@@ -276,7 +334,7 @@ namespace Test12.Controllers
                                 CleaStepsNum = Steps.CleaStepsNum
 
                             };
-                     
+
                             string IDstep = newStep.CleaStepsID.ToString();
                             string CleanVMFk = cleanVM.CleanViewModel.BrandFK.ToString();
 

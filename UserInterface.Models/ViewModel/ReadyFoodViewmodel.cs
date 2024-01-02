@@ -26,5 +26,7 @@ namespace Test12.Models.ViewModel
 
         [ValidateNever]
         public Brands tredMaeketReadyfoodVM { get; set; }
+        [ValidateNever]
+        public LoginTredMarktViewModel WelcomTredmarketReadyFood { get; set; }
     }
 }

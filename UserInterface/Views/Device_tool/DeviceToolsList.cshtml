@@ -1,10 +1,14 @@
-﻿@model IEnumerable<DevicesAndTools>
+﻿@model Device_toolsVM
 
 @{
     ViewData["Title"] = "DeviceToolsList";
 }
 
-
+<header>
+    <div>
+        @await Html.PartialAsync("_HeaderPartial", Model.WelcomtredmarketDeviceTools)
+    </div>
+</header>
 
 
 <div class="card shadow border-0 my-4">
