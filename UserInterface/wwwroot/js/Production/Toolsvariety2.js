@@ -45,7 +45,7 @@ function AddRowTool2(ProductionFK) { //صفحة التعديل
     newRow.innerHTML = `
         <td>${newRowNumber}</td>
 
-        <td><input name="ToolsVarityVM2[${newRowNumber - 1}].ProdTools" class="form-control" /></td>
+        <td><input name="ToolsVarityVM2[${newRowNumber - 1}].ProdTools" class="form-control"  placeholder="الأدات المستخدمة" /></td>
 
        <td style="text-align:center;" >
             <input type="hidden" name="ToolsVarityVM2[${newRowNumber - 1}].ProductionFK" value="${ProductionFK}" />
@@ -95,9 +95,9 @@ function AddRowToolnew2(ProductionFK) { //صفحة الإضافة
     newRow.innerHTML = `
 
         <td style="text-align:center;">${numeric}</td>
-        <td><input name="ToolsVarityVM2[${newRowNumber - 1}].ProdTools" class="form-control"  /></td>
+        <td><input name="ToolsVarityVM2[${newRowNumber - 1}].ProdTools" class="form-control" placeholder="الأدات المستخدمة" /></td>
        <td style="text-align:center;" >
-            <input type="hidden" name="ToolsVarityVM2[${newRowNumber - 1}].ProductionFK" value="${ProductionFK}" />
+            <input type="hidden" name="ToolsVarityVM2[${newRowNumber - 1}].ProductionFK" value="${ProductionFK}"   />
               
             <button type="button" class="btn btn-danger" data-row-index="${newRowNumber}" onclick="DeleteRow9(this)">حذف</button> 
         </td>

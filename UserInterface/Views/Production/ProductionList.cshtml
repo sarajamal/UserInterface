@@ -1,10 +1,14 @@
-﻿@model IEnumerable<Production>
+﻿@model ProductionVM
 
 @{
     ViewData["Title"] = "PreparationList";
 }
 
-
+<header>
+    <div>
+        @await Html.PartialAsync("_HeaderPartial", Model.welcomTredmarketProduction)
+    </div>
+</header>
 
 <div class="card shadow border-0 my-4">
     <div class="card-header bg-navbar bf-bb bg-gradient ml-0 py-3">

@@ -1,8 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
-using System.Net.NetworkInformation;
 using Test12.DataAccess.Repository.IRepository;
-using Test12.Models.Models.Preparation;
 using Test12.Models.Models.Production;
 using Test12.Models.Models.trade_mark;
 using Test12.Models.ViewModel;
@@ -24,16 +22,35 @@ namespace Test12.Controllers
 
         public IActionResult ProductionList(int? id) //this for display List Of التحضيرات Page1
         {
-            List<Production> objReorderlist = _unitOfWork.itemsRepository.GetAll()
-                .OrderBy(item => item.ProductionOrder).ToList();
+            ProductionVM PrVM = new ProductionVM
+            {
+               itemList33333 = _unitOfWork.itemsRepository.GetAll(incloudeProperties: "component2")
+                            .Where(u => u.BrandFK == id).OrderBy(item => item.ProductionOrder).ToList(),
+                welcomTredmarketProduction = new LoginTredMarktViewModel()
+
+            };
+            PrVM.welcomTredmarketProduction.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
+            PrVM.welcomTredmarketProduction.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == id);
+            PrVM.welcomTredmarketProduction.ProductionLoginVM = _unitOfWork.itemsRepository.Get(u => u.BrandFK == id);
+            PrVM.welcomTredmarketProduction.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == id);
+            PrVM.welcomTredmarketProduction.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == id);
+            PrVM.welcomTredmarketProduction.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == id);
+            PrVM.welcomTredmarketProduction.PreparatonLoginVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == id);
+            PrVM.welcomTredmarketProduction.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.welcomTredmarketProduction.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.welcomTredmarketProduction.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.welcomTredmarketProduction.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.welcomTredmarketProduction.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.welcomTredmarketProduction.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.welcomTredmarketProduction.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == id).ToList();
 
             // Store the FK value in TempData
             TempData["ID"] = id;
             // Display the updated list
-            return View(objReorderlist);
+            return View(PrVM);
         }
 
-        public IActionResult Upsert1(int? id) // After Enter تعديل Display التحضيرات والمكونات...
+        public IActionResult Upsert1(int? id, int? brandFk) // After Enter تعديل Display التحضيرات والمكونات...
         {
             ProductionVM PrVM = new()
             {
@@ -42,8 +59,24 @@ namespace Test12.Controllers
                 componontVMList2 = new List<ProductionIngredients>(),
                 ToolsVarityVM2 = new List<ProductionTools>(),
                 stepsVM2 = new List<ProductionSteps>(),
+                welcomTredmarketProduction = new LoginTredMarktViewModel()
 
             };
+
+            PrVM.welcomTredmarketProduction.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFk);
+            PrVM.welcomTredmarketProduction.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.ProductionLoginVM = _unitOfWork.itemsRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.PreparatonLoginVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == brandFk).ToList();
             PrVM.tredMaeketVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
             PrVM.Productionvm = _unitOfWork.itemsRepository.Get(u => u.ProductionID == id);
             PrVM.componontVMList2 = _unitOfWork.ComponentRepository2.GetAll(incloudeProperties: "Production").Where(c => c.ProductionFK == id).ToList(); //هو يحتوي على قائمة من جدول المكونات واللي يساعده على العرض هي view
@@ -64,9 +97,24 @@ namespace Test12.Controllers
                 ToolsVarityVM2 = new List<ProductionTools>(),
                 stepsVM2 = new List<ProductionSteps>(),
                 itemList33333 = new List<Production>(),
+                welcomTredmarketProduction = new LoginTredMarktViewModel()
+
 
             };
-
+            PrVM.welcomTredmarketProduction.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
+            PrVM.welcomTredmarketProduction.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == id);
+            PrVM.welcomTredmarketProduction.ProductionLoginVM = _unitOfWork.itemsRepository.Get(u => u.BrandFK == id);
+            PrVM.welcomTredmarketProduction.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == id);
+            PrVM.welcomTredmarketProduction.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == id);
+            PrVM.welcomTredmarketProduction.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == id);
+            PrVM.welcomTredmarketProduction.PreparatonLoginVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == id);
+            PrVM.welcomTredmarketProduction.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.welcomTredmarketProduction.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.welcomTredmarketProduction.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.welcomTredmarketProduction.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.welcomTredmarketProduction.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.welcomTredmarketProduction.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.welcomTredmarketProduction.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == id).ToList();
             PrVM.Productionvm = new Production();
             PrVM.componontVMList2 = new List<ProductionIngredients>();
             PrVM.ToolsVarityVM2 = new List<ProductionTools>();
@@ -95,7 +143,7 @@ namespace Test12.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateProduction(ProductionVM PropaVM, IFormFile? file, int selectedValue, int selectPreparation1)
+        public IActionResult CreateProduction(ProductionVM PropaVM, IFormFile? file, int selectedValue, int selectPreparation1)
         {
             if (ModelState.IsValid)
             {
@@ -235,7 +283,7 @@ namespace Test12.Controllers
                                     ProdStepsNum = stepAdd.ProdStepsNum,
 
                                 };
-                              
+
 
                                 var file1Name1 = $"file1_{newStep.ProdStepsID}";
                                 var file1ForStep1 = HttpContext.Request.Form.Files[file1Name1];
@@ -248,7 +296,7 @@ namespace Test12.Controllers
 
                                 if (file1ForStep1 != null && file1ForStep1.Length > 0)
                                 {
-                                    string fileName11 = Guid.NewGuid().ToString() +Path.GetExtension(file1ForStep1.FileName);
+                                    string fileName11 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep1.FileName);
 
                                     if (!Directory.Exists(stepPath1))
                                     {
@@ -289,7 +337,7 @@ namespace Test12.Controllers
                         setFK.ProductionOrder = newOrder;
                     }
 
-                    
+
                     _unitOfWork.Save();
                     TempData["success"] = "تم إضافة الاصناف بشكل ناجح";
                 }
@@ -317,10 +365,10 @@ namespace Test12.Controllers
 
                 if (file != null)
                 {
-                    string fileName = Guid.NewGuid().ToString() + System.IO.Path.GetExtension(file.FileName);
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
 
                     // Construct the folder path where the image will be saved
-                    string folderPath = System.IO.Path.Combine(wwwRootPath, "IMAGES", ProductionFK, "Production", ProductionID);
+                    string folderPath = Path.Combine(wwwRootPath, "IMAGES", ProductionFK, "Production", ProductionID);
                     string ProductionPath = Path.Combine(folderPath, fileName);
 
                     // Ensure the directory exists
@@ -332,7 +380,7 @@ namespace Test12.Controllers
                     // Delete old image if it exists
                     if (!string.IsNullOrEmpty(PropaVM.Productionvm.ProductImage))
                     {
-                        var oldImagePath = System.IO.Path.Combine(folderPath, PropaVM.Productionvm.ProductImage);
+                        var oldImagePath = Path.Combine(folderPath, PropaVM.Productionvm.ProductImage);
 
                         if (System.IO.File.Exists(oldImagePath))
                         {
@@ -341,9 +389,9 @@ namespace Test12.Controllers
                     }
 
                     // Save the image with the new file name
-                    using (var fileStream = new FileStream(System.IO.Path.Combine(ProductionPath), FileMode.Create))
+                    using (var fileStream = new FileStream(Path.Combine(ProductionPath), FileMode.Create))
                     {
-                        file.CopyTo(fileStream);
+                        file.CopyToAsync(fileStream);
                     }
 
                     // Store only the file name in the database
@@ -412,11 +460,10 @@ namespace Test12.Controllers
 
                         string wwwRootPathSteps = _webHostEnvironment.WebRootPath; // get the root folder
 
-
                         int LastId = _unitOfWork.StepsPreparationRepository2.GetLastStepId();
                         int LastId1 = LastId + 1;
 
-                        var existingSteps9 = _unitOfWork.StepsPreparationRepository2.Get(u => u.ProdStepsID == Steps.ProdStepsID);
+                        var existingSteps9 = _unitOfWork.StepsPreparationRepository2.Get(u => u.ProdStepsID == Steps.ProdStepsID, incloudeProperties: "Production");
                         if (existingSteps9 == null)
                         {
                             var newStep = new ProductionSteps
@@ -429,8 +476,9 @@ namespace Test12.Controllers
                             };
 
                             string IDstep = newStep.ProdStepsID.ToString();
-                            string ProductionVMFK = PropaVM.Productionvm.BrandFK.ToString();
-                            string StepsPath = Path.Combine(wwwRootPathSteps, "IMAGES", ProductionVMFK, "Production", IDstep);
+                            string ProductionVMFk = PropaVM.Productionvm.BrandFK.ToString();
+
+                            string StepsPath = Path.Combine(wwwRootPath, "IMAGES", ProductionVMFk, "Production", IDstep);
 
                             var file1Name = $"file1_{newStep.ProdStepsID}";
                             var file1ForStep = HttpContext.Request.Form.Files[file1Name];
@@ -439,7 +487,7 @@ namespace Test12.Controllers
                             {
                                 if (!string.IsNullOrEmpty(Steps.ProdSImage)) // Check if there's an existing image path
                                 {
-                                    var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", ProductionVMFK, "Production", IDstep, newStep.ProdSImage);
+                                    var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", ProductionVMFk, "Production", IDstep, newStep.ProdSImage);
 
                                     if (System.IO.File.Exists(OldImagePath1))
                                     {
@@ -449,7 +497,6 @@ namespace Test12.Controllers
 
                                 string fileNameSteps1 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep.FileName);
 
-
                                 //اذا المسار مش موجود سو مسار جديد 
                                 if (!Directory.Exists(StepsPath))
                                 {
@@ -458,21 +505,20 @@ namespace Test12.Controllers
 
                                 using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
                                 {
-                                    file1ForStep.CopyTo(fileStream1);
+                                    file1ForStep.CopyToAsync(fileStream1);
                                 }
 
                                 newStep.ProdSImage = fileNameSteps1; // Update the image path
                                 _unitOfWork.StepsPreparationRepository2.Add(newStep);
                                 _unitOfWork.Save();
-
                             }
-
                         }
                         else
                         {
                             string IDstep = Steps.ProdStepsID.ToString();
-                            string ProductionVMFK = PropaVM.Productionvm.BrandFK.ToString();
-                            string StepsPath = Path.Combine(wwwRootPathSteps, "IMAGES", ProductionVMFK, "Production", IDstep);
+                            string ProductionVMFk = PropaVM.Productionvm.BrandFK.ToString();
+
+                            string StepsPath = Path.Combine(wwwRootPath, "IMAGES", ProductionVMFk, "Production", IDstep);
 
                             var file1Name = $"file1_{Steps.ProdStepsID}";
                             var file1ForStep = HttpContext.Request.Form.Files[file1Name];
@@ -481,7 +527,7 @@ namespace Test12.Controllers
                             {
                                 if (!string.IsNullOrEmpty(Steps.ProdSImage)) // Check if there's an existing image path
                                 {
-                                    var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", ProductionVMFK, "Production", IDstep, Steps.ProdSImage);
+                                    var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", ProductionVMFk, "Production", IDstep, Steps.ProdSImage);
 
                                     if (System.IO.File.Exists(OldImagePath1))
                                     {
@@ -491,7 +537,6 @@ namespace Test12.Controllers
 
                                 string fileNameSteps1 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep.FileName);
 
-
                                 //اذا المسار مش موجود سو مسار جديد 
                                 if (!Directory.Exists(StepsPath))
                                 {
@@ -500,33 +545,36 @@ namespace Test12.Controllers
 
                                 using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
                                 {
-                                    file1ForStep.CopyTo(fileStream1);
+                                    file1ForStep.CopyToAsync(fileStream1);
                                 }
                                 Steps.ProdSImage = fileNameSteps1;
                             }
 
                             // Save or update Steps data to the database
-                            if (Steps.ProductionFK == stepsID)
+                            if (Steps.ProductionFK == stepsID) // int stepsID = PrepaVM.PreparationVM.التحضير_ID;
                             {
-                                var existingSteps = _unitOfWork.StepsPreparationRepository2.Get(u => u.ProdStepsID == Steps.ProdStepsID);
+                                var existingSteps = _unitOfWork.StepsPreparationRepository2.Get(u => u.ProdStepsID == Steps.ProdStepsID, incloudeProperties: "Production");
 
                                 if (existingSteps != null)
                                 {
+
                                     existingSteps.ProdText = Steps.ProdText;
                                     existingSteps.ProdSImage = Steps.ProdSImage;
                                     existingSteps.ProdStepsNum = Steps.ProdStepsNum;
 
                                     _unitOfWork.StepsPreparationRepository2.Update(existingSteps);
                                 }
-                               
+                                else
+                                {
+                                    _unitOfWork.StepsPreparationRepository2.Add(Steps);
+                                }
                                 _unitOfWork.Save();
                             }
                         }
                     }
                 }
                 TempData["success"] = "تم تحديث الانتاج بشكل ناجح";
-                TempData["ID"] = PropaVM.Productionvm.BrandFK;
-                return RedirectToAction("ProductionList", new { id = PropaVM.Productionvm.BrandFK });
+                return RedirectToAction("Upsert1", new { id = PropaVM.Productionvm.ProductionID });
             }
             else
             {
@@ -687,10 +735,10 @@ namespace Test12.Controllers
             _unitOfWork.Save();
 
             // Find all steps with a higher PrepStepsNum
-            var ProductionFK = stepsToDelete.ProductionFK;
+            var preparationFK = stepsToDelete.ProductionFK;
 
             var subsequentSteps = _unitOfWork.StepsPreparationRepository2
-                .GetAll(incloudeProperties: "Production").Where(u => u.ProductionFK == ProductionFK).ToList(); // Add ToList() to materialize the query;
+                .GetAll(incloudeProperties: "Production").Where(u => u.ProductionFK == preparationFK).ToList(); // Add ToList() to materialize the query;
 
             // Decrement PrepStepsNum for each subsequent step
             for (int i = 0; i < subsequentSteps.Count; i++)
@@ -702,9 +750,9 @@ namespace Test12.Controllers
                     var getOld = _unitOfWork.StepsPreparationRepository2.Get(u => u.ProdStepsID == step.ProdStepsID);
                     getOld.ProdStepsNum -= 1;
                     _unitOfWork.StepsPreparationRepository2.Update(step);
+                    _unitOfWork.Save();
                 }
             }
-
             _unitOfWork.Save();
             return Json(new
             {
@@ -714,8 +762,6 @@ namespace Test12.Controllers
         }
         #endregion
 
-
-      
     }
 }
 

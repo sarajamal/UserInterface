@@ -1,5 +1,10 @@
 ﻿@model PreComViewModel;
 
+<header>
+    <div>
+        @await Html.PartialAsync("_HeaderPartial", Model.WelcomTredMarketPrecomponent)
+    </div>
+</header>
 <body>
     <div class="card shadow border-0 my-4 py-4">
         <div class="card-header bg-navbar bf-bb bg-gradient ml-0 py-3">
@@ -16,6 +21,7 @@
 
             <input asp-for="PreparationVM.PreparationsID" hidden />
             <input asp-for="PreparationVM.BrandFK" hidden />
+            <input asp-for="PreparationVM.prepareImage" hidden />
             <input asp-for="tredMaeketVM.BrandID" hidden />
             <input asp-for="tredMaeketVM.ID_Login" hidden />
            
@@ -106,6 +112,10 @@
 
 
                             </div>
+                            <div class="form-group col-12 py-3 fxcc">
+                                <input type="submit" id="saveChange"
+                                       value=" حفظ التغييرات" asp-action="Upsert" asp-route-id="@Model.PreparationVM.PreparationsID" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
+                            </div>
                         </div>
 
                         @*المكونات*@
@@ -122,7 +132,7 @@
                                         @*type="button" is important*@
 
                                         <button type="button" class="btn btn-style2 fnt-white" onclick="AddRowcomponentUpdate()">إضافة</button>
-
+                                       
 
 
                                     </th>
@@ -162,10 +172,13 @@
                                     }
 
                                 }
-
+                               
                             </tbody>
                         </table>
-
+                        <div class="form-group col-12 py-3 fxcc">
+                            <input type="submit" id="saveChange"
+                                   value=" حفظ التغييرات" asp-action="Upsert" asp-route-id="@Model.PreparationVM.PreparationsID" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
+                        </div>
                         @*الأدوات*@
                         <div>
                             <h4 style="text-align:right">الأدوات</h4>
@@ -212,7 +225,10 @@
                             </tbody>
 
                         </table>
-
+                        <div class="form-group col-12 py-3 fxcc">
+                            <input type="submit" id="saveChange"
+                                   value=" حفظ التغييرات" asp-action="Upsert" asp-route-id="@Model.PreparationVM.PreparationsID" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
+                        </div>
                         @*الخطوات*@
 
                         <div class="form-group col-4 py-2 ">
@@ -240,7 +256,7 @@
                                                     {
                                                         <div class="py-5">
                                                             <button type="button" class="btn btn-danger delete-button"
-                                                                    id="deleteButton_@j"
+                                                                    id="deleteButton_@j" 
                                                                     onclick="Deletestep(@itemStep.PrepStepsID)">
                                                                 حذف
                                                             </button>
@@ -282,25 +298,7 @@
 
                             </td>
                         </tr>
-
-                        @* Select List *@
-                        @* @if (Model.PreparationVM.التحضير_ID == 0)
-                        {
-                        <div class="form-floating py-2 col-12">
-                        @{
-                        var sortedPreparationName = Model.PreparationName.OrderByDescending(item => item.Value).ToList();
-                        }
-                        <select asp-for="PreparationVM.التحضير_ID" class="form-select" id="selectPreparation" name="selectedValue">
-                        <option value="" disabled selected>-- اختر مكان الصف الجديد--</option>
-                        @foreach (var item in sortedPreparationName)
-                        {
-                        <option value="@item.Value">@item.Text</option>
-                        }
-                        </select>
-                        </div>*@
-
-
-
+ 
                         <div class="form-group col-12 py-2">
                             <div style="text-align: left;">
 

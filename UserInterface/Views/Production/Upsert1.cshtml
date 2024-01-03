@@ -1,5 +1,10 @@
 ﻿@model ProductionVM;
 
+<header>
+    <div>
+        @await Html.PartialAsync("_HeaderPartial", Model.welcomTredmarketProduction)
+    </div>
+</header>
 <body>
     <div class="card shadow border-0 my-4 py-4">
         <div class="card-header bg-navbar bf-bb bg-gradient ml-0 py-3">
@@ -113,6 +118,14 @@
                                              width="125" height="125" style="border:1px ; margin-top:20px" />
                                     </div>    
                             </div>
+                            <div class="form-group col-12 py-2">
+                                <div style="text-align: left;">
+
+                                    <div class="form-group col-12 py-3 fxcc">
+                                        <input type="submit" id="saveChange" value="حفظ التغييرات" asp-action="Upsert1" asp-route-id="@Model.Productionvm.ProductionID" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         @*المكونات*@
@@ -170,7 +183,14 @@
                                  
                             </tbody>
                         </table>
+                        <div class="form-group col-12 py-2">
+                            <div style="text-align: left;">
 
+                                <div class="form-group col-12 py-3 fxcc">
+                                    <input type="submit" id="saveChange" value="حفظ التغييرات" asp-action="Upsert1" asp-route-id="@Model.Productionvm.ProductionID" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
+                                </div>
+                            </div>
+                        </div>
                         @*الأدوات*@
                         <div>
                             <h4 style="text-align:right">الأدوات</h4>
@@ -218,7 +238,14 @@
                             </tbody>
 
                         </table>
+                        <div class="form-group col-12 py-2">
+                            <div style="text-align: left;">
 
+                                <div class="form-group col-12 py-3 fxcc">
+                                    <input type="submit" id="saveChange" value="حفظ التغييرات" asp-action="Upsert1" asp-route-id="@Model.Productionvm.ProductionID" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
+                                </div>
+                            </div>
+                        </div>
                         @*الخطوات*@
 
 
@@ -243,7 +270,7 @@
                                                     <input asp-for="@itemStep.ProdSImage" name="stepsVM2[@j].ProdSImage" hidden />
                                                     <input asp-for="@itemStep.ProdStepsNum" name="stepsVM2[@j].ProdStepsNum" hidden />
 
-                                                    @if (!string.IsNullOrEmpty(itemStep.ProdText) || !string.IsNullOrEmpty(itemStep.ProdSImage) ||  itemStep.ProdStepsNum != 0)
+                                                    @if (!string.IsNullOrEmpty(itemStep.ProdText) || !string.IsNullOrEmpty(itemStep.ProdSImage) || itemStep.ProdStepsNum != 0)
                                                     {
                                                         <div class="py-5">
                                                             <button type="button" class="btn btn-danger delete-button"
@@ -276,6 +303,7 @@
                                         </tr>
                                     }
                                 }
+
                             </tbody>
                         </table>
 

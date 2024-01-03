@@ -36,9 +36,11 @@ function loadDataTable(id) {
         
             {
                 data: 'cleaningID',
-                "render": function (data) {
+                "render": function (data, type, row) {
+                    // Assuming 'row' has a property for BrandFK
+                    var brandFk = row.brandFK;
                     return `<div role="group">
-                     <a href="/Clean/Upsert3?id=${data}" class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i></a> 
+                     <a href="/Clean/Upsert3?id=${data}&brandFK=${brandFk}" class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i></a> 
                      <a onClick=DeleteCleanPost('/Clean/DeleteCleanPost/${data}') class="btn btn-danger "> <i class="bi bi-trash-fill"></i></a>
                     </div>`;
                 },

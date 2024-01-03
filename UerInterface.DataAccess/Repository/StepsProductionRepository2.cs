@@ -22,7 +22,7 @@ namespace Test12.DataAccess.RepositoryPro
 
         public void Update(ProductionSteps obj)
         {
-            var objFormDb = _context.ProductionSteps.FirstOrDefault(u => u.ProductionFK == obj.ProductionFK);
+            var objFormDb = _context.ProductionSteps.FirstOrDefault(u => u.ProdStepsID == obj.ProdStepsID);
             if (objFormDb != null)
             {
                 // Update properties for Step 1

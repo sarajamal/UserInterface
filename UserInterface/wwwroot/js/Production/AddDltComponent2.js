@@ -47,9 +47,9 @@ function AddRowcomponentUpdate2() { //صفحة التعديل .
     // This attribute likely holds an identifier associated with the preparation.
 
     newRow.innerHTML = `
-        <td><input class="form-control" name="componontVMList2[${newRowNumber}].ProdIngredientsName" /></td>
-        <td><input class="form-control" name="componontVMList2[${newRowNumber}].ProdQuantity" /></td>
-        <td><input class="form-control" name="componontVMList2[${newRowNumber}].ProdUnit" /></td>
+        <td><input class="form-control" name="componontVMList2[${newRowNumber}].ProdIngredientsName" placeholder="المكون"/></td>
+        <td><input class="form-control" name="componontVMList2[${newRowNumber}].ProdQuantity" placeholder="الكمية" /></td>
+        <td><input class="form-control" name="componontVMList2[${newRowNumber}].ProdUnit" placeholder="الوحدة"/></td>
         
 
         <td style="text-align:center;">
@@ -96,9 +96,9 @@ function AddRowcomponentnew() {
 
 
     newRow.innerHTML = `
-         <td><input  class="form-control" name="componontVMList2[${newIndex}].ProdIngredientsName" /></td>
-         <td><input class="form-control" name="componontVMList2[${newIndex}].ProdQuantity"/></td>
-        <td><input  class="form-control" name="componontVMList2[${newIndex}].ProdUnit" /></td>
+         <td><input  class="form-control" name="componontVMList2[${newIndex}].ProdIngredientsName"placeholder="المكون" /></td>
+         <td><input class="form-control" name="componontVMList2[${newIndex}].ProdQuantity"placeholder="الكمية"/></td>
+        <td><input  class="form-control" name="componontVMList2[${newIndex}].ProdUnit" placeholder="الوحدة"/></td>
         
 
     <td style="text-align:center;">

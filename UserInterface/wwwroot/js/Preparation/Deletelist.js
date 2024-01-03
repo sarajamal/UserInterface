@@ -45,11 +45,18 @@ function loadDataTable(id) {
             },
             {
                 data: 'preparationsID',
-                "render": function (data) {
+                "render": function (data, type, row) {
+                    // Assuming 'row' has a property for BrandFK
+                    var brandFk = row.brandFK;
+
                     return `<div role="group">
-                     <a href="/Preparation/Upsert?id=${data}" class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i></a>               
-                     <a onClick=DeletePreparationPost('/Preparation/DeletePreparationPost/${data}') class="btn btn-danger "> <i class="bi bi-trash-fill"></i></a>
-                    </div>`;
+            <a href="/Preparation/Upsert?id=${data}&brandFK=${brandFk}" class="btn btn-primary mx-2"> 
+                <i class="bi bi-pencil-square"></i>
+            </a>               
+            <a onClick=DeletePreparationPost('/Preparation/DeletePreparationPost/${data}') class="btn btn-danger "> 
+                <i class="bi bi-trash-fill"></i>
+            </a>
+        </div>`;
                 },
                 "width": "16%",
                 "className": "text-center"

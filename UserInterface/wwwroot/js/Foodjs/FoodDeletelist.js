@@ -27,7 +27,7 @@ function loadDataTable(id) {
         "columns": [
             {
                 data: 'foodStuffsName',
-                "width": "20%",
+                "width": "35%",
                 "className": "text-center custom-font-bold",
 
             },
@@ -43,7 +43,7 @@ function loadDataTable(id) {
                     // Customize the content of the cell with both text and image
                     return `<img src="${imagePath2}" alt="Image" width="150" height="100"/>`;
                 },
-                "width": "20%",
+                "width": "45%",
                 "className": "text-center"
             },
 
@@ -61,7 +61,7 @@ function loadDataTable(id) {
                        <a onClick=DelteFooodSave('/Food/DelteFooodSave/${data}') class="btn btn-danger "> <i class="bi bi-trash-fill"></i></a>
                     </div>`;
                 },
-                "width": "20%",
+                "width": "15%",
                 "className": "text-center"
             },
             {

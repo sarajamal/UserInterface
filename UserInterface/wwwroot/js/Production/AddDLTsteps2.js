@@ -67,16 +67,15 @@ function AddnewRowstepsUpdate2(ProductionFK) { //صفحة التعديل
 
         // Append the new <td> to the current/new row
         newRow.appendChild(newCell);
-
-        // Increment values for next click
-         clickCount++;
         console.log("newCell:", newCell); // Debugging log   
+         clickCount++;
+       
     }
 }
 
 
 
-//صفحة الاضافة..
+ 
 //صفحة الاضافة..
 var currentStep1Value = 1;
 var clickCount = 0;
@@ -169,35 +168,35 @@ function displaySelectedImage(input, imgId) {
     }
 }
 
-function toggleAddButtonVisibility(value) {
+//function toggleAddButtonVisibility(value) {
 
-    var addButton = document.getElementById("addStepButton");
-    var redMessage = document.querySelector(".red-message");
-    var saveButton = document.getElementById("saveChange");
+//    var addButton = document.getElementById("addStepButton");
+//    var redMessage = document.querySelector(".red-message");
+//    var saveButton = document.getElementById("saveChange");
 
 
-    if (value.trim() !== "") {
-        addButton.disabled = false; // Enable the button if text is entered
-        saveButton.disabled = false; // Enable the button if text is entered
+//    if (value.trim() !== "") {
+//        addButton.disabled = false; // Enable the button if text is entered
+//        saveButton.disabled = false; // Enable the button if text is entered
 
-        redMessage.style.display = "none"; // Hide the red message
-    }
+//        redMessage.style.display = "none"; // Hide the red message
+//    }
 
-    // Disable all delete buttons with the class 'delete-button'
-    var deleteButtons = document.querySelectorAll(".delete-button");
-    deleteButtons.forEach(function (button) {
-        button.disabled = true;
-    });
+//    // Disable all delete buttons with the class 'delete-button'
+//    var deleteButtons = document.querySelectorAll(".delete-button");
+//    deleteButtons.forEach(function (button) {
+//        button.disabled = true;
+//    });
 
-}
+//}
 
 
 
 //take two parameter ID1 = ID_التحضير , id=ID for the step . 
 function Deletestep(id) { // after save in db . 
     Swal.fire({
-        title: 'هل أنت متأكد ؟',
-        text: " هل تريد استعادة ماتم حذفه؟",
+        title: 'تأكيد !!',
+        text: "تأكد من حفظ المتغيرات على المعلومات - المكونات - الأجهزة والأدوات ",
         icon: 'warning',
         showCancelButton: true,
         cancelButtonText: 'الغاء',
@@ -237,82 +236,82 @@ function Deletestep(id) { // after save in db .
 }
 
 //زر الحذف في صفحة التعديل .
-function DeleteRow11(button) {
-    var tableBody = document.querySelector("#tblSteps2 tbody");
-    var rows = tableBody.children;
-    var rowIndex = button.getAttribute("data-row-index");
+//function DeleteRow11(button) {
+//    var tableBody = document.querySelector("#tblSteps2 tbody");
+//    var rows = tableBody.children;
+//    var rowIndex = button.getAttribute("data-row-index");
 
-    // Check if the button click corresponds to the last row
-    if (rowIndex == rows.length - 1) {
-        Swal.fire({
-            title: 'هل أنت متأكد؟',
-            icon: 'warning',
-            showCancelButton: true,
-            cancelButtonText: 'الغاء',
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'نعم!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Remove the last row from the table
-                tableBody.removeChild(rows[rowIndex]);
+//    // Check if the button click corresponds to the last row
+//    if (rowIndex == rows.length - 1) {
+//        Swal.fire({
+//            title: 'هل أنت متأكد؟',
+//            icon: 'warning',
+//            showCancelButton: true,
+//            cancelButtonText: 'الغاء',
+//            confirmButtonColor: '#d33',
+//            cancelButtonColor: '#3085d6',
+//            confirmButtonText: 'نعم!'
+//        }).then((result) => {
+//            if (result.isConfirmed) {
+//                // Remove the last row from the table
+//                tableBody.removeChild(rows[rowIndex]);
 
-                // Display a success message
-                Swal.fire({
-                    icon: 'success',
-                    title: 'تم الحذف بنجاح',
+//                // Display a success message
+//                Swal.fire({
+//                    icon: 'success',
+//                    title: 'تم الحذف بنجاح',
 
-                });
-            }
-        });
-    } else {
-        // Display a message that you cannot delete rows until they are saved in the database
-        Swal.fire({
-            icon: 'error',
-            title: 'لا يمكنك حذف هذا الصف',
-            text: 'يجب حفظ التغييرات أولا والعودة الى صفحة التعديل لحذف الصف.',
-        });
-    }
-}
+//                });
+//            }
+//        });
+//    } else {
+//        // Display a message that you cannot delete rows until they are saved in the database
+//        Swal.fire({
+//            icon: 'error',
+//            title: 'لا يمكنك حذف هذا الصف',
+//            text: 'يجب حفظ التغييرات أولا والعودة الى صفحة التعديل لحذف الصف.',
+//        });
+//    }
+//}
 
 //زر الحذف في صفحة الاضافة
-function DeleteRow3(button) {
-    var tableBody = document.querySelector("#tblSteps2 tbody");
-    var rows = tableBody.children;
-    var rowIndex = button.getAttribute("data-row-index");
+//function DeleteRow3(button) {
+//    var tableBody = document.querySelector("#tblSteps2 tbody");
+//    var rows = tableBody.children;
+//    var rowIndex = button.getAttribute("data-row-index");
 
-    // Check if the button click corresponds to the last row
-    if (rowIndex == rows.length - 1) {
-        Swal.fire({
-            title: 'هل أنت متأكد؟',
-            icon: 'warning',
-            showCancelButton: true,
-            cancelButtonText: 'الغاء',
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'نعم!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Remove the last row from the table
-                tableBody.removeChild(rows[rowIndex]);
+//    // Check if the button click corresponds to the last row
+//    if (rowIndex == rows.length - 1) {
+//        Swal.fire({
+//            title: 'هل أنت متأكد؟',
+//            icon: 'warning',
+//            showCancelButton: true,
+//            cancelButtonText: 'الغاء',
+//            confirmButtonColor: '#d33',
+//            cancelButtonColor: '#3085d6',
+//            confirmButtonText: 'نعم!'
+//        }).then((result) => {
+//            if (result.isConfirmed) {
+//                // Remove the last row from the table
+//                tableBody.removeChild(rows[rowIndex]);
 
-                // Display a success message
-                Swal.fire({
-                    icon: 'success',
-                    title: 'تم الحذف بنجاح',
+//                // Display a success message
+//                Swal.fire({
+//                    icon: 'success',
+//                    title: 'تم الحذف بنجاح',
 
-                });
-            }
-        });
-    } else {
-        // Display a message that you cannot delete rows until they are saved in the database
-        Swal.fire({
-            icon: 'error',
-            title: 'أنت قادر على حذف الصف الأخير فقط ',
-            text: 'يجب حفظ التغييرات أولا والعودة الى صفحة التعديل لحذف الصف.',
-        });
-    }
-}
+//                });
+//            }
+//        });
+//    } else {
+//        // Display a message that you cannot delete rows until they are saved in the database
+//        Swal.fire({
+//            icon: 'error',
+//            title: 'أنت قادر على حذف الصف الأخير فقط ',
+//            text: 'يجب حفظ التغييرات أولا والعودة الى صفحة التعديل لحذف الصف.',
+//        });
+//    }
+//}
 
 
 //function DeleteRow(button) {
@@ -345,79 +344,4 @@ function DeleteRow3(button) {
 //        }
 //    }
 //}
-
-//function DeleteRow(button) {
-//    var rowIndex = button.getAttribute("data-row-index");
-//    var tableBody = document.querySelector("#tblSteps tbody");
-//    var rows = tableBody.children;
-
-//    // Find the row to delete
-//    var rowToDelete = rows[rowIndex];
-
-//    // Determine the رقم_الخطوة values for الخطوة1 and الخطوة2 in the row to delete
-//    var lastToDelete1 = parseInt(rowToDelete.querySelector(`input[name^="stepsVM[${rowIndex}].رقم_الخطوة1"]`).value);
-//    var lastToDelete2 = parseInt(rowToDelete.querySelector(`input[name^="stepsVM[${rowIndex}].رقم_الخطوة2"]`).value);
-
-//    // Delete the row
-//    rowToDelete.remove();
-
-//    // Decrement the رقم_الخطوة values for الخطوة1 and الخطوة2 in the following rows
-//    for (var i = rowIndex; i < rows.length; i++) {
-//        var رقم_الخطوة1Input = rows[i].querySelector(`input[name^="stepsVM[${i}].رقم_الخطوة1"]`);
-//        var رقم_الخطوة2Input = rows[i].querySelector(`input[name^="stepsVM[${i}].رقم_الخطوة2"]`);
-
-//        if (رقم_الخطوة1Input && رقم_الخطوة2Input) {
-//            var رقم_الخطوة1 = parseInt(رقم_الخطوة1Input.value);
-//            var رقم_الخطوة2 = parseInt(رقم_الخطوة2Input.value);
-
-//            رقم_الخطوة1 -= 2;
-//            رقم_الخطوة2 -= 2;
-
-//            رقم_الخطوة1Input.value = رقم_الخطوة1;
-//            رقم_الخطوة2Input.value = رقم_الخطوة2;
-
-//            // Update any displayed رقم_الخطوة values in the row
-//            rows[i].querySelector(`div[data-رقم_الخطوة1="${i}"]`).textContent = رقم_الخطوة1;
-//            rows[i].querySelector(`div[data-رقم_الخطوة2="${i}"]`).textContent = رقم_الخطوة2;
-//        }
-//    }
-//}
-
-//function deletestep1(رقم_الخطوة1) {
-//    const tdToDelete = document.querySelector(`td[data-id="${رقم_الخطوة1}"]`);
-//    if (tdToDelete) {
-//        const tableRow = tdToDelete.parentElement; // Get the parent <tr> element
-
-//        // Remove the specific <td> element
-//        tdToDelete.remove();
-
-
-//    }
-//}
-
-//function deletestep1(رقم_الخطوة) {
-//    // Find the TD to delete
-//    const tdToDelete = document.querySelector(`td[data-id="${رقم_الخطوة}"]`);
-//    if (tdToDelete) {
-//        const currentRow = tdToDelete.parentElement;
-//        const tableBody = currentRow.parentElement;
-//        const currentIndex = Array.from(tableBody.children).indexOf(currentRow);
-
-//        // Find the next row
-//        const nextRow = tableBody.children[currentIndex + 1];
-//        if (nextRow) {
-//            const رقم_الخطوة2Cell = nextRow.querySelector(`td[data-id="${رقم_الخطوة}_2"]`);
-
-//            if (رقم_الخطوة2Cell) {
-//                // Move content from رقم_الخطوة2 to رقم_الخطوة1 in the next row
-//                const رقم_الخطوة1Cell = nextRow.querySelector(`td[data-id="${رقم_الخطوة}_1"]`);
-//                if (رقم_الخطوة1Cell) {
-//                    رقم_الخطوة1Cell.innerHTML = رقم_الخطوة2Cell.innerHTML;
-//                }
-
-//                // Remove the deleted TD
-//                tdToDelete.remove();
-//            }
-//        }
-//    }
-//}
+ 

@@ -26,12 +26,32 @@ namespace Test12.Controllers
         public IActionResult finishProductionList(int? id) //this for display List Of التحضيرات Page1
         {
 
-            IEnumerable<ReadyProducts> objFoodfinishList = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == id).OrderBy(item => item.ReadyProductsOrder).ToList();
+            ReadyFoodViewmodel FooReadyVM = new()
+            {
+                readyfoodlistVM = _unitOfWork.readyFoodRepository.GetAll()
+                 .Where(u => u.BrandFK == id).OrderBy(item => item.ReadyProductsOrder).ToList(),
+                WelcomTredmarketReadyFood = new LoginTredMarktViewModel()
+
+            };
+            FooReadyVM.WelcomTredmarketReadyFood.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
+            FooReadyVM.WelcomTredmarketReadyFood.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == id);
+            FooReadyVM.WelcomTredmarketReadyFood.ProductionLoginVM = _unitOfWork.itemsRepository.Get(u => u.BrandFK == id);
+            FooReadyVM.WelcomTredmarketReadyFood.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == id);
+            FooReadyVM.WelcomTredmarketReadyFood.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == id);
+            FooReadyVM.WelcomTredmarketReadyFood.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == id);
+            FooReadyVM.WelcomTredmarketReadyFood.PreparatonLoginVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == id);
+            FooReadyVM.WelcomTredmarketReadyFood.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            FooReadyVM.WelcomTredmarketReadyFood.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            FooReadyVM.WelcomTredmarketReadyFood.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            FooReadyVM.WelcomTredmarketReadyFood.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            FooReadyVM.WelcomTredmarketReadyFood.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            FooReadyVM.WelcomTredmarketReadyFood.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            FooReadyVM.WelcomTredmarketReadyFood.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == id).ToList();
 
             // Store the FK value in TempData
             TempData["ID"] = id;
             // Display the updated list
-            return View(objFoodfinishList);
+            return View(FooReadyVM);
         }
 
         public IActionResult FinishProductsIndex(int? id)

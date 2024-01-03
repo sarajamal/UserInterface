@@ -28,7 +28,7 @@ function loadDataTable(id) {
         "columns": [
             {
                 data: 'devicesAndTools_Name',
-                "width": "30%",
+                "width": "35%",
                 "className": "text-center custom-font-bold",
  
             },
@@ -45,7 +45,7 @@ function loadDataTable(id) {
                     // Customize the content of the cell with both text and image
                     return `<img src="${imagePath2}" alt="Image" width="150" height="100"/>`;
                 },
-                "width": "30%",
+                "width": "45%",
                 "className": "text-center"
             },
            
@@ -145,3 +145,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+
+function closeModal(event) {
+    event.preventDefault();
+    var modal = document.getElementById('CreateDeviceTools');
+    modal.style.display = 'none';
+}

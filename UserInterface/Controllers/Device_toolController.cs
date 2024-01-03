@@ -22,12 +22,37 @@ namespace Test12.Controllers
         public IActionResult DeviceToolsList(int? id) //this for display List Of التحضيرات Page1
         {
 
-            IEnumerable<DevicesAndTools> objdeviceToolsList = _unitOfWork.Device_tools1.GetAll().Where(u => u.BrandFK == id).OrderBy(item => item.DevicesAndToolsOrder).ToList();
+            Device_toolsVM PrVM = new()
+            {
+                Devices_toolsVMorder = _unitOfWork.Device_tools1.GetAll()
+                .Where(u => u.BrandFK == id).OrderBy(item => item.DevicesAndToolsOrder).ToList(),
 
+
+                WelcomtredmarketDeviceTools = new LoginTredMarktViewModel()
+
+            };
+            PrVM.WelcomtredmarketDeviceTools.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
+            PrVM.WelcomtredmarketDeviceTools.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == id);
+            PrVM.WelcomtredmarketDeviceTools.ProductionLoginVM = _unitOfWork.itemsRepository.Get(u => u.BrandFK == id);
+            PrVM.WelcomtredmarketDeviceTools.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == id);
+            PrVM.WelcomtredmarketDeviceTools.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == id);
+            PrVM.WelcomtredmarketDeviceTools.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == id);
+            PrVM.WelcomtredmarketDeviceTools.PreparatonLoginVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == id);
+            PrVM.WelcomtredmarketDeviceTools.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.WelcomtredmarketDeviceTools.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.WelcomtredmarketDeviceTools.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.WelcomtredmarketDeviceTools.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.WelcomtredmarketDeviceTools.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.WelcomtredmarketDeviceTools.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            PrVM.WelcomtredmarketDeviceTools.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == id).ToList();
+
+            PrVM.tredMaeketToolsVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
+            PrVM.Device_toolVM = _unitOfWork.Device_tools1.Get(u => u.DevicesAndToolsID == id);
+            PrVM.Devices_toolsVM = _unitOfWork.Device_tools1.GetAll(incloudeProperties: "Brand").Where(u => u.DevicesAndToolsID == id).ToList();
             // Store the FK value in TempData
             TempData["ID"] = id;
             // Display the updated list
-            return View(objdeviceToolsList);
+            return View(PrVM);
         }
 
         public IActionResult Index(int? id)
