@@ -8,70 +8,65 @@
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-
             </div>
             <div class="modal-body">
 
-        <form method="post" class="row" enctype="multipart/form-data" asp-action="Index" asp-controller="Device_tool">
-            
-                            <input asp-for="Device_toolVM.DevicesAndToolsID" hidden />
-                            <input asp-for="Device_toolVM.BrandFK" hidden />
+                <form method="post" class="row" enctype="multipart/form-data" asp-action="Index" asp-controller="Device_tool">
 
-                            <table id="tblDeviceTools" class="table table-bordered table-striped" data-DeviceTools-id="@Model.Device_toolVM.BrandFK">
+                    <input asp-for="Device_toolVM.DevicesAndToolsID" hidden />
+                    <input asp-for="Device_toolVM.BrandFK" hidden />
 
-                                <tbody>
-                                    @if (Model.Device_toolVM.BrandFK != 0)
-                                    {
-                                        @for (int i = 0; i < Model.Devices_toolsVM.Count; i++)
-                                        {
-                                            var itemDevice = Model.Devices_toolsVM[i];
-                                            <tr>
-                                                <td style="text-align:center;">
+                    <table id="tblDeviceTools" class="table table-bordered table-striped" data-DeviceTools-id="@Model.Device_toolVM.BrandFK">
+
+                        <tbody>
+                            @if (Model.Device_toolVM.BrandFK != 0)
+                            {
+                                @for (int i = 0; i < Model.Devices_toolsVM.Count; i++)
+                                {
+                                    var itemDevice = Model.Devices_toolsVM[i];
+                                    <tr>
+                                        <td style="text-align:center;">
 
                                             <input asp-for="@itemDevice.DevicesAndToolsID" name="Devices_toolsVM[@i].DevicesAndToolsID" hidden />
                                             <input asp-for="@itemDevice.BrandFK" name="Devices_toolsVM[@i].BrandFK" hidden />
                                             <input asp-for="@itemDevice.DevicesAndTools_Image" name="Devices_toolsVM[@i].DevicesAndTools_Image" hidden />
-                        
 
-                                                    @if (!string.IsNullOrEmpty(itemDevice.DevicesAndTools_Name) || !string.IsNullOrEmpty(itemDevice.DevicesAndTools_Image))
-                                                    {
 
-                                                        <div class="col-12 text-center">
-                                                            <div>
+                                            @if (!string.IsNullOrEmpty(itemDevice.DevicesAndTools_Name) || !string.IsNullOrEmpty(itemDevice.DevicesAndTools_Image))
+                                            {
+
+                                                <div class="col-12 text-center">
+                                                    <div>
                                                         <img id="PreviewPhoto1_@itemDevice.DevicesAndToolsID"
                                                              src="@Url.Content("~/IMAGES/" + Model.Device_toolVM.BrandFK + "/DevicesAndTools/" + Model.Device_toolVM.DevicesAndToolsID + "/" + Model.Device_toolVM.DevicesAndTools_Image)"
                                                              alt="Logo"
-                                                                     width="125" height="125" style="border: 1px; margin-top: 20px;">
-                                                            </div>
+                                                             width="125" height="125" style="border: 1px; margin-top: 20px;">
+                                                    </div>
 
-                                                            <div class="form-group mt-2">
-                                                         <input type="file" name="file1_@itemDevice.DevicesAndToolsID" class="border-0 shadow mt-5" id="customFile1_@itemDevice.DevicesAndToolsID" onchange="displaySelectedImage(this, 'PreviewPhoto1_@itemDevice.DevicesAndToolsID')">
+                                                    <div class="form-group mt-2">
+                                                        <input type="file" name="file1_@itemDevice.DevicesAndToolsID" class="border-0 shadow mt-5" id="customFile1_@itemDevice.DevicesAndToolsID" onchange="displaySelectedImage(this, 'PreviewPhoto1_@itemDevice.DevicesAndToolsID')">
 
                                                         <textarea asp-for="@itemDevice.DevicesAndTools_Name" class="form-control mt-2" name="Devices_toolsVM[@i].DevicesAndTools_Name"></textarea>
                                                         <span asp-validation-for="@itemDevice.DevicesAndTools_Name" class="text-danger"></span>
 
-                                                            </div>
-                                                        </div>
-                                                    }  
-                                                </td>
-                                             </tr>
-                                        }
-                                    }
+                                                    </div>
+                                                </div>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
 
-                                </tbody>
-                            </table>
+                        </tbody>
+                    </table>
 
-                            <div class="modal-footer">
-                            <input type="submit" id="saveChange" value=" حفظ التغييرات"
-                                   asp-action="Index" asp-route-id="@Model.Device_toolVM.BrandFK"
+                    <div class="modal-footer">
+                        <input type="submit" id="saveChange" value=" حفظ التغييرات"
+                               asp-action="Index" asp-route-id="@Model.Device_toolVM.BrandFK"
                                style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
-                        </div>
-                    
-
-                
-            
-        </form>
-    </div>
+                    </div>
+                </form>
+            </div>
 
         </div>
     </div>
@@ -79,7 +74,7 @@
 
 
 
- 
+
 
 <script>
     function displaySelectedImage(input, imgId) {
@@ -105,9 +100,9 @@
     }
 </script>
 
-  @section Scripts {
+@section Scripts {
 
     <script src="~/Js/DeviceTools/DeviceToolsDeletelist.js"></script>
     <script src="~/Js/DeviceTools/AdddeleteToolsDevice.js"></script>
-}  
+}
 

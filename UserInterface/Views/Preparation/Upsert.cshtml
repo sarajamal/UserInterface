@@ -24,100 +24,103 @@
             <input asp-for="PreparationVM.prepareImage" hidden />
             <input asp-for="tredMaeketVM.BrandID" hidden />
             <input asp-for="tredMaeketVM.ID_Login" hidden />
-           
+
             <input asp-for="tredMaeketVM.Date" hidden />
             <input asp-for="tredMaeketVM.BrandCoverImage" hidden />
             <input asp-for="tredMaeketVM.BrandLogoImage" hidden />
             <input asp-for="tredMaeketVM.BrandFooterImage" hidden />
             @* <input type="hidden" id="order-input" name="PreparationVM.Order" value="0.1" />*@
 
-
             <div class="card-body p-4 py-4">
                 <div class="border p-3">
 
                     @*added this class main-container-table*@
                     <div class="main-container-table">
-                        @*<button class="btn dropdown-toggle float-end mb-2" id="button" onclick="showhide()"> المعلومات</button>*@
-                        @*<div id="newpost">*@
-                        @*<hr class="featurette-divider">*@
-                        <div>
-                            <h4 style="text-align:right">المعلومات</h4>
-                        </div>
-                        <div class=" row">
-                            <div class=" col-md-6 p-2">
-                                <div class="form-group">
 
-                                    <label asp-for=" PreparationVM.prepareName" class="control-label"> اسم التحضير </label>
-                                    <input asp-for=" PreparationVM.prepareName " class="form-control" />
-                                    <span asp-validation-for=" PreparationVM.prepareName" class="text-danger"></span>
-                                </div>
-                            </div>
+                    @*added this class main-container-table*@
+                  @*   <div class="main-container-table">
+                        <button class="btn dropdown-toggle float-end mb-2" id="button" onclick="showhide()"> المعلومات</button>
+                        <div id="newpost">
+                            <hr class="featurette-divider"> *@
 
+                    <div>
+                        <h4 style="text-align:right">المعلومات</h4>
+                    </div>
+                    <div class=" row">
+                        <div class=" col-md-6 p-2">
+                            <div class="form-group">
 
-                            <div class=" col-md-6 p-2">
-                                <div class="form-group">
-                                    <label asp-for=" PreparationVM.VersionNumber" class="control-label">رقم النسخة</label>
-                                    <input asp-for=" PreparationVM.VersionNumber" class="form-control" readonly />
-                                    <span asp-validation-for=" PreparationVM.VersionNumber" class="text-danger"></span>
-                                </div>
-                            </div>
-
-                            <div class=" col-md-6 p-2">
-                                <div class="form-group">
-                                    <label asp-for=" PreparationVM.Expiry" class="control-label">مدة الصلاحية</label>
-                                    <input asp-for=" PreparationVM.Expiry" class="form-control" />
-                                    <span asp-validation-for=" PreparationVM.Expiry" class="text-danger"></span>
-                                </div>
-                            </div>
-
-                            <div class=" col-md-6 p-2">
-                                <div class="form-group">
-                                    <label asp-for=" PreparationVM.NetWeight" class="control-label">الوزن الصافي</label>
-                                    <input asp-for="PreparationVM.NetWeight" class="form-control" />
-                                    <span asp-validation-for=" PreparationVM.NetWeight" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class=" col-md-6 p-2">
-                                <div class="form-group">
-                                    <label asp-for="  PreparationVM.Station" class="control-label">المحطة</label>
-                                    <input asp-for="PreparationVM.Station" class="form-control" />
-                                    <span asp-validation-for=" PreparationVM.Station" class="text-danger"></span>
-                                </div>
-                            </div>
-
-                            <div class=" col-md-6 p-2">
-                                <div class="form-group">
-                                    <label asp-for=" PreparationVM.PreparationTime" class="control-label"> وقت التحضير</label>
-                                    <input asp-for=" PreparationVM.PreparationTime" class="form-control" />
-                                    <span asp-validation-for=" PreparationVM.PreparationTime" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6 btn-group">
-                                <div class="form-group col-8 p-0">
-                                    <label asp-for=" PreparationVM.prepareImage" class="ms-2"> ادخل صورة</label>
-                                    <input type="file" name="file" class="form-control border-0 shadow" id="customFile"
-                                           onchange="document.getElementById('PreviewPhoto').src= window.URL.createObjectURL(this.files[0])" />
-                                   
+                                        <label asp-for=" PreparationVM.prepareName" class="control-label"> اسم التحضير </label>
+                                        <input asp-for=" PreparationVM.prepareName " class="form-control" />
+                                        <span asp-validation-for=" PreparationVM.prepareName" class="text-danger"></span>
+                                    </div>
                                 </div>
 
-                            </div>
 
-                            <div class="form-group col-4">
+                                <div class=" col-md-6 p-2">
+                                    <div class="form-group">
+                                        <label asp-for=" PreparationVM.VersionNumber" class="control-label">رقم النسخة</label>
+                                        <input asp-for=" PreparationVM.VersionNumber" class="form-control" readonly />
+                                        <span asp-validation-for=" PreparationVM.VersionNumber" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class=" col-md-6 p-2">
+                                    <div class="form-group">
+                                        <label asp-for=" PreparationVM.Expiry" class="control-label">مدة الصلاحية</label>
+                                        <input asp-for=" PreparationVM.Expiry" class="form-control" />
+                                        <span asp-validation-for=" PreparationVM.Expiry" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class=" col-md-6 p-2">
+                                    <div class="form-group">
+                                        <label asp-for=" PreparationVM.NetWeight" class="control-label">الوزن الصافي</label>
+                                        <input asp-for="PreparationVM.NetWeight" class="form-control" />
+                                        <span asp-validation-for=" PreparationVM.NetWeight" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class=" col-md-6 p-2">
+                                    <div class="form-group">
+                                        <label asp-for="  PreparationVM.Station" class="control-label">المحطة</label>
+                                        <input asp-for="PreparationVM.Station" class="form-control" />
+                                        <span asp-validation-for=" PreparationVM.Station" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class=" col-md-6 p-2">
+                                    <div class="form-group">
+                                        <label asp-for=" PreparationVM.PreparationTime" class="control-label"> وقت التحضير</label>
+                                        <input asp-for=" PreparationVM.PreparationTime" class="form-control" />
+                                        <span asp-validation-for=" PreparationVM.PreparationTime" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 btn-group">
+                                    <div class="form-group col-8 p-0">
+                                        <label asp-for=" PreparationVM.prepareImage" class="ms-2"> ادخل صورة</label>
+                                        <input type="file" name="file" class="form-control border-0 shadow" id="customFile"
+                                               onchange="document.getElementById('PreviewPhoto').src= window.URL.createObjectURL(this.files[0])" />
+
+                                    </div>
+
+                                </div>
 
                                 <div class="form-group col-4">
-                                    <img src="@Url.Content("~/IMAGES/" + Model.PreparationVM.BrandFK + "/Preparation/" + Model.PreparationVM.PreparationsID + "/" + Model.PreparationVM.prepareImage)"
-                                         id="PreviewPhoto" alt="Production Image" width="125" height="125" style="border: 1px; margin-top: 20px;" />
+
+                                    <div class="form-group col-4">
+                                        <img src="@Url.Content("~/IMAGES/" + Model.PreparationVM.BrandFK + "/Preparation/" + Model.PreparationVM.PreparationsID + "/" + Model.PreparationVM.prepareImage)"
+                                             id="PreviewPhoto" alt="Production Image" width="125" height="125" style="border: 1px; margin-top: 20px;" />
+
+                                    </div>
+
 
                                 </div>
-
-
-                            </div>
-                            <div class="form-group col-12 py-3 fxcc">
-                                <input type="submit" id="saveChange"
-                                       value=" حفظ التغييرات" asp-action="Upsert" asp-route-id="@Model.PreparationVM.PreparationsID" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
+                                <div class="form-group col-12 py-3 fxcc">
+                                    <input type="submit" id="saveChange"
+                                           value=" حفظ التغييرات" asp-action="Upsert" asp-route-id="@Model.PreparationVM.PreparationsID" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
+                                </div>
                             </div>
                         </div>
-
                         @*المكونات*@
 
                         <h4 style="text-align:right" class="px-2 py-3">المكونات</h4>
@@ -132,7 +135,7 @@
                                         @*type="button" is important*@
 
                                         <button type="button" class="btn btn-style2 fnt-white" onclick="AddRowcomponentUpdate()">إضافة</button>
-                                       
+
 
 
                                     </th>
@@ -172,7 +175,7 @@
                                     }
 
                                 }
-                               
+
                             </tbody>
                         </table>
                         <div class="form-group col-12 py-3 fxcc">
@@ -191,9 +194,9 @@
                                     <th class="col-9"> الأدوات المستخدمة</th>
 
                                     <th style="text-align:center;">
-                                     
-                                           @*type="button" is important*@
-                                            <button type="button" class="btn btn-style2 fnt-white " onclick="AddRowTool('@Model.PreparationVM.PreparationsID')">إضافة</button>
+
+                                        @*type="button" is important*@
+                                        <button type="button" class="btn btn-style2 fnt-white " onclick="AddRowTool('@Model.PreparationVM.PreparationsID')">إضافة</button>
 
                                     </th>
                                 </tr>
@@ -256,7 +259,7 @@
                                                     {
                                                         <div class="py-5">
                                                             <button type="button" class="btn btn-danger delete-button"
-                                                                    id="deleteButton_@j" 
+                                                                    id="deleteButton_@j"
                                                                     onclick="Deletestep(@itemStep.PrepStepsID)">
                                                                 حذف
                                                             </button>
@@ -285,7 +288,7 @@
                                         </tr>
                                     }
                                 }
-                               
+
                             </tbody>
                         </table>
 
@@ -298,7 +301,7 @@
 
                             </td>
                         </tr>
- 
+
                         <div class="form-group col-12 py-2">
                             <div style="text-align: left;">
 
@@ -310,7 +313,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
         </form>
     </div>
 
