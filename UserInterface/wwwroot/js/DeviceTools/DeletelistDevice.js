@@ -53,14 +53,14 @@ function loadDataTable(id) {
                 data: 'devicesAndToolsID',
                 "render": function (data) {
                     return `<div role="group">
-                    <button type="button" class="btn btn-primary px-4 device-index-button"
+                    <button type="button" class="btn btn-style4 fnt-white px-4 device-index-button"
                             data-toggle="modal"
                             data-target="#Index"
                             data-controller="Device_tool"
                             data-action="Index"
                             data-id="${data}">
                        <i class="bi bi-pencil-square"></i> </button>            
-                     <a onClick=DelteToolsdevice('/Device_tool/DelteToolsdevice/${data}') class="btn btn-danger "> <i class="bi bi-trash-fill"></i></a>
+                     <a onClick=DelteToolsdevice('/Device_tool/DelteToolsdevice/${data}') class="btn btn-style5 "> <i class="bi bi-trash-fill"></i></a>
                     </div>`;
                 },
                 "width": "20%",

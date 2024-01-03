@@ -21,7 +21,7 @@
 
     <div class="card-body p-4">
 
-        <table class="table  table-bordered table-striped py-5 mb-3 pb-4" id="tblFoodfinish" style="width:100%">
+        <table class="table  table-style1 table-bordered table-striped py-5 mb-3 pb-4" id="tblFoodfinish" style="width:100%">
             <thead data-id="@TempData["ID"]">
 
                 <tr class=" py-5 mb-3 pb-4">
@@ -66,11 +66,11 @@
             </td>
             <td class="mb-3" style="text-align:center">
             <div class="w-75 btn-group py-4" role="group">
-            <a asp-controller="Preparation" asp-action="Upsert" asp-route-id="@item.التحضير_ID" class="btn btn-primary mx-2">
+            <a asp-controller="Preparation" asp-action="Upsert" asp-route-id="@item.التحضير_ID" class="btn btn-style4 fnt-white mx-2">
             <i class="bi bi-pencil-square"> </i> تعديل
             </a>
 
-            <button type="button" class="bi bi-trash-fill btn btn-danger" onclick="DeletePreparationPost(@item.التحضير_ID)">حذف</button>
+            <button type="button" class="bi bi-trash-fill btn btn-style5" onclick="DeletePreparationPost(@item.التحضير_ID)">حذف</button>
             <div class="row pb-3">
             </div>
 

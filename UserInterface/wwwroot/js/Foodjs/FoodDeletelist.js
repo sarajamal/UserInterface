@@ -51,14 +51,14 @@ function loadDataTable(id) {
                 data: 'foodStuffsID',
                 "render": function (data) {
                     return `<div role="group">
-                            <button type="button" class="btn btn-primary px-4 food-index-button"
+                            <button type="button" class="btn btn-style4 fnt-white px-4 food-index-button"
                             data-toggle="modal"
                             data-target="#FoodsIndex"
                             data-controller="Food"
                             data-action="FoodIndex"
                             data-id="${data}">
                        <i class="bi bi-pencil-square"></i> </button>             
-                       <a onClick=DelteFooodSave('/Food/DelteFooodSave/${data}') class="btn btn-danger "> <i class="bi bi-trash-fill"></i></a>
+                       <a onClick=DelteFooodSave('/Food/DelteFooodSave/${data}') class="btn btn-style5 "> <i class="bi bi-trash-fill"></i></a>
                     </div>`;
                 },
                 "width": "15%",

@@ -55,8 +55,8 @@ function loadDataTable(id) {
                     var brandFk = row.brandFK;
 
                     return `<div role="group">
-                     <a href="/Production/Upsert1?id=${data}&brandFK=${brandFk}" class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i></a>               
-                     <a onClick=DeletePreparationPost('/Production/DeletePreparationPost/${data}') class="btn btn-danger "> <i class="bi bi-trash-fill"></i></a>
+                     <a href="/Production/Upsert1?id=${data}&brandFK=${brandFk}" class="btn btn-style4 ftn-white mx-2"> <i class="bi bi-pencil-square"></i></a>               
+                     <a onClick=DeletePreparationPost('/Production/DeletePreparationPost/${data}') class="btn btn-style5 "> <i class="bi bi-trash-fill"></i></a>
                     </div>`;
                 },
                 "width": "16%",

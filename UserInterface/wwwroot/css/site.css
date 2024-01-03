@@ -58,6 +58,11 @@ body {
     margin-bottom: 60px;
 }
 
+body main hedaer{
+    margin-bottom: 100px;
+}
+
+
 
 
 /*Generel CSS*/
@@ -68,6 +73,12 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+fxcl {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: end;
 }
 .btn-container-style1 {
     display: flex;
@@ -106,6 +117,28 @@ body {
     background-color: #fff;
     border-color: rgb(103, 104, 105);
 }
+.btn-style4 {
+    color: #fff;
+    background-color: rgb(103, 104, 105);
+    border-color: rgb(103, 104, 105);
+}
+
+.btn-style5 {
+    color: #fff;
+    background-color: #ba181b;
+    border-color: #d00000;
+}
+    .btn-style5:hover {
+        color: #d00000;
+        background-color: transparent;
+        border-color: #d00000;
+    }
+
+    .btn-style4:hover {
+        color: rgb(103, 104, 105);
+        background-color: transparent;
+        border-color: rgb(103, 104, 105);
+    }
 
 .bg-white{
         background-color:#ffffff;
