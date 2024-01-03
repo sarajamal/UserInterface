@@ -8,11 +8,11 @@
 
 <body>
     <div class="card shadow border-0 my-4 py-4">
-        <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="card-header bg-navbar bf-bb bg-gradient ml-0 py-3">
             <div class="row">
                 <div class="col-12 text-center">
 
-                    <h2 class="text-white py-2"> إضافة التنظيف </h2>
+                    <h2 class="fnt-blue py-2"> إضافة التنظيف </h2>
                 </div>
             </div>
         </div>
@@ -32,9 +32,9 @@
 
             @* <input type="hidden" id="order-input" name="PreparationVM.Order" value="0.1" />*@
 
-
-            <h4 style="text-align:right">المعلومات</h4>
-
+            <div>
+                <h4 style="text-align:right">المعلومات</h4>
+            </div>
             <div class=" row">
                 <div class=" col-md-6 p-2">
                     <div class="form-group">
@@ -50,7 +50,7 @@
                 <div class="form-group col-4 py-2 ">
                     <h4 style="text-align:right"> الخطوات</h4>
                 </div>
-                <table id="tblSteps3" class="table table-bordered table-striped" data-Clean-id="@Model.tredMaeketCleanVM.BrandID">
+                <table id="tblSteps3" class="table table-style1 table-bordered table-striped" data-Clean-id="@Model.tredMaeketCleanVM.BrandID">
 
                     <tbody>
 
@@ -58,7 +58,7 @@
                         <tr>
                             <td colspan="1" style="text-align:right;">
 
-                                <button type="button" id="addStepButton9" class="btn btn-success my-3" onclick="AddnewRowstepsNew3()">إضافة خطوات جديدة</button>
+                                <button type="button" id="addStepButton9" class="btn btn-style3  my-3" onclick="AddnewRowstepsNew3()">إضافة خطوات جديدة</button>
                                 <div id="redMessage" style="display:none; color:red;">
                                     يجب إدخال خطوة واحدة على الأقل
                                 </div>
@@ -92,7 +92,7 @@
             <div class="modal-footer">
 
                 <input type="submit" value=" حفظ" asp-route-id="@Model.tredMaeketCleanVM.BrandID"
-                       style="text-align:center" class="btn btn-primary me-3" id="submitButton2" />
+                       style="text-align:center" class="btn btn-style1 fnt-white me-3" id="submitButton2" />
             </div>
         </form>
 
