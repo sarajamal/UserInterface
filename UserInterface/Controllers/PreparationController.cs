@@ -581,7 +581,7 @@ namespace Test12.Controllers
                 }
                 TempData["success"] = "تم تحديث التحضيرات بشكل ناجح";
 
-                return RedirectToAction("Upsert", new { id = PrepaVM.PreparationVM.PreparationsID });
+                return RedirectToAction("Upsert", new { id = PrepaVM.PreparationVM.PreparationsID , brandFk = PrepaVM.PreparationVM.BrandFK });
             }
 
             else

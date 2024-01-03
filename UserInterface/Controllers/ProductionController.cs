@@ -574,7 +574,7 @@ namespace Test12.Controllers
                     }
                 }
                 TempData["success"] = "تم تحديث الانتاج بشكل ناجح";
-                return RedirectToAction("Upsert1", new { id = PropaVM.Productionvm.ProductionID });
+                return RedirectToAction("Upsert1", new { id = PropaVM.Productionvm.ProductionID, brandFk = PropaVM.Productionvm.BrandFK });
             }
             else
             {

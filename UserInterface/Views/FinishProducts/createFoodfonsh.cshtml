@@ -14,10 +14,6 @@
 
                 <form method="post" class="row" enctype="multipart/form-data" asp-action="createFoodfonsh" asp-controller="FinishProducts">
 
-
-
-
-
                     <input asp-for="tredMaeketReadyfoodVM.BrandID" hidden />
                     <input asp-for="tredMaeketReadyfoodVM.ID_Login" hidden />
                     <input asp-for="tredMaeketReadyfoodVM.BrandName" hidden />
@@ -30,7 +26,7 @@
 
                     <table id="tblFinishFood" class="table table-style1 table-bordered table-striped" data-FinshFood-id="@Model.ReadyfoodVM.ReadyProductsID">
                         <thead>
-                            <tr >
+                            <tr>
                                 <th style="text-align:center  ;width:40%">
                                     اسم المنتج
                                 </th>
@@ -71,9 +67,7 @@
                         <input type="submit" value=" حفظ" asp-route-id="@Model.tredMaeketReadyfoodVM.BrandID"
                                style="text-align:center" class="btn btn-style1 fnt-white me-3" id="submitButton5" />
                     </div>
-
                 </form>
-
             </div>
         </div>
     </div>

@@ -118,14 +118,14 @@ namespace Test12.Controllers
             if (user != null)
             {
                 // Hash the new password before updating
-                string hashedPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(model.LoginVM.Password, workFactor: 13);
+                //string hashedPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(model.LoginVM.Password, workFactor: 13);
 
-                // Update the hashed password
-                user.Password = hashedPassword;
+                //// Update the hashed password
+                //user.Password = hashedPassword;
 
-                // Save the changes to the database
-                _unitOfWork.loginRepository.Update(user);
-                _unitOfWork.Save();
+                //// Save the changes to the database
+                //_unitOfWork.loginRepository.Update(user);
+                //_unitOfWork.Save();
 
                 bool isSucces = await _unitOfWork.loginRepository.VerifyUserCredentials(user.Username, model.LoginVM.Password);
 

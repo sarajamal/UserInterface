@@ -13,17 +13,13 @@
             <div class="modal-body">
                 <form method="post" class="row" enctype="multipart/form-data" asp-action="CreateIndex" asp-controller="Device_tool">
 
-
-
-
                     <input asp-for="tredMaeketToolsVM.BrandID" hidden />
                     <input asp-for="tredMaeketToolsVM.ID_Login" hidden />
                     <input asp-for="tredMaeketToolsVM.BrandName" hidden />
                     <input asp-for="tredMaeketToolsVM.Date" hidden />
                     <input asp-for="tredMaeketToolsVM.BrandCoverImage" hidden />
                     <input asp-for="tredMaeketToolsVM.BrandLogoImage" hidden />
-                    <input asp-for="tredMaeketToolsVM.BrandFooterImage" hidden />
-                    
+                    <input asp-for="tredMaeketToolsVM.BrandFooterImage" hidden />                  
                     <input asp-for="Device_toolVM.BrandFK" hidden />
 
                     <table id="tblDeviceTools" class="table table-style1  table-bordered table-striped" data-DeviceTools-id="@Model.tredMaeketToolsVM.BrandID">
