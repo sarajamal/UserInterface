@@ -75,7 +75,7 @@ function AddnewFoodReady(ReadyFoodFk) {
         var tableBody = document.querySelector("#tblFinishFood tbody");
  
         // Find the last row index
-        var newRowIndex = tableBody.children.length - 1;
+        var newRowIndex = tableBody.children.length ;
 
         // Create a new row for الخطوة1 and الخطوة2 in the same row
         var newRow = document.createElement("tr");
@@ -96,12 +96,6 @@ function AddnewFoodReady(ReadyFoodFk) {
                 <input type="file" name="file1_${lastID}" class="border-0 shadow mt-5" id="customFile1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
             </div>
         </div>
-    </td>   
-      
-    </td>
-
-        <td style="text-align: center;">
-        <button type="button" class="btn btn-style5" data-row-index="${newRowIndex}" onclick="DeleteReadyFood1(this)">حذف</button>
     </td>      
       
 </tr>

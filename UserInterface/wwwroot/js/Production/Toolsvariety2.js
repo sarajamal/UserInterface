@@ -1,8 +1,8 @@
 ﻿
 function DeleteToolVariety2(id) { //هذي فقط للعرض البرمجة في controller , هذي للحذف بعد الحفظ في قاعدة البيانات . 
     Swal.fire({
-        title: 'هل أنت متأكد ؟',
-        text: " هل تريد استعادة ماتم حذفه؟",
+        title: 'تأكيد !!',
+        text: " تأكد من حفظ الصفوف المضافة في الأدوات قبل الحذف ",
         icon: 'warning',
         showCancelButton: true,
         cancelButtonText: 'الغاء',
@@ -67,39 +67,33 @@ function DeleteRow9(button) { // AJAX قبل تحفظ في قاعدة البيا
         confirmButtonText: 'نعم!'
     }).then((result) => {
         if (result.isConfirmed) {
-            var row = button.closest("tr");
-            var deletedRowIndex = parseInt(button.getAttribute("data-row-index")) - 1; // الحصول على index الصف المحذوف
+            var tableBody = document.querySelector("#tblToolVarity2 tbody");
+            var rows = tableBody.children;
+            var deletedRowIndex = Array.from(rows).indexOf(button.closest("tr"));
+            button.closest("tr").remove();
 
-            row.remove();
+            // Update row numbers in the first cell
+            for (var i = 0; i < rows.length; i++) {
+                rows[i].cells[0].textContent = i + 1;
+            }
+
+            // Update indices for elements in all rows after the deleted row
+            for (var i = deletedRowIndex; i < rows.length; i++) {
+                var inputsAndButtons = rows[i].querySelectorAll("input, button");
+                inputsAndButtons.forEach(el => {
+                    if (el.name) {
+                        el.name = el.name.replace(/\[\d+\]/, `[${i}]`);
+                    }
+                    if (el.getAttribute("data-row-index") !== null) {
+                        el.setAttribute("data-row-index", i);
+                    }
+                });
+            }
             Swal.fire('تم الحذف!', 'تم الحذف بنجاح!', 'success');
-            updateRowIndicesAfterDeletion(deletedRowIndex);
-        }
+         }
     });
 }
-function updateRowIndicesAfterDeletion(deletedIndex) {
-    var tableBody = document.querySelector("#tblToolVarity2 tbody");
-    var rows = tableBody.querySelectorAll("tr");
 
-    rows.forEach((row, index) => {
-        if (index > deletedIndex) {
-            var newRowIndex = index;
-            var inputs = row.querySelectorAll("input");
-            inputs.forEach(input => {
-                if (input.name) {
-                    input.name = input.name.replace(/\[\d+\]/, `[${newRowIndex}]`);
-                }
-            });
-
-            // تحديث العداد الظاهر في الجدول
-            row.cells[0].textContent = newRowIndex + 1;
-        }
-    });
-
-    newRowNumber = rows.length + 1;
-    numeric = newRowNumber;
-}
-
- 
 var newRowNumber = 1;
 var numeric = 2;
 function AddRowToolnew2(ProductionFK) { //صفحة الإضافة

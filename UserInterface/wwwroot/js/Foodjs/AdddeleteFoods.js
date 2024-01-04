@@ -50,7 +50,6 @@ function toggleAddButtonVisibility(value) {
 //صفحة الاضافة مواد غذائية جديدة 
 var clickCount = 0;
 var lastID = 0; // Initialize lastID globally
-var newRowIndex = 0;
 function AddnewFoods(FoodsFK) {
     if (clickCount === 0) {
         // Only retrieve lastID from server on the first click
@@ -75,6 +74,7 @@ function AddnewFoods(FoodsFK) {
 
             // Find the table body element
             var tableBody = document.querySelector("#tblFoods tbody");
+            var newRowIndex = tableBody.children.length ;
 
         // Create a new row for الخطوة1 and الخطوة2 in the same row
         var newRow = document.createElement("tr");
@@ -84,7 +84,7 @@ function AddnewFoods(FoodsFK) {
             <input type="hidden" name="FoodViewMList[${newRowIndex}].FoodStuffsImage" />
         
              <div class="form-group">
-            <textarea class="form-control" id="FoodViewMList_${newRowIndex}" name="FoodViewMList[${newRowIndex}].FoodStuffsName"></textarea>
+            <input type= "textarea" class="form-control" id="FoodViewMList_${newRowIndex}" name="FoodViewMList[${newRowIndex}].FoodStuffsName">
          </div>
      </td>
         
@@ -95,48 +95,12 @@ function AddnewFoods(FoodsFK) {
                 <input type="file" name="file1_${lastID}" class="border-0 shadow mt-5" id="customFile1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
             </div>
         </div>
-    </td>
-    <td style="text-align: center;">
-       <button type="button" class="btn btn-danger" data-row-index="${newRowIndex}" onclick="DeleteFoodRow1(this)">حذف</button>
-     </td>   
-        
+    </td>      
 </tr>
     `;
-            // Find the last row index
-            var newRowIndex = tableBody.children.length - 1;
-
-            // Create a new row for الخطوة1 and الخطوة2 in the same row
-            var newRow = document.createElement("tr");
-            newRow.innerHTML = `
-           <td style="text-align:center;">
-                <input type="hidden" name="FoodViewMList[${newRowIndex}].BrandFK" value="${FoodsFK}" />
-                <input type="hidden" name="FoodViewMList[${newRowIndex}].FoodStuffsImage" />
-
-                 <div class="form-group">
-                <textarea class="form-control" id="FoodViewMList_${newRowIndex}" name="FoodViewMList[${newRowIndex}].FoodStuffsName"></textarea>
-             </div>
-         </td>
-
-          <td style="text-align:center;">
-            <div class="row">
-                <div class="col-12 text-center">
-                    <img id="PreviewPhoto1_${lastID}" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
-                    <input type="file" name="file1_${lastID}" class="border-0 shadow mt-5" id="customFile1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
-                </div>
-            </div>
-        </td>
-
-            <td style="text-align: center;">
-            <button type="button" class="btn btn-style5" data-row-index="${newRowIndex}" onclick="DeleteFoodRow1(this)">حذف</button>
-        </td>
-
-    </tr>
-        `;
-
         // Append the new الخطوة1 and الخطوة2 row to the table body
         tableBody.appendChild(newRow);
         clickCount++;
-        newRowIndex++;
         console.log("newCell:", newRow); // Debugging log 
     }
 } 
@@ -147,8 +111,6 @@ function AddnewFoods(FoodsFK) {
 
 ////زر الحذ في صفحة التعديل قبل الحفظ في قاعدة البيانات .
 function DeleteFoodRow1(button) {
-    /*var rowIndex = button.getAttribute("data-row-index");*/
-
     Swal.fire({
         title: 'هل أنت متأكد؟',
         icon: 'warning',
@@ -159,18 +121,42 @@ function DeleteFoodRow1(button) {
         confirmButtonText: 'نعم!'
     }).then((result) => {
         if (result.isConfirmed) {
-            var row = button.closest("tr");
-            row.remove();
-            Swal.fire('Deleted!', 'تم الحذف بنجاح!', 'success');
+                var row = button.closest("tr");
+                var rowIndex = parseInt(button.getAttribute("data-row-index"));
+                row.remove();
+                Swal.fire('Deleted!', 'تم الحذف بنجاح!', 'success');
+                updateRowIndicesAfterDeletion1(rowIndex); 
         }
     });
 }
-    document.querySelector("#tblFoods tbody").addEventListener("click", function (event) {
+function updateRowIndicesAfterDeletion1(deletedIndex) {
+    var tableBody = document.querySelector("#tblFoods tbody");
+    var rows = tableBody.querySelectorAll("tr");
+
+    rows.forEach((row, index) => {
+        if (index > deletedIndex) { // تحديث فقط للصفوف بعد الصف المحذوف
+            var newRowIndex = index - 1; // تقليل index بواحد
+            var inputsAndButtons = row.querySelectorAll("input, button");
+
+            inputsAndButtons.forEach(el => {
+                if (el.name) {
+                    el.name = el.name.replace(/\[\d+\]/, `[${newRowIndex}]`);
+                }
+                if (el.getAttribute("data-row-index") !== null) {
+                    el.setAttribute("data-row-index", newRowIndex);
+                }
+            });
+        }
+    });
+
+    newIndex = rows.length; // تحديث newIndex بناءً على عدد الصفوف المتبقية
+}
+
+document.querySelector("#tblFoods tbody").addEventListener("click", function (event) {
     if (event.target.classList.contains("data-row-index")) {
         DeleteFoodRow1(event.target);
     }
 });
-
 
 //زر الحذف في صفحة الاضافة
 //function DeleteRow3(button) {

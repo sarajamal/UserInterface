@@ -1,8 +1,8 @@
 ﻿//صفحة التعديل 
 function Delete(id) {
     Swal.fire({
-        title: 'هل أنت متأكد ؟',
-        text: " هل تريد استعادة ماتم حذفه؟",
+        title: 'تأكد !! ',
+        text: " قبل الحذف تأكد من حفظ الصفوف المضافة في المكونات ",
         icon: 'warning',
         showCancelButton: true,
         cancelButtonText: 'الغاء',

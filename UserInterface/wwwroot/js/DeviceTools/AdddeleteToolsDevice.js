@@ -76,7 +76,7 @@ function AddnewtoolsDeviceNew(DeviceToolsFK) {
         var tableBody = document.querySelector("#tblDeviceTools tbody");
 
         // Find the last row index
-        var newRowIndex = tableBody.children.length - 1;
+        var newRowIndex = tableBody.children.length ;
 
         // Create a new row for الخطوة1 and الخطوة2 in the same row
         var newRow = document.createElement("tr");
@@ -97,10 +97,7 @@ function AddnewtoolsDeviceNew(DeviceToolsFK) {
             </div>
         </div>
     </td>
-   
-    <td style="text-align: center;">
-        <button type="button" class="btn btn-style5" data-row-index="${newRowIndex}" onclick="DeletetoolsdeviceRow1(this)">حذف</button>
-    </td>
+    </tr>
 `;
 
         // Append the new الخطوة1 and الخطوة2 row to the table body
@@ -137,6 +134,102 @@ document.querySelector("#tblDeviceTools tbody").addEventListener("click", functi
         DeleteRow1(event.target);
     }
 });
+
+
+
+
+
+////صفحة الاضافة اجهزة وادوات جديدة 
+//var clickCount = 0;
+//var lastID = 0; // Initialize lastID globally
+//function AddnewtoolsDeviceNew(DeviceToolsFK) {
+
+//    if (clickCount === 0) {
+//        // Only retrieve lastID from server on the first click
+//        $.ajax({
+//            url: '/Device_tool/GetLastId',
+//            type: 'GET',
+//            success: function (response) {
+//                lastID = parseInt(response) + 1;
+//                addStep(DeviceToolsFK);
+//            },
+//            error: function (xhr, status, error) {
+//                console.error('Error fetching last ID:', error);
+//            }
+//        });
+//    } else {
+//        // On subsequent clicks, increment lastID locally
+//        lastID++;
+//        addStep(DeviceToolsFK);
+//    }
+
+//    function addStep(DeviceToolsFK) {
+
+//        // Find the table body element
+//        var tableBody = document.querySelector("#tblDeviceTools tbody");
+
+//        // Find the last row index
+//        var newRowIndex = tableBody.children.length - 1;
+
+//        // Create a new row for الخطوة1 and الخطوة2 in the same row
+//        var newRow = document.createElement("tr");
+//        newRow.innerHTML = `
+//      <td style="text-align:center;">
+//        <input type="hidden" name="Devices_toolsVM[${newRowIndex}].BrandFK" value="${DeviceToolsFK}" />
+//        <input type="hidden" name="Devices_toolsVM[${newRowIndex}].DevicesAndTools_Image" />
+
+//        <div class="form-group">
+//            <textarea class="form-control" id="Devices_toolsVM_${newRowIndex}" name="Devices_toolsVM[${newRowIndex}].DevicesAndTools_Name"></textarea>
+//        </div>
+//    </td>
+//    <td style="text-align:center;">
+//        <div class="row">
+//            <div class="col-12 text-center">
+//                <img id="PreviewPhoto1_${lastID}" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
+//                <input type="file" name="file1_${lastID}" class="border-0 shadow mt-5" id="customFile1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
+//            </div>
+//        </div>
+//    </td>
+   
+//    <td style="text-align: center;">
+//        <button type="button" class="btn btn-style5" data-row-index="${newRowIndex}" onclick="DeletetoolsdeviceRow1(this)">حذف</button>
+//    </td>
+//`;
+
+//        // Append the new الخطوة1 and الخطوة2 row to the table body
+//        tableBody.appendChild(newRow);
+//        clickCount++;
+//        console.log("newCell:", newRow); // Debugging log 
+//    }
+//}
+
+
+
+////زر الحذ في صفحة التعديل قبل الحفظ في قاعدة البيانات .
+//function DeletetoolsdeviceRow1(button) {
+//    /*var rowIndex = button.getAttribute("data-row-index");*/
+
+//    Swal.fire({
+//        title: 'هل أنت متأكد؟',
+//        icon: 'warning',
+//        showCancelButton: true,
+//        cancelButtonText: 'الغاء',
+//        confirmButtonColor: '#d33',
+//        cancelButtonColor: '#3085d6',
+//        confirmButtonText: 'نعم!'
+//    }).then((result) => {
+//        if (result.isConfirmed) {
+//            var row = button.closest("tr");
+//            row.remove();
+//            Swal.fire('Deleted!', 'تم الحذف بنجاح!', 'success');
+//        }
+//    });
+//}
+//document.querySelector("#tblDeviceTools tbody").addEventListener("click", function (event) {
+//    if (event.target.classList.contains("data-row-index")) {
+//        DeleteRow1(event.target);
+//    }
+//});
 
 
 //زر الحذف في صفحة الاضافة
