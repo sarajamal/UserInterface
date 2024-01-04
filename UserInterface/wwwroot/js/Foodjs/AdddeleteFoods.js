@@ -50,6 +50,7 @@ function toggleAddButtonVisibility(value) {
 //صفحة الاضافة مواد غذائية جديدة 
 var clickCount = 0;
 var lastID = 0; // Initialize lastID globally
+var newRowIndex = 0;
 function AddnewFoods(FoodsFK) {
     if (clickCount === 0) {
         // Only retrieve lastID from server on the first click
@@ -75,9 +76,6 @@ function AddnewFoods(FoodsFK) {
         // Find the table body element
         var tableBody = document.querySelector("#tblFoods tbody");
 
-        // Find the last row index
-        var newRowIndex = tableBody.children.length - 1;
-
         // Create a new row for الخطوة1 and الخطوة2 in the same row
         var newRow = document.createElement("tr");
         newRow.innerHTML = `
@@ -98,17 +96,17 @@ function AddnewFoods(FoodsFK) {
             </div>
         </div>
     </td>
-
-        <td style="text-align: center;">
-        <button type="button" class="btn btn-danger" data-row-index="${newRowIndex}" onclick="DeleteFoodRow1(this)">حذف</button>
-    </td>      
-      
+    <td style="text-align: center;">
+       <button type="button" class="btn btn-danger" data-row-index="${newRowIndex}" onclick="DeleteFoodRow1(this)">حذف</button>
+     </td>   
+        
 </tr>
     `;
 
         // Append the new الخطوة1 and الخطوة2 row to the table body
         tableBody.appendChild(newRow);
         clickCount++;
+        newRowIndex++;
         console.log("newCell:", newRow); // Debugging log 
     }
 } 
@@ -139,7 +137,7 @@ function DeleteFoodRow1(button) {
 }
     document.querySelector("#tblFoods tbody").addEventListener("click", function (event) {
     if (event.target.classList.contains("data-row-index")) {
-        DeleteRow1(event.target);
+        DeleteFoodRow1(event.target);
     }
 });
 

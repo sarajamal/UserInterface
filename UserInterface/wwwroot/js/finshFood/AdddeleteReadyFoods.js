@@ -24,27 +24,27 @@ function displaySelectedImage(input, imgId) {
     }
 }
 
-function toggleAddButtonVisibility(value) {
+//function toggleAddButtonVisibility(value) {
 
-    var addButton = document.getElementById("addToolsButton");
-    var redMessage = document.querySelector(".red-message");
-    var saveButton = document.getElementById("saveChange");
+//    var addButton = document.getElementById("addToolsButton");
+//    var redMessage = document.querySelector(".red-message");
+//    var saveButton = document.getElementById("saveChange");
 
 
-    if (value.trim() !== "") {
-        addButton.disabled = false; // Enable the button if text is entered
-        saveButton.disabled = false; // Enable the button if text is entered
+//    if (value.trim() !== "") {
+//        addButton.disabled = false; // Enable the button if text is entered
+//        saveButton.disabled = false; // Enable the button if text is entered
 
-        redMessage.style.display = "none"; // Hide the red message
-    }
+//        redMessage.style.display = "none"; // Hide the red message
+//    }
 
-    // Disable all delete buttons with the class 'delete-button'
-    var deleteButtons = document.querySelectorAll(".delete-button");
-    deleteButtons.forEach(function (button) {
-        button.disabled = true;
-    });
+//    // Disable all delete buttons with the class 'delete-button'
+//    var deleteButtons = document.querySelectorAll(".delete-button");
+//    deleteButtons.forEach(function (button) {
+//        button.disabled = true;
+//    });
 
-}
+//}
 
 
 //صفحة الاضافة منتجات جاهزة جديدة 
@@ -96,11 +96,7 @@ function AddnewFoodReady(ReadyFoodFk) {
                 <input type="file" name="file1_${lastID}" class="border-0 shadow mt-5" id="customFile1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
             </div>
         </div>
-    </td>
-
-        <td style="text-align: center;">
-        <button type="button" class="btn btn-danger" data-row-index="${newRowIndex}" onclick="DeleteReadyFood1(this)">حذف</button>
-    </td>      
+    </td>   
       
 </tr>
     `;
@@ -129,14 +125,123 @@ function DeleteReadyFood1(button) {
             var row = button.closest("tr");
             row.remove();
             Swal.fire('Deleted!', 'تم الحذف بنجاح!', 'success');
+            
         }
     });
 }
-document.querySelector("#tblFinishFood tbody").addEventListener("click", function (event) {
-    if (event.target.classList.contains("data-row-index")) {
-        DeleteRow1(event.target);
-    }
-});
+
+ 
+    
+
+
+
+//صفحة الاضافة منتجات جاهزة جديدة 
+//var clickCount = 0;
+//var lastID = 0; // Initialize lastID globally
+//function AddnewFoodReady(ReadyFoodFk) {
+//    if (clickCount === 0) {
+//        // Only retrieve lastID from server on the first click
+//        $.ajax({
+//            url: '/FinishProducts/GetLastId',
+//            type: 'GET',
+//            success: function (response) {
+//                lastID = parseInt(response) + 1;
+//                addStep(ReadyFoodFk);
+//            },
+//            error: function (xhr, status, error) {
+//                console.error('Error fetching last ID:', error);
+//            }
+//        });
+//    } else {
+//        // On subsequent clicks, increment lastID locally
+//        lastID++;
+//        addStep(ReadyFoodFk);
+//    }
+//    function addStep(ReadyFoodFk) {
+
+//        // Find the table body element
+//        var tableBody = document.querySelector("#tblFinishFood tbody");
+
+//        // Find the last row index
+//        var newRowIndex = tableBody.children.length - 1;
+
+//        // Create a new row for الخطوة1 and الخطوة2 in the same row
+//        var newRow = document.createElement("tr");
+//        newRow.innerHTML = `
+//       <td style="text-align:center;">
+//            <input type="hidden" name="readyfoodlistVM[${newRowIndex}].BrandFK" value="${ReadyFoodFk}" />
+//            <input type="hidden" name="readyfoodlistVM[${newRowIndex}].ReadyProductsImage" />
+          
+//        <div class="form-group">
+//            <textarea class="form-control" id="readyfoodlistVM_${newRowIndex}" name="readyfoodlistVM[${newRowIndex}].ReadyProductsName"></textarea>
+//         </div>
+//     </td>
+        
+//      <td style="text-align:center;">
+//        <div class="row">
+//            <div class="col-12 text-center">
+//                <img id="PreviewPhoto1_${lastID}" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
+//                <input type="file" name="file1_${lastID}" class="border-0 shadow mt-5" id="customFile1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
+//            </div>
+//        </div>
+//    </td>
+
+//        <td style="text-align: center;">
+//        <button type="button" class="btn btn-danger" data-row-index="${newRowIndex}" onclick="DeleteReadyFood1(this)">حذف</button>
+//    </td>      
+      
+//</tr>
+//    `;
+
+//        // Append the new الخطوة1 and الخطوة2 row to the table body
+//        tableBody.appendChild(newRow);
+//        clickCount++;
+//        console.log("newCell:", newRow); // Debugging log 
+//    }
+//}
+
+
+////زر الحذ في صفحة التعديل قبل الحفظ في قاعدة البيانات .
+//function DeleteReadyFood1(button) {
+
+//    Swal.fire({
+//        title: 'هل أنت متأكد؟',
+//        icon: 'warning',
+//        showCancelButton: true,
+//        cancelButtonText: 'الغاء',
+//        confirmButtonColor: '#d33',
+//        cancelButtonColor: '#3085d6',
+//        confirmButtonText: 'نعم!'
+//    }).then((result) => {
+//        if (result.isConfirmed) {
+//            var row = button.closest("tr");
+//            row.remove();
+//            Swal.fire('Deleted!', 'تم الحذف بنجاح!', 'success');
+//            updateRowIndices();
+//        }
+//    });
+//}
+
+//function updateRowIndices() {
+//    var tableBody = document.querySelector("#tblFinishFood tbody");
+//    var rows = tableBody.querySelectorAll("tr");
+
+//    rows.forEach((row, index) => {
+//        // تحديث المؤشرات لكل عنصر input و textarea
+//        var elements = row.querySelectorAll("input[name*='readyfoodlistVM'], textarea[name*='readyfoodlistVM']");
+//        elements.forEach(element => {
+//            var name = element.name;
+//            // تحديث الاسم باستخدام التعبير النظامي ليطابق الـ index الجديد
+//            element.name = name.replace(/\[\d+\]/, `[${index}]`);
+//        });
+
+//        // تحديث الأزرار أو أي عناصر أخرى تستخدم الـ index
+//        var buttons = row.querySelectorAll("button[data-row-index]");
+//        buttons.forEach(button => {
+//            button.setAttribute("data-row-index", index);
+//        });
+//    });
+//}
 
 
 //زر الحذف في صفحة الاضافة

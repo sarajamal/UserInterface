@@ -174,7 +174,7 @@ namespace Test12.Controllers
                 }
             }
 
-            TempData["success"] = "تم إضافة المنتجات الجاهزة بشكل ناجح";
+             TempData["success"] = "تم إضافة المنتجات الجاهزة بشكل ناجح";
             return RedirectToAction("finishProductionList", new { id = FoodsReadyVM.tredMaeketReadyfoodVM.BrandID });
         }
 

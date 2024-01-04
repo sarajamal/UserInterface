@@ -62,7 +62,7 @@ function AddRowcomponentUpdate() { //صفحة التعديل .
 }
 // صفحة التعديل قبل الحفظ في قاعدة البيانات 
 function DeleteRow1(button) {
-    /*var rowIndex = button.getAttribute("data-row-index");*/
+    var rowIndex = parseInt(button.getAttribute("data-row-index"));
 
     Swal.fire({
         title: 'هل أنت متأكد؟',
@@ -77,14 +77,34 @@ function DeleteRow1(button) {
             var row = button.closest("tr");
             row.remove();
             Swal.fire('Deleted!', 'تم الحذف بنجاح!', 'success');
+            updateRowIndicesAfterDeletion(rowIndex);
         }
     });
 }
-document.querySelector("#tbComponant tbody").addEventListener("click", function (event) {
-    if (event.target.classList.contains("data-row-index")) {
-        DeleteRow1(event.target);
-    }
-});
+
+function updateRowIndicesAfterDeletion(deletedIndex) {
+    var tableBody = document.querySelector("#tbComponant tbody");
+    var rows = tableBody.querySelectorAll("tr");
+
+    rows.forEach((row, index) => {
+        if (index > deletedIndex) { // تحديث فقط للصفوف بعد الصف المحذوف
+            var newRowIndex = index - 1; // تقليل index بواحد
+            var inputsAndButtons = row.querySelectorAll("input, button");
+
+            inputsAndButtons.forEach(el => {
+                if (el.name) {
+                    el.name = el.name.replace(/\[\d+\]/, `[${newRowIndex}]`);
+                }
+                if (el.getAttribute("data-row-index") !== null) {
+                    el.setAttribute("data-row-index", newRowIndex);
+                }
+            });
+        }
+    });
+
+    newIndex = rows.length; // تحديث newIndex بناءً على عدد الصفوف المتبقية
+}
+
 //صفحة الإضافة 
 var newIndex = 0;
 function AddRowcomponentnew() {

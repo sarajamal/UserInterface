@@ -67,25 +67,39 @@ function DeleteRow9(button) { // AJAX قبل تحفظ في قاعدة البيا
         confirmButtonText: 'نعم!'
     }).then((result) => {
         if (result.isConfirmed) {
-            var tableBody = document.querySelector("#tblToolVarity2 tbody");
-            var rows = tableBody.children;
-            button.closest("tr").remove();
+            var row = button.closest("tr");
+            var deletedRowIndex = parseInt(button.getAttribute("data-row-index")) - 1; // الحصول على index الصف المحذوف
 
-            // Update row numbers
-            for (var i = 0; i < rows.length; i++) {
-                rows[i].cells[0].textContent = i + 1;
-            }
-
+            row.remove();
             Swal.fire('تم الحذف!', 'تم الحذف بنجاح!', 'success');
+            updateRowIndicesAfterDeletion(deletedRowIndex);
         }
     });
 }
-document.querySelector("#tblToolVarity2 tbody").addEventListener("click", function (event) {
-    if (event.target.classList.contains("data-row-index")) {
-        DeleteRow3(event.target);
-    }
-});
+function updateRowIndicesAfterDeletion(deletedIndex) {
+    var tableBody = document.querySelector("#tblToolVarity2 tbody");
+    var rows = tableBody.querySelectorAll("tr");
 
+    rows.forEach((row, index) => {
+        if (index > deletedIndex) {
+            var newRowIndex = index;
+            var inputs = row.querySelectorAll("input");
+            inputs.forEach(input => {
+                if (input.name) {
+                    input.name = input.name.replace(/\[\d+\]/, `[${newRowIndex}]`);
+                }
+            });
+
+            // تحديث العداد الظاهر في الجدول
+            row.cells[0].textContent = newRowIndex + 1;
+        }
+    });
+
+    newRowNumber = rows.length + 1;
+    numeric = newRowNumber;
+}
+
+ 
 var newRowNumber = 1;
 var numeric = 2;
 function AddRowToolnew2(ProductionFK) { //صفحة الإضافة
