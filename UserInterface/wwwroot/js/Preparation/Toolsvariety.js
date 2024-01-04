@@ -79,15 +79,19 @@ function DeleteRow6(button) { // AJAX قبل تحفظ في قاعدة البيا
 
             // Update indices for elements in all rows after the deleted row
             for (var i = deletedRowIndex; i < rows.length; i++) {
+                var newRowIndex = i; // Corrected the calculation of newRowIndex
+
                 var inputsAndButtons = rows[i].querySelectorAll("input, button");
                 inputsAndButtons.forEach(el => {
                     if (el.name) {
-                        el.name = el.name.replace(/\[\d+\]/, `[${i}]`);
+                        el.name = el.name.replace(/\[\d+\]/, `[${newRowIndex}]`);
                     }
                     if (el.getAttribute("data-row-index") !== null) {
-                        el.setAttribute("data-row-index", i);
+                        el.setAttribute("data-row-index", newRowIndex);
                     }
                 });
+                console.log("Row deleted, new row index:", newRowIndex); // Adjusted the debugging log statement
+
             }
 
             Swal.fire('تم الحذف!', 'تم الحذف بنجاح!', 'success');
@@ -109,7 +113,7 @@ function AddRowToolnew(PreparationsFK) { //صفحة الإضافة
        <td style="text-align:center;" >
             <input type="hidden" name="ToolsVarityVM[${newRowNumber-1 }].PreparationsFK" value="${PreparationsFK}"  />
               
-            <button type="button" class="btn btn-style5" data-row-index="${newRowNumber }" onclick="DeleteRow6(this)">حذف</button> 
+            <button type="button" class="btn btn-style5" data-row-index="${newRowNumber -1}" onclick="DeleteRow6(this)">حذف</button> 
         </td>
          `;
 
