@@ -54,7 +54,7 @@ function AddRowcomponentUpdate2() { //صفحة التعديل .
 
         <td style="text-align:center;">
         <input type="hidden" name="componontVMList2[${newRowNumber}].ProductionFK" value="${componentFk}" />
-        <button type="button" class="btn btn-danger" data-row-index="${newRowNumber}" onclick="DeleteRow99(this)">حذف</button>
+        <button type="button" class="btn btn-style5" data-row-index="${newRowNumber}" onclick="DeleteRow99(this)">حذف</button>
         </td>
             `;
     tableBody.appendChild(newRow);
@@ -123,7 +123,7 @@ function AddRowcomponentnew() {
 
     <td style="text-align:center;">
     <input type="hidden" name="componontVMList[${newIndex}].ProductionFK" value="${componentFk}" />
-    <button type="button" class="btn btn-danger" data-row-index="${newIndex}" onclick="DeleteRow99(this)">حذف</button>
+    <button type="button" class="btn btn-style5" data-row-index="${newIndex}" onclick="DeleteRow99(this)">حذف</button>
     </td>
 `;
 

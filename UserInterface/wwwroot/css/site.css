@@ -36,6 +36,8 @@ html {
 
 body div.container-custom{
     max-width: 100%;
+    display:flex;
+    flex-direction:column;
 }
 
 @media (min-width: 768px) {
@@ -55,8 +57,14 @@ html {
 }
 
 body {
-    margin-bottom: 60px;
+    /*margin-bottom: 60px;*/
+    margin: 0 !important;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: space-between;
 }
+
 
 
 
@@ -68,6 +76,12 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+fxcl {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: end;
 }
 .btn-container-style1 {
     display: flex;
@@ -106,6 +120,28 @@ body {
     background-color: #fff;
     border-color: rgb(103, 104, 105);
 }
+.btn-style4 {
+    color: #fff;
+    background-color: rgb(103, 104, 105);
+    border-color: rgb(103, 104, 105);
+}
+
+.btn-style5 {
+    color: #fff;
+    background-color: #ba181b;
+    border-color: #d00000;
+}
+    .btn-style5:hover {
+        color: #d00000;
+        background-color: transparent;
+        border-color: #d00000;
+    }
+
+    .btn-style4:hover {
+        color: rgb(103, 104, 105);
+        background-color: transparent;
+        border-color: rgb(103, 104, 105);
+    }
 
 .bg-white{
         background-color:#ffffff;
@@ -174,6 +210,11 @@ button.close{
     font-size:48px;
     line-height:1;
     border: none;
+}
+.header-styling-position {
+    display:flex;
+    flex-direction: column;
+    gap:40px;
 }
 
 /*input fields*/
@@ -336,16 +377,19 @@ header .navbar .nav-item:hover {
 }
 
 
+/*footer*/
 .footer {
+    display:flex;
+    flex-direction: column;
     height: max-content; /* Adjust this value based on the footer height */
-    position: absolute;
-    bottom: 0;
+    /*bottom: 0;
     width: 100%;
     margin: 10px 0 0 0;
-    padding: 5px;
+    padding: 5px;*/
     background-color: #676869;
     color: #fff;
     gap: 5px;
+    
 }
 
     .footer .footer-container {

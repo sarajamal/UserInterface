@@ -7,14 +7,14 @@
 </header>
 <body>
     <div class="card shadow border-0 my-4 py-4">
-        <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="card-header bg-navbar bf-bb bg-gradient ml-0 py-3">
             <div class="row">
                 <div class="col-12 text-center">
 
-                    <h2 class="text-white py-2">   إضافة الانتاج </h2>
+                    <h2 class="fnt-blue py-2">   إضافة الانتاج </h2>
                 </div>
             </div>
-        </div>
+        </div>ُ
 
 
         <form method="post" class="row" enctype="multipart/form-data" asp-action="CreateProduction" asp-controller="Production" id="myForm1">
@@ -130,7 +130,7 @@
 
                         <h4 style="text-align:right" class="px-2 py-3">المكونات</h4>
                         @* id is important!!*@
-                        <table id="tbComponant" class="table table-bordered table-striped" data-Production-id="@Model.Productionvm.ProductionID">
+                        <table id="tbComponant" class="table table-style1 table-bordered table-striped" data-Production-id="@Model.Productionvm.ProductionID">
                             <thead>
                                 <tr>
                                     <th> المكون</th>
@@ -139,7 +139,9 @@
                                     <th style="text-align:center;">
                                         @*type="button" is important*@
 
-                                        <button type="button" class="btn btn-success" onclick="AddRowcomponentnew()">إضافة</button>
+                                        <button type="button" class="btn btn-style2 fnt-white" onclick="AddRowcomponentnew()">
+                                            إضافة
+                                        </button>
 
                                     </th>
                                 </tr>
@@ -178,7 +180,7 @@
 
                                     <th style="text-align:center;">
 
-                                        <button type="button" class="btn btn-success " onclick="AddRowToolnew2('@Model.Productionvm.ProductionID')">إضافة</button>
+                                        <button type="button" class="btn btn-style2 fnt-white " onclick="AddRowToolnew2('@Model.Productionvm.ProductionID')">إضافة</button>
 
                                     </th>
                                 </tr>
@@ -246,8 +248,8 @@
                             <div style="text-align: left;">
 
                                 <div class="form-group col-12 py-5">
-                                    <input type="submit" value=" حفظ" 
-                                    asp-action="CreateProduction" asp-route-id="@Model.Productionvm.ProductionID" style="text-align:center" class="btn btn-primary me-3" id="submitButton" />
+                                    <input type="submit" value=" حفظ"
+                                           asp-action="CreateProduction" asp-route-id="@Model.Productionvm.ProductionID" style="text-align:center" class="btn btn-style1 fnt-white me-3" id="submitButton" />
                                 </div>
 
                             </div>

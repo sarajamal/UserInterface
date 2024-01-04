@@ -49,7 +49,7 @@ function AddRowTool(PreparationsFK) { //صفحة التعديل
 
        <td style="text-align:center;" >
             <input type="hidden" name="ToolsVarityVM[${newRowNumber - 1}].PreparationsFK" value="${PreparationsFK}"   />
-            <button type="button" class="btn btn-danger" data-row-index="${newRowNumber}" onclick="DeleteRow6(this)">حذف</button>
+            <button type="button" class="btn btn-style5" data-row-index="${newRowNumber}" onclick="DeleteRow6(this)">حذف</button>
         </td>
          `;
     tableBody.appendChild(newRow);
@@ -99,7 +99,7 @@ function AddRowToolnew(PreparationsFK) { //صفحة الإضافة
        <td style="text-align:center;" >
             <input type="hidden" name="ToolsVarityVM[${newRowNumber - 1}].PreparationsFK" value="${PreparationsFK}"  />
               
-            <button type="button" class="btn btn-danger" data-row-index="${newRowNumber}" onclick="DeleteRow6(this)">حذف</button> 
+            <button type="button" class="btn btn-style5" data-row-index="${newRowNumber}" onclick="DeleteRow6(this)">حذف</button> 
         </td>
          `;
 

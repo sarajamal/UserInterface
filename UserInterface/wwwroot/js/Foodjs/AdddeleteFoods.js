@@ -71,10 +71,10 @@ function AddnewFoods(FoodsFK) {
         addStep(FoodsFK);
     }
 
-    function addStep(FoodsFK) {
+        function addStep(FoodsFK) {
 
-        // Find the table body element
-        var tableBody = document.querySelector("#tblFoods tbody");
+            // Find the table body element
+            var tableBody = document.querySelector("#tblFoods tbody");
 
         // Create a new row for الخطوة1 and الخطوة2 in the same row
         var newRow = document.createElement("tr");
@@ -102,6 +102,36 @@ function AddnewFoods(FoodsFK) {
         
 </tr>
     `;
+            // Find the last row index
+            var newRowIndex = tableBody.children.length - 1;
+
+            // Create a new row for الخطوة1 and الخطوة2 in the same row
+            var newRow = document.createElement("tr");
+            newRow.innerHTML = `
+           <td style="text-align:center;">
+                <input type="hidden" name="FoodViewMList[${newRowIndex}].BrandFK" value="${FoodsFK}" />
+                <input type="hidden" name="FoodViewMList[${newRowIndex}].FoodStuffsImage" />
+
+                 <div class="form-group">
+                <textarea class="form-control" id="FoodViewMList_${newRowIndex}" name="FoodViewMList[${newRowIndex}].FoodStuffsName"></textarea>
+             </div>
+         </td>
+
+          <td style="text-align:center;">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <img id="PreviewPhoto1_${lastID}" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
+                    <input type="file" name="file1_${lastID}" class="border-0 shadow mt-5" id="customFile1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
+                </div>
+            </div>
+        </td>
+
+            <td style="text-align: center;">
+            <button type="button" class="btn btn-style5" data-row-index="${newRowIndex}" onclick="DeleteFoodRow1(this)">حذف</button>
+        </td>
+
+    </tr>
+        `;
 
         // Append the new الخطوة1 and الخطوة2 row to the table body
         tableBody.appendChild(newRow);

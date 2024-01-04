@@ -28,20 +28,18 @@
 }
 
 
-body {
-    margin: 0 0 40px 0;
-    padding-top: 0 !important;
 
+html {
+    direction: rtl;
+}
+
+body {
+    margin:0;
     font-family: "Almarai", sans-serif; /* Use an Arabic-supported font here */
     background-color: rgba(240, 247, 250, 1);
 }
 
 
-
-
-html {
-    direction: rtl;
-}
 
 li {
     list-style: none;

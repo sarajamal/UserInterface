@@ -98,6 +98,12 @@ function AddnewFoodReady(ReadyFoodFk) {
         </div>
     </td>   
       
+    </td>
+
+        <td style="text-align: center;">
+        <button type="button" class="btn btn-style5" data-row-index="${newRowIndex}" onclick="DeleteReadyFood1(this)">حذف</button>
+    </td>      
+      
 </tr>
     `;
 

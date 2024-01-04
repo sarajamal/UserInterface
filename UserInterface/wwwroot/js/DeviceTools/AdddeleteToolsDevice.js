@@ -98,6 +98,9 @@ function AddnewtoolsDeviceNew(DeviceToolsFK) {
         </div>
     </td>
    
+    <td style="text-align: center;">
+        <button type="button" class="btn btn-style5" data-row-index="${newRowIndex}" onclick="DeletetoolsdeviceRow1(this)">حذف</button>
+    </td>
 `;
 
         // Append the new الخطوة1 and الخطوة2 row to the table body
