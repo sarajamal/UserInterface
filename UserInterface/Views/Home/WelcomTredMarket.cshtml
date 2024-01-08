@@ -94,8 +94,10 @@
                                     }
                                     else
                                     {
-                                        <li class="nav-item border p-2 mt-2  "><a class="nav-link  " asp-area="" asp-controller="Clean" asp-action="CleanList" asp-route-id="@Model.CleanLoginVM.BrandFK"> التنظيف</a></li>
-                                    }
+                                        <li class="nav-item border p-2 mt-2">
+                                            <a class="nav-link" href="@Url.Action("RedirectToCleanList", "Clean", new { brandFK = Model.CleanLoginVM.BrandFK })">التنظيف</a>
+                                        </li>
+                                     }
                                 </ul>
                             </nav>
                         </div>
