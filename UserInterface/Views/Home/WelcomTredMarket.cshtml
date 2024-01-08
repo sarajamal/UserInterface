@@ -56,25 +56,26 @@
                                     }
                                     else
                                     {
-                                        <li id="navPreparationWithID" class="nav-item border p-2 mt-2">
-                                            <a class="nav-link"
-                                               asp-controller="Preparation" asp-route-id="@Model.PreparatonLoginVM.BrandFK"
-                                               asp-action="PreparationList">التحضيرات</a>
+                                        <li class="nav-item border p-2 mt-2">
+                                            <a class="nav-link" href="@Url.Action("RedirectToPreparation", "Preparation", new { brandFK = Model.PreparatonLoginVM.BrandFK })">التحضيرات</a>
                                         </li>
+                                       
                                     }
 
                                     @if (Model.ProductionLoginVM == null || Model.ProductionLoginVM.BrandFK == null || Model.ProductionLoginVM.BrandFK == 0)
                                     {
+
                                         <li class="nav-item border p-2 mt-2  ">
                                             <a class="nav-link  " >الانتاج</a>
                                         </li>
                                     }
                                     else
                                     {
-                                        <li class="nav-item border p-2 mt-2  ">
-                                            <a class="nav-link  " asp-controller="Production"
-                                               asp-route-id="@Model.ProductionLoginVM.BrandFK" asp-action="ProductionList">الانتاج</a>
+
+                                        <li class="nav-item border p-2 mt-2">
+                                            <a class="nav-link" href="@Url.Action("RedirectToProduction", "Production", new { brandFK = Model.ProductionLoginVM.BrandFK })">الإنتاج</a>
                                         </li>
+                                       
                                     }
 
                                     @if (Model.ReadyFoodLoginVM == null || Model.ReadyFoodLoginVM.BrandFK == null || Model.ReadyFoodLoginVM.BrandFK == 0)
