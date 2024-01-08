@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Test12.DataAccess.Repository.IRepository;
 using Test12.Models.Models.Device_Tools;
-using Test12.Models.Models.Preparation;
 using Test12.Models.Models.trade_mark;
 using Test12.Models.ViewModel;
 
@@ -22,11 +21,15 @@ namespace Test12.Controllers
         public IActionResult RedirectToDeviceToolsList(int brandFK)
         {
             TempData["BrandFK"] = brandFK;
+            TempData.Keep("BrandFK");
+
             return RedirectToAction("DeviceToolsList");
         }
-        public IActionResult DeviceToolsList( ) //this for display List Of التحضيرات Page1
+        public IActionResult DeviceToolsList() //this for display List Of التحضيرات Page1
         {
             int? brandFK = TempData["BrandFK"] as int?;
+            TempData.Keep("BrandFK"); // Keep the TempData for further use
+
             Device_toolsVM PrVM = new()
             {
                 Devices_toolsVMorder = _unitOfWork.Device_tools1.GetAll()
@@ -62,6 +65,8 @@ namespace Test12.Controllers
 
         public IActionResult Index(int? id)
         {
+            TempData.Keep("BrandFK"); // Keep the TempData for further use
+
             Device_toolsVM PrVM = new()
             {
                 Device_toolVM = new DevicesAndTools(),
@@ -93,7 +98,7 @@ namespace Test12.Controllers
             PrVM.Device_toolVM = new DevicesAndTools();
             PrVM.Devices_toolsVM = new List<DevicesAndTools>();
 
-            return View( PrVM);
+            return View(PrVM);
 
         }
 
@@ -120,9 +125,9 @@ namespace Test12.Controllers
                                 DevicesAndToolsID = LastId1,
                                 BrandFK = DeviceFK,
                                 DevicesAndTools_Name = deviceAdd.DevicesAndTools_Name,
-                                
+
                             };
-                          
+
 
                             string wwwRootDevicePath = _webHostEnvironment.WebRootPath; // get us root folder
 
@@ -130,13 +135,13 @@ namespace Test12.Controllers
                             var file1Name1 = $"file1_{newDevice.DevicesAndToolsID}";
                             var file1ForDevice1 = HttpContext.Request.Form.Files[file1Name1];
 
-                          
+
                             string DevicesAndToolsID = newDevice.DevicesAndToolsID.ToString();
                             string BrandFK = newDevice.BrandFK.ToString();
 
 
-                            var devicePath1 = Path.Combine(wwwRootDevicePath, "IMAGES", BrandFK, "DevicesAndTools"  , DevicesAndToolsID);
-                            
+                            var devicePath1 = Path.Combine(wwwRootDevicePath, "IMAGES", BrandFK, "DevicesAndTools", DevicesAndToolsID);
+
 
                             if (file1ForDevice1 != null && file1ForDevice1.Length > 0)
                             {
@@ -152,7 +157,7 @@ namespace Test12.Controllers
                                     file1ForDevice1.CopyTo(fileStream);
                                 }
                                 newDevice.DevicesAndTools_Image = fileName11;
-                               
+
                             }
                             _unitOfWork.Device_tools1.Add(newDevice);
                             _unitOfWork.Save();
@@ -188,7 +193,7 @@ namespace Test12.Controllers
             }
 
             TempData["success"] = "تم إضافة الأجهزة والأدوات بشكل ناجح";
-            return RedirectToAction("RedirectToDeviceToolsList ", new { brandFK = device_ToolsVM.tredMaeketToolsVM.BrandID });
+            return RedirectToAction("RedirectToDeviceToolsList", new { brandFK = device_ToolsVM.tredMaeketToolsVM.BrandID });
         }
 
         [HttpPost]
@@ -202,17 +207,17 @@ namespace Test12.Controllers
                     for (int i = 0; i < device_ToolsVM.Devices_toolsVM.Count; i++)
                     {
                         var devices = device_ToolsVM.Devices_toolsVM[i];
-                       
+
                         string DevicesAndToolsID = devices.DevicesAndToolsID.ToString();
                         string BrandFK = devices.BrandFK.ToString();
 
 
                         string wwwRootPathSteps = _webHostEnvironment.WebRootPath;
-                        
 
-                       var devicePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", BrandFK, "DevicesAndTools", DevicesAndToolsID);
 
-                        
+                        var devicePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", BrandFK, "DevicesAndTools", DevicesAndToolsID);
+
+
 
                         var file1Name = $"file1_{devices.DevicesAndToolsID}";
                         var file1ForDevice = HttpContext.Request.Form.Files[file1Name];
@@ -250,9 +255,9 @@ namespace Test12.Controllers
                         {
 
                             existingDevices.DevicesAndTools_Name = devices.DevicesAndTools_Name;
-                          
+
                             existingDevices.DevicesAndTools_Image = devices.DevicesAndTools_Image;
-                 
+
                             _unitOfWork.Device_tools1.Update(existingDevices);
                         }
                         else
@@ -303,23 +308,23 @@ namespace Test12.Controllers
             string wwwRootPathSteps = _webHostEnvironment.WebRootPath;
 
             var deleteDeviceToolPicture = _unitOfWork.Device_tools1.Get(u => u.DevicesAndToolsID == id);
- 
+
             string DevicesAndToolsID = deleteDeviceToolPicture.DevicesAndToolsID.ToString();
             string BrandFK = deleteDeviceToolPicture.BrandFK.ToString();
 
             // Delete the associated image file
             if (!string.IsNullOrEmpty(deleteDeviceToolPicture.DevicesAndTools_Image))
             {
-                string imagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES",  BrandFK, "DeviceAndTools", DevicesAndToolsID, deleteDeviceToolPicture.DevicesAndTools_Image);
+                string imagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", BrandFK, "DeviceAndTools", DevicesAndToolsID, deleteDeviceToolPicture.DevicesAndTools_Image);
                 if (System.IO.File.Exists(imagePath1))
                 {
                     System.IO.File.Delete(imagePath1);
                 }
             }
-            
+
             _unitOfWork.Device_tools1.Remove(deleteDeviceToolPicture);
             _unitOfWork.Save();
-     
+
             return Json(new { success = true });
         }
         #endregion
