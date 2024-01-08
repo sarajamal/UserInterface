@@ -9,10 +9,9 @@
         @foreach (var item in Model.tredList)
         {
             <div class="row">
-                <a href="@Url.Action("WelcomTredMarket", "Home", new { id = item.BrandID })">
+                <a href="@Url.Action("RedirectToWelcomTredMarket", "Home", new { brandId = item.BrandID })">
                     @item.BrandName
-                    <img class="card-img-right flex-auto d-none d-md-block" src="@Url.Content("~/IMAGES/" + item.BrandID + "/BRAND/" +   item.BrandLogoImage)" alt="Card image cap" style="width: 150px; height: 100px">
- 
+                    <img src="@Url.Content("~/IMAGES/" + item.BrandID + "/BRAND/" + item.BrandLogoImage)" alt="Card image cap">
                 </a>
             </div>
         }

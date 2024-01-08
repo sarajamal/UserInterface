@@ -36,12 +36,11 @@ function Delete(id) {
     })
 }
 
-function AddRowcomponentUpdate() { //صفحة التعديل . 
+function AddRowcomponentUpdate() {
     var tableBody = document.querySelector("#tbComponant tbody");
-    var newRow = document.createElement("tr");// This line creates a new <tr> (table row) element, which will represent the new row that you're adding.
+    var newRow = document.createElement("tr");
 
-    var newRowNumber = tableBody.children.length; //This line calculates the index or position at which the new row will be inserted.
-    // It's based on the number of existing rows in the table body.
+    var newRowNumber = tableBody.children.length;
 
     var PreparationsFK = document.querySelector("#tbComponant").getAttribute("data-preparation-id");//This line retrieves the data-preparation-id attribute value from the table element.
     // This attribute likely holds an identifier associated with the preparation.
@@ -54,13 +53,65 @@ function AddRowcomponentUpdate() { //صفحة التعديل .
 
         <td style="text-align:center;">
         <input type="hidden" name="componontVMList[${newRowNumber}].PreparationsFK" value="${PreparationsFK}" />
-        <button type="button" class="btn btn-style5" data-row-index="${newRowNumber}" onclick="DeleteRow1(this)">حذف</button>
+        <button type="button" class="btn btn-style5" data-row-index="${newRowNumber }" onclick="DeleteRow16(this)">حذف</button>
         </td>
             `;
     tableBody.appendChild(newRow);
+    console.log("Row deleted, new row index:", newRowNumber); // Adjusted the debugging log statement
     newRowNumber++;
 }
-// صفحة التعديل قبل الحفظ في قاعدة البيانات 
+
+function DeleteRow16(button) {
+    var rowIndex = parseInt(button.getAttribute("data-row-index"));
+
+    Swal.fire({
+        title: 'هل أنت متأكد؟',
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText: 'الغاء',
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'نعم!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            var row = button.closest("tr");
+            row.remove();
+            Swal.fire('Deleted!', 'تم الحذف بنجاح!', 'success');
+            updateRowIndicesAfterDeletion16(rowIndex);
+        }
+    });
+}
+
+function updateRowIndicesAfterDeletion16(deletedIndex) {
+    console.log("Row deleted, deletedIndex", deletedIndex);
+
+    var tableBody = document.querySelector("#tbComponant tbody");
+    var rows = tableBody.querySelectorAll("tr");
+
+    // Since rows is a live NodeList, indices are always 0-based and contiguous.
+    rows.forEach((row, index) => {
+        // Adjust the index for all rows following the deleted one.
+        var actualIndex = index;
+        if (index > deletedIndex) {
+            actualIndex = index ; // Decrease the index for rows after the deleted one
+        }
+        // Update the names and data-row-index for all inputs and buttons
+        var inputsAndButtons = row.querySelectorAll("input[name*='componontVMList'], button[data-row-index]");
+        inputsAndButtons.forEach(el => {
+            var name = el.name;
+            if (name) {
+                // Replace only the first occurrence of the pattern to avoid affecting nested indices
+                el.name = name.replace(/\[\d+\]/, `[${actualIndex}]`);
+            }
+            if (el.hasAttribute("data-row-index")) {
+                el.setAttribute("data-row-index", actualIndex);
+            }
+        });
+        console.log("Row updated to new index:", actualIndex);
+    });
+}
+
+// صفحة الإضافة قبل الحفظ في قاعدة البيانات
 function DeleteRow1(button) {
     var rowIndex = parseInt(button.getAttribute("data-row-index"));
 
@@ -97,6 +148,7 @@ function updateRowIndicesAfterDeletion(deletedIndex) {
                 }
                 if (el.getAttribute("data-row-index") !== null) {
                     el.setAttribute("data-row-index", newRowIndex);
+                    console.log("Row deleted, new row index:", newRowIndex); // Adjusted the debugging log statement
                 }
             });
         }
