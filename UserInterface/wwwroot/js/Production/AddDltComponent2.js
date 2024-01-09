@@ -54,15 +54,63 @@ function AddRowcomponentUpdate2() { //صفحة التعديل .
 
         <td style="text-align:center;">
         <input type="hidden" name="componontVMList2[${newRowNumber}].ProductionFK" value="${componentFk}" />
-        <button type="button" class="btn btn-style5" data-row-index="${newRowNumber}" onclick="DeleteRow99(this)">حذف</button>
+        <button type="button" class="btn btn-style5" data-row-index="${newRowNumber}" onclick="DeleteRow91(this)">حذف</button>
         </td>
             `;
     tableBody.appendChild(newRow);
     newRowNumber++;
 }
+function DeleteRow91(button) {
+    var rowIndex = parseInt(button.getAttribute("data-row-index"));
 
-//زر الحذف في صفحة الإضافة قبل الحفظ في قاعدة البيانات 
-function DeleteRow99(button) {
+    Swal.fire({
+        title: 'هل أنت متأكد؟',
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText: 'الغاء',
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'نعم!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            var row = button.closest("tr");
+            row.remove();
+            Swal.fire('Deleted!', 'تم الحذف بنجاح!', 'success');
+            updateRowIndicesAfterDeletion91(rowIndex);
+        }
+    });
+}
+function updateRowIndicesAfterDeletion91(deletedIndex) {
+    console.log("Row deleted, deletedIndex", deletedIndex);
+
+    var tableBody = document.querySelector("#tbComponant tbody");
+    var rows = tableBody.querySelectorAll("tr");
+
+    // Since rows is a live NodeList, indices are always 0-based and contiguous.
+    rows.forEach((row, index) => {
+        // Adjust the index for all rows following the deleted one.
+        var actualIndex = index;
+        if (index > deletedIndex) {
+            actualIndex = index; // Decrease the index for rows after the deleted one
+        }
+        // Update the names and data-row-index for all inputs and buttons
+        var inputsAndButtons = row.querySelectorAll("input[name*='componontVMList2'], button[data-row-index]");
+        inputsAndButtons.forEach(el => {
+            var name = el.name;
+            if (name) {
+                // Replace only the first occurrence of the pattern to avoid affecting nested indices
+                el.name = name.replace(/\[\d+\]/, `[${actualIndex}]`);
+            }
+            if (el.hasAttribute("data-row-index")) {
+                el.setAttribute("data-row-index", actualIndex);
+            }
+        });
+        console.log("Row updated to new index:", actualIndex);
+    });
+}
+//زر الحذف للإضافة قبل الحفظ في قاعدة البيانات 
+
+ function DeleteRow99(button) {
     var rowIndex = parseInt(button.getAttribute("data-row-index"));
 
     Swal.fire({
