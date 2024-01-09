@@ -17,7 +17,7 @@
         </div>
 
 
-        <form method="post" class="row" enctype="multipart/form-data" asp-action="Upsert" asp-controller="Preparation">
+        <form method="post" class="row" enctype="multipart/form-data" >
 
             <input asp-for="PreparationVM.PreparationsID" hidden />
             <input asp-for="PreparationVM.BrandFK" hidden />
@@ -304,7 +304,8 @@
 
                                 <div class="form-group col-12 py-3 fxcc">
                                     <input type="submit" id="saveChange"
-                                           value=" حفظ التغييرات" asp-action="Upsert" asp-route-id="@Model.PreparationVM.PreparationsID" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
+                                           value=" حفظ التغييرات" href="@Url.Action("RedirectToUpsert",
+                                "Preparation", new { id = Model.PreparationVM.PreparationsID,brandFK = Model.WelcomTredMarketPrecomponent.TredMarktVM.BrandID })" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
                                 </div>
                             </div>
                         </div>

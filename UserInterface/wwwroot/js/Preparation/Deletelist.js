@@ -1,6 +1,6 @@
 ﻿
 $(document).ready(function () {
-     
+
     // Retrieve the id value from the data attribute in the thead element
     var id = document.querySelector("thead").getAttribute("data-id");
     loadDataTable(id);
@@ -50,7 +50,7 @@ function loadDataTable(id) {
                     var brandFk = row.brandFK;
 
                     return `<div role="group">
-            <a href="/Preparation/Upsert?id=${data}&brandFK=${brandFk}" class="btn btn-style4 fnt-white mx-2"> 
+            <a href="/Preparation/RedirectToUpsert?id=${data}&brandFK=${brandFk}" class="btn btn-style4 fnt-white mx-2"> 
                 <i class="bi bi-pencil-square"></i>
             </a>               
             <a onClick=DeletePreparationPost('/Preparation/DeletePreparationPost/${data}') class="btn btn-style5 "> 

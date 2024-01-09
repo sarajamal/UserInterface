@@ -27,7 +27,13 @@ namespace Test12.Controllers
             TempData.Keep("BrandFK");
             return RedirectToAction("ProductionList");
         }
-
+        public IActionResult RedirectToUpsert1(int? id, int? brandFk)
+        {
+            TempData["BrandFK"] = brandFk;
+            TempData["ID"] = id;
+            TempData.Keep("BrandFK");
+            return RedirectToAction("Upsert1");
+        }
         public IActionResult RedirectToCreateProduction(int brandFK)
         {
             TempData["BrandFK"] = brandFK;
@@ -68,8 +74,10 @@ namespace Test12.Controllers
             return View(PrVM);
         }
 
-        public IActionResult Upsert1(int? id, int? brandFk) // After Enter تعديل Display التحضيرات والمكونات...
+        public IActionResult Upsert1() // After Enter تعديل Display التحضيرات والمكونات...
         {
+            int? brandFk = TempData["BrandFK"] as int?;
+            int? id = TempData["ID"] as int?;
             ProductionVM PrVM = new()
             {
                 Productionvm = new Production(),

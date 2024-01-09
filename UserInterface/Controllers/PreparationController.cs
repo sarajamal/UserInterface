@@ -27,11 +27,18 @@ namespace Test12.Controllers
             TempData["BrandFK"] = brandFK;
             TempData.Keep("BrandFK");
             return RedirectToAction("PreparationList");
-        } 
-        
-        public IActionResult RedirectToCreatePreparation(int brandFK)
+        }
+        public IActionResult RedirectToUpsert(int? id, int? brandFk)
         {
-            TempData["BrandFK"] = brandFK;
+            TempData["BrandFK"] = brandFk;
+            TempData["ID"] = id;
+            TempData.Keep("BrandFK");
+            return RedirectToAction("Upsert");
+        }
+
+        public IActionResult RedirectToCreatePreparation(int brandFk)
+        {
+            TempData["BrandFK"] = brandFk;
             TempData.Keep("BrandFK");
             return RedirectToAction("CreatePreparation");
         }
@@ -66,8 +73,11 @@ namespace Test12.Controllers
 
         }
 
-        public IActionResult Upsert(int? id, int? brandFk) // After Enter تعديل Display التحضيرات والمكونات...
+        public IActionResult Upsert() // After Enter تعديل Display التحضيرات والمكونات...
         {
+            int? brandFk = TempData["BrandFK"] as int?;
+            int? id = TempData["ID"] as int?;
+
             PreComViewModel PrVM = new()
             {
                 PreparationVM = new Preparations(),
