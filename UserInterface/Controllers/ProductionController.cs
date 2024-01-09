@@ -20,32 +20,50 @@ namespace Test12.Controllers
 
         }
 
-        public IActionResult ProductionList(int? id) //this for display List Of التحضيرات Page1
+        //للإرسال FK الى صفحة القائمة بدون رقم ف URL
+        public IActionResult RedirectToProduction(int brandFK)
         {
+            TempData["BrandFK"] = brandFK;
+            TempData.Keep("BrandFK");
+            return RedirectToAction("ProductionList");
+        }
+
+        public IActionResult RedirectToCreateProduction(int brandFK)
+        {
+            TempData["BrandFK"] = brandFK;
+            TempData.Keep("BrandFK");
+            return RedirectToAction("CreateProduction");
+        }
+
+        public IActionResult ProductionList() //this for display List Of التحضيرات Page1
+        {
+            int? brandFK = TempData["BrandFK"] as int?;
+            TempData.Keep("BrandFK"); // Keep the TempData for further use
+
             ProductionVM PrVM = new ProductionVM
             {
                itemList33333 = _unitOfWork.itemsRepository.GetAll(incloudeProperties: "component2")
-                            .Where(u => u.BrandFK == id).OrderBy(item => item.ProductionOrder).ToList(),
+                            .Where(u => u.BrandFK == brandFK).OrderBy(item => item.ProductionOrder).ToList(),
                 welcomTredmarketProduction = new LoginTredMarktViewModel()
 
             };
-            PrVM.welcomTredmarketProduction.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
-            PrVM.welcomTredmarketProduction.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == id);
-            PrVM.welcomTredmarketProduction.ProductionLoginVM = _unitOfWork.itemsRepository.Get(u => u.BrandFK == id);
-            PrVM.welcomTredmarketProduction.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == id);
-            PrVM.welcomTredmarketProduction.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == id);
-            PrVM.welcomTredmarketProduction.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == id);
-            PrVM.welcomTredmarketProduction.PreparatonLoginVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == id);
-            PrVM.welcomTredmarketProduction.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == id).ToList();
-            PrVM.welcomTredmarketProduction.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == id).ToList();
-            PrVM.welcomTredmarketProduction.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == id).ToList();
-            PrVM.welcomTredmarketProduction.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == id).ToList();
-            PrVM.welcomTredmarketProduction.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == id).ToList();
-            PrVM.welcomTredmarketProduction.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == id).ToList();
-            PrVM.welcomTredmarketProduction.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == id).ToList();
+            PrVM.welcomTredmarketProduction.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFK);
+            PrVM.welcomTredmarketProduction.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == brandFK);
+            PrVM.welcomTredmarketProduction.ProductionLoginVM = _unitOfWork.itemsRepository.Get(u => u.BrandFK == brandFK);
+            PrVM.welcomTredmarketProduction.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == brandFK);
+            PrVM.welcomTredmarketProduction.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == brandFK);
+            PrVM.welcomTredmarketProduction.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == brandFK);
+            PrVM.welcomTredmarketProduction.PreparatonLoginVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == brandFK);
+            PrVM.welcomTredmarketProduction.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            PrVM.welcomTredmarketProduction.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            PrVM.welcomTredmarketProduction.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            PrVM.welcomTredmarketProduction.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            PrVM.welcomTredmarketProduction.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            PrVM.welcomTredmarketProduction.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            PrVM.welcomTredmarketProduction.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == brandFK).ToList();
 
             // Store the FK value in TempData
-            TempData["ID"] = id;
+            TempData["ID"] = brandFK;
             // Display the updated list
             return View(PrVM);
         }
@@ -87,8 +105,10 @@ namespace Test12.Controllers
 
 
 
-        public IActionResult CreateProduction(int? id) // After Enter تعديل Display التحضيرات والمكونات...
+        public IActionResult CreateProduction() // After Enter تعديل Display التحضيرات والمكونات...
         {
+            int? brandFK = TempData["BrandFK"] as int?;
+            TempData.Keep("BrandFK"); // Keep the TempData for further use
             ProductionVM PrVM = new()
             {
                 Productionvm = new Production(),
@@ -101,27 +121,27 @@ namespace Test12.Controllers
 
 
             };
-            PrVM.welcomTredmarketProduction.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
-            PrVM.welcomTredmarketProduction.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == id);
-            PrVM.welcomTredmarketProduction.ProductionLoginVM = _unitOfWork.itemsRepository.Get(u => u.BrandFK == id);
-            PrVM.welcomTredmarketProduction.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == id);
-            PrVM.welcomTredmarketProduction.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == id);
-            PrVM.welcomTredmarketProduction.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == id);
-            PrVM.welcomTredmarketProduction.PreparatonLoginVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == id);
-            PrVM.welcomTredmarketProduction.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == id).ToList();
-            PrVM.welcomTredmarketProduction.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == id).ToList();
-            PrVM.welcomTredmarketProduction.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == id).ToList();
-            PrVM.welcomTredmarketProduction.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == id).ToList();
-            PrVM.welcomTredmarketProduction.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == id).ToList();
-            PrVM.welcomTredmarketProduction.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == id).ToList();
-            PrVM.welcomTredmarketProduction.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == id).ToList();
+            PrVM.welcomTredmarketProduction.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFK);
+            PrVM.welcomTredmarketProduction.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == brandFK);
+            PrVM.welcomTredmarketProduction.ProductionLoginVM = _unitOfWork.itemsRepository.Get(u => u.BrandFK == brandFK);
+            PrVM.welcomTredmarketProduction.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == brandFK);
+            PrVM.welcomTredmarketProduction.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == brandFK);
+            PrVM.welcomTredmarketProduction.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == brandFK);
+            PrVM.welcomTredmarketProduction.PreparatonLoginVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == brandFK);
+            PrVM.welcomTredmarketProduction.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            PrVM.welcomTredmarketProduction.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            PrVM.welcomTredmarketProduction.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            PrVM.welcomTredmarketProduction.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            PrVM.welcomTredmarketProduction.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            PrVM.welcomTredmarketProduction.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            PrVM.welcomTredmarketProduction.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == brandFK).ToList();
             PrVM.Productionvm = new Production();
             PrVM.componontVMList2 = new List<ProductionIngredients>();
             PrVM.ToolsVarityVM2 = new List<ProductionTools>();
             PrVM.stepsVM2 = new List<ProductionSteps>();
 
-            PrVM.tredMaeketVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
-            PrVM.itemsList = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == id);
+            PrVM.tredMaeketVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFK);
+            PrVM.itemsList = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == brandFK);
 
             PrVM.itemList33333 = new List<Production>()
             {
@@ -343,7 +363,7 @@ namespace Test12.Controllers
                 }
 
             }
-            return RedirectToAction("ProductionList", new { id = PropaVM.tredMaeketVM.BrandID });
+            return RedirectToAction("RedirectToProduction", new { brandFK = PropaVM.tredMaeketVM.BrandID });
         }
 
 

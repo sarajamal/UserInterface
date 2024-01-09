@@ -32,7 +32,9 @@
                                     }
                                     else
                                     {
-                                        <li class="nav-item border p-2 mt-2  "><a class="nav-link  " asp-area="" asp-controller="Device_tool" asp-action="DeviceToolsList" asp-route-id="@Model.DeviceToolsLoginVM.BrandFK">الأجهزةوالأدوات</a></li>
+                                        <li class="nav-item border p-2 mt-2">
+                                            <a class="nav-link" href="@Url.Action("RedirectToDeviceToolsList", "Device_tool", new { brandFK = Model.DeviceToolsLoginVM.BrandFK })">الأجهزةوالأدوات</a>
+                                        </li>
                                     }
 
                                     @if (Model.FoodLoginVM == null || Model.FoodLoginVM.BrandFK == null || Model.FoodLoginVM.BrandFK == 0)
@@ -41,7 +43,9 @@
                                     }
                                     else
                                     {
-                                        <li class="nav-item border p-2 mt-2  "><a class="nav-link  " asp-area="" asp-controller="Food" asp-action="FoodList" asp-route-id="@Model.FoodLoginVM.BrandFK">المواد الغذائية</a></li>
+                                        <li class="nav-item border p-2 mt-2">
+                                            <a class="nav-link" href="@Url.Action("RedirectToFoodList", "Food", new { brandFK = Model.FoodLoginVM.BrandFK })">المواد الغذائية</a>
+                                        </li>
                                     }
 
                                     @if (Model.PreparatonLoginVM == null || Model.PreparatonLoginVM.BrandFK == null || Model.PreparatonLoginVM.BrandFK == 0)
@@ -52,25 +56,26 @@
                                     }
                                     else
                                     {
-                                        <li id="navPreparationWithID" class="nav-item border p-2 mt-2">
-                                            <a class="nav-link"
-                                               asp-controller="Preparation" asp-route-id="@Model.PreparatonLoginVM.BrandFK"
-                                               asp-action="PreparationList">التحضيرات</a>
+                                        <li class="nav-item border p-2 mt-2">
+                                            <a class="nav-link" href="@Url.Action("RedirectToPreparation", "Preparation", new { brandFK = Model.PreparatonLoginVM.BrandFK })">التحضيرات</a>
                                         </li>
+                                       
                                     }
 
                                     @if (Model.ProductionLoginVM == null || Model.ProductionLoginVM.BrandFK == null || Model.ProductionLoginVM.BrandFK == 0)
                                     {
+
                                         <li class="nav-item border p-2 mt-2  ">
                                             <a class="nav-link  " >الانتاج</a>
                                         </li>
                                     }
                                     else
                                     {
-                                        <li class="nav-item border p-2 mt-2  ">
-                                            <a class="nav-link  " asp-controller="Production"
-                                               asp-route-id="@Model.ProductionLoginVM.BrandFK" asp-action="ProductionList">الانتاج</a>
+
+                                        <li class="nav-item border p-2 mt-2">
+                                            <a class="nav-link" href="@Url.Action("RedirectToProduction", "Production", new { brandFK = Model.ProductionLoginVM.BrandFK })">الإنتاج</a>
                                         </li>
+                                       
                                     }
 
                                     @if (Model.ReadyFoodLoginVM == null || Model.ReadyFoodLoginVM.BrandFK == null || Model.ReadyFoodLoginVM.BrandFK == 0)
@@ -79,7 +84,9 @@
                                     }
                                     else
                                     {
-                                        <li class="nav-item border p-2 mt-2  "><a class="nav-link  " asp-area="" asp-controller="FinishProducts" asp-route-id="@Model.ReadyFoodLoginVM.BrandFK" asp-action="finishProductionList"> المنتجات الجاهزة</a></li>
+                                        <li class="nav-item border p-2 mt-2">
+                                            <a class="nav-link" href="@Url.Action("RedirectToFinishProductionList", "FinishProducts", new { brandFK = Model.ReadyFoodLoginVM.BrandFK })">المنتجات الجاهزة</a>
+                                        </li>
                                     }
 
                                     @if (Model.CleanLoginVM == null || Model.CleanLoginVM.BrandFK == null || Model.CleanLoginVM.BrandFK == 0)
@@ -88,8 +95,10 @@
                                     }
                                     else
                                     {
-                                        <li class="nav-item border p-2 mt-2  "><a class="nav-link  " asp-area="" asp-controller="Clean" asp-action="CleanList" asp-route-id="@Model.CleanLoginVM.BrandFK"> التنظيف</a></li>
-                                    }
+                                        <li class="nav-item border p-2 mt-2">
+                                            <a class="nav-link" href="@Url.Action("RedirectToCleanList", "Clean", new { brandFK = Model.CleanLoginVM.BrandFK })">التنظيف</a>
+                                        </li>
+                                     }
                                 </ul>
                             </nav>
                         </div>

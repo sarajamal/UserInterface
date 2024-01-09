@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Test12.DataAccess.Repository.IRepository;
 using Test12.Models.Models.Device_Tools;
-using Test12.Models.Models.Preparation;
 using Test12.Models.Models.trade_mark;
 using Test12.Models.ViewModel;
 
@@ -18,45 +17,56 @@ namespace Test12.Controllers
             _webHostEnvironment = hostEnvironment;
 
         }
-
-        public IActionResult DeviceToolsList(int? id) //this for display List Of التحضيرات Page1
+        //حفظ BrandFK 
+        public IActionResult RedirectToDeviceToolsList(int brandFK)
         {
+            TempData["BrandFK"] = brandFK;
+            TempData.Keep("BrandFK");
+
+            return RedirectToAction("DeviceToolsList");
+        }
+        public IActionResult DeviceToolsList() //this for display List Of التحضيرات Page1
+        {
+            int? brandFK = TempData["BrandFK"] as int?;
+            TempData.Keep("BrandFK"); // Keep the TempData for further use
 
             Device_toolsVM PrVM = new()
             {
                 Devices_toolsVMorder = _unitOfWork.Device_tools1.GetAll()
-                .Where(u => u.BrandFK == id).OrderBy(item => item.DevicesAndToolsOrder).ToList(),
+                .Where(u => u.BrandFK == brandFK).OrderBy(item => item.DevicesAndToolsOrder).ToList(),
 
 
                 WelcomtredmarketDeviceTools = new LoginTredMarktViewModel()
 
             };
-            PrVM.WelcomtredmarketDeviceTools.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
-            PrVM.WelcomtredmarketDeviceTools.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == id);
-            PrVM.WelcomtredmarketDeviceTools.ProductionLoginVM = _unitOfWork.itemsRepository.Get(u => u.BrandFK == id);
-            PrVM.WelcomtredmarketDeviceTools.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == id);
-            PrVM.WelcomtredmarketDeviceTools.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == id);
-            PrVM.WelcomtredmarketDeviceTools.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == id);
-            PrVM.WelcomtredmarketDeviceTools.PreparatonLoginVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == id);
-            PrVM.WelcomtredmarketDeviceTools.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == id).ToList();
-            PrVM.WelcomtredmarketDeviceTools.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == id).ToList();
-            PrVM.WelcomtredmarketDeviceTools.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == id).ToList();
-            PrVM.WelcomtredmarketDeviceTools.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == id).ToList();
-            PrVM.WelcomtredmarketDeviceTools.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == id).ToList();
-            PrVM.WelcomtredmarketDeviceTools.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == id).ToList();
-            PrVM.WelcomtredmarketDeviceTools.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == id).ToList();
+            PrVM.WelcomtredmarketDeviceTools.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFK);
+            PrVM.WelcomtredmarketDeviceTools.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == brandFK);
+            PrVM.WelcomtredmarketDeviceTools.ProductionLoginVM = _unitOfWork.itemsRepository.Get(u => u.BrandFK == brandFK);
+            PrVM.WelcomtredmarketDeviceTools.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == brandFK);
+            PrVM.WelcomtredmarketDeviceTools.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == brandFK);
+            PrVM.WelcomtredmarketDeviceTools.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == brandFK);
+            PrVM.WelcomtredmarketDeviceTools.PreparatonLoginVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == brandFK);
+            PrVM.WelcomtredmarketDeviceTools.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            PrVM.WelcomtredmarketDeviceTools.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            PrVM.WelcomtredmarketDeviceTools.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            PrVM.WelcomtredmarketDeviceTools.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            PrVM.WelcomtredmarketDeviceTools.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            PrVM.WelcomtredmarketDeviceTools.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            PrVM.WelcomtredmarketDeviceTools.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == brandFK).ToList();
 
-            PrVM.tredMaeketToolsVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
-            PrVM.Device_toolVM = _unitOfWork.Device_tools1.Get(u => u.DevicesAndToolsID == id);
-            PrVM.Devices_toolsVM = _unitOfWork.Device_tools1.GetAll(incloudeProperties: "Brand").Where(u => u.DevicesAndToolsID == id).ToList();
+            PrVM.tredMaeketToolsVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFK);
+            PrVM.Device_toolVM = _unitOfWork.Device_tools1.Get(u => u.DevicesAndToolsID == brandFK);
+            PrVM.Devices_toolsVM = _unitOfWork.Device_tools1.GetAll(incloudeProperties: "Brand").Where(u => u.DevicesAndToolsID == brandFK).ToList();
             // Store the FK value in TempData
-            TempData["ID"] = id;
+            TempData["ID"] = brandFK;
             // Display the updated list
             return View(PrVM);
         }
 
         public IActionResult Index(int? id)
         {
+            TempData.Keep("BrandFK"); // Keep the TempData for further use
+
             Device_toolsVM PrVM = new()
             {
                 Device_toolVM = new DevicesAndTools(),
@@ -88,7 +98,7 @@ namespace Test12.Controllers
             PrVM.Device_toolVM = new DevicesAndTools();
             PrVM.Devices_toolsVM = new List<DevicesAndTools>();
 
-            return View( PrVM);
+            return View(PrVM);
 
         }
 
@@ -115,9 +125,9 @@ namespace Test12.Controllers
                                 DevicesAndToolsID = LastId1,
                                 BrandFK = DeviceFK,
                                 DevicesAndTools_Name = deviceAdd.DevicesAndTools_Name,
-                                
+
                             };
-                          
+
 
                             string wwwRootDevicePath = _webHostEnvironment.WebRootPath; // get us root folder
 
@@ -125,13 +135,13 @@ namespace Test12.Controllers
                             var file1Name1 = $"file1_{newDevice.DevicesAndToolsID}";
                             var file1ForDevice1 = HttpContext.Request.Form.Files[file1Name1];
 
-                          
+
                             string DevicesAndToolsID = newDevice.DevicesAndToolsID.ToString();
                             string BrandFK = newDevice.BrandFK.ToString();
 
 
-                            var devicePath1 = Path.Combine(wwwRootDevicePath, "IMAGES", BrandFK, "DevicesAndTools"  , DevicesAndToolsID);
-                            
+                            var devicePath1 = Path.Combine(wwwRootDevicePath, "IMAGES", BrandFK, "DevicesAndTools", DevicesAndToolsID);
+
 
                             if (file1ForDevice1 != null && file1ForDevice1.Length > 0)
                             {
@@ -147,7 +157,7 @@ namespace Test12.Controllers
                                     file1ForDevice1.CopyTo(fileStream);
                                 }
                                 newDevice.DevicesAndTools_Image = fileName11;
-                               
+
                             }
                             _unitOfWork.Device_tools1.Add(newDevice);
                             _unitOfWork.Save();
@@ -183,7 +193,7 @@ namespace Test12.Controllers
             }
 
             TempData["success"] = "تم إضافة الأجهزة والأدوات بشكل ناجح";
-            return RedirectToAction("DeviceToolsList", new { id = device_ToolsVM.tredMaeketToolsVM.BrandID });
+            return RedirectToAction("RedirectToDeviceToolsList", new { brandFK = device_ToolsVM.tredMaeketToolsVM.BrandID });
         }
 
         [HttpPost]
@@ -197,17 +207,17 @@ namespace Test12.Controllers
                     for (int i = 0; i < device_ToolsVM.Devices_toolsVM.Count; i++)
                     {
                         var devices = device_ToolsVM.Devices_toolsVM[i];
-                       
+
                         string DevicesAndToolsID = devices.DevicesAndToolsID.ToString();
                         string BrandFK = devices.BrandFK.ToString();
 
 
                         string wwwRootPathSteps = _webHostEnvironment.WebRootPath;
-                        
 
-                       var devicePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", BrandFK, "DevicesAndTools", DevicesAndToolsID);
 
-                        
+                        var devicePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", BrandFK, "DevicesAndTools", DevicesAndToolsID);
+
+
 
                         var file1Name = $"file1_{devices.DevicesAndToolsID}";
                         var file1ForDevice = HttpContext.Request.Form.Files[file1Name];
@@ -245,9 +255,9 @@ namespace Test12.Controllers
                         {
 
                             existingDevices.DevicesAndTools_Name = devices.DevicesAndTools_Name;
-                          
+
                             existingDevices.DevicesAndTools_Image = devices.DevicesAndTools_Image;
-                 
+
                             _unitOfWork.Device_tools1.Update(existingDevices);
                         }
                         else
@@ -258,9 +268,9 @@ namespace Test12.Controllers
                     }
                 }
                 TempData["success"] = "تم تحديث الأجهزة والأدوات بشكل ناجح";
-                return RedirectToAction("DeviceToolsList", new
+                return RedirectToAction("RedirectToDeviceToolsList", new
                 {
-                    id = device_ToolsVM.Device_toolVM.BrandFK
+                    brandFK = device_ToolsVM.Device_toolVM.BrandFK
                 });
             }
             else
@@ -298,23 +308,23 @@ namespace Test12.Controllers
             string wwwRootPathSteps = _webHostEnvironment.WebRootPath;
 
             var deleteDeviceToolPicture = _unitOfWork.Device_tools1.Get(u => u.DevicesAndToolsID == id);
- 
+
             string DevicesAndToolsID = deleteDeviceToolPicture.DevicesAndToolsID.ToString();
             string BrandFK = deleteDeviceToolPicture.BrandFK.ToString();
 
             // Delete the associated image file
             if (!string.IsNullOrEmpty(deleteDeviceToolPicture.DevicesAndTools_Image))
             {
-                string imagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES",  BrandFK, "DeviceAndTools", DevicesAndToolsID, deleteDeviceToolPicture.DevicesAndTools_Image);
+                string imagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", BrandFK, "DeviceAndTools", DevicesAndToolsID, deleteDeviceToolPicture.DevicesAndTools_Image);
                 if (System.IO.File.Exists(imagePath1))
                 {
                     System.IO.File.Delete(imagePath1);
                 }
             }
-            
+
             _unitOfWork.Device_tools1.Remove(deleteDeviceToolPicture);
             _unitOfWork.Save();
-     
+
             return Json(new { success = true });
         }
         #endregion
