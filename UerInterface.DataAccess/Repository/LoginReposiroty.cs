@@ -49,7 +49,7 @@ namespace Test12.DataAccess.Repository
                 if (user.Date == null || user.Date == DateTime.MinValue)
                 {
                     // Set a default value here before saving
-                    user.Date = DateTime.Now; // You can set any default value you prefer
+                    user.Date = DateTime.UtcNow; // You can set any default value you prefer
                 }
                 else
                 {
@@ -86,7 +86,7 @@ namespace Test12.DataAccess.Repository
         public void AddHashPassword(string username, string password)
         {
             // Hash the user's password before storing it in the database
-            string hashedPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(password, workFactor: 13);
+            string hashedPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(password, workFactor: 10);
 
             // Store the username and hashed password in the database
             var user = new LoginModels
@@ -132,7 +132,7 @@ namespace Test12.DataAccess.Repository
             if (user != null)
             {
                 // Hash the new password before updating
-                user.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(newPassword, workFactor: 13);
+                user.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(newPassword, workFactor: 10);
                 _context.SaveChanges();
                 return true;
             }
@@ -148,7 +148,7 @@ namespace Test12.DataAccess.Repository
             {
                 if (!BCrypt.Net.BCrypt.EnhancedVerify(user.Password, user.Password))
                 {
-                    user.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(user.Password, workFactor: 13);
+                    user.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(user.Password, workFactor: 10);
                 }
             }
 

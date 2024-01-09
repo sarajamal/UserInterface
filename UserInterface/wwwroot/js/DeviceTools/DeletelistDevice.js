@@ -146,9 +146,3 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-
-function closeModal(event) {
-    event.preventDefault();
-    var modal = document.getElementById('CreateDeviceTools');
-    modal.style.display = 'none';
-}
