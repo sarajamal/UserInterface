@@ -37,7 +37,9 @@
 
                         <div style="text-align:center">
                             <div style="text-align:center">
-                                <a asp-controller="Preparation" asp-action="CreatePreparation" asp-route-id="@TempData["ID"]" name="AddButtonItem" class=" btn btn-style2 px-4 add-button">
+                                <a class=" btn btn-style2 fnt-white px-4 add-button" href="@Url.Action("RedirectToCreatePreparation", 
+                                "Preparation", new { brandFK = Model.WelcomTredMarketPrecomponent.TredMarktVM.BrandID })">
+
                                     <i class="bi bi-plus-circle"></i>
                                 </a>
                             </div>

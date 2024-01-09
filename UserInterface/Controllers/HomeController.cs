@@ -167,7 +167,9 @@ namespace Test12.Controllers
 
             else
             {
-                return RedirectToAction("UserInformation", new { id = id, isAuthenticated = isAuthenticated });
+                TempData["id"] = id;
+                TempData["isAuthenticated"] = isAuthenticated;
+                return RedirectToAction("UserInformation");
             }
         }
 
@@ -186,11 +188,13 @@ namespace Test12.Controllers
             return true; // Treat as inactive if last activity not found
         }
 
-        public IActionResult UserInformation(int? id/*, bool? isAuthenticated*/)
+        public IActionResult UserInformation()
         {
+            int? id = TempData["id"] as int?;
+            bool isAuthenticated = TempData.ContainsKey("isAuthenticated") && (bool)TempData["isAuthenticated"];
+
             if (id == null)
             {
-                // Handle the case where the id is null, for example:
                 return RedirectToAction("Error");
             }
 
@@ -235,8 +239,17 @@ namespace Test12.Controllers
 
         //    return RedirectToAction("MainsectionView", new { id = id });
         //}
-        public IActionResult WelcomTredMarket(int? id )
+
+        //حفظ قيمة Brand ID 
+        public IActionResult RedirectToWelcomTredMarket(int brandId)
         {
+            TempData["BrandId"] = brandId;
+            return RedirectToAction("WelcomTredMarket");
+        }
+        public IActionResult WelcomTredMarket()
+        {
+            int? id = TempData["BrandId"] as int?;
+
             if (id == null)
             {
                 // Handle the case where the id is null, for example:

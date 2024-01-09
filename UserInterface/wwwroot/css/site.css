@@ -38,6 +38,7 @@ body div.container-custom{
     max-width: 100%;
     display:flex;
     flex-direction:column;
+    padding-bottom:150px;
 }
 
 @media (min-width: 768px) {
@@ -378,18 +379,29 @@ header .navbar .nav-item:hover {
 
 
 /*footer*/
-.footer {
+/*.footer {
     display:flex;
     flex-direction: column;
-    height: max-content; /* Adjust this value based on the footer height */
+    height: max-content;*/ /* Adjust this value based on the footer height */
     /*bottom: 0;
     width: 100%;
     margin: 10px 0 0 0;
     padding: 5px;*/
-    background-color: #676869;
+    /*background-color: #676869;
     color: #fff;
     gap: 5px;
     
+}*/
+.footer {
+    height: max-content; /* Adjust this value based on the footer height */
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    margin: 10px 0 0 0;
+    padding: 5px;
+    background-color: #676869;
+    color: #fff;
+    gap: 5px;
 }
 
     .footer .footer-container {
