@@ -21,7 +21,7 @@ function Delete(id) {
                             title: 'تم الحذف بنجاح',
                             text: data.message
                         }).then(() => {
-                            location.reload(); // Reload the page after successful deletion
+                            window.location.href = data.redirectToUrl; // Perform the redirection
                         });
                     } else {
                         Swal.fire({
@@ -128,12 +128,12 @@ function DeleteRow1(button) {
             var row = button.closest("tr");
             row.remove();
             Swal.fire('Deleted!', 'تم الحذف بنجاح!', 'success');
-            updateRowIndicesAfterDeletion(rowIndex);
+            updateRowIndicesAfterDeletion1(rowIndex);
         }
     });
 }
 
-function updateRowIndicesAfterDeletion(deletedIndex) {
+function updateRowIndicesAfterDeletion1(deletedIndex) {
     var tableBody = document.querySelector("#tbComponant tbody");
     var rows = tableBody.querySelectorAll("tr");
 

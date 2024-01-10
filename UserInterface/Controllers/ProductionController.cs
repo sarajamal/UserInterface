@@ -719,12 +719,23 @@ namespace Test12.Controllers
             }
 
             var DeleteoneOflist = _unitOfWork.itemsRepository.Get(u => u.ProductionID == id);
+            
             if (DeleteoneOflist == null)
             {
 
                 return Json(new { success = false, Message = "خطأ أثناء الحذف " });
             }
+            string IDStep2 = DeleteoneOflist.ProductionID.ToString();
+            string FKBrand2 = DeleteoneOflist.BrandFK.ToString();
 
+            if (!string.IsNullOrEmpty(DeleteoneOflist.ProductImage))
+            {
+                string imagePath = Path.Combine(_webHostEnvironment.WebRootPath, "IMAGES", FKBrand2, "Production", IDStep2, DeleteoneOflist.ProductImage);
+                if (System.IO.File.Exists(imagePath))
+                {
+                    System.IO.File.Delete(imagePath);
+                }
+            }
             _unitOfWork.itemsRepository.Remove(DeleteoneOflist);
             _unitOfWork.Save();
             return Json(new { success = true });

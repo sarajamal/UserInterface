@@ -76,6 +76,8 @@ function loadDataTable(id) {
     });
 }
 function DelteToolsdevice(url) {
+    console.log("DelteToolsdevice function called with URL:", url); // Add this line
+
     Swal.fire({
         title: 'هل أنت متأكد ؟',
         text: " هل تريد استعادة ماتم حذفه؟",

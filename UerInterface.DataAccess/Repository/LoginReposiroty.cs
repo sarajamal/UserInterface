@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Test12.DataAccess.Data;
 using Test12.DataAccess.Repository.IRepository;
@@ -16,9 +16,11 @@ namespace Test12.DataAccess.Repository
     public class LoginReposiroty : Repository<LoginModels>, ILoginRepository
     {
         private readonly ApplicationDbContext _context;
+
         public LoginReposiroty(ApplicationDbContext context) : base(context)
         {
             _context = context;
+           
         }
 
         public void Update(LoginModels obj)
@@ -39,6 +41,51 @@ namespace Test12.DataAccess.Repository
             return false;
 
         }
+
+        //public async Task<bool> VerifyUserCredentials(string username, string password)
+        //{
+        //    var user = await _context.LoginModels.FirstOrDefaultAsync(authUser => authUser.Username == username);
+
+        //    if (user != null)
+        //    {
+        //        // Check password using the Bcrypt API
+        //        string apiResponse = await SendCheckPasswordRequest(user.Password, password);
+
+        //        return ParseApiResponse(apiResponse);
+        //    }
+        //    return false;
+        //}
+
+        //private async Task<string> SendCheckPasswordRequest(string hash, string password)
+        //{
+        //    using (var client = new HttpClient())
+        //    {
+        //        var content = new FormUrlEncodedContent(new[]
+        //        {
+        //    new KeyValuePair<string, string>("hash", hash),
+        //    new KeyValuePair<string, string>("password", password)
+        //});
+
+        //        var response = await client.PostAsync("https://www.toptal.com/developers/bcrypt/api/check-password.json", content);
+        //        var responseContent = await response.Content.ReadAsStringAsync();
+
+        //        // Print the status code and response content to the console
+        //        Console.WriteLine($"Status Code: {response.StatusCode}");
+        //        Console.WriteLine($"Response Content: {responseContent}");
+
+        //        return responseContent;
+        //    }
+        //}
+
+        //private bool ParseApiResponse(string apiResponse)
+        //{
+        //    // Parse the JSON response from the API
+        //    // and extract the "ok" value to determine
+        //    // if the password matches the hash
+        //    // Example using Newtonsoft.Json:
+        //    var responseData = JObject.Parse(apiResponse);
+        //    return (bool)responseData["ok"];
+        //}
 
         public void UpdateLastLoginTime(int userId, DateTime lastLoginTime)
         {

@@ -32,7 +32,7 @@ namespace Test12.Controllers
 
             Device_toolsVM PrVM = new()
             {
-                Devices_toolsVMorder = _unitOfWork.Device_tools1.GetAll()
+                Devices_toolsVM = _unitOfWork.Device_tools1.GetAll()
                 .Where(u => u.BrandFK == brandFK).OrderBy(item => item.DevicesAndToolsOrder).ToList(),
 
 

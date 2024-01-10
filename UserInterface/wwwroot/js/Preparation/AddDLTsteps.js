@@ -222,7 +222,7 @@ function AddnewRowstepsUpdate(preparationFk) {
                                 title: 'تم الحذف بنجاح',
                                 text: data.message
                             }).then(() => {
-                                location.reload(); // Reload the page after successful deletion
+                                window.location.href = data.redirectToUrl; // Perform the redirection
                             });
                         } else {
                             Swal.fire({

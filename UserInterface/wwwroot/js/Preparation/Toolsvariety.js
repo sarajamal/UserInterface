@@ -21,7 +21,8 @@ function DeleteToolVariety(id) { //هذي فقط للعرض البرمجة في 
                             title: 'تم الحذف بنجاح',
                             text: data.message
                         }).then(() => {
-                            location.reload(); // Reload the page after successful deletion
+                            window.location.href = data.redirectToUrl; // Perform the redirection
+ 
                         });
                     } else {
                         Swal.fire({
@@ -55,8 +56,33 @@ function AddRowTool(PreparationsFK) { //صفحة التعديل
     tableBody.appendChild(newRow);
 }
 
-function DeleteRow6(button) { // AJAX قبل تحفظ في قاعدة البيانات ماتحتاج controller 
 
+
+
+var newRowNumber = 0;
+var numeric = 2;
+function AddRowToolnew(PreparationsFK) { //صفحة الإضافة
+    var tableBody = document.querySelector("#tblToolVarity tbody");
+
+    var newRow = document.createElement("tr");
+    newRow.innerHTML = `
+
+        <td style="text-align:center;">${numeric}</td>
+        <td><input name="ToolsVarityVM[${newRowNumber }].PrepTools" class="form-control"  placeholder="الأدات المستخدمة" /></td>
+       <td style="text-align:center;" >
+            <input type="hidden" name="ToolsVarityVM[${newRowNumber }].PreparationsFK" value="${PreparationsFK}"  />
+              
+            <button type="button" class="btn btn-style5" data-row-index="${newRowNumber }" onclick="DeleteRow61(this)">حذف</button> 
+        </td>
+         `;
+
+    tableBody.appendChild(newRow);
+    newRowNumber++;
+    numeric++;
+}
+
+function DeleteRow61(button) { // AJAX قبل تحفظ في قاعدة البيانات ماتحتاج controller
+    var rowIndex = parseInt(button.getAttribute("data-row-index"));
     Swal.fire({
         title: 'هل أنت متأكد؟',
         icon: 'warning',
@@ -69,61 +95,46 @@ function DeleteRow6(button) { // AJAX قبل تحفظ في قاعدة البيا
         if (result.isConfirmed) {
             var tableBody = document.querySelector("#tblToolVarity tbody");
             var rows = tableBody.children;
-            var deletedRowIndex = Array.from(rows).indexOf(button.closest("tr"));
             button.closest("tr").remove();
 
-            // Update row numbers in the first cell
+            // Update row numbers
             for (var i = 0; i < rows.length; i++) {
                 rows[i].cells[0].textContent = i + 1;
             }
-
-            // Update indices for elements in all rows after the deleted row
-            for (var i = deletedRowIndex; i < rows.length; i++) {
-                var newRowIndex = i; // Corrected the calculation of newRowIndex
-
-                var inputsAndButtons = rows[i].querySelectorAll("input, button");
-                inputsAndButtons.forEach(el => {
-                    if (el.name) {
-                        el.name = el.name.replace(/\[\d+\]/, `[${newRowIndex}]`);
-                    }
-                    if (el.getAttribute("data-row-index") !== null) {
-                        el.setAttribute("data-row-index", newRowIndex);
-                    }
-                });
-                console.log("Row deleted, new row index:", newRowIndex); // Adjusted the debugging log statement
-
-            }
-
             Swal.fire('تم الحذف!', 'تم الحذف بنجاح!', 'success');
+
+            updateRowIndicesAfterDeletion61(rowIndex);
+
         }
     });
 }
+function updateRowIndicesAfterDeletion61(deletedIndex) {
 
-
-var newRowNumber =1;
-var numeric = 2;
-function AddRowToolnew(PreparationsFK) { //صفحة الإضافة
     var tableBody = document.querySelector("#tblToolVarity tbody");
+    var rows = tableBody.querySelectorAll("tr");
 
-    var newRow = document.createElement("tr");
-    newRow.innerHTML = `
+    rows.forEach((row, index) => {
+        if (index > deletedIndex) { // تحديث فقط للصفوف بعد الصف المحذوف
+            var newRowIndex = index - 1; // تقليل index بواحد
+            var inputsAndButtons = row.querySelectorAll("input, button");
 
-        <td style="text-align:center;">${numeric}</td>
-        <td><input name="ToolsVarityVM[${newRowNumber-1 }].PrepTools" class="form-control"  placeholder="الأدات المستخدمة" /></td>
-       <td style="text-align:center;" >
-            <input type="hidden" name="ToolsVarityVM[${newRowNumber-1 }].PreparationsFK" value="${PreparationsFK}"  />
-              
-            <button type="button" class="btn btn-style5" data-row-index="${newRowNumber -1}" onclick="DeleteRow6(this)">حذف</button> 
-        </td>
-         `;
+            inputsAndButtons.forEach(el => {
+                if (el.name) {
+                    el.name = el.name.replace(/\[\d+\]/, `[${newRowIndex}]`);
+                }
+                if (el.getAttribute("data-row-index") !== null) {
+                    el.setAttribute("data-row-index", newRowIndex);
+                    console.log("Row deleted, new row index:", newRowIndex); // Adjusted the debugging log statement
+                }
+            });
+        }
+    });
 
-    tableBody.appendChild(newRow);
-    newRowNumber++;
-    numeric++;
+    newIndex = rows.length; // تحديث newIndex بناءً على عدد الصفوف المتبقية
 }
 
-function DeleteRow66(button) { // AJAX قبل تحفظ في قاعدة البيانات ماتحتاج controller 
-
+function DeleteRow6(button) { // AJAX قبل تحفظ في قاعدة البيانات ماتحتاج controller صفحة الإضافة
+    var rowIndex = parseInt(button.getAttribute("data-row-index"));
     Swal.fire({
         title: 'هل أنت متأكد؟',
         icon: 'warning',
@@ -135,34 +146,49 @@ function DeleteRow66(button) { // AJAX قبل تحفظ في قاعدة البي�
     }).then((result) => {
         if (result.isConfirmed) {
             var tableBody = document.querySelector("#tblToolVarity tbody");
+            var rows = tableBody.children;
             button.closest("tr").remove();
 
-            // Decrement newRowNumber when a row is deleted
-            newRowNumber--;
-            // Update the numeric value starting from 2 for each row
-            numeric = 2;
-
-            // Update the displayed numeric values and indices in input fields and buttons
-            Array.from(tableBody.children).forEach((row, index) => {
-                // Update the displayed row number
-                row.cells[0].textContent = numeric++;
-
-                // Update indices in input fields and buttons
-                var inputsAndButtons = row.querySelectorAll("input[name^='ToolsVarityVM'], button[data-row-index]");
-                inputsAndButtons.forEach(el => {
-                    if (el.name && el.name.startsWith('ToolsVarityVM')) {
-                        el.name = el.name.replace(/\[\d+\]/, `[${index}]`);
-                    }
-                    if (el.getAttribute("data-row-index") !== null) {
-                        el.setAttribute("data-row-index", index);
-                    }
-                });
-            });
-
+            // Update row numbers
+            for (var i = 0; i < rows.length; i++) {
+                rows[i].cells[0].textContent = i + 1;
+            }
             Swal.fire('تم الحذف!', 'تم الحذف بنجاح!', 'success');
+
+            updateRowIndicesAfterDeletion6(rowIndex);
+
         }
     });
 }
+function updateRowIndicesAfterDeletion6(deletedIndex) {
+    console.log("Row deleted, deletedIndex", deletedIndex);
+
+    var tableBody = document.querySelector("#tblToolVarity tbody");
+    var rows = tableBody.querySelectorAll("tr");
+
+    // Since rows is a live NodeList, indices are always 0-based and contiguous.
+    rows.forEach((row, index) => {
+        // Adjust the index for all rows following the deleted one.
+        var actualIndex = index;
+        if (index > deletedIndex) {
+            actualIndex = index; // Decrease the index for rows after the deleted one
+        }
+        // Update the names and data-row-index for all inputs and buttons
+        var inputsAndButtons = row.querySelectorAll("input[name*='ToolsVarityVM'], button[data-row-index]");
+        inputsAndButtons.forEach(el => {
+            var name = el.name;
+            if (name) {
+                // Replace only the first occurrence of the pattern to avoid affecting nested indices
+                el.name = name.replace(/\[\d+\]/, `[${actualIndex}]`);
+            }
+            if (el.hasAttribute("data-row-index")) {
+                el.setAttribute("data-row-index", actualIndex);
+            }
+        });
+        console.log("Row updated to new index:", actualIndex);
+    });
+
+ }
 
 //function DeleteRow6(button) { // AJAX قبل تحفظ في قاعدة البيانات ماتحتاج controller
 

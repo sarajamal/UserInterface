@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Test12.DataAccess.Repository.IRepository;
 using Test12.Models.Models.Preparation;
 using Test12.Models.Models.trade_mark;
@@ -608,7 +609,7 @@ namespace Test12.Controllers
                 }
                 TempData["success"] = "تم تحديث التحضيرات بشكل ناجح";
 
-                return RedirectToAction("Upsert", new { id = PrepaVM.PreparationVM.PreparationsID , brandFk = PrepaVM.PreparationVM.BrandFK });
+                return RedirectToAction("RedirectToUpsert", new { id = PrepaVM.PreparationVM.PreparationsID , brandFk = PrepaVM.PreparationVM.BrandFK });
             }
 
             else
@@ -652,6 +653,9 @@ namespace Test12.Controllers
         public IActionResult Delete(int? id) //this is for delete button in rows component 
         {
             var ComponentDelete = _unitOfWork.ComponentRepository.Get(u => u.PrepIngredientsID == id);
+            int PreparationFk = ComponentDelete.PreparationsFK;
+            var BrandFKEx = _unitOfWork.PreparationRepository.Get(u => u.PreparationsID == PreparationFk);
+            int? BranFK = BrandFKEx.BrandFK;
             if (ComponentDelete == null)
             {
                 return Json(new { success = false, Message = "Error While Deleting" });
@@ -659,7 +663,7 @@ namespace Test12.Controllers
 
             _unitOfWork.ComponentRepository.Remove(ComponentDelete);
             _unitOfWork.Save();
-            return Json(new { success = true });
+            return Json(new { success = true, redirectToUrl = Url.Action("RedirectToUpsert", new { id = PreparationFk, BrandFK = BranFK }) });
         }
         #endregion
 
@@ -670,6 +674,10 @@ namespace Test12.Controllers
         {
 
             var toolsVarityDelete = _unitOfWork.PrepaToolsVarietyRepository.Get(u => u.PrepToolsID == id);
+            int PreparationFk = toolsVarityDelete.PreparationsFK;
+            var BrandFKEx = _unitOfWork.PreparationRepository.Get(u => u.PreparationsID == PreparationFk);
+            int? BranFK = BrandFKEx.BrandFK;
+          
             if (toolsVarityDelete == null)
             {
 
@@ -678,7 +686,7 @@ namespace Test12.Controllers
 
             _unitOfWork.PrepaToolsVarietyRepository.Remove(toolsVarityDelete);
             _unitOfWork.Save();
-            return Json(new { success = true });
+            return Json(new { success = true, redirectToUrl = Url.Action("RedirectToUpsert", new { id = PreparationFk, BrandFK = BranFK }) }); //أحتاج يرجع لنفس صفحة التعديل 
         }
         #endregion
 
@@ -692,6 +700,10 @@ namespace Test12.Controllers
 
             string IDStep = stepsToDelete.PrepStepsID.ToString();
             string FKBrand = BrandFK.BrandFK.ToString();
+
+            //عشان أوجهه لصفحة التعديل 
+            int PreparationFk = stepsToDelete.PreparationsFK;
+            int? BranFK = BrandFK.BrandFK;
 
             string wwwRootPathSteps = _webHostEnvironment.WebRootPath;
 
@@ -731,82 +743,9 @@ namespace Test12.Controllers
                 }
             }
             _unitOfWork.Save();
-            //var preparationId = stepsToDelete.التحضير_ID;
-            //var stepsInPreparation = _unitOfWork.StepsPreparationRepository.GetAll(incloudeProperties: "Preparation").Where(c => c.التحضير_ID == preparationId).ToList();
 
-            ////هنا لتغيير الرقم ضروري يصير فيه لوب والشرط أن ضروري id اصغر منه الموجود 
-            //for (int i = 0; i < stepsInPreparation.Count; i++)
-            //{
-            //    var step = stepsInPreparation[i];
+            return Json(new { success = true, redirectToUrl = Url.Action("RedirectToUpsert", new { id = PreparationFk, BrandFK = BranFK }) }); //أحتاج يرجع لنفس صفحة التعديل 
 
-            //    if (step.ID > id)
-            //    {
-            //        var getOld = _unitOfWork.StepsPreparationRepository.Get(u => u.ID == step.ID);
-
-            //        string IDstep1old = getOld.ID.ToString();
-
-            //        string رقم_الخطوة11old = getOld.رقم_الخطوة1 != null ? getOld.رقم_الخطوة1.ToString() : string.Empty;
-            //        string oldرقم_الخطوة22 = getOld.رقم_الخطوة2 != null ? getOld.رقم_الخطوة2.ToString() : string.Empty;
-
-            //        string imagePathold1 = Path.Combine(wwwRootPathSteps, "IMAGES", "التحضيرات", رقم_الخطوة11old, ID_التحضير, IDstep1old, getOld.الصورة1);
-            //        string imagePathold2 = Path.Combine(wwwRootPathSteps, "IMAGES", "التحضيرات", oldرقم_الخطوة22, ID_التحضير, IDstep1old, getOld.الصورة2);
-
-
-            //        step.رقم_الخطوة1 = LastStep1 + 2;
-            //        step.رقم_الخطوة2 = LastStep2 + 2;
-
-            //        var getStep = _unitOfWork.StepsPreparationRepository.Get(u => u.ID == step.ID);
-
-            //        string IDstep1 = getStep.ID.ToString();
-
-            //        string رقم_الخطوة11 = getStep.رقم_الخطوة1.ToString();
-            //        string رقم_الخطوة22 = getStep.رقم_الخطوة2.ToString();
-
-            //        // Construct the full file path
-            //        string imagePath = Path.Combine(wwwRootPathSteps, "IMAGES", "التحضيرات", رقم_الخطوة11, ID_التحضير, IDstep1, getStep.الصورة1);
-
-            //        // Ensure the destination directory exists, create it if necessary
-            //        string destinationDirectory = Path.GetDirectoryName(imagePath);
-            //        if (!Directory.Exists(destinationDirectory))
-            //        {
-            //            Directory.CreateDirectory(destinationDirectory);
-            //        }
-
-            //        // Move the old image file to the new path
-            //        if (System.IO.File.Exists(imagePathold1))
-            //        {
-            //            System.IO.File.Move(imagePathold1, imagePath);
-            //        }
-
-
-            //        string imagePath2 = Path.Combine(wwwRootPathSteps, "IMAGES", "التحضيرات", رقم_الخطوة22, ID_التحضير, IDstep1, getStep.الصورة2);
-
-            //        // Ensure the destination directory exists, create it if necessary
-            //        string destinationDirectory2 = Path.GetDirectoryName(imagePath2);
-            //        if (!Directory.Exists(destinationDirectory2))
-            //        {
-            //            Directory.CreateDirectory(destinationDirectory2);
-            //        }
-
-            //        // Move the old image file to the new path
-            //        if (System.IO.File.Exists(imagePathold2))
-            //        {
-            //            System.IO.File.Move(imagePathold2, imagePath2);
-            //        }
-
-
-            //        LastStep1 += 2;
-            //        LastStep2 += 2;
-
-            //        _unitOfWork.StepsPreparationRepository.Update(step);
-            //    }
-            //}
-            //_unitOfWork.Save();
-            return Json(new
-            {
-                success = true,
-                message = ""
-            });
         }
         #endregion
 
@@ -854,7 +793,17 @@ namespace Test12.Controllers
 
                 return Json(new { success = false, Message = "Error While Deleting" });
             }
+            string IDStep2 = DeleteoneOflist.PreparationsID.ToString();
+            string FKBrand2 = DeleteoneOflist.BrandFK.ToString();
 
+            if (!string.IsNullOrEmpty(DeleteoneOflist.prepareImage))
+            {
+                string imagePath = Path.Combine(_webHostEnvironment.WebRootPath, "IMAGES", FKBrand2, "Preparation", IDStep2, DeleteoneOflist.prepareImage);
+                if (System.IO.File.Exists(imagePath))
+                {
+                    System.IO.File.Delete(imagePath);
+                }
+            }
             _unitOfWork.PreparationRepository.Remove(DeleteoneOflist);
             _unitOfWork.Save();
             return Json(new { success = true });

@@ -117,7 +117,7 @@ namespace Test12.Controllers
 
             if (user != null)
             {
-                // Hash the new password before updating
+                //// Hash the new password before updating
                 string hashedPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(model.LoginVM.Password, workFactor: 13);
 
                 // Update the hashed password
