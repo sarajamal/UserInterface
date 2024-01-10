@@ -30,35 +30,34 @@ namespace Test12.DataAccess.Repository
 
         }
 
-        public async Task<bool> VerifyUserCredentials(string username, string password)
+        public async Task<bool> VerifyUserCredentialsWithExternalApi(string username, string password)
         {
-            var user = await _context.LoginModels.FirstOrDefaultAsync(authUser => authUser.Username == username);
-
-            if (user != null)
+            var user = await _context.LoginModels.FirstOrDefaultAsync(u => u.Username == username);
+            if (user == null)
             {
-                using (var httpClient = new HttpClient())
+                return false;
+            }
+
+            var passwordVerificationRequest = new
+            {
+                password = password,
+                hash = user.Password
+            };
+
+            using (var httpClient = new HttpClient())
+            {
+                var content = new StringContent(JsonConvert.SerializeObject(passwordVerificationRequest), Encoding.UTF8, "application/json");
+                var response = await httpClient.PostAsync("https://www.toptal.com/developers/bcrypt/api/check-password.json", content);
+
+                if (response.IsSuccessStatusCode)
                 {
-                    // Assuming the API requires a POST request with a JSON body
-                    var content = new StringContent(JsonConvert.SerializeObject(new { password = password, hashedPassword = user.Password }), Encoding.UTF8, "application/json");
-
-                    // Replace with the actual URL of the API endpoint
-                    var response = await httpClient.PostAsync("https://api.external-service.com/verify-password", content);
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var responseContent = await response.Content.ReadAsStringAsync();
-                        // Deserialize and check the response here
-                        var verificationResult = JsonConvert.DeserializeObject<VerificationResponse>(responseContent);
-                        return verificationResult.IsMatch;
-                    }
+                    var responseString = await response.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<dynamic>(responseString);
+                    return result.is_correct;
                 }
             }
-            return false;
-        }
 
-        public class VerificationResponse
-        {
-            public bool IsMatch { get; set; }
+            return false;
         }
         //public async Task<bool> VerifyUserCredentials(string username, string password)
         //{

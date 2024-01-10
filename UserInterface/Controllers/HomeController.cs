@@ -17,15 +17,19 @@ using System.Net.Mail;
 using System.Net;
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace Test12.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public HomeController(IUnitOfWork unitOfWork)
+        private readonly HttpClient _httpClient;
+
+        public HomeController(IUnitOfWork unitOfWork, HttpClient httpClient)
         {
             _unitOfWork = unitOfWork;
+            _httpClient = httpClient;
         }
 
         public async Task<IActionResult> Index()
@@ -34,7 +38,7 @@ namespace Test12.Controllers
         }
 
 
-      
+
         //[HttpPost]
         //public async Task<IActionResult> ForgetPassword(LoginModels loginVM)
         //{
@@ -108,42 +112,70 @@ namespace Test12.Controllers
         //    // using the provided user ID and token
         //    Console.WriteLine($"Storing password reset token for user {userId}: {token}");
         //}
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(LoginTredMarktViewModel model, string returnUrl = null)
         {
-            var user = _unitOfWork.loginRepository.Get(u => u.Username == model.LoginVM.Username);
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
 
+            var user = _unitOfWork.loginRepository.Get(u => u.Username == model.LoginVM.Username);
             if (user != null)
             {
-                //// Hash the new password before updating
-                string hashedPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(model.LoginVM.Password, workFactor: 13);
+                string hashedPasswordFromDatabase = user.Password; // Retrieve the hashed password from the database
 
-                // Update the hashed password
-                user.Password = hashedPassword;
-
-                // Save the changes to the database
-                _unitOfWork.loginRepository.Update(user);
-                _unitOfWork.Save();
-
-                bool isSucces = await _unitOfWork.loginRepository.VerifyUserCredentials(user.Username, model.LoginVM.Password);
-
-                if (isSucces)
+                // Send password and hash to Toptal Bcrypt API for verification
+                var formData = new FormUrlEncodedContent(new[]
                 {
-                    // Record the user's last activity time in the session
-                    RecordUserActivity(user.Login_ID);
+            new KeyValuePair<string, string>("password", model.LoginVM.Password),
+            new KeyValuePair<string, string>("hash", hashedPasswordFromDatabase)
+        });
 
-                    return RedirectToLocal(returnUrl, user.Login_ID, true); // Successful login
+                var request = new HttpRequestMessage(HttpMethod.Post, "https://www.toptal.com/developers/bcrypt/api/check-password.json")
+                {
+                    Content = formData
+                };
+
+                HttpResponseMessage response;
+                try
+                {
+                    response = await _httpClient.SendAsync(request);
                 }
-                else
+                catch (HttpRequestException ex)
                 {
-                    ModelState.AddModelError(string.Empty, "خطأ في اسم المستخدم أو كلمة المرور."); // Incorrect username or password
+                    // Log the exception details and return an error view or message
+                    // Log ex.Message
+                    ModelState.AddModelError(string.Empty, "An error occurred while processing your request.");
                     return View(model);
                 }
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var verificationResult = JsonSerializer.Deserialize<PasswordVerificationResponse>(responseContent);
+
+                    if (verificationResult != null && verificationResult.ok)
+                    {
+                        RecordUserActivity(user.Login_ID);
+                        return RedirectToLocal(returnUrl, user.Login_ID, true); // Successful login
+                    }
+                }
+
+                ModelState.AddModelError(string.Empty, "خطأ في اسم المستخدم أو كلمة المرور."); // Incorrect username or password
+                return View(model);
             }
+
+            ModelState.AddModelError(string.Empty, "User not found.");
             return View(model);
         }
+
+        public class PasswordVerificationResponse
+        {
+            public bool ok { get; set; }
+        }
+
 
         private void RecordUserActivity(int userId)
         {
@@ -267,11 +299,11 @@ namespace Test12.Controllers
                 DeviceToolsLoginVM = new DevicesAndTools(),
                 ReadyFoodLoginVM = new ReadyProducts(),
                 //tredList = new List<العلامة_التجارية>(),
-                PreparatonLoginVMlist = new List<Preparations> (),
-                FoodLoginVMlist = new List<FoodStuffs> (),
-                CleanLoginVMlist = new   List<Cleaning> (),
-                ProductionLoginVMlist = new   List<Production> (),
-                ReadyFoodLoginVMlist = new   List<ReadyProducts> (),
+                PreparatonLoginVMlist = new List<Preparations>(),
+                FoodLoginVMlist = new List<FoodStuffs>(),
+                CleanLoginVMlist = new List<Cleaning>(),
+                ProductionLoginVMlist = new List<Production>(),
+                ReadyFoodLoginVMlist = new List<ReadyProducts>(),
                 MainsectionVMlist = new List<MainSections>()
             };
             LoMarket.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
@@ -284,15 +316,15 @@ namespace Test12.Controllers
             LoMarket.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == id).ToList();
             LoMarket.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == id).ToList();
             LoMarket.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == id).ToList();
-            LoMarket.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u=>u.BrandFK == id).ToList();
-            LoMarket.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u=>u.BrandFK == id).ToList();
+            LoMarket.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            LoMarket.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == id).ToList();
             LoMarket.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == id).ToList();
             LoMarket.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == id).ToList(); //هو يحتوي على قائمة من جدول المكونات واللي يساعده على العرض هي view
             ViewBag.IsAuthenticated = true;
             // Populate the model
 
             return View(LoMarket);
-            }
+        }
 
         public IActionResult MainsectionView(int? id)
         {
