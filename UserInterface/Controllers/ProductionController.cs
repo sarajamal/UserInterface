@@ -1,6 +1,8 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Test12.DataAccess.Repository.IRepository;
+using Test12.Models.Models.Preparation;
 using Test12.Models.Models.Production;
 using Test12.Models.Models.trade_mark;
 using Test12.Models.ViewModel;
@@ -602,7 +604,7 @@ namespace Test12.Controllers
                     }
                 }
                 TempData["success"] = "تم تحديث الانتاج بشكل ناجح";
-                return RedirectToAction("Upsert1", new { id = PropaVM.Productionvm.ProductionID, brandFk = PropaVM.Productionvm.BrandFK });
+                return RedirectToAction("RedirectToUpsert1", new { id = PropaVM.Productionvm.ProductionID, brandFk = PropaVM.Productionvm.BrandFK });
             }
             else
             {
@@ -631,6 +633,9 @@ namespace Test12.Controllers
         public IActionResult DeleteToolVariety2(int? id) //this is for delete button in rows أدوات التحضير والصنف
         {
             var toolsVarityDelete = _unitOfWork.PrepaToolsVarietyRepository2.Get(u => u.ProdToolsID == id);
+            int ProductionFK = toolsVarityDelete.ProductionFK;
+            var BrandFKEx = _unitOfWork.itemsRepository.Get(u => u.ProductionID == ProductionFK);
+            int? BranFK = BrandFKEx.BrandFK;
             if (toolsVarityDelete == null)
             {
 
@@ -639,7 +644,7 @@ namespace Test12.Controllers
 
             _unitOfWork.PrepaToolsVarietyRepository2.Remove(toolsVarityDelete);
             _unitOfWork.Save();
-            return Json(new { success = true });
+            return Json(new { success = true, redirectToUrl = Url.Action("RedirectToUpsert1", new { id = ProductionFK, BrandFK = BranFK }) }); //أحتاج يرجع لنفس صفحة التعديل 
         }
         #endregion
 
@@ -663,6 +668,10 @@ namespace Test12.Controllers
         public IActionResult Delete(int? id) //this is for delete button in rows component 
         {
             var ComponentDelete2 = _unitOfWork.ComponentRepository2.Get(u => u.ProdIngredientsID == id);
+            int ProductionFK = ComponentDelete2.ProductionFK;
+            var BrandFKEx = _unitOfWork.itemsRepository.Get(u => u.ProductionID == ProductionFK);
+            int? BranFK = BrandFKEx.BrandFK;
+
             if (ComponentDelete2 == null)
             {
                 return Json(new { success = false, Message = "Error While Deleting" });
@@ -670,7 +679,7 @@ namespace Test12.Controllers
 
             _unitOfWork.ComponentRepository2.Remove(ComponentDelete2);
             _unitOfWork.Save();
-            return Json(new { success = true });
+            return Json(new { success = true, redirectToUrl = Url.Action("RedirectToUpsert1", new { id = ProductionFK, BrandFK = BranFK }) }); //أحتاج يرجع لنفس صفحة التعديل 
         }
         #endregion
 
@@ -754,6 +763,11 @@ namespace Test12.Controllers
             string IDStep = stepsToDelete.ProdStepsID.ToString();
             string FKBrand = BrandFK.BrandFK.ToString();
 
+            //أوجهه الى صفحة التعديل
+            //عشان أوجهه لصفحة التعديل 
+            int ProductionFK = stepsToDelete.ProductionFK;
+            int? BranFK = BrandFK.BrandFK;
+
             string wwwRootPathSteps = _webHostEnvironment.WebRootPath;
 
             if (stepsToDelete == null)
@@ -793,11 +807,8 @@ namespace Test12.Controllers
                 }
             }
             _unitOfWork.Save();
-            return Json(new
-            {
-                success = true,
-                message = ""
-            });
+            return Json(new { success = true, redirectToUrl = Url.Action("RedirectToUpsert1", new { id = ProductionFK, BrandFK = BranFK }) }); //أحتاج يرجع لنفس صفحة التعديل 
+
         }
         #endregion
 

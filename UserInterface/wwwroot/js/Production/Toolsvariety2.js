@@ -21,7 +21,7 @@ function DeleteToolVariety2(id) { //هذي فقط للعرض البرمجة في
                             title: 'تم الحذف بنجاح',
                             text: data.message
                         }).then(() => {
-                            location.reload(); // Reload the page after successful deletion
+                            window.location.href = data.redirectToUrl; // Perform the redirection
                         });
                     } else {
                         Swal.fire({
@@ -55,8 +55,10 @@ function AddRowTool2(ProductionFK) { //صفحة التعديل
     tableBody.appendChild(newRow);
 }
 
-function DeleteRow9(button) { // AJAX قبل تحفظ في قاعدة البيانات ماتحتاج controller 
+//زر الحذف في صفحة التعديل قبل الحفظ في قاعدة البيانات
+function DeleteRow9(button) { 
 
+    var rowIndex = parseInt(button.getAttribute("data-row-index"));
     Swal.fire({
         title: 'هل أنت متأكد؟',
         icon: 'warning',
@@ -69,29 +71,48 @@ function DeleteRow9(button) { // AJAX قبل تحفظ في قاعدة البيا
         if (result.isConfirmed) {
             var tableBody = document.querySelector("#tblToolVarity2 tbody");
             var rows = tableBody.children;
-            var deletedRowIndex = Array.from(rows).indexOf(button.closest("tr"));
             button.closest("tr").remove();
 
-            // Update row numbers in the first cell
+            // Update row numbers
             for (var i = 0; i < rows.length; i++) {
                 rows[i].cells[0].textContent = i + 1;
             }
-
-            // Update indices for elements in all rows after the deleted row
-            for (var i = deletedRowIndex; i < rows.length; i++) {
-                var inputsAndButtons = rows[i].querySelectorAll("input, button");
-                inputsAndButtons.forEach(el => {
-                    if (el.name) {
-                        el.name = el.name.replace(/\[\d+\]/, `[${i}]`);
-                    }
-                    if (el.getAttribute("data-row-index") !== null) {
-                        el.setAttribute("data-row-index", i);
-                    }
-                });
-            }
             Swal.fire('تم الحذف!', 'تم الحذف بنجاح!', 'success');
+
+            updateRowIndicesAfterDeletion9(rowIndex);
+
         }
     });
+}
+
+function updateRowIndicesAfterDeletion9(deletedIndex) {
+    console.log("Row deleted, deletedIndex", deletedIndex);
+
+    var tableBody = document.querySelector("#tblToolVarity2 tbody");
+    var rows = tableBody.querySelectorAll("tr");
+
+    // Since rows is a live NodeList, indices are always 0-based and contiguous.
+    rows.forEach((row, index) => {
+        // Adjust the index for all rows following the deleted one.
+        var actualIndex = index;
+        if (index > deletedIndex) {
+            actualIndex = index; // Decrease the index for rows after the deleted one
+        }
+        // Update the names and data-row-index for all inputs and buttons
+        var inputsAndButtons = row.querySelectorAll("input[name*='ToolsVarityVM2'], button[data-row-index]");
+        inputsAndButtons.forEach(el => {
+            var name = el.name;
+            if (name) {
+                // Replace only the first occurrence of the pattern to avoid affecting nested indices
+                el.name = name.replace(/\[\d+\]/, `[${actualIndex}]`);
+            }
+            if (el.hasAttribute("data-row-index")) {
+                el.setAttribute("data-row-index", actualIndex);
+            }
+        });
+        console.log("Row updated to new index:", actualIndex);
+    });
+
 }
 
 var newRowNumber = 1;

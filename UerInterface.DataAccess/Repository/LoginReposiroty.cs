@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Test12.DataAccess.Data;
 using Test12.DataAccess.Repository.IRepository;
@@ -35,12 +36,42 @@ namespace Test12.DataAccess.Repository
 
             if (user != null)
             {
-                // Use BCrypt verify method to check if the provided password matches the hashed password
-                return BCrypt.Net.BCrypt.EnhancedVerify(password, user.Password);
+                using (var httpClient = new HttpClient())
+                {
+                    // Assuming the API requires a POST request with a JSON body
+                    var content = new StringContent(JsonConvert.SerializeObject(new { password = password, hashedPassword = user.Password }), Encoding.UTF8, "application/json");
+
+                    // Replace with the actual URL of the API endpoint
+                    var response = await httpClient.PostAsync("https://api.external-service.com/verify-password", content);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var responseContent = await response.Content.ReadAsStringAsync();
+                        // Deserialize and check the response here
+                        var verificationResult = JsonConvert.DeserializeObject<VerificationResponse>(responseContent);
+                        return verificationResult.IsMatch;
+                    }
+                }
             }
             return false;
-
         }
+
+        public class VerificationResponse
+        {
+            public bool IsMatch { get; set; }
+        }
+        //public async Task<bool> VerifyUserCredentials(string username, string password)
+        //{
+        //    var user = await _context.LoginModels.FirstOrDefaultAsync(authUser => authUser.Username == username);
+
+        //    if (user != null)
+        //    {
+        //        // Use BCrypt verify method to check if the provided password matches the hashed password
+        //        return BCrypt.Net.BCrypt.EnhancedVerify(password, user.Password);
+        //    }
+        //    return false;
+
+        //}
 
         //public async Task<bool> VerifyUserCredentials(string username, string password)
         //{

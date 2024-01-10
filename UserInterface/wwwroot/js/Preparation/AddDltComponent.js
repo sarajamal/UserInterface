@@ -36,6 +36,7 @@ function Delete(id) {
     })
 }
 
+//صفحة التعديل
 function AddRowcomponentUpdate() {
     var tableBody = document.querySelector("#tbComponant tbody");
     var newRow = document.createElement("tr");
@@ -61,6 +62,7 @@ function AddRowcomponentUpdate() {
     newRowNumber++;
 }
 
+//صفحة التعديل قبل الحفظ في قاعدة البيانات
 function DeleteRow16(button) {
     var rowIndex = parseInt(button.getAttribute("data-row-index"));
 

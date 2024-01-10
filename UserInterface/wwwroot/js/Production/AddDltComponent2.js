@@ -21,7 +21,7 @@ function Delete(id) {
                             title: 'تم الحذف بنجاح',
                             text: data.message
                         }).then(() => {
-                            location.reload(); // Reload the page after successful deletion
+                            window.location.href = data.redirectToUrl; // Perform the redirection
                         });
                     } else {
                         Swal.fire({
@@ -60,6 +60,8 @@ function AddRowcomponentUpdate2() { //صفحة التعديل .
     tableBody.appendChild(newRow);
     newRowNumber++;
 }
+
+//زر الحذف في صفحة التعديل قبل الحفظ في قاعدة البيانات
 function DeleteRow91(button) {
     var rowIndex = parseInt(button.getAttribute("data-row-index"));
 
@@ -108,8 +110,8 @@ function updateRowIndicesAfterDeletion91(deletedIndex) {
         console.log("Row updated to new index:", actualIndex);
     });
 }
-//زر الحذف للإضافة قبل الحفظ في قاعدة البيانات 
 
+//زر الحذف للإضافة قبل الحفظ في قاعدة البيانات 
  function DeleteRow99(button) {
     var rowIndex = parseInt(button.getAttribute("data-row-index"));
 

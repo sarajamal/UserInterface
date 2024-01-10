@@ -80,7 +80,7 @@ function AddRowToolnew(PreparationsFK) { //صفحة الإضافة
     newRowNumber++;
     numeric++;
 }
-
+//صفحة الإضافة زر الحذف 
 function DeleteRow61(button) { // AJAX قبل تحفظ في قاعدة البيانات ماتحتاج controller
     var rowIndex = parseInt(button.getAttribute("data-row-index"));
     Swal.fire({
@@ -133,7 +133,7 @@ function updateRowIndicesAfterDeletion61(deletedIndex) {
     newIndex = rows.length; // تحديث newIndex بناءً على عدد الصفوف المتبقية
 }
 
-function DeleteRow6(button) { // AJAX قبل تحفظ في قاعدة البيانات ماتحتاج controller صفحة الإضافة
+function DeleteRow6(button) { // AJAX قبل تحفظ في قاعدة البيانات ماتحتاج controller صفحة التعديل
     var rowIndex = parseInt(button.getAttribute("data-row-index"));
     Swal.fire({
         title: 'هل أنت متأكد؟',
