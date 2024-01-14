@@ -8,6 +8,7 @@ using NuGet.Common;
 using Test12.Models.Models.Food;
 using Test12.Models.Models.trade_mark;
 using Test12.Models.Models.Login;
+using System.Net.Http;
 
 
 namespace Test12.Controllers
@@ -16,9 +17,11 @@ namespace Test12.Controllers
     {
 
         private readonly IUnitOfWork _unitOfWork;
-        public ForgetController(IUnitOfWork unitOfWork)
+        private readonly HttpClient _httpClient;
+        public ForgetController(IUnitOfWork unitOfWork, HttpClient httpClient)
         {
             _unitOfWork = unitOfWork;
+            _httpClient = httpClient;
         }
 
         //الكود لنسيت كلمة المرور
@@ -37,26 +40,55 @@ namespace Test12.Controllers
             LoginTredMarktViewModel LogVM = new()
             {
                 LoginVM = new LoginModels(),
-               
+
             };
 
             LogVM.LoginVM = _unitOfWork.loginRepository.Get(u => u.Email == email);
 
-            TempData["Email"] = email;                               
+            TempData["Email"] = email;
             return View(LogVM);
         }
-        [HttpPost]
-        public IActionResult setForgetPassword(LoginTredMarktViewModel model)
+
+      [HttpPost]
+public async Task<IActionResult> setForgetPassword(LoginTredMarktViewModel model)
+{
+    var user = _unitOfWork.loginRepository.Get(u => u.Email == model.LoginVM.Email);
+
+    if (user != null)
+    {
+        var formData = new FormUrlEncodedContent(new[]
         {
-            // Assuming GetByEmail is a method in your loginRepository to get a user by email
-            var user = _unitOfWork.loginRepository.Get(u=> u.Email == model.LoginVM.Email);
+            new KeyValuePair<string, string>("password", model.LoginVM.Password),
+            new KeyValuePair<string, string>("cost", "10") // Specify the cost factor
+        });
 
-            if (user != null)
+        var request = new HttpRequestMessage(HttpMethod.Post, "https://www.toptal.com/developers/bcrypt/api/generate-hash.json")
+        {
+            Content = formData
+        };
+
+        HttpResponseMessage response;
+        try
+        {
+            response = await _httpClient.SendAsync(request);
+        }
+        catch (HttpRequestException ex)
+        {
+            // Handle exceptions (log them, show error message, etc.)
+            ModelState.AddModelError(string.Empty, "خطأ أثناء معالجة طلبك ");
+            return View(model);
+        }
+
+        if (response.IsSuccessStatusCode)
+        {
+            var responseContent = await response.Content.ReadAsStringAsync();
+            dynamic result = Newtonsoft.Json.JsonConvert.DeserializeObject(responseContent);
+
+            if (result != null && result.hash != null)
             {
-                // Hash the new password before updating
-                string hashedPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(model.LoginVM.Password, workFactor: 13);
+                string hashedPassword = result.hash;
 
-                // Update the hashed password
+                // Update the user's password with the new hash
                 user.Password = hashedPassword;
 
                 // Save the changes to the database
@@ -66,16 +98,23 @@ namespace Test12.Controllers
                 // Redirect to a success page or perform other actions
                 return RedirectToAction("Index", "Home");
             }
-
-            // Handle the case where the user with the specified email was not found
-            return RedirectToAction("PasswordResetFailure");
         }
+
+        // Handle cases where the API call was not successful
+        ModelState.AddModelError(string.Empty, "خطأ في إعادة تعيين كلمة المرور ");
+        return View(model);
+    }
+
+    // Handle the case where the user is not found
+    ModelState.AddModelError(string.Empty, "المستخدم غير موجود");
+    return View(model);
+}
 
         [HttpPost]
         public IActionResult ForgetPassword(LoginTredMarktViewModel model)
         {
             string message = "";
-            bool statuse = false; 
+            bool statuse = false;
             if (ModelState.IsValid)
             {
                 var email = _unitOfWork.loginRepository.Get(u => u.Email == model.LoginVM.Email);
@@ -86,19 +125,19 @@ namespace Test12.Controllers
                     ModelState.AddModelError(string.Empty, "أدخل البريد الإلكتروني *");
 
                 }
-               else if( email != null)
+                else if (email != null)
                 {
                     (string token, DateTime expirationTime) = GenerateSecureTokenWithExpiration();
-                  
+
                     SendResetEmail(email.Email, token);
-                   
+
 
                     ModelState.AddModelError(string.Empty, "تم إرسال رابط إعادة تعيين كلمة المرور على بريدك الالكتروني . ");
-                    
+
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "البريد غير مسجل لدينا .");  
+                    ModelState.AddModelError(string.Empty, "البريد غير مسجل لدينا .");
                 }
             }
             return View(model);
@@ -124,10 +163,10 @@ namespace Test12.Controllers
         }
 
         private void SendResetEmail(string email, string token)
-        {     
+        {
             //create mail message
             MailMessage mail = new MailMessage();
-            mail.From = new MailAddress("sarajk12248@gmail.com");  // Set the sender's email address
+            mail.From = new MailAddress("bdooncode5@gmail.com");  // Set the sender's email address
 
             mail.To.Add(new MailAddress(email));
             mail.Subject = "إعادة تعيين كلمة المرور";
@@ -156,9 +195,9 @@ namespace Test12.Controllers
 
             SmtpClient smtp = new SmtpClient("smtp.gmail.com");
             smtp.Port = 587;
-            smtp.Credentials = new NetworkCredential("sarajk12248@gmail.com", "aeds mqca qklv layc");
+            smtp.Credentials = new NetworkCredential("bdooncode5@gmail.com", "nzzc qhtn rgoc fthv");
             smtp.EnableSsl = true;
-     
+
             // Send the email
             smtp.Send(mail);
         }
