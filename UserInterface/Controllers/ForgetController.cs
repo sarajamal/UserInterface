@@ -49,66 +49,66 @@ namespace Test12.Controllers
             return View(LogVM);
         }
 
-      [HttpPost]
-public async Task<IActionResult> setForgetPassword(LoginTredMarktViewModel model)
-{
-    var user = _unitOfWork.loginRepository.Get(u => u.Email == model.LoginVM.Email);
-
-    if (user != null)
-    {
-        var formData = new FormUrlEncodedContent(new[]
+        [HttpPost]
+        public async Task<IActionResult> setForgetPassword(LoginTredMarktViewModel model)
         {
+            var user = _unitOfWork.loginRepository.Get(u => u.Email == model.LoginVM.Email);
+
+            if (user != null)
+            {
+                var formData = new FormUrlEncodedContent(new[]
+                {
             new KeyValuePair<string, string>("password", model.LoginVM.Password),
             new KeyValuePair<string, string>("cost", "10") // Specify the cost factor
         });
 
-        var request = new HttpRequestMessage(HttpMethod.Post, "https://www.toptal.com/developers/bcrypt/api/generate-hash.json")
-        {
-            Content = formData
-        };
+                var request = new HttpRequestMessage(HttpMethod.Post, "https://www.toptal.com/developers/bcrypt/api/generate-hash.json")
+                {
+                    Content = formData
+                };
 
-        HttpResponseMessage response;
-        try
-        {
-            response = await _httpClient.SendAsync(request);
-        }
-        catch (HttpRequestException ex)
-        {
-            // Handle exceptions (log them, show error message, etc.)
-            ModelState.AddModelError(string.Empty, "خطأ أثناء معالجة طلبك ");
+                HttpResponseMessage response;
+                try
+                {
+                    response = await _httpClient.SendAsync(request);
+                }
+                catch (HttpRequestException ex)
+                {
+                    // Handle exceptions (log them, show error message, etc.)
+                    ModelState.AddModelError(string.Empty, "خطأ أثناء معالجة طلبك ");
+                    return View(model);
+                }
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    dynamic result = Newtonsoft.Json.JsonConvert.DeserializeObject(responseContent);
+
+                    if (result != null && result.hash != null)
+                    {
+                        string hashedPassword = result.hash;
+
+                        // Update the user's password with the new hash
+                        user.Password = hashedPassword;
+
+                        // Save the changes to the database
+                        _unitOfWork.loginRepository.Update(user);
+                        _unitOfWork.Save();
+
+                        // Redirect to a success page or perform other actions
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+
+                // Handle cases where the API call was not successful
+                ModelState.AddModelError(string.Empty, "خطأ في إعادة تعيين كلمة المرور ");
+                return View(model);
+            }
+
+            // Handle the case where the user is not found
+            ModelState.AddModelError(string.Empty, "المستخدم غير موجود");
             return View(model);
         }
-
-        if (response.IsSuccessStatusCode)
-        {
-            var responseContent = await response.Content.ReadAsStringAsync();
-            dynamic result = Newtonsoft.Json.JsonConvert.DeserializeObject(responseContent);
-
-            if (result != null && result.hash != null)
-            {
-                string hashedPassword = result.hash;
-
-                // Update the user's password with the new hash
-                user.Password = hashedPassword;
-
-                // Save the changes to the database
-                _unitOfWork.loginRepository.Update(user);
-                _unitOfWork.Save();
-
-                // Redirect to a success page or perform other actions
-                return RedirectToAction("Index", "Home");
-            }
-        }
-
-        // Handle cases where the API call was not successful
-        ModelState.AddModelError(string.Empty, "خطأ في إعادة تعيين كلمة المرور ");
-        return View(model);
-    }
-
-    // Handle the case where the user is not found
-    ModelState.AddModelError(string.Empty, "المستخدم غير موجود");
-    return View(model);
-}
 
         [HttpPost]
         public IActionResult ForgetPassword(LoginTredMarktViewModel model)
