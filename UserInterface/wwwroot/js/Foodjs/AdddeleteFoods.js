@@ -79,7 +79,7 @@ function AddnewFoods(FoodsFK) {
         // Create a new row for الخطوة1 and الخطوة2 in the same row
         var newRow = document.createElement("tr");
         newRow.innerHTML = `
-       <td style="text-align:center;">
+       <td class="col-5" style="text-align:center;">
             <input type="hidden" name="FoodViewMList[${newRowIndex}].BrandFK" value="${FoodsFK}" />
             <input type="hidden" name="FoodViewMList[${newRowIndex}].FoodStuffsImage" />
         
@@ -88,9 +88,9 @@ function AddnewFoods(FoodsFK) {
          </div>
      </td>
         
-      <td style="text-align:center;">
+      <td class="col-5" style="text-align:center;">
         <div class="row">
-            <div class="col-12 text-center">
+            <div class=" text-center">
                 <img id="PreviewPhoto1_${lastID}" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
                 <input type="file" name="file1_${lastID}" class="border-0 shadow mt-5" id="customFile1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
             </div>

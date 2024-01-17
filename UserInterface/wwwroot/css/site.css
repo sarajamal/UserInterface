@@ -429,14 +429,56 @@ header .navbar .nav-item:hover {
 
 /*Tabs styling*/
 #exTab1 .tab-content {
+    margin-top: 20px ;
     text-align: right;
-    color: white;
-    background-color: #428bca;
+    color: white;   
     padding: 5px 15px;
 }
+
+#exTab1 .tab-content h4 {
+    color: #000;
+}
+
+
 
 #exTab1 .nav-pills > li > a {
     direction: rtl;
     text-align: right;
     border-radius: 0;
 }
+
+#exTab1 ul.nav.nav-pills li a {
+    color: #fff;
+    text-decoration: none;
+    background-color: rgb(30, 125, 193);
+}
+#exTab1 ul.nav.nav-pills li.active a {
+    color: rgb(30, 125, 193);
+    background-color: #fff;
+    border-top: 1px;
+    border-color: rgb(30, 125, 193);
+    border: solid 1px rgb(30, 125, 193);
+    margin: 2px;
+}
+#exTab1 ul.nav.nav-pills li {
+    padding: 0;
+    margin: 0;
+}
+#exTab1 ul.nav.nav-pills li a{
+    padding: 10px; 
+    margin:0;
+}
+
+table input[type="file"]{
+    width:100%;
+}
+
+/*#tblDeviceTools th:nth-child(2) {
+    max-width: 250px;*/
+    /*word-wrap: break-word;*/
+/*}*/
+
+/*#tblDeviceTools td:nth-child(2) {
+    max-width: 250px;*/
+    /*word-wrap: break-word;*/
+/*}*/

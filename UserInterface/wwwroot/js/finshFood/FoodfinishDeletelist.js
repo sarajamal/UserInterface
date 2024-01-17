@@ -48,14 +48,14 @@ function loadDataTable(id) {
                 data: 'readyProductsID',
                 "render": function (data) {
                     return `<div role="group">
-                       <button type="button" class="btn btn-primary px-4 finsh-index-button"
+                       <button type="button" class="btn btn-style4 fnt-white px-4 finsh-index-button"
                             data-toggle="modal"
                             data-target="#FinishProductIndex"
                             data-controller="FinishProducts"
                             data-action="FinishProductsIndex"
                             data-id="${data}">   
                             <i class="bi bi-pencil-square"></i> </button>    
-                     <a onClick=DeleteFinshFood('/FinishProducts/DeleteFinshFood/${data}') class="btn btn-danger "> <i class="bi bi-trash-fill"></i></a>
+                     <a onClick=DeleteFinshFood('/FinishProducts/DeleteFinshFood/${data}') class="btn btn-style5 "> <i class="bi bi-trash-fill"></i></a>
                     </div>`;
                 },
                 "width": "20%",
