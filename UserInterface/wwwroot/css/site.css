@@ -426,3 +426,17 @@ header .navbar .nav-item:hover {
         text-align: left;
     }
 
+
+/*Tabs styling*/
+#exTab1 .tab-content {
+    text-align: right;
+    color: white;
+    background-color: #428bca;
+    padding: 5px 15px;
+}
+
+#exTab1 .nav-pills > li > a {
+    direction: rtl;
+    text-align: right;
+    border-radius: 0;
+}
