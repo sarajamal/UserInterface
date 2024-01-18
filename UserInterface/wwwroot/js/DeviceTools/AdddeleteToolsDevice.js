@@ -81,7 +81,7 @@ function AddnewtoolsDeviceNew(DeviceToolsFK) {
         // Create a new row for الخطوة1 and الخطوة2 in the same row
         var newRow = document.createElement("tr");
         newRow.innerHTML = `
-      <td style="text-align:center;">
+      <td  class="col-5" style="text-align:center;">
         <input type="hidden" name="Devices_toolsVM[${newRowIndex}].BrandFK" value="${DeviceToolsFK}" />
         <input type="hidden" name="Devices_toolsVM[${newRowIndex}].DevicesAndTools_Image" />
 
@@ -89,11 +89,11 @@ function AddnewtoolsDeviceNew(DeviceToolsFK) {
             <textarea class="form-control" id="Devices_toolsVM_${newRowIndex}" name="Devices_toolsVM[${newRowIndex}].DevicesAndTools_Name"></textarea>
         </div>
     </td>
-    <td style="text-align:center;">
+    <td  class="col-5" style="text-align:center;">
         <div class="row">
-            <div class="col-12 text-center">
+            <div class="text-center ">
                 <img id="PreviewPhoto1_${lastID}" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
-                <input type="file" name="file1_${lastID}" class="border-0 shadow mt-5" id="customFile1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
+                <input type="file" name="file1_${lastID}" class="border-0 shadow mt-1" id="customFile1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
             </div>
         </div>
     </td>
@@ -184,7 +184,7 @@ document.querySelector("#tblDeviceTools tbody").addEventListener("click", functi
 //    </td>
 //    <td style="text-align:center;">
 //        <div class="row">
-//            <div class="col-12 text-center">
+//            <div class=" text-center">
 //                <img id="PreviewPhoto1_${lastID}" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
 //                <input type="file" name="file1_${lastID}" class="border-0 shadow mt-5" id="customFile1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
 //            </div>

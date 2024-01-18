@@ -174,21 +174,27 @@ namespace Test12.Controllers
             string resetUrl = Url.Action("setForgetPassword", "Forget", new { token = token, email = email }, protocol: HttpContext.Request.Scheme);
 
             // Set the body of the email
-            string body = "<div class=\"card-body p-4\">" +
-                          "<div class=\"row\">" +
-                          "<div class=\"col-md-12\">" +
-                          "<section>" +
-                          "<p style=\"text-align:center;font:bold\">إعادة تعيين كلمة المرور</p>" +
-                          "<div class=\"form-group\">" +
-                          $"لقد طلبت تعيين كلمة المرور لحسابك بعنوان البريد الإلكتروني: انقر على الرابط أدناه لإعادة تعيين كلمة المرور الخاصة بك:" +
-                          $"<a href='{resetUrl}'>إعادة تعيين كلمة المرور</a>" +
-                          "</div>" +
-                          "<div>" +
-                          "</div>" +
-                          "</section>" +
-                          "</div>" +
-                          "</div>" +
-                          "</div>";
+            string body = $@"
+            <html>
+            <head>
+                <style>
+                    .email-container {{ font-family: Arial, sans-serif; max-width: 600px; margin: auto; }}
+                    .email-content {{ text-align: center; }}
+                    .email-button {{ background-color: #004aad; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; }}
+                    .ii a[href] {{
+                        color:#fff; }}
+                </style>
+            </head>
+            <body>
+                <div class='email-container'>
+                    <div class='email-content'>
+                        <h2>إعادة تعيين كلمة المرور</h2>
+                        <p>لقد طلبت إعادة تعيين كلمة المرور لحسابك. يرجى النقر على الرابط أدناه لتعيين كلمة مرور جديدة:</p>
+                        <a class='email-button' href='{resetUrl}'>إعادة تعيين كلمة المرور</a>
+                    </div>
+                </div>
+            </body>
+            </html>";
 
             mail.Body = body;
             mail.IsBodyHtml = true;
