@@ -44,7 +44,280 @@
                         @*<button class="btn dropdown-toggle float-end mb-2" id="button" onclick="showhide()"> المعلومات</button>*@
                         @*<div id="newpost">*@
                         @*<hr class="featurette-divider">*@
-                        <div>
+
+
+                        <div id="exTab1" class="container">
+                            <!-- Tabs Header-->
+                            <ul class="nav nav-pills">
+                                <li class="active">
+                                    <a href="#1a" data-toggle="tab">المعلومات</a>
+                                </li>
+                                <li>
+                                    <a href="#2a" data-toggle="tab">المكونات</a>
+                                </li>
+                                <li>
+                                    <a href="#3a" data-toggle="tab">الأدوات</a>
+                                </li>
+                                <li>
+                                    <a href="#4a" data-toggle="tab">الخطوات</a>
+                                </li>
+                            </ul>
+
+                            <!-- Tabs Contents -->
+                            <div class="tab-content clearfix">
+
+                                @* المعلومات *@
+                                <div class="tab-pane active" id="1a">
+                                    <div>
+                                        <h4 style="text-align:right">المعلومات</h4>
+                                    </div>
+                                    <div class=" row">
+                                        <div class=" col-md-6 p-2">
+                                            <div class="form-group">
+
+                                                <label asp-for=" PreparationVM.prepareName" class="control-label"> اسم التحضير </label>
+                                                <input asp-for=" PreparationVM.prepareName " class="form-control" />
+                                                <span asp-validation-for=" PreparationVM.prepareName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+
+                                        <div class=" col-md-6 p-2">
+                                            <div class="form-group">
+                                                <label asp-for=" PreparationVM.VersionNumber" class="control-label">رقم النسخة</label>
+                                                <input asp-for=" PreparationVM.VersionNumber" class="form-control" value="1" readonly />
+                                                <span asp-validation-for=" PreparationVM.VersionNumber" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class=" col-md-6 p-2">
+                                            <div class="form-group">
+                                                <label asp-for=" PreparationVM.Expiry" class="control-label">مدة الصلاحية</label>
+                                                <input asp-for=" PreparationVM.Expiry" class="form-control" />
+                                                <span asp-validation-for=" PreparationVM.Expiry" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class=" col-md-6 p-2">
+                                            <div class="form-group">
+                                                <label asp-for=" PreparationVM.NetWeight" class="control-label">الوزن الصافي</label>
+                                                <input asp-for="PreparationVM.NetWeight" class="form-control" />
+                                                <span asp-validation-for=" PreparationVM.NetWeight" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class=" col-md-6 p-2">
+                                            <div class="form-group">
+                                                <label asp-for="  PreparationVM.Station" class="control-label">المحطة</label>
+                                                <input asp-for="PreparationVM.Station" class="form-control" />
+                                                <span asp-validation-for=" PreparationVM.Station" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class=" col-md-6 p-2">
+                                            <div class="form-group">
+                                                <label asp-for=" PreparationVM.PreparationTime" class="control-label"> وقت التحضير</label>
+                                                <input asp-for=" PreparationVM.PreparationTime" class="form-control" />
+                                                <span asp-validation-for=" PreparationVM.PreparationTime" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6 btn-group">
+                                            <div class="form-group col-8 p-0">
+                                                <label asp-for=" PreparationVM.prepareImage" class="ms-2"> ادخل صورة</label>
+                                                <input type="file" name="file" class="form-control border-0 shadow" id="customFile"
+                                                       onchange="document.getElementById('PreviewPhoto').src= window.URL.createObjectURL(this.files[0])" />
+                                                <div id="errorMessage" style="color: red; display: none;" class="py-3">
+                                                    . يجب ادخال صورة التحضير النهائية *
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group col-4">
+
+
+                                            <div class="form-group col-12">
+                                                <img id="PreviewPhoto" src="~/IMAGES/noImage.png" alt="Logo"
+                                                     width="125" height="125" style="border:1px ; margin-top:20px" required />
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                 
+
+                                </div>
+
+                                @* المكونات *@
+                                <div class="tab-pane" id="2a">
+                                    <h4 style="text-align:right" class="px-2 py-3">المكونات</h4>
+
+                                    <table id="tbComponant" class="table table-style1 table-bordered table-striped" data-preparation-id="@Model.PreparationVM.PreparationsID">
+                                        <thead>
+                                            <tr>
+                                                <th> المكون</th>
+                                                <th>الكمية</th>
+                                                <th>الوحدة</th>
+                                                <th style="text-align:center;">
+
+
+                                                    <button type="button" class="btn btn-style2 fnt-white" onclick="AddRowcomponentnew()">إضافة</button>
+
+                                                </th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <tr>
+
+                                                <td>
+                                                    <input asp-for="@Model.PreparationVM.PreparationsID" id="PreparationID" hidden />
+
+                                                    <input type="text" class="form-control" name="PrepIngredientsName" placeholder=" المكون  " />
+                                                </td>
+
+                                                <td>
+                                                    <input type="text" class="form-control" name="PrepQuantity" placeholder=" الكمية  " />
+                                                </td>
+
+                                                <td>
+                                                    <input type="text" class="form-control" name="PrepUnit" placeholder=" الوحدة  " />
+                                                </td>
+
+                                                <td>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                @*الأدوات*@
+                                <div class="tab-pane" id="3a">
+                                    <div>
+                                        <h4 style="text-align:right">الأدوات</h4>
+                                    </div>
+
+
+                                    <table id="tblToolVarity" class="table table-style1 table-bordered table-striped" data-preparation-id="@Model.PreparationVM.PreparationsID">
+                                        <thead>
+                                            <tr>
+                                                <th class="col-1">رقم الأداة</th>
+                                                <th class="col-9"> الأدوات المستخدمة</th>
+
+                                                <th style="text-align:center;">
+
+                                                    <button type="button" class="btn btn-style2 fnt-white " onclick="AddRowToolnew('@Model.PreparationVM.PreparationsID')">إضافة</button>
+
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <tr>
+                                                <td style="text-align:center;">1</td>
+
+                                                <td>
+                                                    <input asp-for="@Model.PreparationVM.PreparationsID" id="PreparationID" hidden />
+
+                                                    <input type="text" class="form-control" name="PrepTools" placeholder="الأدات المستخدمة" />
+                                                </td>
+                                                <td>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+
+                                    </table>
+                           
+                                </div>
+
+                                @*الخطوات*@
+                                <div class="tab-pane" id="4a">
+
+                                    <div class="form-group col-4 py-2 ">
+                                        <h4 style="text-align:right"> الخطوات</h4>
+                                    </div>
+                                    <table id="tblSteps" class="table table-bordered table-striped" data-preparation-id="@Model.PreparationVM.PreparationsID">
+
+                                        <tbody>
+
+                                            @* زر إضافة خطوات جديدة *@
+                                            <tr>
+                                                <td colspan="1" style="text-align:right;">
+
+                                                    <button type="button" id="addStepButton1" class="btn btn-style3 my-3" onclick="AddnewRowstepsNew('@Model.PreparationVM.PreparationsID')">إضافة خطوات جديدة</button>
+                                                    <div id="redMessage" style="display:none; color:red;">
+                                                        يجب إدخال خطوة واحدة على الأقل
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+
+
+                                    @* Don't remove comment *@
+                                    @* Select List  *@
+                                    @* @if (Model.PreparationVM.التحضير_ID == 0)
+                                    {
+                                    <div class="form-floating py-2 col-12">
+                                    @{
+                                    var sortedPreparationName = Model.PreparationName.OrderByDescending(item => item.Value).ToList();
+                                    }
+                                    <select asp-for="PreparationVM.التحضير_ID" class="form-select" id="selectPreparation" name="selectedValue">
+                                    <option value="" disabled selected>-- اختر مكان الصف الجديد--</option>
+                                    @foreach (var item in sortedPreparationName)
+                                    {
+                                    <option value="@item.Value">@item.Text</option>
+                                    }
+                                    </select>
+                                    </div>*@
+
+
+                                    <div class="form-floating py-2 col-12">
+                                        @{
+                                            var sortedPreparationName = Model.PreparationList.OrderBy(item => item.PreparationsOrder).ToList();
+                                        }
+                                        <select asp-for="PreparationVM.PreparationsID" class="form-select" id="selectPreparation" name="selectedValue">
+                                            <option value="" disabled selected>-- اختر مكان الصف الجديد--</option>
+                                            @foreach (var item in sortedPreparationName)
+                                            {
+                                                <option value="@item.PreparationsID">@item.prepareName</option>
+                                            }
+                                            <option value="0">اخر صف</option> <!-- The "Other" option -->
+                                        </select>
+                                    </div>
+
+
+                                    <div class="form-group col-12 py-2">
+                                        <div style="text-align: left;">
+
+                                            <div class="form-group col-12 py-5 fxcc">
+                                                <input asp-for="@Model.tredMaeketVM.BrandID" class="form-control" hidden />
+                                                <input asp-for="@Model.tredMaeketVM.ID_Login" class="form-control" hidden />
+                                                <input asp-for="@Model.tredMaeketVM.BrandName" class="form-control" hidden />
+                                                <input asp-for="@Model.tredMaeketVM.Date" class="form-control" hidden />
+                                                <input asp-for="tredMaeketVM.BrandCoverImage" hidden />
+                                                <input asp-for="tredMaeketVM.BrandLogoImage" hidden />
+                                                <input asp-for="tredMaeketVM.BrandFooterImage" hidden />
+
+                                                <input type="button" onclick="validateAndSubmit()" value=" حفظ"
+                                                       style="text-align:center" class="btn btn-style1 fnt-white me-3" id="submitButton" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
+                      @*   <div>
                             <h4 style="text-align:right">المعلومات</h4>
                         </div>
                         <div class=" row">
@@ -119,12 +392,12 @@
 
 
                             </div>
-                        </div>
+                        </div> *@
 
                         @*المكونات*@
-
+@* 
                         <h4 style="text-align:right" class="px-2 py-3">المكونات</h4>
-                        @* id is important!!*@
+                      
                         <table id="tbComponant" class="table table-style1 table-bordered table-striped" data-preparation-id="@Model.PreparationVM.PreparationsID">
                             <thead>
                                 <tr>
@@ -132,7 +405,7 @@
                                     <th>الكمية</th>
                                     <th>الوحدة</th>
                                     <th style="text-align:center;">
-                                        @*type="button" is important*@
+                                    
 
                                         <button type="button" class="btn btn-style2 fnt-white" onclick="AddRowcomponentnew()">إضافة</button>
 
@@ -162,13 +435,14 @@
                                 </tr>
 
                             </tbody>
-                        </table>
+                        </table> *@
 
                         @*الأدوات*@
-                        <div>
+@*                         <div>
                             <h4 style="text-align:right">الأدوات</h4>
                         </div>
-                        @* id is important!!*@
+                      
+
                         <table id="tblToolVarity" class="table table-style1 table-bordered table-striped" data-preparation-id="@Model.PreparationVM.PreparationsID">
                             <thead>
                                 <tr>
@@ -198,18 +472,18 @@
 
                             </tbody>
 
-                        </table>
+                        </table> *@
 
                         @*الخطوات*@
 
-                        <div class="form-group col-4 py-2 ">
+                        @* <div class="form-group col-4 py-2 ">
                             <h4 style="text-align:right"> الخطوات</h4>
                         </div>
                         <table id="tblSteps" class="table table-bordered table-striped" data-preparation-id="@Model.PreparationVM.PreparationsID">
 
                             <tbody>
 
-                                @* زر إضافة خطوات جديدة *@
+                               
                                 <tr>
                                     <td colspan="1" style="text-align:right;">
 
@@ -221,11 +495,11 @@
                                 </tr>
 
                             </tbody>
-                        </table>
+                        </table> *@
 
 
-
-                        @* Select List *@
+                        @* XXXXXXXXX Don't remove comment XXXXXXXXXXXXXX *@
+                        @* Select List  *@
                         @* @if (Model.PreparationVM.التحضير_ID == 0)
                         {
                         <div class="form-floating py-2 col-12">
@@ -242,7 +516,8 @@
                         </div>*@
 
 
-                        <div class="form-floating py-2 col-12">
+
+                       @*  <div class="form-floating py-2 col-12">
                             @{
                                 var sortedPreparationName = Model.PreparationList.OrderBy(item => item.PreparationsOrder).ToList();
                             }
@@ -273,7 +548,7 @@
                                            style="text-align:center" class="btn btn-style1 fnt-white me-3" id="submitButton" />
                                 </div>
                             </div>
-                        </div>
+                        </div> *@
                     </div>
                 </div>
             </div>
@@ -385,6 +660,9 @@ function validateرقم_الخطوة2(input, index) {
 </script> *@
 
 @section Scripts{
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
     <script src="~/Js/Preparation/AddDltComponent.js"></script>
     <script src="~/Js/Preparation/Toolsvariety.js"></script>

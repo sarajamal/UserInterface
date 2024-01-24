@@ -400,6 +400,7 @@ header .navbar .nav-item:hover {
     margin: 10px 0 0 0;
     padding: 5px;
     background-color: #676869;
+    vertical-align: middle;
     color: #fff;
     gap: 5px;
 }
@@ -409,6 +410,7 @@ header .navbar .nav-item:hover {
         display: flex;
         flex-direction: row;
         align-content: center;
+        vertical-align:middle;
         bottom: 0;
     }
     .footer .pre-footer-container {
@@ -416,8 +418,8 @@ header .navbar .nav-item:hover {
         display: flex;
         flex-direction: row;
         align-content: center;
+        vertical-align: middle;
         bottom: 0;
-        border-top: 1px solid #fff;
     }
     footer .pre-footer-container .container:first-child, .footer .footer-container .container:first-child {
         text-align: right;
@@ -425,15 +427,17 @@ header .navbar .nav-item:hover {
     footer .pre-footer-container .container:nth-child(2), .footer .footer-container .container:nth-child(2) {
         text-align: left;
     }
+    .footer .pre-footer-container div p{
+           margin: 0;
+    }
 
-
-/*Tabs styling*/
-#exTab1 .tab-content {
-    margin-top: 20px ;
-    text-align: right;
-    color: white;   
-    padding: 5px 15px;
-}
+    /*Tabs styling*/
+    #exTab1 .tab-content {
+        margin-top: 20px;
+        text-align: right;
+        color: white;
+        padding: 5px 15px;
+    }
 
 #exTab1 .tab-content h4 {
     color: #000;
