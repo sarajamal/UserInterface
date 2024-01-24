@@ -391,7 +391,7 @@ namespace Test12.Controllers
         [HttpPost] //This for Add Or Update Page . 
         public IActionResult Upsert1(ProductionVM PropaVM, IFormFile? file, int selectedValue) // should insert name in Upsert view
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
 
                 //for update .. 

@@ -8,10 +8,10 @@ using Test12.Models.Models.Production;
 
 namespace Test12.DataAccess.Repository.IRepository
 {
-    public interface ILoginRepository : IRepository<UsersT>
+    public interface ILoginRepository : IRepository<ClientLogin>
     {
 
-        void Update(UsersT obj);
+        void Update(ClientLogin obj);
         //void AddUser();
         Task<bool> VerifyUserCredentialsWithExternalApi(string username, string password);
         bool UpdateUserPassword(int ID, string newPassword);

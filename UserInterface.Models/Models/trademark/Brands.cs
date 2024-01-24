@@ -22,7 +22,13 @@ namespace Test12.Models.Models.trade_mark
         public DateTime? Date { get; set; }
 
         [ValidateNever]
-        public string? BrandLogoImage { get; set; }
+        public string? BrandLogoImage { get; set; } 
+        [ValidateNever]
+        [MaxLength(255)]
+        public string? CreatedBY { get; set; }   
+        [ValidateNever]
+        [MaxLength(255)]
+        public string? ClientName { get; set; }
         [ValidateNever]
         public string? BrandFooterImage { get; set; }
         

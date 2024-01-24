@@ -29,7 +29,7 @@ namespace Test12.DataAccess.Data
         public DbSet<ProductionSteps> ProductionSteps { get; set; }
         public DbSet<CleaningSteps> CleaningSteps { get; set; }
         public DbSet<Brands> Brands { get; set; }
-        public DbSet<UsersT> UsersT { get; set; }
+        public DbSet<ClientLogin> ClientLogin { get; set; }
         public DbSet<Cleaning> Cleaning { get; set; }
         public DbSet<DevicesAndTools> DevicesAndTools { get; set; }
         public DbSet<MainSections> MainSections { get; set; }
@@ -51,7 +51,7 @@ namespace Test12.DataAccess.Data
             modelBuilder.Entity<ProductionSteps>().ToTable("ProductionSteps");
             modelBuilder.Entity<CleaningSteps>().ToTable("CleaningSteps");
             modelBuilder.Entity<Brands>().ToTable("Brands");
-            modelBuilder.Entity<UsersT>().ToTable("UsersT");
+            modelBuilder.Entity<ClientLogin>().ToTable("ClientLogin");
             modelBuilder.Entity<Cleaning>().ToTable("Cleaning");
             modelBuilder.Entity<DevicesAndTools>().ToTable("DevicesAndTools");
             modelBuilder.Entity<MainSections>().ToTable("MainSections");
