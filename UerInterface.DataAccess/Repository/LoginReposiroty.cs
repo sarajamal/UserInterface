@@ -1,20 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Test12.DataAccess.Data;
 using Test12.DataAccess.Repository.IRepository;
-using Test12.DataAccess.RepositoryPro.IRepositoryPro1;
-using Test12.Models.Models;
 using Test12.Models.Models.Login;
 using Test12.Models.Models.Production;
 
 namespace Test12.DataAccess.Repository
 {
-    public class LoginReposiroty : Repository<LoginModels>, ILoginRepository
+    public class LoginReposiroty : Repository<ClientLogin>, ILoginRepository
     {
         private readonly ApplicationDbContext _context;
 
@@ -24,7 +19,7 @@ namespace Test12.DataAccess.Repository
            
         }
 
-        public void Update(LoginModels obj)
+        public void Update(ClientLogin obj)
         {
 
 
@@ -32,7 +27,7 @@ namespace Test12.DataAccess.Repository
 
         public async Task<bool> VerifyUserCredentialsWithExternalApi(string username, string password)
         {
-            var user = await _context.LoginModels.FirstOrDefaultAsync(u => u.Username == username);
+            var user = await _context.ClientLogin.FirstOrDefaultAsync(u => u.Username == username);
             if (user == null)
             {
                 return false;
@@ -166,7 +161,7 @@ namespace Test12.DataAccess.Repository
             string hashedPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(password, workFactor: 10);
 
             // Store the username and hashed password in the database
-            var user = new LoginModels
+            var user = new ClientLogin
             {
                 Username = username,
                 Password = hashedPassword
@@ -204,7 +199,7 @@ namespace Test12.DataAccess.Repository
 
         public bool UpdateUserPassword(int ID, string newPassword)
         {
-            var user = _context.LoginModels.FirstOrDefault(u => u.Login_ID == ID);
+            var user = _context.ClientLogin.FirstOrDefault(u => u.Login_ID == ID);
 
             if (user != null)
             {
@@ -219,7 +214,7 @@ namespace Test12.DataAccess.Repository
 
         public void hashPasswords()
         {
-            var users = _context.LoginModels.ToList();
+            var users = _context.ClientLogin.ToList();
 
             foreach (var user in users)
             {
