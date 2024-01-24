@@ -121,7 +121,7 @@ namespace Test12.Controllers
                 return View(model);
             }
 
-            var user = _unitOfWork.loginRepository.Get(u => u.Username == model.LoginVM.Username);
+            var user = _unitOfWork.loginRepository.Get(u => u.UserName == model.LoginVM.UserName);
             if (user != null)
             {
                 string hashedPasswordFromDatabase = user.Password; // Retrieve the hashed password from the database
@@ -158,8 +158,8 @@ namespace Test12.Controllers
 
                     if (verificationResult != null && verificationResult.ok)
                     {
-                        RecordUserActivity(user.Login_ID);
-                        return RedirectToLocal(returnUrl, user.Login_ID, true); // Successful login
+                        RecordUserActivity(user.UserID);
+                        return RedirectToLocal(returnUrl, user.UserID, true); // Successful login
                     }
                 }
 
@@ -232,7 +232,7 @@ namespace Test12.Controllers
 
             LoginTredMarktViewModel LoMarket = new()
             {
-                LoginVM = new LoginModels(),
+                LoginVM = new UsersT(),
                 TredMarktVM = new Brands(),
                 tredList = new List<Brands>(),
             };

@@ -239,10 +239,8 @@ namespace Test12.Controllers
                             if (componentAdd != null && componentAdd.PreparationsFK == 0)
                             {
 
-                                int componentId = PrepaVM.PreparationVM.PreparationsID;
-
                                 var newComponent = new PreparationIngredients
-                                {
+                                {   
                                     PreparationsFK = vvv,
                                     PrepQuantity = componentAdd.PrepQuantity,
                                     PrepUnit = componentAdd.PrepUnit,
@@ -268,9 +266,12 @@ namespace Test12.Controllers
                         {
                             if (ToolAdd != null && ToolAdd.PrepToolsID == 0)
                             {
-                                int toolID = PrepaVM.PreparationVM.PreparationsID;
+                                int lastId = _unitOfWork.PrepaToolsVarietyRepository.GetLastToolsId();
+                                int LastId1 = lastId + 1;
+
                                 var newtool = new PreparationTools
                                 {
+                                    PrepToolsID = LastId1,
                                     PreparationsFK = vvv,
                                     PrepTools = ToolAdd.PrepTools
                                 };

@@ -11,6 +11,7 @@ namespace Test12.DataAccess.Repository.IRepository
     {
 
         void Update(PreparationTools obj);
+        int GetLastToolsId();
 
 
 

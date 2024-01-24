@@ -39,7 +39,7 @@ namespace Test12.Controllers
         {
             LoginTredMarktViewModel LogVM = new()
             {
-                LoginVM = new LoginModels(),
+                LoginVM = new UsersT(),
 
             };
 

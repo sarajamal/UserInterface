@@ -21,7 +21,7 @@ namespace Test12.Models.ViewModel
         [ValidateNever]
         public Brands TredMarktVM { get; set; } 
         [ValidateNever]
-        public LoginModels LoginVM { get; set; }
+        public UsersT LoginVM { get; set; }
         [ValidateNever]
         public List<Preparations> PreparatonLoginVMlist { get; set; }
 
