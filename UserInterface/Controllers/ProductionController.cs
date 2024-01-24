@@ -50,7 +50,7 @@ namespace Test12.Controllers
 
             ProductionVM PrVM = new ProductionVM
             {
-               itemList33333 = _unitOfWork.itemsRepository.GetAll(incloudeProperties: "component2")
+                itemList33333 = _unitOfWork.itemsRepository.GetAll(incloudeProperties: "component2")
                             .Where(u => u.BrandFK == brandFK).OrderBy(item => item.ProductionOrder).ToList(),
                 welcomTredmarketProduction = new LoginTredMarktViewModel()
 
@@ -234,8 +234,13 @@ namespace Test12.Controllers
 
                     int ID_الصنف = setFK.ProductionID;
                     //المكونات
+
+
+                    int lastIdComponents = _unitOfWork.ComponentRepository2.GetLastComponentId();
+                    int LastId1Components = lastIdComponents + 1;
                     var firstComponent = new ProductionIngredients
                     {
+                        ProdIngredientsID = LastId1Components,
                         ProductionFK = ID_الصنف,
                         ProdIngredientsName = Request.Form["ProdIngredientsName"], // Retrieve data from form
                         ProdUnit = Request.Form["ProdUnit"],
@@ -256,6 +261,7 @@ namespace Test12.Controllers
 
                                 var newComponent = new ProductionIngredients
                                 {
+                                    ProdIngredientsID = LastId1Components,
                                     ProductionFK = ID_الصنف,
                                     ProdQuantity = componentAdd.ProdQuantity,
                                     ProdUnit = componentAdd.ProdUnit,
@@ -267,8 +273,12 @@ namespace Test12.Controllers
                         }
                     }
                     //أدوات التحضير والصنف2 
+
+                    int lastIdTools = _unitOfWork.PrepaToolsVarietyRepository2.GetLastToolsId();
+                    int LastId1Tools = lastIdTools + 1;
                     var firstRowToolAdd = new ProductionTools
                     {
+                        ProdToolsID = LastId1Tools,
                         ProductionFK = ID_الصنف,
                         ProdTools = Request.Form["ProdTools"],
                     };
@@ -284,6 +294,7 @@ namespace Test12.Controllers
 
                                 var newtool = new ProductionTools
                                 {
+                                    ProdToolsID = LastId1Tools,
                                     ProductionFK = ID_الصنف,
                                     ProdTools = ToolAdd.ProdTools
                                 };
@@ -380,11 +391,11 @@ namespace Test12.Controllers
         [HttpPost] //This for Add Or Update Page . 
         public IActionResult Upsert1(ProductionVM PropaVM, IFormFile? file, int selectedValue) // should insert name in Upsert view
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
 
                 //for update .. 
-                int preparationID = PropaVM.Productionvm.ProductionID;
+                int ProductionFK2 = PropaVM.Productionvm.ProductionID;
                 int toolVarityID = PropaVM.Productionvm.ProductionID;
                 int stepsID = PropaVM.Productionvm.ProductionID;
 
@@ -434,50 +445,67 @@ namespace Test12.Controllers
                 //ProductionIngredients 
                 if (PropaVM.componontVMList2 != null) // تحديث المكونات
                 {
-                    foreach (var component in PropaVM.componontVMList2)
+                    for (int i = 0; i < PropaVM.componontVMList2.Count; i++)
                     {
+                        var Components = PropaVM.componontVMList2[i];
 
-                        if (component.ProductionFK == preparationID)
+                        int lastIdComponents = _unitOfWork.ComponentRepository2.GetLastComponentId();
+                        int LastId1Components = lastIdComponents + 1;
+
+                        var existingComponent = _unitOfWork.ComponentRepository2.Get(u => u.ProdIngredientsID == Components.ProdIngredientsID, incloudeProperties: "Production");
+                        if (existingComponent == null)
                         {
-                            var existingComponent = _unitOfWork.ComponentRepository2.Get(u => u.ProdIngredientsID == component.ProdIngredientsID, incloudeProperties: "Production");
-                            if (existingComponent != null)//if is exit from database
+                            var newComponent = new ProductionIngredients
                             {
-                                existingComponent.ProdQuantity = component.ProdQuantity;
-                                existingComponent.ProdUnit = component.ProdUnit;
-                                existingComponent.ProdIngredientsName = component.ProdIngredientsName;
+                                ProdIngredientsID = LastId1Components,
+                                ProductionFK = ProductionFK2,
+                                ProdQuantity = Components.ProdQuantity,
+                                ProdUnit = Components.ProdUnit,
+                                ProdIngredientsName = Components.ProdIngredientsName
+                            };
+                            _unitOfWork.ComponentRepository2.Add(newComponent);
+                            _unitOfWork.Save();
 
-                                _unitOfWork.ComponentRepository2.Update(existingComponent);
-                                _unitOfWork.Save();
-                            }
-                            else //if add new row and click عدل
-                            {
-                                _unitOfWork.ComponentRepository2.Add(component);
-                                _unitOfWork.Save();
-                            }
                         }
+                        else
+                        {
+                            existingComponent.ProdQuantity = Components.ProdQuantity;
+                            existingComponent.ProdUnit = Components.ProdUnit;
+                            existingComponent.ProdIngredientsName = Components.ProdIngredientsName;
+
+                            _unitOfWork.ComponentRepository2.Update(existingComponent);
+                            _unitOfWork.Save();
+                        }
+                           
                     }
                 }
                 //أدوات التحضير والصنف2
                 if (PropaVM.ToolsVarityVM2 != null) //تحديث الأدوات.
                 {
-                    foreach (var toolvariety in PropaVM.ToolsVarityVM2)
+                    for (int i = 0; i < PropaVM.ToolsVarityVM2.Count; i++)
                     {
+                        var Tools = PropaVM.ToolsVarityVM2[i];
 
-                        if (toolvariety.ProductionFK == toolVarityID)
+                        int lastIdTools = _unitOfWork.PrepaToolsVarietyRepository.GetLastToolsId();
+                        int LastId1Tools = lastIdTools + 1;
+
+                        var existingtoolvariety = _unitOfWork.PrepaToolsVarietyRepository2.Get(u => u.ProdToolsID == Tools.ProdToolsID, incloudeProperties: "Production");
+                        if (existingtoolvariety == null)
                         {
-                            var existingtoolvariety = _unitOfWork.PrepaToolsVarietyRepository2.Get(u => u.ProdToolsID == toolvariety.ProdToolsID, incloudeProperties: "Production");
-                            if (existingtoolvariety != null)//if is exit from database
+                            var firstRowToolAdd = new ProductionTools
                             {
-                                existingtoolvariety.ProdToolsID = toolvariety.ProdToolsID;
-
-                                _unitOfWork.PrepaToolsVarietyRepository2.Update(existingtoolvariety);
-                                _unitOfWork.Save();
-                            }
-                            else //if add new row and click عدل
-                            {
-                                _unitOfWork.PrepaToolsVarietyRepository2.Add(toolvariety);
-                                _unitOfWork.Save();
-                            }
+                                ProdToolsID = LastId1Tools,
+                                ProductionFK = ProductionFK2,
+                                ProdTools = Request.Form["ProdTools"],
+                            };
+                            _unitOfWork.PrepaToolsVarietyRepository2.Add(firstRowToolAdd);
+                            _unitOfWork.Save();
+                        }
+                        else //if is exit from database
+                        {
+                            existingtoolvariety.ProdToolsID = Tools.ProdToolsID;
+                            _unitOfWork.PrepaToolsVarietyRepository2.Update(existingtoolvariety);
+                            _unitOfWork.Save();
                         }
                     }
                 }
@@ -728,7 +756,7 @@ namespace Test12.Controllers
             }
 
             var DeleteoneOflist = _unitOfWork.itemsRepository.Get(u => u.ProductionID == id);
-            
+
             if (DeleteoneOflist == null)
             {
 

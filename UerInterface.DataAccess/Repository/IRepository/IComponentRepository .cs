@@ -11,8 +11,9 @@ namespace Test12.DataAccess.Repository.IRepository
     {
 
         void Update(PreparationIngredients obj);
+        int GetLastComponentId();
 
-       
+
 
     }
 }

@@ -232,7 +232,7 @@ namespace Test12.Controllers
 
             LoginTredMarktViewModel LoMarket = new()
             {
-                LoginVM = new LoginModels(),
+                LoginVM = new ClientLogin(),
                 TredMarktVM = new Brands(),
                 tredList = new List<Brands>(),
             };

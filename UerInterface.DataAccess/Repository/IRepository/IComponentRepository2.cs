@@ -12,7 +12,7 @@ namespace Test12.DataAccess.RepositoryPro.IRepositoryPro1
     {
 
         void Update(ProductionIngredients obj);
-
+        int GetLastComponentId();
 
 
     }

@@ -36,6 +36,18 @@ namespace Test12.DataAccess.RepositoryPro
 
         }
 
-   
+        public int GetLastComponentId()
+        {
+            // If there are no entries in the table, return 0 or an appropriate default value
+            if (!_context.ProductionIngredients.Any())
+            {
+                return 0;
+            }
+
+            // Retrieve and return the max PrepStepsID
+            return _context.ProductionIngredients.Max(p => p.ProdIngredientsID);
+        }
+
+
     }
 }
