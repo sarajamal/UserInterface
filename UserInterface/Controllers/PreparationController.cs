@@ -52,7 +52,7 @@ namespace Test12.Controllers
                 PreparationList = _unitOfWork.PreparationRepository.GetAll(incloudeProperties: "component")
                             .Where(u => u.BrandFK == brandFK).OrderBy(item => item.PreparationsOrder).ToList(),
                 WelcomTredMarketPrecomponent = new LoginTredMarktViewModel()
-                
+
             };
             PrVM.WelcomTredMarketPrecomponent.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFK);
             PrVM.WelcomTredMarketPrecomponent.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == brandFK);
@@ -221,8 +221,12 @@ namespace Test12.Controllers
 
                     int vvv = setFK.PreparationsID;
                     //المكونات
+
+                    int lastIdComponents = _unitOfWork.ComponentRepository.GetLastComponentId();
+                    int LastId1Components = lastIdComponents + 1;
                     var firstComponent = new PreparationIngredients
                     {
+                        PrepIngredientsID = LastId1Components,
                         PreparationsFK = vvv,
                         PrepIngredientsName = Request.Form["PrepIngredientsName"], // Retrieve data from form
                         PrepUnit = Request.Form["PrepUnit"],
@@ -240,7 +244,8 @@ namespace Test12.Controllers
                             {
 
                                 var newComponent = new PreparationIngredients
-                                {   
+                                {
+                                    PrepIngredientsID = LastId1Components,
                                     PreparationsFK = vvv,
                                     PrepQuantity = componentAdd.PrepQuantity,
                                     PrepUnit = componentAdd.PrepUnit,
@@ -252,8 +257,12 @@ namespace Test12.Controllers
                         }
                     }
                     //أدوات التحضير والصنف 
+
+                    int lastIdTools = _unitOfWork.PrepaToolsVarietyRepository.GetLastToolsId();
+                    int LastId1Tools = lastIdTools + 1;
                     var firstRowToolAdd = new PreparationTools
                     {
+                        PrepToolsID = LastId1Tools,
                         PreparationsFK = vvv,
                         PrepTools = Request.Form["PrepTools"],
                     };
@@ -266,12 +275,10 @@ namespace Test12.Controllers
                         {
                             if (ToolAdd != null && ToolAdd.PrepToolsID == 0)
                             {
-                                int lastId = _unitOfWork.PrepaToolsVarietyRepository.GetLastToolsId();
-                                int LastId1 = lastId + 1;
 
                                 var newtool = new PreparationTools
                                 {
-                                    PrepToolsID = LastId1,
+                                    PrepToolsID = LastId1Tools,
                                     PreparationsFK = vvv,
                                     PrepTools = ToolAdd.PrepTools
                                 };
@@ -304,7 +311,6 @@ namespace Test12.Controllers
                                     PrepStepsNum = stepAdd.PrepStepsNum
 
                                 };
-
 
                                 var file1Name1 = $"file1_{newStep.PrepStepsID}";
                                 var file1ForStep1 = HttpContext.Request.Form.Files[file1Name1];
@@ -439,50 +445,67 @@ namespace Test12.Controllers
                 //المكونات 
                 if (PrepaVM.componontVMList != null) // تحديث المكونات
                 {
-                    foreach (var component in PrepaVM.componontVMList)
+                    for (int i = 0; i < PrepaVM.componontVMList.Count; i++)
                     {
+                        var Components = PrepaVM.componontVMList[i];
 
-                        if (component.PreparationsFK == preparationID)
+                        int lastIdComponents = _unitOfWork.ComponentRepository.GetLastComponentId();
+                        int LastId1Components = lastIdComponents + 1;
+
+                        var existingComponent = _unitOfWork.ComponentRepository.Get(u => u.PrepIngredientsID == Components.PrepIngredientsID, incloudeProperties: "Preparation");
+                        if (existingComponent == null)
                         {
-                            var existingComponent = _unitOfWork.ComponentRepository.Get(u => u.PrepIngredientsID == component.PrepIngredientsID, incloudeProperties: "Preparation");
-                            if (existingComponent != null)//if is exit from database
+                            var newComponent = new PreparationIngredients
                             {
-                                existingComponent.PrepQuantity = component.PrepQuantity;
-                                existingComponent.PrepUnit = component.PrepUnit;
-                                existingComponent.PrepIngredientsName = component.PrepIngredientsName;
-
-                                _unitOfWork.ComponentRepository.Update(existingComponent);
-                                _unitOfWork.Save();
-                            }
-                            else //if add new row and click عدل
-                            {
-                                _unitOfWork.ComponentRepository.Add(component);
-                                _unitOfWork.Save();
-                            }
+                                PrepIngredientsID = LastId1Components,
+                                PreparationsFK = preparationID,
+                                PrepQuantity = Components.PrepQuantity,
+                                PrepUnit = Components.PrepUnit,
+                                PrepIngredientsName = Components.PrepIngredientsName
+                            };
+                            _unitOfWork.ComponentRepository.Add(newComponent);
+                            _unitOfWork.Save();
                         }
+                        else
+                        {
+                            existingComponent.PrepQuantity = Components.PrepQuantity;
+                            existingComponent.PrepUnit = Components.PrepUnit;
+                            existingComponent.PrepIngredientsName = Components.PrepIngredientsName;
+
+                            _unitOfWork.ComponentRepository.Update(existingComponent);
+                            _unitOfWork.Save();
+                        }
+
+
                     }
                 }
                 //أدوات التحضير والصنف
                 if (PrepaVM.ToolsVarityVM != null) //تحديث الأدوات.
                 {
-                    foreach (var toolvariety in PrepaVM.ToolsVarityVM)
+                    for (int i = 0; i < PrepaVM.ToolsVarityVM.Count; i++)
                     {
+                        var Tools = PrepaVM.ToolsVarityVM[i];
 
-                        if (toolvariety.PreparationsFK == toolVarityID)
+                        int lastIdTools = _unitOfWork.PrepaToolsVarietyRepository.GetLastToolsId();
+                        int LastId1Tools = lastIdTools + 1;
+
+                        var existingtoolvariety = _unitOfWork.PrepaToolsVarietyRepository.Get(u => u.PrepToolsID == Tools.PrepToolsID, incloudeProperties: "Preparation");
+                        if (existingtoolvariety == null)
                         {
-                            var existingtoolvariety = _unitOfWork.PrepaToolsVarietyRepository.Get(u => u.PrepToolsID == toolvariety.PrepToolsID, incloudeProperties: "Preparation");
-                            if (existingtoolvariety != null)//if is exit from database
+                            var firstRowToolAdd = new PreparationTools
                             {
-                                existingtoolvariety.PrepTools = toolvariety.PrepTools;
-
-                                _unitOfWork.PrepaToolsVarietyRepository.Update(existingtoolvariety);
-                                _unitOfWork.Save();
-                            }
-                            else //if add new row and click عدل
-                            {
-                                _unitOfWork.PrepaToolsVarietyRepository.Add(toolvariety);
-                                _unitOfWork.Save();
-                            }
+                                PrepToolsID = LastId1Tools,
+                                PreparationsFK = preparationID,
+                                PrepTools = Request.Form["PrepTools"],
+                            };
+                            _unitOfWork.PrepaToolsVarietyRepository.Add(firstRowToolAdd);
+                            _unitOfWork.Save();
+                        }
+                        else
+                        {
+                            existingtoolvariety.PrepTools = Tools.PrepTools;
+                            _unitOfWork.PrepaToolsVarietyRepository.Update(existingtoolvariety);
+                            _unitOfWork.Save();
                         }
                     }
                 }
@@ -610,7 +633,7 @@ namespace Test12.Controllers
                 }
                 TempData["success"] = "تم تحديث التحضيرات بشكل ناجح";
 
-                return RedirectToAction("RedirectToUpsert", new { id = PrepaVM.PreparationVM.PreparationsID , brandFk = PrepaVM.PreparationVM.BrandFK });
+                return RedirectToAction("RedirectToUpsert", new { id = PrepaVM.PreparationVM.PreparationsID, brandFk = PrepaVM.PreparationVM.BrandFK });
             }
 
             else
@@ -678,7 +701,7 @@ namespace Test12.Controllers
             int PreparationFk = toolsVarityDelete.PreparationsFK;
             var BrandFKEx = _unitOfWork.PreparationRepository.Get(u => u.PreparationsID == PreparationFk);
             int? BranFK = BrandFKEx.BrandFK;
-          
+
             if (toolsVarityDelete == null)
             {
 

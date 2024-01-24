@@ -25,6 +25,18 @@ namespace Test12.DataAccess.RepositoryPro
 
         }
 
+        public int GetLastToolsId()
+        {
+            // If there are no entries in the table, return 0 or an appropriate default value
+            if (!_context.ProductionTools.Any())
+            {
+                return 0;
+            }
+
+            // Retrieve and return the max PrepStepsID
+            return _context.ProductionTools.Max(p => p.ProdToolsID);
+        }
+
 
     }
     
