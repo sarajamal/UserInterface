@@ -377,7 +377,9 @@ header .navbar .nav-item:hover {
     color: rgb(52, 92, 136);
 }
 
-
+label{
+    color:#000;
+}
 /*footer*/
 /*.footer {
     display:flex;
