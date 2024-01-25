@@ -812,7 +812,11 @@ namespace Test12.Controllers
 
 
             }
-            var DeleteoneOflist = _unitOfWork.PreparationRepository.Get(u => u.PreparationsID == id);
+             var DeleteoneOflist = _unitOfWork.PreparationRepository.Get(u => u.PreparationsID == id);
+             string FKBrandToRedyrect = DeleteoneOflist.BrandFK.ToString();
+
+            //عشان أوجهه لصفحة List 
+             int? FKBrandToRedyrect1 = DeleteoneOflist.BrandFK;
             if (DeleteoneOflist == null)
             {
 
@@ -831,8 +835,9 @@ namespace Test12.Controllers
             }
             _unitOfWork.PreparationRepository.Remove(DeleteoneOflist);
             _unitOfWork.Save();
-            return Json(new { success = true });
-        }
+            return Json(new { success = true, redirectToUrl = Url.Action("RedirectToPreparation", new {  BrandFK = FKBrandToRedyrect1 }) }); //أحتاج يرجع لنفس صفحة التعديل 
+
+         }
         #endregion
 
     }

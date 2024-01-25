@@ -758,7 +758,10 @@ namespace Test12.Controllers
             }
 
             var DeleteoneOflist = _unitOfWork.itemsRepository.Get(u => u.ProductionID == id);
+            string FKBrandToRedyrect = DeleteoneOflist.BrandFK.ToString();
 
+            //عشان أوجهه لصفحة List 
+            int? FKBrandToRedyrect1 = DeleteoneOflist.BrandFK;
             if (DeleteoneOflist == null)
             {
 
@@ -777,7 +780,7 @@ namespace Test12.Controllers
             }
             _unitOfWork.itemsRepository.Remove(DeleteoneOflist);
             _unitOfWork.Save();
-            return Json(new { success = true });
+            return Json(new { success = true, redirectToUrl = Url.Action("RedirectToProduction", new { BrandFK = FKBrandToRedyrect1 }) }); //أحتاج يرجع لنفس صفحة التعديل 
         }
         #endregion
 

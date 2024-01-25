@@ -325,7 +325,7 @@ namespace Test12.Controllers
             _unitOfWork.Device_tools1.Remove(deleteDeviceToolPicture);
             _unitOfWork.Save();
 
-            return Json(new { success = true });
+            return Json(new { success = true, redirectToUrl = Url.Action("RedirectToDeviceToolsList", new { BrandFK = BrandFK }) }); //أحتاج يرجع لنفس صفحة التعديل 
         }
         #endregion
 

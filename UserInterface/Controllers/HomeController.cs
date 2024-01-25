@@ -158,8 +158,8 @@ namespace Test12.Controllers
 
                     if (verificationResult != null && verificationResult.ok)
                     {
-                        RecordUserActivity(user.Login_ID);
-                        return RedirectToLocal(returnUrl, user.Login_ID, true); // Successful login
+                        RecordUserActivity(user.BrandFK);
+                        return RedirectToLocal(returnUrl, user.BrandFK, true); // Successful login
                     }
                 }
 

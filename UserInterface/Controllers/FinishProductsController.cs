@@ -287,8 +287,8 @@ namespace Test12.Controllers
            
             _unitOfWork.readyFoodRepository.Remove(deleteFinshFoodPicture);
             _unitOfWork.Save();
-          
-            return Json(new { success = true });
+
+            return Json(new { success = true, redirectToUrl = Url.Action("RedirectToFinishProductionList", new { brandFK = BrandFK })});
         }
         #endregion
 

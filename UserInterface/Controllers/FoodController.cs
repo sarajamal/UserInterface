@@ -289,7 +289,7 @@ namespace Test12.Controllers
             _unitOfWork.FoodRepository.Remove(deleteFoodPicture);
             _unitOfWork.Save();
 
-            return Json(new { success = true });
+            return Json(new { success = true, redirectToUrl = Url.Action("RedirectToFoodList", new { brandFK = BrandFK }) });
         }
         #endregion
 
