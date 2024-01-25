@@ -17,7 +17,7 @@
         </div>ُ
 
 
-        <form method="post" class="row" enctype="multipart/form-data" asp-action="CreateProduction" asp-controller="Production" id="myForm1">
+        <form method="post" class="row" enctype="multipart/form-data" id="myForm1" >
             <input asp-for="Productionvm.ProductionID" hidden />
             <input asp-for="Productionvm.ProductImage" hidden />
             
@@ -132,10 +132,9 @@
                                                 <input type="file" name="file" class="form-control border-0 shadow" id="customFile"
                                                        onchange="document.getElementById('PreviewPhoto').src= window.URL.createObjectURL(this.files[0])" />
                                                 <div id="errorMessage1" style="color: red; display: none;" class="py-3">
-                                                    . يجب ادخال صورة Product النهائية *
+                                                    . يجب ادخال صورة الأصناف النهائية *
                                                 </div>
                                             </div>
-
                                         </div>
 
                                         <div class="form-group col-4">
@@ -144,7 +143,35 @@
                                                      width="125" height="125" style="border:1px ; margin-top:20px" required />
                                             </div>
                                         </div>
+                                        @* List *@
+                                        @if (Model.Productionvm.ProductionID == 0)
+                                        {
+                                            <div class="form-floating py-2 col-12">
+                                                @{
+                                                    var sortedPreparationName = Model.itemsList.OrderBy(item => item.ProductionOrder).ToList();
+                                                }
+                                                <select asp-for="Productionvm.ProductionID" class="form-select" id="selectPreparation" name="selectedValue">
+                                                    <option value="" disabled selected>-- اختر مكان الصف الجديد--</option>
+                                                    @foreach (var item in sortedPreparationName)
+                                                    {
+                                                        <option value="@item.ProductionID">@item.ProductName</option>
+                                                    }
+                                                    <option value="0">اخر صف</option> <!-- The "Other" option -->
+                                                </select>
+                                            </div>
+                                        }
+                                        <div class="form-group col-12 py-2">
+                                            <div style="text-align: left;">
+
+                                                <div class="form-group col-12 py-3 fxcc">
+                                                    <input type="submit" id="submitButton"
+                                                           value=" حفظ" href="@Url.Action("CreateProduction",
+                                                           "Production", new { id = Model.Productionvm.ProductionID,brandFK = Model.welcomTredmarketProduction.TredMarktVM.BrandID })" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+                                   
 
                                 </div>
 
@@ -187,7 +214,18 @@
                                                 </td>
                                             </tr>
                                         </tbody>
+                                        
                                     </table>
+                                    <div class="form-group col-12 py-2">
+                                        <div style="text-align: left;">
+
+                                            <div class="form-group col-12 py-3 fxcc">
+                                                <input type="submit" id="submitButton"
+                                                       value=" حفظ التغييرات" href="@Url.Action("CreateProduction",
+                                                           "Production", new { id = Model.Productionvm.ProductionID,brandFK = Model.welcomTredmarketProduction.TredMarktVM.BrandID })" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
+                                            </div>
+                                        </div>
+                                    </div>
 
                                 </div>
 
@@ -223,9 +261,17 @@
                                                 </td>
                                             </tr>
                                         </tbody>
-
                                     </table>
+                                    <div class="form-group col-12 py-2">
+                                        <div style="text-align: left;">
 
+                                            <div class="form-group col-12 py-3 fxcc">
+                                                <input type="submit" id="submitButton"
+                                                       value=" حفظ التغييرات" href="@Url.Action("CreateProduction",
+                                                           "Production", new { id = Model.Productionvm.ProductionID,brandFK = Model.welcomTredmarketProduction.TredMarktVM.BrandID })" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 @*الخطوات*@
@@ -246,42 +292,19 @@
                                             </tr>
                                         </tbody>
                                     </table>
-
-                                    @* أزرار إضافة خطوات جديدة *@
-
-
-
-                                    @* List *@
-                                    @if (Model.Productionvm.ProductionID == 0)
-                                    {
-                                        <div class="form-floating py-2 col-12">
-                                            @{
-                                                var sortedPreparationName = Model.itemsList.OrderBy(item => item.ProductionOrder).ToList();
-                                            }
-                                            <select asp-for="Productionvm.ProductionID" class="form-select" id="selectPreparation" name="selectedValue">
-                                                <option value="" disabled selected>-- اختر مكان الصف الجديد--</option>
-                                                @foreach (var item in sortedPreparationName)
-                                                {
-                                                    <option value="@item.ProductionID">@item.ProductName</option>
-                                                }
-                                                <option value="0">اخر صف</option> <!-- The "Other" option -->
-                                            </select>
-                                        </div>
-                                    }
+ 
 
                                     @* أزرار الحفظ *@
                                     <div class="form-group col-12 py-2">
                                         <div style="text-align: left;">
 
-                                            <div class="form-group col-12 py-5">
-                                                <input type="submit" value=" حفظ"
-                                                       asp-action="CreateProduction" asp-route-id="@Model.Productionvm.ProductionID" style="text-align:center" class="btn btn-style1 fnt-white me-3" id="submitButton" />
+                                            <div class="form-group col-12 py-3 fxcc">
+                                                <input type="submit" id="submitButton"
+                                                       value=" حفظ التغييرات" href="@Url.Action("CreateProduction",
+                                                           "Production", new { id = Model.Productionvm.ProductionID,brandFK = Model.welcomTredmarketProduction.TredMarktVM.BrandID })" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
                                             </div>
-
                                         </div>
                                     </div>
-
-                                   
                                 </div>
                             </div>
                         </div>

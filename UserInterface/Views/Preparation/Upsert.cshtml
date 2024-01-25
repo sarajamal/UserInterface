@@ -116,6 +116,9 @@
                                                 <label asp-for=" PreparationVM.prepareImage" class="ms-2"> ادخل صورة</label>
                                                 <input type="file" name="file" class="form-control border-0 shadow" id="customFile"
                                                        onchange="document.getElementById('PreviewPhoto').src= window.URL.createObjectURL(this.files[0])" />
+                                                <div id="errorMessage1" style="color: red; display: none;" class="py-3">
+                                                    . يجب ادخال صورة التحضيرات النهائية *
+                                                </div>
 
                                             </div>
 
@@ -131,9 +134,15 @@
 
 
                                         </div>
-                                        <div class="form-group col-12 py-3 fxcl">
-                                            <input type="submit" id="saveChange"
-                                                   value=" حفظ التغييرات" asp-action="Upsert" asp-route-id="@Model.PreparationVM.PreparationsID" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
+                                        <div class="form-group col-12 py-2">
+                                            <div style="text-align: left;">
+
+                                                <div class="form-group col-12 py-3 fxcc">
+                                                    <input type="submit" id="saveChange"
+                                                           value=" حفظ التغييرات" href="@Url.Action("RedirectToUpsert",
+                                                  "Preparation", new { id = Model.PreparationVM.PreparationsID,brandFK = Model.WelcomTredMarketPrecomponent.TredMarktVM.BrandID })" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -196,9 +205,15 @@
 
                                         </tbody>
                                     </table>
-                                    <div class="form-group col-12 py-3 fxc">
-                                        <input type="submit" id="saveChange"
-                                               value=" حفظ التغييرات" asp-action="Upsert" asp-route-id="@Model.PreparationVM.PreparationsID" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
+                                    <div class="form-group col-12 py-2">
+                                        <div style="text-align: left;">
+
+                                            <div class="form-group col-12 py-3 fxcc">
+                                                <input type="submit" id="saveChange"
+                                                       value=" حفظ التغييرات" href="@Url.Action("RedirectToUpsert",
+                                                  "Preparation", new { id = Model.PreparationVM.PreparationsID,brandFK = Model.WelcomTredMarketPrecomponent.TredMarktVM.BrandID })" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -251,9 +266,15 @@
                                         </tbody>
 
                                     </table>
-                                    <div class="form-group col-12 py-3 fxcl">
-                                        <input type="submit" id="saveChange"
-                                               value=" حفظ التغييرات" asp-action="Upsert" asp-route-id="@Model.PreparationVM.PreparationsID" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
+                                    <div class="form-group col-12 py-2">
+                                        <div style="text-align: left;">
+
+                                            <div class="form-group col-12 py-3 fxcc">
+                                                <input type="submit" id="saveChange"
+                                                       value=" حفظ التغييرات" href="@Url.Action("RedirectToUpsert",
+                                                  "Preparation", new { id = Model.PreparationVM.PreparationsID,brandFK = Model.WelcomTredMarketPrecomponent.TredMarktVM.BrandID })" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -453,6 +474,7 @@ function validateرقم_الخطوة2(input, index) {
     <script src="~/Js/Preparation/AddDltComponent.js"></script>
     <script src="~/Js/Preparation/Toolsvariety.js"></script>
     <script src="~/Js/Preparation/AddDLTsteps.js"></script>
+    <script src="~/Js/Preparation/customPreparation.js"></script>
 }
 
 

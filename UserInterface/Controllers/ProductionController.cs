@@ -382,9 +382,10 @@ namespace Test12.Controllers
                     _unitOfWork.Save();
                     TempData["success"] = "تم إضافة الاصناف بشكل ناجح";
                 }
+                return RedirectToAction("RedirectToCreateProduction", new { brandFK = PropaVM.tredMaeketVM.BrandID });
 
             }
-            return RedirectToAction("RedirectToProduction", new { brandFK = PropaVM.tredMaeketVM.BrandID });
+            return RedirectToAction("RedirectToCreateProduction", new { brandFK = PropaVM.tredMaeketVM.BrandID });
         }
 
 
@@ -486,7 +487,7 @@ namespace Test12.Controllers
                     {
                         var Tools = PropaVM.ToolsVarityVM2[i];
 
-                        int lastIdTools = _unitOfWork.PrepaToolsVarietyRepository.GetLastToolsId();
+                        int lastIdTools = _unitOfWork.PrepaToolsVarietyRepository2.GetLastToolsId();
                         int LastId1Tools = lastIdTools + 1;
 
                         var existingtoolvariety = _unitOfWork.PrepaToolsVarietyRepository2.Get(u => u.ProdToolsID == Tools.ProdToolsID, incloudeProperties: "Production");
@@ -496,7 +497,7 @@ namespace Test12.Controllers
                             {
                                 ProdToolsID = LastId1Tools,
                                 ProductionFK = ProductionFK2,
-                                ProdTools = Request.Form["ProdTools"],
+                                ProdTools = Tools.ProdTools,
                             };
                             _unitOfWork.PrepaToolsVarietyRepository2.Add(firstRowToolAdd);
                             _unitOfWork.Save();
@@ -504,6 +505,7 @@ namespace Test12.Controllers
                         else //if is exit from database
                         {
                             existingtoolvariety.ProdToolsID = Tools.ProdToolsID;
+                            existingtoolvariety.ProdTools = Tools.ProdTools;
                             _unitOfWork.PrepaToolsVarietyRepository2.Update(existingtoolvariety);
                             _unitOfWork.Save();
                         }
@@ -512,7 +514,7 @@ namespace Test12.Controllers
                 //الخطوات2 
                 if (PropaVM.stepsVM2 != null)
                 {
-                    for (int i = 0; i < PropaVM.stepsVM2.Count; i++)
+                    for ( int i = 0; i < PropaVM.stepsVM2.Count; i++)
                     {
                         var Steps = PropaVM.stepsVM2[i];
 

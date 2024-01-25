@@ -17,7 +17,7 @@
         </div>
 
 
-        <form method="post" class="row" enctype="multipart/form-data" asp-route-id="@Model.tredMaeketVM.BrandID" asp-action="CreatePreparation" asp-controller="Preparation" id="MyForm">
+        <form method="post" class="row" enctype="multipart/form-data" id="MyForm">
 
 
             <input asp-for="PreparationVM.PreparationsID" hidden />
@@ -142,8 +142,30 @@
 
 
                                         </div>
+                                        <div class="form-floating py-2 col-12">
+                                            @{
+                                                var sortedPreparationName = Model.PreparationList.OrderBy(item => item.PreparationsOrder).ToList();
+                                            }
+                                            <select asp-for="PreparationVM.PreparationsID" class="form-select" id="selectPreparation" name="selectedValue">
+                                                <option value="" disabled selected>-- اختر مكان الصف الجديد--</option>
+                                                @foreach (var item in sortedPreparationName)
+                                                {
+                                                    <option value="@item.PreparationsID">@item.prepareName</option>
+                                                }
+                                                <option value="0">اخر صف</option> <!-- The "Other" option -->
+                                            </select>
+                                        </div>
                                     </div>
-                                 
+                                    <div class="form-group col-12 py-2">
+                                        <div style="text-align: left;">
+
+                                            <div class="form-group col-12 py-3 fxcc">
+                                                <input type="submit" id="submitButton"
+                                                       value=" حفظ" href="@Url.Action("Upsert",
+                                                           "Preparation", new { id = Model.PreparationVM.PreparationsID,brandFK = Model.WelcomTredMarketPrecomponent.TredMarktVM.BrandID })" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
+                                            </div>
+                                        </div>
+                                    </div>
 
                                 </div>
 
@@ -189,6 +211,16 @@
 
                                         </tbody>
                                     </table>
+                                    <div class="form-group col-12 py-2">
+                                        <div style="text-align: left;">
+
+                                            <div class="form-group col-12 py-3 fxcc">
+                                                <input type="submit" id="submitButton"
+                                                       value=" حفظ" href="@Url.Action("Upsert",
+                                                           "Preparation", new { id = Model.PreparationVM.PreparationsID,brandFK = Model.WelcomTredMarketPrecomponent.TredMarktVM.BrandID })" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 @*الأدوات*@
@@ -226,9 +258,17 @@
                                             </tr>
 
                                         </tbody>
-
                                     </table>
-                           
+                                    <div class="form-group col-12 py-2">
+                                        <div style="text-align: left;">
+
+                                            <div class="form-group col-12 py-3 fxcc">
+                                                <input type="submit" id="submitButton"
+                                                       value=" حفظ" href="@Url.Action("Upsert",
+                                                           "Preparation", new { id = Model.PreparationVM.PreparationsID,brandFK = Model.WelcomTredMarketPrecomponent.TredMarktVM.BrandID })" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 @*الخطوات*@
@@ -273,44 +313,26 @@
                                     </select>
                                     </div>*@
 
-
-                                    <div class="form-floating py-2 col-12">
-                                        @{
-                                            var sortedPreparationName = Model.PreparationList.OrderBy(item => item.PreparationsOrder).ToList();
-                                        }
-                                        <select asp-for="PreparationVM.PreparationsID" class="form-select" id="selectPreparation" name="selectedValue">
-                                            <option value="" disabled selected>-- اختر مكان الصف الجديد--</option>
-                                            @foreach (var item in sortedPreparationName)
-                                            {
-                                                <option value="@item.PreparationsID">@item.prepareName</option>
-                                            }
-                                            <option value="0">اخر صف</option> <!-- The "Other" option -->
-                                        </select>
-                                    </div>
-
-
                                     <div class="form-group col-12 py-2">
                                         <div style="text-align: left;">
 
-                                            <div class="form-group col-12 py-5 fxcc">
-                                                <input asp-for="@Model.tredMaeketVM.BrandID" class="form-control" hidden />
-                                                <input asp-for="@Model.tredMaeketVM.ID_Login" class="form-control" hidden />
-                                                <input asp-for="@Model.tredMaeketVM.BrandName" class="form-control" hidden />
-                                                <input asp-for="@Model.tredMaeketVM.Date" class="form-control" hidden />
-                                                <input asp-for="tredMaeketVM.BrandCoverImage" hidden />
-                                                <input asp-for="tredMaeketVM.BrandLogoImage" hidden />
-                                                <input asp-for="tredMaeketVM.BrandFooterImage" hidden />
-
-                                                <input type="button" onclick="validateAndSubmit()" value=" حفظ"
-                                                       style="text-align:center" class="btn btn-style1 fnt-white me-3" id="submitButton" />
+                                            <div class="form-group col-12 py-3 fxcc">
+                                                <input type="submit" id="submitButton"
+                                                       value=" حفظ" href="@Url.Action("Upsert",
+                                                           "Preparation", new { id = Model.PreparationVM.PreparationsID,brandFK = Model.WelcomTredMarketPrecomponent.TredMarktVM.BrandID })" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 
+</body>
 
 
 
@@ -547,13 +569,7 @@
                                 </div>
                             </div>
                         </div> *@
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-
-</body>
+                  
 
 
 <script>

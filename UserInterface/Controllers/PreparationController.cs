@@ -378,7 +378,7 @@ namespace Test12.Controllers
         [HttpPost] //This for Add Or Update Page . 
         public IActionResult Upsert(PreComViewModel PrepaVM, IFormFile? file) // should insert name in Upsert view
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
 
                 //for update .. 
@@ -496,7 +496,7 @@ namespace Test12.Controllers
                             {
                                 PrepToolsID = LastId1Tools,
                                 PreparationsFK = preparationID,
-                                PrepTools = Request.Form["PrepTools"],
+                                PrepTools = Tools.PrepTools,
                             };
                             _unitOfWork.PrepaToolsVarietyRepository.Add(firstRowToolAdd);
                             _unitOfWork.Save();
