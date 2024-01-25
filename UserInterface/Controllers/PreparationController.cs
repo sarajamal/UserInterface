@@ -216,6 +216,7 @@ namespace Test12.Controllers
 
                         setFK.prepareImage = fileName; // Save only the file name in the database
                         _unitOfWork.Save();
+                        //return RedirectToAction("RedirectToUpsert", new { id = setFK.PreparationsID, brandFk = PrepaVM.PreparationVM.BrandFK });
 
                     }
 
