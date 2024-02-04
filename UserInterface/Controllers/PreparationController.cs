@@ -243,10 +243,10 @@ namespace Test12.Controllers
                         {
                             if (componentAdd != null && componentAdd.PreparationsFK == 0)
                             {
-                                int lastComponentloop = LastId1Components + 1;
+                                LastId1Components ++ ;
                                 var newComponent = new PreparationIngredients
                                 {
-                                    PrepIngredientsID = lastComponentloop,
+                                    PrepIngredientsID = LastId1Components,
                                     PreparationsFK = vvv,
                                     PrepQuantity = componentAdd.PrepQuantity,
                                     PrepUnit = componentAdd.PrepUnit,
@@ -276,11 +276,11 @@ namespace Test12.Controllers
                         {
                             if (ToolAdd != null && ToolAdd.PrepToolsID == 0)
                             {
-                                int lastToolsloop = LastId1Tools + 1;
+                                LastId1Tools ++;
 
                                 var newtool = new PreparationTools
                                 {
-                                    PrepToolsID = lastToolsloop,
+                                    PrepToolsID = LastId1Tools,
                                     PreparationsFK = vvv,
                                     PrepTools = ToolAdd.PrepTools
                                 };

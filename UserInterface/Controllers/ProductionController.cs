@@ -256,7 +256,7 @@ namespace Test12.Controllers
                         {
                             if (componentAdd != null && componentAdd.ProductionFK == 0)
                             {
-
+                                LastId1Components++;
                                 int componentId = PropaVM.Productionvm.ProductionID;
 
                                 var newComponent = new ProductionIngredients
@@ -291,8 +291,9 @@ namespace Test12.Controllers
                         {
                             if (ToolAdd != null && ToolAdd.ProdToolsID == 0)
                             {
+                                LastId1Tools++;
 
-                                var newtool = new ProductionTools
+                                 var newtool = new ProductionTools
                                 {
                                     ProdToolsID = LastId1Tools,
                                     ProductionFK = ID_الصنف,
