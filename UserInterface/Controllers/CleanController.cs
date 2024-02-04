@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Test12.DataAccess.Repository.IRepository;
 using Test12.Models.Models.Clean;
-using Test12.Models.Models.Preparation;
-using Test12.Models.Models.Production;
 using Test12.Models.Models.trade_mark;
 using Test12.Models.ViewModel;
 
