@@ -33,7 +33,10 @@
                         </div>
                         <div style="text-align:center">
                             <div style="text-align:center">
-                                <a asp-controller="Clean" asp-action="CreateClean" asp-route-id="@TempData["ID"]" name="AddButtonItem" class=" btn btn-style2 fnt-white px-4 add-button">
+                                
+                                <a class=" btn btn-style2 fnt-white px-4 add-button" href="@Url.Action("RedirectToCreateClean",
+                                "Clean", new { brandFK = Model.WelcomTredMarketClean.TredMarktVM.BrandID })">
+
                                     <i class="bi bi-plus-circle"></i>
                                 </a>
                             </div>
