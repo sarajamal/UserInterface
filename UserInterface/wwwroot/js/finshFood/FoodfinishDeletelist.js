@@ -33,11 +33,11 @@ function loadDataTable(id) {
             {
                 data: 'readyProductsImage',
                 "render": function (data, _, row) {
-
                     var numericID = parseInt(row.readyProductsID, 10);
                     var numericFK = parseInt(row.brandFK, 10);
 
-                    var imagePath3 = `/IMAGES/${numericFK}/ReadyProducts/${numericID}/${data}`;
+                    // Include the full URL of the external server in imagePath3
+                    var imagePath3 = `https://manuals.befranchisor.com/IMAGES/${numericFK}/ReadyProducts/${numericID}/${data}`;
 
                     return `<img src="${imagePath3}" alt="Image" width="150" height="100"/>`;
                 },

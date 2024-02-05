@@ -35,12 +35,12 @@ function loadDataTable(id) {
 
             {
                 data: 'devicesAndTools_Image',
-               
                 "render": function (data, _, row) {
                     var numericID = parseInt(row.devicesAndToolsID, 10);
                     var numericFK = parseInt(row.brandFK, 10);
-    
-                    var imagePath2 = `/IMAGES/${numericFK}/DevicesAndTools/${numericID}/${row.devicesAndTools_Image}`;
+
+                    // Adjusted imagePath2 to point to the external server
+                    var imagePath2 = `https://manuals.befranchisor.com/IMAGES/${numericFK}/DevicesAndTools/${numericID}/${row.devicesAndTools_Image}`;
 
                     // Customize the content of the cell with both text and image
                     return `<img src="${imagePath2}" alt="Image" width="150" height="100"/>`;
