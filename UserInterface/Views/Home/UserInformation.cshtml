@@ -11,7 +11,8 @@
             <div class="row">
                 <a href="@Url.Action("RedirectToWelcomTredMarket", "Home", new { brandId = item.BrandID })">
                     @item.BrandName
-                    <img src="@Url.Content("~/IMAGES/" + item.BrandID + "/BRAND/" + item.BrandLogoImage)" alt="Card image cap">
+                    @* <img src="@Url.Content("~/IMAGES/" + item.BrandID + "/Logo/" + item.BrandID + item.BrandLogoImage)" alt="Card image cap"> *@
+                    <img src="https://manuals.befranchisor.com/IMAGES/@(item.BrandID)/Logo/@(item.BrandID)/@(item.BrandLogoImage)" alt="Card image cap">
                 </a>
             </div>
         }
