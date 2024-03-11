@@ -75,7 +75,7 @@ function loadDataTable(id) {
 }
 
 function DelteFooodSave(url) {
-    console.log("DelteToolsdevice function called with URL:", url); // Add this line
+    //console.log("DelteToolsdevice function called with URL:", url); // Add this line
 
     Swal.fire({
         title: 'هل أنت متأكد ؟',
