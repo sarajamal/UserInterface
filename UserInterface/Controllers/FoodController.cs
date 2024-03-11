@@ -97,201 +97,201 @@ namespace Test12.Controllers
         }
 
 
-        [HttpPost]
-        public IActionResult CreateFood(FoodVM FoodsVM, int selectFoodvalue)
-        {
+        //[HttpPost]
+        //public IActionResult CreateFood(FoodVM FoodsVM, int selectFoodvalue)
+        //{
 
-            if (ModelState.IsValid)
-            {
-                int foodFK = FoodsVM.tredMaeketFoodsVM.BrandID;
-                if (FoodsVM.FoodViewM.FoodStuffsID == 0)
-                {
+        //    if (ModelState.IsValid)
+        //    {
+        //        int foodFK = FoodsVM.tredMaeketFoodsVM.BrandID;
+        //        if (FoodsVM.FoodViewM.FoodStuffsID == 0)
+        //        {
 
-                    foreach (var foodAdd in FoodsVM.FoodViewMList)
-                    {
-                        int lastId = _unitOfWork.FoodRepository.GetLastStepId();
-                        int LastId1 = lastId + 1;
-                        if (foodAdd != null && foodAdd.FoodStuffsID == 0)
-                        {
+        //            foreach (var foodAdd in FoodsVM.FoodViewMList)
+        //            {
+        //                int lastId = _unitOfWork.FoodRepository.GetLastStepId();
+        //                int LastId1 = lastId + 1;
+        //                if (foodAdd != null && foodAdd.FoodStuffsID == 0)
+        //                {
 
-                            var newfoods = new FoodStuffs
-                            {
-                                FoodStuffsID = LastId1, 
-                                BrandFK = foodFK,
-                                FoodStuffsName = foodAdd.FoodStuffsName,
+        //                    var newfoods = new FoodStuffs
+        //                    {
+        //                        FoodStuffsID = LastId1, 
+        //                        BrandFK = foodFK,
+        //                        FoodStuffsName = foodAdd.FoodStuffsName,
 
-                            };
+        //                    };
 
-                            string wwwRootFoodPath = _webHostEnvironment.WebRootPath; // get us root folder
-
-
-                            var file1Name1 = $"file1_{newfoods.FoodStuffsID}";
-                            var file1ForFood1 = HttpContext.Request.Form.Files[file1Name1];
+        //                    string wwwRootFoodPath = _webHostEnvironment.WebRootPath; // get us root folder
 
 
-                            string FoodStuffsID = newfoods.FoodStuffsID.ToString();
-                            string BrandFK = newfoods.BrandFK.ToString();
+        //                    var file1Name1 = $"file1_{newfoods.FoodStuffsID}";
+        //                    var file1ForFood1 = HttpContext.Request.Form.Files[file1Name1];
 
 
-                            var FoodPath1 = Path.Combine(wwwRootFoodPath, "IMAGES", BrandFK, "FoodStuffs", FoodStuffsID);
+        //                    string FoodStuffsID = newfoods.FoodStuffsID.ToString();
+        //                    string BrandFK = newfoods.BrandFK.ToString();
 
 
-                            if (file1ForFood1 != null && file1ForFood1.Length > 0)
-                            {
-                                string fileName11 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForFood1.FileName);
-
-                                if (!Directory.Exists(FoodPath1))
-                                {
-                                    Directory.CreateDirectory(FoodPath1);
-                                }
-
-                                using (var fileStream = new FileStream(Path.Combine(FoodPath1, fileName11), FileMode.Create)) //save images
-                                {
-                                    file1ForFood1.CopyTo(fileStream);
-                                }
-                                newfoods.FoodStuffsImage = fileName11;
-                            }
-                            _unitOfWork.FoodRepository.Add(newfoods);
-                            _unitOfWork.Save();
-                            //// reOrder2 
-                            if (selectFoodvalue == 0)
-                            {
-                                // Get the maximum order value in the existing list
-                                double maxOrder = _unitOfWork.FoodRepository.GetAll()
-                                    .Max(item => item.FoodStuffsOrder) ?? 0.0f; // Default to 0.0f if there are no existing items
-
-                                // Round down the maxOrder value to the nearest integer
-                                int maxOrderAsInt = (int)Math.Floor(maxOrder);
-
-                                // Set the new order value for the "اخرى" (Other) item
-                                double newOrder = maxOrderAsInt + 1.0f;
-                                newfoods.FoodStuffsOrder = newOrder;
-                            }
-                            else
-                            {
-                                var getIdOrder = _unitOfWork.FoodRepository.Get(u => u.FoodStuffsID == selectFoodvalue);
-                                double OldOrder = getIdOrder.FoodStuffsOrder ?? 0.0f; // Default to 0.0f if Order is null
-                                double newOrder = OldOrder + 0.1f;
-                                newfoods.FoodStuffsOrder = newOrder;
-                            }
-
-                            List<FoodStuffs> obdeviceToolsList = _unitOfWork.FoodRepository.GetAll().OrderBy(item => item.FoodStuffsOrder).ToList();
-                            _unitOfWork.Save();
-                        }
-                    }
-
-                }
-            }
-
-            TempData["success"] = "تم إضافة المواد الغذائية بشكل ناجح";
-            return RedirectToAction("RedirectToFoodList", new { brandFK = FoodsVM.tredMaeketFoodsVM.BrandID });
-        }
+        //                    var FoodPath1 = Path.Combine(wwwRootFoodPath, "IMAGES", BrandFK, "FoodStuffs", FoodStuffsID);
 
 
+        //                    if (file1ForFood1 != null && file1ForFood1.Length > 0)
+        //                    {
+        //                        string fileName11 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForFood1.FileName);
 
-        [HttpPost]
-        public IActionResult FoodIndex(FoodVM foodViewModel)
-        {
+        //                        if (!Directory.Exists(FoodPath1))
+        //                        {
+        //                            Directory.CreateDirectory(FoodPath1);
+        //                        }
 
-            if (ModelState.IsValid)
-            {
-                if (foodViewModel.FoodViewMList != null)
-                {
-                    for (int i = 0; i < foodViewModel.FoodViewMList.Count; i++)
-                    {
-                        var foods = foodViewModel.FoodViewMList[i];
+        //                        using (var fileStream = new FileStream(Path.Combine(FoodPath1, fileName11), FileMode.Create)) //save images
+        //                        {
+        //                            file1ForFood1.CopyTo(fileStream);
+        //                        }
+        //                        newfoods.FoodStuffsImage = fileName11;
+        //                    }
+        //                    _unitOfWork.FoodRepository.Add(newfoods);
+        //                    _unitOfWork.Save();
+        //                    //// reOrder2 
+        //                    if (selectFoodvalue == 0)
+        //                    {
+        //                        // Get the maximum order value in the existing list
+        //                        double maxOrder = _unitOfWork.FoodRepository.GetAll()
+        //                            .Max(item => item.FoodStuffsOrder) ?? 0.0f; // Default to 0.0f if there are no existing items
 
-                        string FoodStuffsID = foods.FoodStuffsID.ToString();
-                        string BrandFK = foods.BrandFK.ToString();
+        //                        // Round down the maxOrder value to the nearest integer
+        //                        int maxOrderAsInt = (int)Math.Floor(maxOrder);
 
-                        string wwwRootPathSteps = _webHostEnvironment.WebRootPath; // get the root folder
-                        var FoodPath = Path.Combine(wwwRootPathSteps, "IMAGES", BrandFK, "FoodStuffs", FoodStuffsID);
+        //                        // Set the new order value for the "اخرى" (Other) item
+        //                        double newOrder = maxOrderAsInt + 1.0f;
+        //                        newfoods.FoodStuffsOrder = newOrder;
+        //                    }
+        //                    else
+        //                    {
+        //                        var getIdOrder = _unitOfWork.FoodRepository.Get(u => u.FoodStuffsID == selectFoodvalue);
+        //                        double OldOrder = getIdOrder.FoodStuffsOrder ?? 0.0f; // Default to 0.0f if Order is null
+        //                        double newOrder = OldOrder + 0.1f;
+        //                        newfoods.FoodStuffsOrder = newOrder;
+        //                    }
 
+        //                    List<FoodStuffs> obdeviceToolsList = _unitOfWork.FoodRepository.GetAll().OrderBy(item => item.FoodStuffsOrder).ToList();
+        //                    _unitOfWork.Save();
+        //                }
+        //            }
 
-                        var file1Name = $"file1_{foods.FoodStuffsID}";
-                        var file1Forfoods = HttpContext.Request.Form.Files[file1Name];
+        //        }
+        //    }
 
-                        if (file1Forfoods != null)
-                        {
-                            if (!string.IsNullOrEmpty(foods.FoodStuffsImage)) // Check if there's an existing image path
-                            {
-                                var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", BrandFK, "FoodStuffs", FoodStuffsID, foods.FoodStuffsImage);
-
-                                if (System.IO.File.Exists(OldImagePath1))
-                                {
-                                    System.IO.File.Delete(OldImagePath1); // Delete old image if it exists
-                                }
-                            }
-
-                            string fileNamefood1 = Guid.NewGuid().ToString() + Path.GetExtension(file1Forfoods.FileName);
-
-                            //اذا المسار مش موجود سو مسار جديد 
-                            if (!Directory.Exists(FoodPath))
-                            {
-                                Directory.CreateDirectory(FoodPath);
-                            }
-
-                            using (var fileStream1 = new FileStream(Path.Combine(FoodPath, fileNamefood1), FileMode.Create))
-                            {
-                                file1Forfoods.CopyTo(fileStream1);
-                            }
-                            foods.FoodStuffsImage = fileNamefood1; // Update the image path
-                        }
-
-                        var existingFoods = _unitOfWork.FoodRepository.Get(u => u.FoodStuffsID == foods.FoodStuffsID);
-
-                        if (existingFoods != null)
-                        {
-
-                            existingFoods.FoodStuffsName = foods.FoodStuffsName;
-
-                            existingFoods.FoodStuffsImage = foods.FoodStuffsImage;
-
-                            _unitOfWork.FoodRepository.Update(existingFoods);
-                        }
-                        else
-                        {
-                            _unitOfWork.FoodRepository.Add(foods);
-                        }
-                        _unitOfWork.Save();
-                    }
-                }
-            }
-            TempData["success"] = "تم تحديث المواد الغذائية بشكل ناجح";
-
-            return RedirectToAction("RedirectToFoodList", new { brandFK = foodViewModel.FoodViewM.BrandFK });
-        }
+        //    TempData["success"] = "تم إضافة المواد الغذائية بشكل ناجح";
+        //    return RedirectToAction("RedirectToFoodList", new { brandFK = FoodsVM.tredMaeketFoodsVM.BrandID });
+        //}
 
 
 
-        //زر الحذف في صفحة قائمة  المواد الغذائية 
-        #region
-        [HttpDelete]
-        public IActionResult DelteFooodSave(int? id)
-        {
-            string wwwRootPathSteps = _webHostEnvironment.WebRootPath;
+        //[HttpPost]
+        //public IActionResult FoodIndex(FoodVM foodViewModel)
+        //{
 
-            var deleteFoodPicture = _unitOfWork.FoodRepository.Get(u => u.FoodStuffsID == id);
+        //    if (ModelState.IsValid)
+        //    {
+        //        if (foodViewModel.FoodViewMList != null)
+        //        {
+        //            for (int i = 0; i < foodViewModel.FoodViewMList.Count; i++)
+        //            {
+        //                var foods = foodViewModel.FoodViewMList[i];
 
-            string FoodStuffsID = deleteFoodPicture.FoodStuffsID.ToString();
-            string BrandFK = deleteFoodPicture.BrandFK.ToString();
+        //                string FoodStuffsID = foods.FoodStuffsID.ToString();
+        //                string BrandFK = foods.BrandFK.ToString();
 
-            // Delete the associated image file
-            if (!string.IsNullOrEmpty(deleteFoodPicture.FoodStuffsImage))
-            {
-                string imagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", BrandFK, "FoodStuffs", FoodStuffsID, deleteFoodPicture.FoodStuffsImage);
-                if (System.IO.File.Exists(imagePath1))
-                {
-                    System.IO.File.Delete(imagePath1);
-                }
-            }
+        //                string wwwRootPathSteps = _webHostEnvironment.WebRootPath; // get the root folder
+        //                var FoodPath = Path.Combine(wwwRootPathSteps, "IMAGES", BrandFK, "FoodStuffs", FoodStuffsID);
 
-            _unitOfWork.FoodRepository.Remove(deleteFoodPicture);
-            _unitOfWork.Save();
 
-            return Json(new { success = true, redirectToUrl = Url.Action("RedirectToFoodList", new { brandFK = BrandFK }) });
-        }
-        #endregion
+        //                var file1Name = $"file1_{foods.FoodStuffsID}";
+        //                var file1Forfoods = HttpContext.Request.Form.Files[file1Name];
+
+        //                if (file1Forfoods != null)
+        //                {
+        //                    if (!string.IsNullOrEmpty(foods.FoodStuffsImage)) // Check if there's an existing image path
+        //                    {
+        //                        var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", BrandFK, "FoodStuffs", FoodStuffsID, foods.FoodStuffsImage);
+
+        //                        if (System.IO.File.Exists(OldImagePath1))
+        //                        {
+        //                            System.IO.File.Delete(OldImagePath1); // Delete old image if it exists
+        //                        }
+        //                    }
+
+        //                    string fileNamefood1 = Guid.NewGuid().ToString() + Path.GetExtension(file1Forfoods.FileName);
+
+        //                    //اذا المسار مش موجود سو مسار جديد 
+        //                    if (!Directory.Exists(FoodPath))
+        //                    {
+        //                        Directory.CreateDirectory(FoodPath);
+        //                    }
+
+        //                    using (var fileStream1 = new FileStream(Path.Combine(FoodPath, fileNamefood1), FileMode.Create))
+        //                    {
+        //                        file1Forfoods.CopyTo(fileStream1);
+        //                    }
+        //                    foods.FoodStuffsImage = fileNamefood1; // Update the image path
+        //                }
+
+        //                var existingFoods = _unitOfWork.FoodRepository.Get(u => u.FoodStuffsID == foods.FoodStuffsID);
+
+        //                if (existingFoods != null)
+        //                {
+
+        //                    existingFoods.FoodStuffsName = foods.FoodStuffsName;
+
+        //                    existingFoods.FoodStuffsImage = foods.FoodStuffsImage;
+
+        //                    _unitOfWork.FoodRepository.Update(existingFoods);
+        //                }
+        //                else
+        //                {
+        //                    _unitOfWork.FoodRepository.Add(foods);
+        //                }
+        //                _unitOfWork.Save();
+        //            }
+        //        }
+        //    }
+        //    TempData["success"] = "تم تحديث المواد الغذائية بشكل ناجح";
+
+        //    return RedirectToAction("RedirectToFoodList", new { brandFK = foodViewModel.FoodViewM.BrandFK });
+        //}
+
+
+
+        ////زر الحذف في صفحة قائمة  المواد الغذائية 
+        //#region
+        //[HttpDelete]
+        //public IActionResult DelteFooodSave(int? id)
+        //{
+        //    string wwwRootPathSteps = _webHostEnvironment.WebRootPath;
+
+        //    var deleteFoodPicture = _unitOfWork.FoodRepository.Get(u => u.FoodStuffsID == id);
+
+        //    string FoodStuffsID = deleteFoodPicture.FoodStuffsID.ToString();
+        //    string BrandFK = deleteFoodPicture.BrandFK.ToString();
+
+        //    // Delete the associated image file
+        //    if (!string.IsNullOrEmpty(deleteFoodPicture.FoodStuffsImage))
+        //    {
+        //        string imagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", BrandFK, "FoodStuffs", FoodStuffsID, deleteFoodPicture.FoodStuffsImage);
+        //        if (System.IO.File.Exists(imagePath1))
+        //        {
+        //            System.IO.File.Delete(imagePath1);
+        //        }
+        //    }
+
+        //    _unitOfWork.FoodRepository.Remove(deleteFoodPicture);
+        //    _unitOfWork.Save();
+
+        //    return Json(new { success = true, redirectToUrl = Url.Action("RedirectToFoodList", new { brandFK = BrandFK }) });
+        //}
+        //#endregion
 
 
         // تبع List 
