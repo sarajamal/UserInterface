@@ -1,5 +1,4 @@
-﻿$(document).ready(function () {
-
+﻿$(function () {
     // Retrieve the id value from the data attribute in the thead element
     var id = document.querySelector("thead").getAttribute("data-id");
     loadDataTable(id);
@@ -34,17 +33,17 @@ function loadDataTable(id) {
             {
                 data: 'foodStuffsImage',
 
-                "render": function (data, _, row) {
-                    var numericID = parseInt(row.foodStuffsID, 10);
-                    var numericFK = parseInt(row.brandFK, 10);
+                    "render": function (data, _, row) {
+                        var numericID = parseInt(row.foodStuffsID, 10);
+                        var numericFK = parseInt(row.brandFK, 10);
 
-                    var imagePath2 = `/IMAGES/${numericFK}/FoodStuffs/${numericID}/${row.foodStuffsImage}`;
+                        var imagePath2 = `/IMAGES/${numericID}/${row.foodStuffsImage}`;
 
-                    // Customize the content of the cell with both text and image
-                    return `<img src="${imagePath2}" alt="Image" width="150" height="100"/>`;
-                },
+                        // Customize the content of the cell with both text and image
+                        return `<img src="${imagePath2}" alt="Image" width="150" height="100"/>`;
+                    },
                 "width": "45%",
-                "className": "text-center"
+                    "className": "text-center"
             },
 
             {
@@ -192,3 +191,18 @@ document.addEventListener('DOMContentLoaded', function () {
 //    });
 //});
 
+//كود عرض الصورة اذا كانت string 
+
+//data: 'foodStuffsImage',
+
+//    "render": function (data, _, row) {
+//        var numericID = parseInt(row.foodStuffsID, 10);
+//        var numericFK = parseInt(row.brandFK, 10);
+
+//        var imagePath2 = `/IMAGES/${numericFK}/FoodStuffs/${numericID}/${row.foodStuffsImage}`;
+
+//        // Customize the content of the cell with both text and image
+//        return `<img src="${imagePath2}" alt="Image" width="150" height="100"/>`;
+//    },
+//"width": "45%",
+//    "className": "text-center"
