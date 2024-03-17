@@ -1,5 +1,5 @@
 ﻿
-$(document).ready(function () {
+$(function () {
      
     // Retrieve the id value from the data attribute in the thead element
     var id = document.querySelector("thead").getAttribute("data-id");
@@ -32,22 +32,53 @@ function loadDataTable(id) {
                 "className": "text-center custom-font-bold",
  
             },
+        {
+                data: 'devicesAndTools_Image',
+                    "render": function (data, _, row) {
+                        var numericID = parseInt(row.devicesAndToolsID, 10);
+                        var numericFK = parseInt(row.brandFK, 10);
+
+                        // Adjusted imagePath2 to point to the external server
+                        var imagePath2 = `https://manuals.befranchisor.com/IMAGES/${numericFK}/DevicesAndTools/${numericID}/${row.devicesAndTools_Image}`;
+
+                        // Customize the content of the cell with both text and image
+                        return `<img src="${imagePath2}" alt="Image" width="150" height="100"/>`;
+                    },
+                "width": "45%",
+                    "className": "text-center"
+            },
 
             {
                 data: 'devicesAndTools_Image',
-                "render": function (data, _, row) {
-                    var numericID = parseInt(row.devicesAndToolsID, 10);
-                    var numericFK = parseInt(row.brandFK, 10);
+                    "render": function (data, _, row) {
+                        // Check if data is not null or undefined and it is actually a byte array
+                        if (data && data instanceof Array) {
+                            // Convert byte array to Base64 string
+                            var base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(data)));
 
-                    // Adjusted imagePath2 to point to the external server
-                    var imagePath2 = `https://manuals.befranchisor.com/IMAGES/${numericFK}/DevicesAndTools/${numericID}/${row.devicesAndTools_Image}`;
+                            // Determine the MIME type of the image from the byte array (magic numbers)
+                            var mimeType = 'image/jpeg'; // Default to JPEG
+                            if (data.length > 3) {
+                                // Check if it's a PNG
+                                if (data[0] === 0x89 && data[1] === 0x50 && data[2] === 0x4E && data[3] === 0x47) {
+                                    mimeType = 'image/png';
+                                }
+                                // Other checks can be added here for different MIME types if needed
+                            }
 
-                    // Customize the content of the cell with both text and image
-                    return `<img src="${imagePath2}" alt="Image" width="150" height="100"/>`;
-                },
+                            // Use the Base64 string as the source for the image with the determined MIME type
+                            return `<img src="data:${mimeType};base64,${base64String}" alt="Image" width="150" height="100"/>`;
+                        } else {
+                            // If data is not a byte array, this code path shouldn't be reached.
+                            // You might want to handle this case differently.
+                            return 'لايوجد صورة'; // Placeholder for when the image data isn't in the expected byte array format.
+                        }
+
+                    },
                 "width": "45%",
-                "className": "text-center"
-            },
+                    "className": "text-center"
+        },
+           
            
             {
                 data: 'devicesAndToolsID',
@@ -148,3 +179,50 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+
+//كود عرض الصور من السيرفر اذا كانت string
+//{
+//    data: 'devicesAndTools_Image',
+//        "render": function (data, _, row) {
+//            var numericID = parseInt(row.devicesAndToolsID, 10);
+//            var numericFK = parseInt(row.brandFK, 10);
+
+//            // Adjusted imagePath2 to point to the external server
+//            var imagePath2 = `https://manuals.befranchisor.com/IMAGES/${numericFK}/DevicesAndTools/${numericID}/${row.devicesAndTools_Image}`;
+
+//            // Customize the content of the cell with both text and image
+//            return `<img src="${imagePath2}" alt="Image" width="150" height="100"/>`;
+//        },
+//    "width": "45%",
+//        "className": "text-center"
+//},
+
+//{
+//    data: 'devicesAndTools_Image',
+//        "render": function (data, _, row) {
+//            // Check if data is not null or undefined and it is actually a byte array
+//            if (data && data instanceof Array) {
+//                // Convert byte array to Base64 string
+//                var base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(data)));
+
+//                // Determine the MIME type of the image from the byte array (magic numbers)
+//                var mimeType = 'image/jpeg'; // Default to JPEG
+//                if (data.length > 3) {
+//                    // Check if it's a PNG
+//                    if (data[0] === 0x89 && data[1] === 0x50 && data[2] === 0x4E && data[3] === 0x47) {
+//                        mimeType = 'image/png';
+//                    }
+//                    // Other checks can be added here for different MIME types if needed
+//                }
+
+//                // Use the Base64 string as the source for the image with the determined MIME type
+//                return `<img src="data:${mimeType};base64,${base64String}" alt="Image" width="150" height="100"/>`;
+//            } else {
+//                // If data is not a byte array, this code path shouldn't be reached. 
+//                // You might want to handle this case differently.
+//                return 'لايوجد صورة'; // Placeholder for when the image data isn't in the expected byte array format.
+//            }
+
+//        },
+//    "width": "45%",
+//        "className": "text-center"

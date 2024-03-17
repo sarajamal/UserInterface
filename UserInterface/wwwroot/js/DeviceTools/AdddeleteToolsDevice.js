@@ -1,7 +1,4 @@
 ﻿
-
-
-
 function displaySelectedImage(input, imgId) {
 
     // Get the reference to the HTML img element based on the provided imgId
@@ -78,7 +75,7 @@ function AddnewtoolsDeviceNew(DeviceToolsFK) {
         // Find the last row index
         var newRowIndex = tableBody.children.length ;
 
-        // Create a new row for الخطوة1 and الخطوة2 in the same row
+        // Create a new row for الخطوة1 
         var newRow = document.createElement("tr");
         newRow.innerHTML = `
       <td  class="col-5" style="text-align:center;">
@@ -136,8 +133,26 @@ document.querySelector("#tblDeviceTools tbody").addEventListener("click", functi
 });
 
 
+//الكود الذي يعالج فيه الصورة string 
+//newRow.innerHTML = `
+//      <td  class="col-5" style="text-align:center;">
+//        <input type="hidden" name="Devices_toolsVM[${newRowIndex}].BrandFK" value="${DeviceToolsFK}" />
+//        <input type="hidden" name="Devices_toolsVM[${newRowIndex}].DevicesAndTools_Image" />
 
-
+//        <div class="form-group">
+//            <textarea class="form-control" id="Devices_toolsVM_${newRowIndex}" name="Devices_toolsVM[${newRowIndex}].DevicesAndTools_Name"></textarea>
+//        </div>
+//    </td>
+//    <td  class="col-5" style="text-align:center;">
+//        <div class="row">
+//            <div class="text-center ">
+//                <img id="PreviewPhoto1_${lastID}" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
+//                <input type="file" name="file1_${lastID}" class="border-0 shadow mt-1" id="customFile1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
+//            </div>
+//        </div>
+//    </td>
+//    </tr>
+//`;
 
 ////صفحة الاضافة اجهزة وادوات جديدة 
 //var clickCount = 0;

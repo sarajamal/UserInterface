@@ -31,14 +31,13 @@
                                             <input asp-for="@itemDevice.BrandFK" name="Devices_toolsVM[@i].BrandFK" hidden />
                                             <input asp-for="@itemDevice.DevicesAndTools_Image" name="Devices_toolsVM[@i].DevicesAndTools_Image" hidden />
 
-
                                             @if (!string.IsNullOrEmpty(itemDevice.DevicesAndTools_Name) || !string.IsNullOrEmpty(itemDevice.DevicesAndTools_Image))
                                             {
 
                                                 <div class="col-12 text-center">
                                                     <div>
                                                         <img id="PreviewPhoto1_@itemDevice.DevicesAndToolsID"
-                                                             src="https://manuals.befranchisor.com/IMAGES/@(Model.Device_toolVM.BrandFK)/DevicesAndTools/@(Model.Device_toolVM.DevicesAndToolsID)/@(Model.Device_toolVM.DevicesAndTools_Image)" width="125" height="125" style="border: 1px; margin-top: 20px;"  alt="Device or Tool Image">
+                                                             src="https://manuals.befranchisor.com/IMAGES/@(Model.Device_toolVM.BrandFK)/DevicesAndTools/@(Model.Device_toolVM.DevicesAndToolsID)/@(Model.Device_toolVM.DevicesAndTools_Image)" width="125" height="125" style="border: 1px; margin-top: 20px;" alt="Device or Tool Image">
                                                     </div>
 
                                                     <div class="form-group mt-2">
@@ -104,3 +103,23 @@
     <script src="~/Js/DeviceTools/AdddeleteToolsDevice.js"></script>
 }
 
+
+ @* كود لعرض الصور اذا كانت string  *@
+ @* @if (!string.IsNullOrEmpty(itemDevice.DevicesAndTools_Name) || !string.IsNullOrEmpty(itemDevice.DevicesAndTools_Image))
+ {
+
+   <div class="col-12 text-center">
+    <div>
+     <img id="PreviewPhoto1_@itemDevice.DevicesAndToolsID"
+       src="https://manuals.befranchisor.com/IMAGES/@(Model.Device_toolVM.BrandFK)/DevicesAndTools/@(Model.Device_toolVM.DevicesAndToolsID)/@(Model.Device_toolVM.DevicesAndTools_Image)" width="125" height="125" style="border: 1px; margin-top: 20px;"  alt="Device or Tool Image">
+           </div>
+
+             <div class="form-group mt-2">
+               <input type="file" name="file1_@itemDevice.DevicesAndToolsID" class="border-0 shadow mt-5" id="customFile1_@itemDevice.DevicesAndToolsID" onchange="displaySelectedImage(this, 'PreviewPhoto1_@itemDevice.DevicesAndToolsID')">
+
+                <textarea asp-for="@itemDevice.DevicesAndTools_Name" class="form-control mt-2" name="Devices_toolsVM[@i].DevicesAndTools_Name"></textarea>
+                 <span asp-validation-for="@itemDevice.DevicesAndTools_Name" class="text-danger"></span>
+
+                   </div>
+                      </div>
+                       } *@
