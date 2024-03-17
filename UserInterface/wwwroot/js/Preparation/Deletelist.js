@@ -1,5 +1,5 @@
 ﻿
-$(document).ready(function () {
+$(function () {
 
     // Retrieve the id value from the data attribute in the thead element
     var id = document.querySelector("thead").getAttribute("data-id");
@@ -50,13 +50,13 @@ function loadDataTable(id) {
                     var brandFk = row.brandFK;
 
                     return `<div role="group">
-            <a href="/Preparation/RedirectToUpsert?id=${data}&brandFK=${brandFk}" class="btn btn-style4 fnt-white mx-2"> 
-                <i class="bi bi-pencil-square"></i>
-            </a>               
-            <a onClick=DeletePreparationPost('/Preparation/DeletePreparationPost/${data}') class="btn btn-style5 "> 
-                <i class="bi bi-trash-fill"></i>
-            </a>
-        </div>`;
+                   <a href="/Preparation/RedirectToUpsert?id=${data}&brandFK=${brandFk}" class="btn btn-style4 fnt-white mx-2"> 
+                   <i class="bi bi-pencil-square"></i>
+                   </a>               
+                   <a onClick=DeletePreparationPost('/Preparation/DeletePreparationPost/${data}') class="btn btn-style5 "> 
+                   <i class="bi bi-trash-fill"></i>
+                   </a>
+                   </div>`;
                 },
                 "width": "16%",
                 "className": "text-center"
@@ -106,3 +106,19 @@ function DeletePreparationPost(url) {
         }
     })
 }
+
+
+
+//كود الصور وهو string 
+//{
+//    data: 'prepareImage',
+//        "render": function (data, _, row) {
+//            var numericID = parseInt(row.brandFK, 10); // Extract numeric part
+//            var numericID2 = parseInt(row.preparationsID, 10); // Extract numeric part
+
+//            var imagePath = `/IMAGES/${numericID}/Preparation/${numericID2}/${data}`;
+//            return `<img src="${imagePath}" alt="Image" width="150" height="100"/>`;
+//        },
+//    "width": "44%",
+//        "className": "text-center"
+//},
