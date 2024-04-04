@@ -101,196 +101,196 @@ namespace Test12.Controllers
             return View(FooReadyVM);
         }
 
-        //[HttpPost]
-        //public IActionResult createFoodfonsh(ReadyFoodViewmodel FoodsReadyVM, int selectFoodReadyValue)
-        //{
+        [HttpPost]
+        public IActionResult createFoodfonsh(ReadyFoodViewmodel FoodsReadyVM, int selectFoodReadyValue)
+        {
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        int foodFK = FoodsReadyVM.tredMaeketReadyfoodVM.BrandID;
-        //        if (FoodsReadyVM.ReadyfoodVM.ReadyProductsID == 0)
-        //        {
+            if (ModelState.IsValid)
+            {
+                int foodFK = FoodsReadyVM.tredMaeketReadyfoodVM.BrandID;
+                if (FoodsReadyVM.ReadyfoodVM.ReadyProductsID == 0)
+                {
 
-        //            foreach (var ReadyfoodAdd in FoodsReadyVM.readyfoodlistVM)
-        //            {
+                    foreach (var ReadyfoodAdd in FoodsReadyVM.readyfoodlistVM)
+                    {
 
-        //                if (ReadyfoodAdd != null && ReadyfoodAdd.ReadyProductsID == 0)
-        //                {
-        //                    int LastId = _unitOfWork.readyFoodRepository.GetLastStepId();
-        //                    int LastId1 = LastId + 1;
-        //                    var newfoods = new ReadyProducts
-        //                    {
-        //                        ReadyProductsID = LastId1,
-        //                        BrandFK = foodFK,
-        //                        ReadyProductsName = ReadyfoodAdd.ReadyProductsName,
-                                
-        //                    };
-                        
-        //                    string wwwRootFoodPath = _webHostEnvironment.WebRootPath; // get us root folder
+                        if (ReadyfoodAdd != null && ReadyfoodAdd.ReadyProductsID == 0)
+                        {
+                            int LastId = _unitOfWork.readyFoodRepository.GetLastStepId();
+                            int LastId1 = LastId + 1;
+                            var newfoods = new ReadyProducts
+                            {
+                                ReadyProductsID = LastId1,
+                                BrandFK = foodFK,
+                                ReadyProductsName = ReadyfoodAdd.ReadyProductsName,
 
+                            };
 
-        //                    var file1Name1 = $"file1_{newfoods.ReadyProductsID}";
-        //                    var file1ForFood1 = HttpContext.Request.Form.Files[file1Name1];
-
-                            
-        //                    string BrandFK = newfoods.BrandFK.ToString();
-        //                    string ReadyProductsID = newfoods.ReadyProductsID.ToString();
+                            string wwwRootFoodPath = _webHostEnvironment.WebRootPath; // get us root folder
 
 
-        //                    var FoodPath1 = Path.Combine(wwwRootFoodPath, "IMAGES",BrandFK, "ReadyProducts", ReadyProductsID);
- 
-        //                    if (file1ForFood1 != null && file1ForFood1.Length > 0)
-        //                    {
-        //                        string fileName11 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForFood1.FileName);
-
-        //                        if (!Directory.Exists(FoodPath1))
-        //                        {
-        //                            Directory.CreateDirectory(FoodPath1);
-        //                        }
-
-        //                        using (var fileStream = new FileStream(Path.Combine(FoodPath1, fileName11), FileMode.Create)) //save images
-        //                        {
-        //                            file1ForFood1.CopyTo(fileStream);
-        //                        }
-        //                        newfoods.ReadyProductsImage = fileName11;
-        //                    }
-        //                    _unitOfWork.readyFoodRepository.Add(newfoods);
-        //                    _unitOfWork.Save();
-        //                    //// reOrder2 
-        //                    if (selectFoodReadyValue == 0)
-        //                    {
-        //                        // Get the maximum order value in the existing list
-        //                        double maxOrder = _unitOfWork.readyFoodRepository.GetAll()
-        //                            .Max(item => item.ReadyProductsOrder) ?? 0.0f; // Default to 0.0f if there are no existing items
-
-        //                        // Round down the maxOrder value to the nearest integer
-        //                        int maxOrderAsInt = (int)Math.Floor(maxOrder);
-
-        //                        // Set the new order value for the "اخرى" (Other) item
-        //                        double newOrder = maxOrderAsInt + 1.0f;
-        //                        newfoods.ReadyProductsOrder = newOrder;
-        //                    }
-        //                    else
-        //                    {
-        //                        var getIdOrder = _unitOfWork.readyFoodRepository.Get(u => u.ReadyProductsID == selectFoodReadyValue);
-        //                        double OldOrder = getIdOrder.ReadyProductsOrder ?? 0.0f; // Default to 0.0f if Order is null
-        //                        double newOrder = OldOrder + 0.1f;
-        //                        newfoods.ReadyProductsOrder = newOrder;
-        //                    }
-
-        //                    List<ReadyProducts> obdeviceToolsList = _unitOfWork.readyFoodRepository.GetAll().OrderBy(item => item.ReadyProductsOrder).ToList();
-        //                    _unitOfWork.Save();
-        //                }
-        //            }
-
-        //        }
-        //    }
-
-        //     TempData["success"] = "تم إضافة المنتجات الجاهزة بشكل ناجح";
-        //    return RedirectToAction("RedirectToFinishProductionList", new { brandFK = FoodsReadyVM.tredMaeketReadyfoodVM.BrandID });
-        //}
+                            var file1Name1 = $"file1_{newfoods.ReadyProductsID}";
+                            var file1ForFood1 = HttpContext.Request.Form.Files[file1Name1];
 
 
-        //[HttpPost]
-        //public IActionResult FinishProductsIndex(ReadyFoodViewmodel foodReadyViewModel)
-        //{
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (foodReadyViewModel.readyfoodlistVM != null)
-        //        {
-        //            for (int i = 0; i < foodReadyViewModel.readyfoodlistVM.Count; i++)
-        //            {
-        //                var foodready = foodReadyViewModel.readyfoodlistVM[i];
-                        
-        //                string ReadyProductsID = foodready.ReadyProductsID.ToString();
-        //                string BrandFK = foodready.BrandFK.ToString();
-
-        //                string wwwRootPathSteps = _webHostEnvironment.WebRootPath; // get the root folder
-        //                var FoodPath1 = Path.Combine(wwwRootPathSteps,  "IMAGES", BrandFK, "ReadyProducts", ReadyProductsID);
-
-        //                var file1Name = $"file1_{foodready.ReadyProductsID}";
-        //                var file1Forfoods = HttpContext.Request.Form.Files[file1Name];
-
-        //                if (file1Forfoods != null)
-        //                {
-        //                    if (!string.IsNullOrEmpty(foodready.ReadyProductsImage)) // Check if there's an existing image path
-        //                    {
-        //                        var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", BrandFK, "ReadyProducts", ReadyProductsID, foodready.ReadyProductsImage);
-
-        //                        if (System.IO.File.Exists(OldImagePath1))
-        //                        {
-        //                            System.IO.File.Delete(OldImagePath1); // Delete old image if it exists
-        //                        }
-        //                    }
-
-        //                    string fileNamefood1 = Guid.NewGuid().ToString() + Path.GetExtension(file1Forfoods.FileName);
-
-        //                    //اذا المسار مش موجود سو مسار جديد 
-        //                    if (!Directory.Exists(FoodPath1))
-        //                    {
-        //                        Directory.CreateDirectory(FoodPath1);
-        //                    }
-
-        //                    using (var fileStream1 = new FileStream(Path.Combine(FoodPath1, fileNamefood1), FileMode.Create))
-        //                    {
-        //                        file1Forfoods.CopyTo(fileStream1);
-        //                    }
-
-        //                    foodready.ReadyProductsImage = fileNamefood1; // Update the image path
-        //                }
-                       
-        //                var existingFoodٌReady = _unitOfWork.readyFoodRepository.Get(u => u.ReadyProductsID == foodready.ReadyProductsID);
-
-        //                if (existingFoodٌReady != null)
-        //                {
-        //                    existingFoodٌReady.ReadyProductsName = foodready.ReadyProductsName;
-        //                    existingFoodٌReady.ReadyProductsImage = foodready.ReadyProductsImage;
-        //                    _unitOfWork.readyFoodRepository.Update(existingFoodٌReady);
-        //                }
-        //                else
-        //                {
-        //                    _unitOfWork.readyFoodRepository.Add(foodready);
-        //                }
-        //                _unitOfWork.Save();
-        //            }
-        //        }
-        //    }
-        //    TempData["success"] = "تم تحديث المنتجات الجاهزة بشكل ناجح";
-
-        //    return RedirectToAction("RedirectToFinishProductionList", new { brandFK = foodReadyViewModel.ReadyfoodVM.BrandFK });
-        //}
+                            string BrandFK = newfoods.BrandFK.ToString();
+                            string ReadyProductsID = newfoods.ReadyProductsID.ToString();
 
 
+                            var FoodPath1 = Path.Combine(wwwRootFoodPath, "IMAGES", BrandFK, "ReadyProducts", ReadyProductsID);
 
-        ////زر الحذف في صفحة قائمة  المنجات الجاهزة 
-        //#region
-        //[HttpDelete]
-        //public IActionResult DeleteFinshFood(int? id)
-        //{
-        //    string wwwRootPathSteps = _webHostEnvironment.WebRootPath;
+                            if (file1ForFood1 != null && file1ForFood1.Length > 0)
+                            {
+                                string fileName11 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForFood1.FileName);
 
-        //    var deleteFinshFoodPicture = _unitOfWork.readyFoodRepository.Get(u => u.ReadyProductsID == id);
+                                if (!Directory.Exists(FoodPath1))
+                                {
+                                    Directory.CreateDirectory(FoodPath1);
+                                }
 
-        //    string ReadyProductsID = deleteFinshFoodPicture.ReadyProductsID.ToString();
-        //    string BrandFK = deleteFinshFoodPicture.BrandFK.ToString();
+                                using (var fileStream = new FileStream(Path.Combine(FoodPath1, fileName11), FileMode.Create)) //save images
+                                {
+                                    file1ForFood1.CopyTo(fileStream);
+                                }
+                                newfoods.ReadyProductsImage = fileName11;
+                            }
+                            _unitOfWork.readyFoodRepository.Add(newfoods);
+                            _unitOfWork.Save();
+                            //// reOrder2 
+                            if (selectFoodReadyValue == 0)
+                            {
+                                // Get the maximum order value in the existing list
+                                double maxOrder = _unitOfWork.readyFoodRepository.GetAll()
+                                    .Max(item => item.ReadyProductsOrder) ?? 0.0f; // Default to 0.0f if there are no existing items
 
-        //    // Delete the associated image file
-        //    if (!string.IsNullOrEmpty(deleteFinshFoodPicture.ReadyProductsImage))
-        //    {
-        //        string imagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", BrandFK, "ReadyProduct", ReadyProductsID, deleteFinshFoodPicture.ReadyProductsImage );
-        //        if (System.IO.File.Exists(imagePath1))
-        //        {
-        //            System.IO.File.Delete(imagePath1);
-        //        }
-        //    }
-           
-        //    _unitOfWork.readyFoodRepository.Remove(deleteFinshFoodPicture);
-        //    _unitOfWork.Save();
+                                // Round down the maxOrder value to the nearest integer
+                                int maxOrderAsInt = (int)Math.Floor(maxOrder);
 
-        //    return Json(new { success = true, redirectToUrl = Url.Action("RedirectToFinishProductionList", new { brandFK = BrandFK })});
-        //}
-        //#endregion
+                                // Set the new order value for the "اخرى" (Other) item
+                                double newOrder = maxOrderAsInt + 1.0f;
+                                newfoods.ReadyProductsOrder = newOrder;
+                            }
+                            else
+                            {
+                                var getIdOrder = _unitOfWork.readyFoodRepository.Get(u => u.ReadyProductsID == selectFoodReadyValue);
+                                double OldOrder = getIdOrder.ReadyProductsOrder ?? 0.0f; // Default to 0.0f if Order is null
+                                double newOrder = OldOrder + 0.1f;
+                                newfoods.ReadyProductsOrder = newOrder;
+                            }
+
+                            List<ReadyProducts> obdeviceToolsList = _unitOfWork.readyFoodRepository.GetAll().OrderBy(item => item.ReadyProductsOrder).ToList();
+                            _unitOfWork.Save();
+                        }
+                    }
+
+                }
+            }
+
+            TempData["success"] = "تم إضافة المنتجات الجاهزة بشكل ناجح";
+            return RedirectToAction("RedirectToFinishProductionList", new { brandFK = FoodsReadyVM.tredMaeketReadyfoodVM.BrandID });
+        }
+
+
+        [HttpPost]
+        public IActionResult FinishProductsIndex(ReadyFoodViewmodel foodReadyViewModel)
+        {
+
+            if (ModelState.IsValid)
+            {
+                if (foodReadyViewModel.readyfoodlistVM != null)
+                {
+                    for (int i = 0; i < foodReadyViewModel.readyfoodlistVM.Count; i++)
+                    {
+                        var foodready = foodReadyViewModel.readyfoodlistVM[i];
+
+                        string ReadyProductsID = foodready.ReadyProductsID.ToString();
+                        string BrandFK = foodready.BrandFK.ToString();
+
+                        string wwwRootPathSteps = _webHostEnvironment.WebRootPath; // get the root folder
+                        var FoodPath1 = Path.Combine(wwwRootPathSteps, "IMAGES", BrandFK, "ReadyProducts", ReadyProductsID);
+
+                        var file1Name = $"file1_{foodready.ReadyProductsID}";
+                        var file1Forfoods = HttpContext.Request.Form.Files[file1Name];
+
+                        if (file1Forfoods != null)
+                        {
+                            if (!string.IsNullOrEmpty(foodready.ReadyProductsImage)) // Check if there's an existing image path
+                            {
+                                var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", BrandFK, "ReadyProducts", ReadyProductsID, foodready.ReadyProductsImage);
+
+                                if (System.IO.File.Exists(OldImagePath1))
+                                {
+                                    System.IO.File.Delete(OldImagePath1); // Delete old image if it exists
+                                }
+                            }
+
+                            string fileNamefood1 = Guid.NewGuid().ToString() + Path.GetExtension(file1Forfoods.FileName);
+
+                            //اذا المسار مش موجود سو مسار جديد 
+                            if (!Directory.Exists(FoodPath1))
+                            {
+                                Directory.CreateDirectory(FoodPath1);
+                            }
+
+                            using (var fileStream1 = new FileStream(Path.Combine(FoodPath1, fileNamefood1), FileMode.Create))
+                            {
+                                file1Forfoods.CopyTo(fileStream1);
+                            }
+
+                            foodready.ReadyProductsImage = fileNamefood1; // Update the image path
+                        }
+
+                        var existingFoodٌReady = _unitOfWork.readyFoodRepository.Get(u => u.ReadyProductsID == foodready.ReadyProductsID);
+
+                        if (existingFoodٌReady != null)
+                        {
+                            existingFoodٌReady.ReadyProductsName = foodready.ReadyProductsName;
+                            existingFoodٌReady.ReadyProductsImage = foodready.ReadyProductsImage;
+                            _unitOfWork.readyFoodRepository.Update(existingFoodٌReady);
+                        }
+                        else
+                        {
+                            _unitOfWork.readyFoodRepository.Add(foodready);
+                        }
+                        _unitOfWork.Save();
+                    }
+                }
+            }
+            TempData["success"] = "تم تحديث المنتجات الجاهزة بشكل ناجح";
+
+            return RedirectToAction("RedirectToFinishProductionList", new { brandFK = foodReadyViewModel.ReadyfoodVM.BrandFK });
+        }
+
+
+
+        //زر الحذف في صفحة قائمة  المنجات الجاهزة 
+        #region
+        [HttpDelete]
+        public IActionResult DeleteFinshFood(int? id)
+        {
+            string wwwRootPathSteps = _webHostEnvironment.WebRootPath;
+
+            var deleteFinshFoodPicture = _unitOfWork.readyFoodRepository.Get(u => u.ReadyProductsID == id);
+
+            string ReadyProductsID = deleteFinshFoodPicture.ReadyProductsID.ToString();
+            string BrandFK = deleteFinshFoodPicture.BrandFK.ToString();
+
+            // Delete the associated image file
+            if (!string.IsNullOrEmpty(deleteFinshFoodPicture.ReadyProductsImage))
+            {
+                string imagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", BrandFK, "ReadyProduct", ReadyProductsID, deleteFinshFoodPicture.ReadyProductsImage);
+                if (System.IO.File.Exists(imagePath1))
+                {
+                    System.IO.File.Delete(imagePath1);
+                }
+            }
+
+            _unitOfWork.readyFoodRepository.Remove(deleteFinshFoodPicture);
+            _unitOfWork.Save();
+
+            return Json(new { success = true, redirectToUrl = Url.Action("RedirectToFinishProductionList", new { brandFK = BrandFK }) });
+        }
+        #endregion
 
 
         // تبع List 

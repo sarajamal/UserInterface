@@ -1,5 +1,5 @@
 ﻿
-$(document).ready(function () {
+$(function () {
 
     // Retrieve the id value from the data attribute in the thead element
     var id = document.querySelector("thead").getAttribute("data-id");

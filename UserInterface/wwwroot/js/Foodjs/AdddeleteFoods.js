@@ -83,7 +83,7 @@ function AddnewFoods(FoodsFK) {
             <input type="hidden" name="FoodViewMList[${newRowIndex}].BrandFK" value="${FoodsFK}" />
             <input type="hidden" name="FoodViewMList[${newRowIndex}].FoodStuffsImage" />
         
-             <div class="form-group">
+             <div class="form-controlstyle1">
             <input type= "textarea" class="form-control" id="FoodViewMList_${newRowIndex}" name="FoodViewMList[${newRowIndex}].FoodStuffsName">
          </div>
      </td>

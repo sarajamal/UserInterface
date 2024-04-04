@@ -37,14 +37,14 @@
 
 
 
-                                            @if (!string.IsNullOrEmpty(itemFood.FoodStuffsName) || !string.IsNullOrEmpty(itemFood.FoodStuffsImage))
+                                             @if (!string.IsNullOrEmpty(itemFood.FoodStuffsName) || !string.IsNullOrEmpty(itemFood.FoodStuffsImage))
                                             {
 
                                                 <div class="col-12 text-center">
 
                                                     <div>
                                                         <img id="PreviewPhoto1_@itemFood.FoodStuffsID"
-                                                             src="@Url.Content("~/IMAGES/" + Model.FoodViewM.BrandFK + "/FoodStuffs/" + Model.FoodViewM.FoodStuffsID + "/" + Model.FoodViewM.FoodStuffsImage)"
+                                                             src="https://manuals.befranchisor.com/IMAGES/@(Model.FoodViewM.FoodStuffsID)/@(Model.FoodViewM.FoodStuffsImage)" 
                                                              alt="Logo"
                                                              width="125" height="125" style="border: 1px; margin-top: 20px;">
                                                     </div>
@@ -58,7 +58,7 @@
 
                                                     </div>
                                                 </div>
-                                            }
+                                            } 
                                         </td>
 
                                     </tr>

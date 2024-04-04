@@ -147,7 +147,7 @@ namespace Test12.Controllers
                 {
                     // Log the exception details and return an error view or message
                     // Log ex.Message
-                    ModelState.AddModelError(string.Empty, "An error occurred while processing your request.");
+                    ModelState.AddModelError(string.Empty, "خطأ أثناء معالجة طلبك ");
                     return View(model);
                 }
 
@@ -167,7 +167,7 @@ namespace Test12.Controllers
                 return View(model);
             }
 
-            ModelState.AddModelError(string.Empty, "User not found.");
+            ModelState.AddModelError(string.Empty, "المستخدم غير موجود .");
             return View(model);
         }
 

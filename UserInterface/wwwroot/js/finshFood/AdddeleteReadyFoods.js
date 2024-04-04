@@ -84,7 +84,7 @@ function AddnewFoodReady(ReadyFoodFk) {
             <input type="hidden" name="readyfoodlistVM[${newRowIndex}].BrandFK" value="${ReadyFoodFk}" />
             <input type="hidden" name="readyfoodlistVM[${newRowIndex}].ReadyProductsImage" />
           
-        <div class="form-group">
+        <div class="form-controlstyle1">
             <textarea class="form-control" id="readyfoodlistVM_${newRowIndex}" name="readyfoodlistVM[${newRowIndex}].ReadyProductsName"></textarea>
          </div>
      </td>

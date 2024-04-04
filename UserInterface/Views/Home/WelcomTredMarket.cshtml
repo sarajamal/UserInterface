@@ -4,9 +4,10 @@
     <nav class="navbar navbar-light bg-white me-auto">
         <div class="container-fluid ">
             <a class="navbar-brand" href="#">
-                <img src="@Url.Content("~/IMAGES/BRAND/" + Model.TredMarktVM.BrandID + "/" + Model.TredMarktVM.BrandCoverImage)"
+                <img src="https://manuals.befranchisor.com/IMAGES/@(Model.TredMarktVM.BrandID)/@(Model.TredMarktVM.BrandLogoImage)"  
                      class="me-2"
-                     height="30"
+                     height="50"
+                     width="70"
                      alt=" Logo" />
 
                 <small>  @Model.TredMarktVM.BrandName </small>

@@ -1,5 +1,5 @@
 ﻿
-$(document).ready(function () {
+$(function () {
     var id = document.querySelector("thead").getAttribute("data-id");
     loadDataTable(id);
 });
@@ -42,7 +42,7 @@ function loadDataTable(id) {
                     var numericID = parseInt(row.brandFK, 10); // Extract numeric part
                     var numericID2 = parseInt(row.productionID, 10); // Extract numeric part
 
-                    var imagePath = `/IMAGES/${numericID}/Production/${numericID2}/${data}`;
+                    var imagePath = `/IMAGES/${numericID2}/${data}`;
                     return `<img src="${imagePath}" alt="Image" width="150" height="100"/>`;
                 },
                 "width": "40%",

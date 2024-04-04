@@ -210,7 +210,7 @@ namespace Test12.Controllers
                         string ProductionVMFK = PropaVM.tredMaeketVM.BrandID.ToString(); // Convert to string
 
                         // Combine paths using Path.Combine, ensuring all arguments are strings 
-                        string ProductionDirectory = Path.Combine(wwwRootPath,  ProductionID);
+                        string ProductionDirectory = Path.Combine(wwwRootPath, "IMAGES", ProductionID);
 
                         //اذا المسار مش موجود سو مسار جديد 
                         if (!Directory.Exists(ProductionDirectory))
@@ -787,64 +787,64 @@ namespace Test12.Controllers
 
 
         ////زر الحذف تبع صفحة تعديل الخطوات
-        //#region API CALLS
-        //[HttpDelete]
-        //public IActionResult Deletestep(int? id)
-        //{
-        //    var stepsToDelete = _unitOfWork.StepsPreparationRepository2.Get(u => u.ProdStepsID == id);
-        //    var BrandFK = _unitOfWork.itemsRepository.Get(u => u.ProductionID == stepsToDelete.ProductionFK);
+        #region API CALLS
+        [HttpDelete]
+        public IActionResult Deletestep(int? id)
+        {
+            var stepsToDelete = _unitOfWork.StepsPreparationRepository2.Get(u => u.ProdStepsID == id);
+            var BrandFK = _unitOfWork.itemsRepository.Get(u => u.ProductionID == stepsToDelete.ProductionFK);
 
-        //    string IDStep = stepsToDelete.ProdStepsID.ToString();
-        //    string FKBrand = BrandFK.BrandFK.ToString();
+            string IDStep = stepsToDelete.ProdStepsID.ToString();
+            //string FKBrand = BrandFK.BrandFK.ToString();
 
-        //    //أوجهه الى صفحة التعديل
-        //    //عشان أوجهه لصفحة التعديل 
-        //    int ProductionFK = stepsToDelete.ProductionFK;
-        //    int? BranFK = BrandFK.BrandFK;
+            //أوجهه الى صفحة التعديل
+            //عشان أوجهه لصفحة التعديل 
+            int ProductionFK = stepsToDelete.ProductionFK;
+            int? BranFK = BrandFK.BrandFK;
 
-        //    string wwwRootPathSteps = _webHostEnvironment.WebRootPath;
+            string wwwRootPathSteps = _webHostEnvironment.WebRootPath;
 
-        //    if (stepsToDelete == null)
-        //    {
-        //        return Json(new { success = false, Message = "Error While Deleting" });
-        //    }
+            if (stepsToDelete == null)
+            {
+                return Json(new { success = false, Message = "Error While Deleting" });
+            }
 
-        //    // Delete the associated image file
-        //    if (!string.IsNullOrEmpty(stepsToDelete.ProdSImage))
-        //    {
-        //        string imagePath = Path.Combine(wwwRootPathSteps, "IMAGES", FKBrand, "Production", IDStep, stepsToDelete.ProdSImage);
-        //        if (System.IO.File.Exists(imagePath))
-        //        {
-        //            System.IO.File.Delete(imagePath);
-        //        }
-        //    }
-        //    _unitOfWork.StepsPreparationRepository2.Remove(stepsToDelete);
-        //    _unitOfWork.Save();
+            // Delete the associated image file
+            if (!string.IsNullOrEmpty(stepsToDelete.ProdSImage))
+            {
+                string imagePath = Path.Combine(wwwRootPathSteps, "IMAGES", IDStep, stepsToDelete.ProdSImage);
+                if (System.IO.File.Exists(imagePath))
+                {
+                    System.IO.File.Delete(imagePath);
+                }
+            }
+            _unitOfWork.StepsPreparationRepository2.Remove(stepsToDelete);
+            _unitOfWork.Save();
 
-        //    // Find all steps with a higher PrepStepsNum
-        //    var preparationFK = stepsToDelete.ProductionFK;
+            // Find all steps with a higher PrepStepsNum
+            var preparationFK = stepsToDelete.ProductionFK;
 
-        //    var subsequentSteps = _unitOfWork.StepsPreparationRepository2
-        //        .GetAll(incloudeProperties: "Production").Where(u => u.ProductionFK == preparationFK).ToList(); // Add ToList() to materialize the query;
+            var subsequentSteps = _unitOfWork.StepsPreparationRepository2
+                .GetAll(incloudeProperties: "Production").Where(u => u.ProductionFK == preparationFK).ToList(); // Add ToList() to materialize the query;
 
-        //    // Decrement PrepStepsNum for each subsequent step
-        //    for (int i = 0; i < subsequentSteps.Count; i++)
-        //    {
-        //        var step = subsequentSteps[i];
+            // Decrement PrepStepsNum for each subsequent step
+            for (int i = 0; i < subsequentSteps.Count; i++)
+            {
+                var step = subsequentSteps[i];
 
-        //        if (step.ProdStepsID > id)
-        //        {
-        //            var getOld = _unitOfWork.StepsPreparationRepository2.Get(u => u.ProdStepsID == step.ProdStepsID);
-        //            getOld.ProdStepsNum -= 1;
-        //            _unitOfWork.StepsPreparationRepository2.Update(step);
-        //            _unitOfWork.Save();
-        //        }
-        //    }
-        //    _unitOfWork.Save();
-        //    return Json(new { success = true, redirectToUrl = Url.Action("RedirectToUpsert1", new { id = ProductionFK, BrandFK = BranFK }) }); //أحتاج يرجع لنفس صفحة التعديل 
+                if (step.ProdStepsID > id)
+                {
+                    var getOld = _unitOfWork.StepsPreparationRepository2.Get(u => u.ProdStepsID == step.ProdStepsID);
+                    getOld.ProdStepsNum -= 1;
+                    _unitOfWork.StepsPreparationRepository2.Update(step);
+                    _unitOfWork.Save();
+                }
+            }
+            _unitOfWork.Save();
+            return Json(new { success = true, redirectToUrl = Url.Action("RedirectToUpsert1", new { id = ProductionFK, BrandFK = BranFK }) }); //أحتاج يرجع لنفس صفحة التعديل 
 
-        //}
-        //#endregion
+        }
+        #endregion
 
     }
 }

@@ -1,5 +1,4 @@
-﻿$(document).ready(function () {
-
+﻿$(function () {
     // Retrieve the id value from the data attribute in the thead element
     var id = document.querySelector("thead").getAttribute("data-id");
     loadDataTable(id);
@@ -37,7 +36,7 @@ function loadDataTable(id) {
                     var numericFK = parseInt(row.brandFK, 10);
 
                     // Include the full URL of the external server in imagePath3
-                    var imagePath3 = `https://manuals.befranchisor.com/IMAGES/${numericFK}/ReadyProducts/${numericID}/${data}`;
+                    var imagePath3 = `/IMAGES/ReadyProducts/${numericID}/${data}`;
 
                     return `<img src="${imagePath3}" alt="Image" width="150" height="100"/>`;
                 },

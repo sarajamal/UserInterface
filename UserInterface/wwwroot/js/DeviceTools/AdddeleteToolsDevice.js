@@ -82,7 +82,7 @@ function AddnewtoolsDeviceNew(DeviceToolsFK) {
         <input type="hidden" name="Devices_toolsVM[${newRowIndex}].BrandFK" value="${DeviceToolsFK}" />
         <input type="hidden" name="Devices_toolsVM[${newRowIndex}].DevicesAndTools_Image" />
 
-        <div class="form-group">
+        <div class="form-controlstyle1">
             <textarea class="form-control" id="Devices_toolsVM_${newRowIndex}" name="Devices_toolsVM[${newRowIndex}].DevicesAndTools_Name"></textarea>
         </div>
     </td>
