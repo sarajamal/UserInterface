@@ -1,6 +1,9 @@
 ﻿
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.Web.Http.ModelBinding;
+using Test12.DataAccess.Repository;
 using Test12.DataAccess.Repository.IRepository;
 using Test12.Models.Models.Preparation;
 using Test12.Models.Models.Production;
@@ -23,19 +26,484 @@ namespace Test12.Controllers
         }
 
         //للإرسال FK الى صفحة القائمة بدون رقم ف URL
+
         public IActionResult RedirectToProduction(int brandFK)
         {
             TempData["BrandFK"] = brandFK;
             TempData.Keep("BrandFK");
             return RedirectToAction("ProductionList");
         }
-        public IActionResult RedirectToUpsert1(int? id, int? brandFk)
+
+        //الانتقال الى صفحة المعلومات1
+        public IActionResult RedirectToInormation1(int? ProductionID, int? brandFk)
         {
             TempData["BrandFK"] = brandFk;
-            TempData["ID"] = id;
+            TempData["ProductionID"] = ProductionID;
             TempData.Keep("BrandFK");
-            return RedirectToAction("Upsert1");
+            return RedirectToAction("Informations1");
         }
+        //الانتقال الى صفحة المعلومات2
+        public IActionResult Informations1() // After Enter تعديل Display التحضيرات والمكونات...
+        {
+            int? brandFk = TempData["BrandFK"] as int?;
+            int? ProductionID = TempData["ProductionID"] as int?;
+            LoginTredMarktViewModel PrVM = new()
+            {
+                Productionvm = new Production(),
+                TredMarktVM = new Brands(),
+                componontVMList2 = new List<ProductionIngredients>(),
+                ToolsVarityVM2 = new List<ProductionTools>(),
+                stepsVM2 = new List<ProductionSteps>(),
+                welcomTredmarketProduction = new LoginTredMarktViewModel()
+            };
+
+            PrVM.welcomTredmarketProduction.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFk);
+            PrVM.welcomTredmarketProduction.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.ProductionLoginVM = _unitOfWork.itemsRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.PreparatonLoginVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == brandFk).ToList();
+            PrVM.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFk);
+            PrVM.Productionvm = _unitOfWork.itemsRepository.Get(u => u.ProductionID == ProductionID);
+            PrVM.componontVMList2 = _unitOfWork.ComponentRepository2.GetAll(incloudeProperties: "Production").Where(c => c.ProductionFK == ProductionID).ToList(); //هو يحتوي على قائمة من جدول المكونات واللي يساعده على العرض هي view
+            PrVM.ToolsVarityVM2 = _unitOfWork.PrepaToolsVarietyRepository2.GetAll(incloudeProperties: "Production").Where(c => c.ProductionFK == ProductionID).ToList(); //هو يحتوي على قائمة من جدول الأدوات واللي يساعده على العرض هي viewD
+            PrVM.stepsVM2 = _unitOfWork.StepsPreparationRepository2.GetAll(incloudeProperties: "Production").Where(c => c.ProductionFK == ProductionID).ToList(); //هو يحتوي على قائمة من جدول الأدوات واللي يساعده على العرض هي viewD
+            return View(PrVM);
+        }
+
+        [HttpPost] //This for Add Or Update Page . 
+        public IActionResult Informations1(LoginTredMarktViewModel PropaVM, IFormFile? file) // should insert name in Upsert view
+        {
+            if (ModelState.IsValid)
+            {
+                
+                string ProductionID = PropaVM.Productionvm.ProductionID.ToString();
+                string wwwRootPath = _webHostEnvironment.WebRootPath; // get us root folder
+
+                if (file != null)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+
+                    // Construct the folder path where the image will be saved
+                    string folderPath = Path.Combine(wwwRootPath, "IMAGES", ProductionID);
+                    string ProductionPath = Path.Combine(folderPath, fileName);
+
+                    // Ensure the directory exists
+                    if (!Directory.Exists(folderPath))
+                    {
+                        Directory.CreateDirectory(folderPath);
+                    }
+
+                    // Delete old image if it exists
+                    if (!string.IsNullOrEmpty(PropaVM.Productionvm.ProductImage))
+                    {
+                        var oldImagePath = Path.Combine(folderPath, PropaVM.Productionvm.ProductImage);
+
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
+                    // Save the image with the new file name
+                    using (var fileStream = new FileStream(Path.Combine(ProductionPath), FileMode.Create))
+                    {
+                        file.CopyToAsync(fileStream);
+                    }
+
+                    // Store only the file name in the database
+                    PropaVM.Productionvm.ProductImage = fileName;
+                }
+
+                _unitOfWork.itemsRepository.Update(PropaVM.Productionvm); // تحديث Product
+                _unitOfWork.Save();
+                TempData["success"] = "تم تحديث المعلومات بشكل ناجح";
+                return RedirectToAction("RedirectToInormation1", new { ProductionID = PropaVM.Productionvm.ProductionID, brandFk = PropaVM.Productionvm.BrandFK });
+            }
+            else
+            {
+                return View(PropaVM);
+            }
+        }
+
+        //الانتقال الى صفحة المكونات1
+        public IActionResult RedirectToComponent1(int? ProductionID, int? brandFk)
+        {
+            TempData["BrandFK"] = brandFk;
+            TempData["ProductionID"] = ProductionID;
+            TempData.Keep("BrandFK");
+            return RedirectToAction("Components1");
+        }
+        //الانتقال الى صفحة المكونات2
+        public IActionResult Components1() // After Enter تعديل Display التحضيرات والمكونات...
+        {
+            int? brandFk = TempData["BrandFK"] as int?;
+            int? ProductionID = TempData["ProductionID"] as int?;
+            LoginTredMarktViewModel PrVM = new()
+            {
+                Productionvm = new Production(),
+                TredMarktVM = new Brands(),
+                componontVMList2 = new List<ProductionIngredients>(),
+                ToolsVarityVM2 = new List<ProductionTools>(),
+                stepsVM2 = new List<ProductionSteps>(),
+                welcomTredmarketProduction = new LoginTredMarktViewModel()
+            };
+
+            PrVM.welcomTredmarketProduction.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFk);
+            PrVM.welcomTredmarketProduction.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.ProductionLoginVM = _unitOfWork.itemsRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.PreparatonLoginVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == brandFk).ToList();
+            PrVM.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFk);
+            PrVM.Productionvm = _unitOfWork.itemsRepository.Get(u => u.ProductionID == ProductionID);
+            PrVM.componontVMList2 = _unitOfWork.ComponentRepository2.GetAll(incloudeProperties: "Production").Where(c => c.ProductionFK == ProductionID).ToList(); //هو يحتوي على قائمة من جدول المكونات واللي يساعده على العرض هي view
+            return View(PrVM);
+        }
+        [HttpPost] //This for Add Or Update Page . 
+        public IActionResult Components1(LoginTredMarktViewModel PropaVM) // should insert name in Upsert view
+        {
+            if (ModelState.IsValid)
+            {
+
+                int productionID = PropaVM.Productionvm.ProductionID;
+                string wwwRootPath = _webHostEnvironment.WebRootPath; // get us root folder
+
+                if (PropaVM.componontVMList2 != null) // تحديث المكونات
+                {
+                    for (int i = 0; i < PropaVM.componontVMList2.Count; i++)
+                    {
+                        var Components = PropaVM.componontVMList2[i];
+
+                        int lastIdComponents = _unitOfWork.ComponentRepository2.GetLastComponentId();
+                        int LastId1Components = lastIdComponents + 1;
+
+                        var existingComponent = _unitOfWork.ComponentRepository2.Get(u => u.ProdIngredientsID == Components.ProdIngredientsID, incloudeProperties: "Production");
+                        if (existingComponent == null)
+                        {
+                            var newComponent = new ProductionIngredients
+                            {
+                                ProdIngredientsID = LastId1Components,
+                                ProductionFK = productionID,
+                                ProdQuantity = Components.ProdQuantity,
+                                ProdUnit = Components.ProdUnit,
+                                ProdIngredientsName = Components.ProdIngredientsName
+                            };
+                            _unitOfWork.ComponentRepository2.Add(newComponent);
+                            _unitOfWork.Save();
+
+                        }
+                        else
+                        {
+                            existingComponent.ProdQuantity = Components.ProdQuantity;
+                            existingComponent.ProdUnit = Components.ProdUnit;
+                            existingComponent.ProdIngredientsName = Components.ProdIngredientsName;
+
+                            _unitOfWork.ComponentRepository2.Update(existingComponent);
+                            _unitOfWork.Save();
+                        }
+                    }
+                }
+
+                        TempData["success"] = "تم تحديث المكونات بشكل ناجح";
+                return RedirectToAction("RedirectToComponent1", new { ProductionID = PropaVM.Productionvm.ProductionID, brandFk = PropaVM.Productionvm.BrandFK });
+            }
+            else
+            {
+                return View(PropaVM);
+            }
+        }
+
+        //الانتقال الى الأدوات1
+        public IActionResult RedirectToTools1(int? ProductionID, int? brandFk)
+        {
+            TempData["BrandFK"] = brandFk;
+            TempData["ProductionID"] = ProductionID;
+            TempData.Keep("BrandFK");
+            return RedirectToAction("Tools1");
+        }
+        //الانتقال الى صفحة الأدوات2
+        public IActionResult Tools1() // After Enter تعديل Display التحضيرات والمكونات...
+        {
+            int? brandFk = TempData["BrandFK"] as int?;
+            int? ProductionID = TempData["ProductionID"] as int?;
+            LoginTredMarktViewModel PrVM = new()
+            {
+                Productionvm = new Production(),
+                TredMarktVM = new Brands(),
+                componontVMList2 = new List<ProductionIngredients>(),
+                ToolsVarityVM2 = new List<ProductionTools>(),
+                stepsVM2 = new List<ProductionSteps>(),
+                welcomTredmarketProduction = new LoginTredMarktViewModel()
+            };
+
+            PrVM.welcomTredmarketProduction.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFk);
+            PrVM.welcomTredmarketProduction.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.ProductionLoginVM = _unitOfWork.itemsRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.PreparatonLoginVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == brandFk).ToList();
+            PrVM.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFk);
+            PrVM.Productionvm = _unitOfWork.itemsRepository.Get(u => u.ProductionID == ProductionID);
+            PrVM.ToolsVarityVM2 = _unitOfWork.PrepaToolsVarietyRepository2.GetAll(incloudeProperties: "Production").Where(c => c.ProductionFK == ProductionID).ToList(); //هو يحتوي على قائمة من جدول الأدوات واللي يساعده على العرض هي viewD
+            return View(PrVM);
+        }
+        [HttpPost] //This for Add Or Update Page . 
+        public IActionResult Tools1(LoginTredMarktViewModel PropaVM) // should insert name in Upsert view
+        {
+            if (ModelState.IsValid)
+            {
+
+                int productionID = PropaVM.Productionvm.ProductionID;
+                string wwwRootPath = _webHostEnvironment.WebRootPath; // get us root folder
+
+                if (PropaVM.ToolsVarityVM2 != null) //تحديث الأدوات.
+                {
+                    for (int i = 0; i < PropaVM.ToolsVarityVM2.Count; i++)
+                    {
+                        var Tools = PropaVM.ToolsVarityVM2[i];
+
+                        int lastIdTools = _unitOfWork.PrepaToolsVarietyRepository2.GetLastToolsId();
+                        int LastId1Tools = lastIdTools + 1;
+
+                        var existingtoolvariety = _unitOfWork.PrepaToolsVarietyRepository2.Get(u => u.ProdToolsID == Tools.ProdToolsID, incloudeProperties: "Production");
+                        if (existingtoolvariety == null)
+                        {
+                            var firstRowToolAdd = new ProductionTools
+                            {
+                                ProdToolsID = LastId1Tools,
+                                ProductionFK = productionID,
+                                ProdTools = Tools.ProdTools,
+                            };
+                            _unitOfWork.PrepaToolsVarietyRepository2.Add(firstRowToolAdd);
+                            _unitOfWork.Save();
+                        }
+                        else //if is exit from database
+                        {
+                            existingtoolvariety.ProdToolsID = Tools.ProdToolsID;
+                            existingtoolvariety.ProdTools = Tools.ProdTools;
+                            _unitOfWork.PrepaToolsVarietyRepository2.Update(existingtoolvariety);
+                            _unitOfWork.Save();
+                        }
+                    }
+                }
+     
+                TempData["success"] = "تم تحديث الأدوات بشكل ناجح";
+                return RedirectToAction("RedirectToTools1", new { ProductionID = PropaVM.Productionvm.ProductionID, brandFk = PropaVM.Productionvm.BrandFK });
+            }
+            else
+            {
+                return View(PropaVM);
+            }
+        }
+
+        //الانتقال الى الخطوات1
+        public IActionResult RedirectToSteps1(int? ProductionID, int? brandFk)
+        {
+            TempData["BrandFK"] = brandFk;
+            TempData["ProductionID"] = ProductionID;
+            TempData.Keep("BrandFK");
+            return RedirectToAction("Steps1");
+        }
+        //الانتقال الى صفحة الأدوات2
+        public IActionResult Steps1() // After Enter تعديل Display التحضيرات والمكونات...
+        {
+            int? brandFk = TempData["BrandFK"] as int?;
+            int? ProductionID = TempData["ProductionID"] as int?;
+            LoginTredMarktViewModel PrVM = new()
+            {
+                Productionvm = new Production(),
+                TredMarktVM = new Brands(),
+                componontVMList2 = new List<ProductionIngredients>(),
+                ToolsVarityVM2 = new List<ProductionTools>(),
+                stepsVM2 = new List<ProductionSteps>(),
+                welcomTredmarketProduction = new LoginTredMarktViewModel()
+            };
+
+            PrVM.welcomTredmarketProduction.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFk);
+            PrVM.welcomTredmarketProduction.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.ProductionLoginVM = _unitOfWork.itemsRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.PreparatonLoginVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == brandFk);
+            PrVM.welcomTredmarketProduction.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            PrVM.welcomTredmarketProduction.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == brandFk).ToList();
+            PrVM.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFk);
+            PrVM.Productionvm = _unitOfWork.itemsRepository.Get(u => u.ProductionID == ProductionID);
+            PrVM.stepsVM2 = _unitOfWork.StepsPreparationRepository2.GetAll(incloudeProperties: "Production").Where(c => c.ProductionFK == ProductionID).ToList(); //هو يحتوي على قائمة من جدول الأدوات واللي يساعده على العرض هي viewD
+            return View(PrVM);
+        }
+
+        [HttpPost] //This for Add Or Update Page . 
+        public IActionResult Steps1(LoginTredMarktViewModel PropaVM) // should insert name in Upsert view
+        {
+            if (ModelState.IsValid)
+            {
+                int stepsID = PropaVM.Productionvm.ProductionID;
+                int productionID = PropaVM.Productionvm.ProductionID;
+                string wwwRootPath = _webHostEnvironment.WebRootPath; // get us root folder
+
+                if (PropaVM.stepsVM2 != null)
+                {
+                    for (int i = 0; i < PropaVM.stepsVM2.Count; i++)
+                    {
+                        var Steps = PropaVM.stepsVM2[i];
+
+                        string wwwRootPathSteps = _webHostEnvironment.WebRootPath; // get the root folder
+
+                        int LastId = _unitOfWork.StepsPreparationRepository2.GetLastStepId();
+                        int LastId1 = LastId + 1;
+
+                        var existingSteps9 = _unitOfWork.StepsPreparationRepository2.Get(u => u.ProdStepsID == Steps.ProdStepsID, incloudeProperties: "Production");
+                        if (existingSteps9 == null)
+                        {
+                            var newStep = new ProductionSteps
+                            {
+                                ProdStepsID = LastId1,
+                                ProductionFK = Steps.ProductionFK,
+                                ProdText = Steps.ProdText,
+                                ProdStepsNum = Steps.ProdStepsNum
+
+                            };
+
+                            string IDstep = newStep.ProdStepsID.ToString();
+                            string ProductionVMFk = PropaVM.Productionvm.BrandFK.ToString();
+
+                            string StepsPath = Path.Combine(wwwRootPath, "IMAGES", IDstep);
+
+                            var file1Name = $"file1_{newStep.ProdStepsID}";
+                            var file1ForStep = HttpContext.Request.Form.Files[file1Name];
+
+                            if (file1ForStep != null)
+                            {
+                                if (!string.IsNullOrEmpty(Steps.ProdSImage)) // Check if there's an existing image path
+                                {
+                                    var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", IDstep, newStep.ProdSImage);
+
+                                    if (System.IO.File.Exists(OldImagePath1))
+                                    {
+                                        System.IO.File.Delete(OldImagePath1); // Delete old image if it exists
+                                    }
+                                }
+
+                                string fileNameSteps1 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep.FileName);
+
+                                //اذا المسار مش موجود سو مسار جديد 
+                                if (!Directory.Exists(StepsPath))
+                                {
+                                    Directory.CreateDirectory(StepsPath);
+                                }
+
+                                using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
+                                {
+                                    file1ForStep.CopyToAsync(fileStream1);
+                                }
+
+                                newStep.ProdSImage = fileNameSteps1; // Update the image path
+                                _unitOfWork.StepsPreparationRepository2.Add(newStep);
+                                _unitOfWork.Save();
+                            }
+                        }
+                        else
+                        {
+                            string IDstep = Steps.ProdStepsID.ToString();
+                            string ProductionVMFk = PropaVM.Productionvm.BrandFK.ToString();
+
+                            string StepsPath = Path.Combine(wwwRootPath, "IMAGES", IDstep);
+
+                            var file1Name = $"file1_{Steps.ProdStepsID}";
+                            var file1ForStep = HttpContext.Request.Form.Files[file1Name];
+
+                            if (file1ForStep != null)
+                            {
+                                if (!string.IsNullOrEmpty(Steps.ProdSImage)) // Check if there's an existing image path
+                                {
+                                    var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", IDstep, Steps.ProdSImage);
+
+                                    if (System.IO.File.Exists(OldImagePath1))
+                                    {
+                                        System.IO.File.Delete(OldImagePath1); // Delete old image if it exists
+                                    }
+                                }
+
+                                string fileNameSteps1 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep.FileName);
+
+                                //اذا المسار مش موجود سو مسار جديد 
+                                if (!Directory.Exists(StepsPath))
+                                {
+                                    Directory.CreateDirectory(StepsPath);
+                                }
+
+                                using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
+                                {
+                                    file1ForStep.CopyToAsync(fileStream1);
+                                }
+                                Steps.ProdSImage = fileNameSteps1;
+                            }
+
+                            // Save or update Steps data to the database
+                            if (Steps.ProductionFK == stepsID) // int stepsID = PrepaVM.PreparationVM.التحضير_ID;
+                            {
+                                var existingSteps = _unitOfWork.StepsPreparationRepository2.Get(u => u.ProdStepsID == Steps.ProdStepsID, incloudeProperties: "Production");
+
+                                if (existingSteps != null)
+                                {
+
+                                    existingSteps.ProdText = Steps.ProdText;
+                                    existingSteps.ProdSImage = Steps.ProdSImage;
+                                    existingSteps.ProdStepsNum = Steps.ProdStepsNum;
+
+                                    _unitOfWork.StepsPreparationRepository2.Update(existingSteps);
+                                }
+                                else
+                                {
+                                    _unitOfWork.StepsPreparationRepository2.Add(Steps);
+                                }
+                                _unitOfWork.Save();
+                            }
+                        }
+                    }
+                }
+
+            TempData["success"] = "تم تحديث الخطوات بشكل ناجح";
+                return RedirectToAction("RedirectToSteps1", new { ProductionID = PropaVM.Productionvm.ProductionID, brandFk = PropaVM.Productionvm.BrandFK });
+            }
+            else
+            {
+                return View(PropaVM);
+            }
+        }
+
         public IActionResult RedirectToCreateProduction(int brandFK)
         {
             TempData["BrandFK"] = brandFK;
@@ -76,44 +544,7 @@ namespace Test12.Controllers
             return View(PrVM);
         }
 
-        public IActionResult Upsert1() // After Enter تعديل Display التحضيرات والمكونات...
-        {
-            int? brandFk = TempData["BrandFK"] as int?;
-            int? id = TempData["ID"] as int?;
-            ProductionVM PrVM = new()
-            {
-                Productionvm = new Production(),
-                tredMaeketVM = new Brands(),
-                componontVMList2 = new List<ProductionIngredients>(),
-                ToolsVarityVM2 = new List<ProductionTools>(),
-                stepsVM2 = new List<ProductionSteps>(),
-                welcomTredmarketProduction = new LoginTredMarktViewModel()
-
-            };
-
-            PrVM.welcomTredmarketProduction.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFk);
-            PrVM.welcomTredmarketProduction.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == brandFk);
-            PrVM.welcomTredmarketProduction.ProductionLoginVM = _unitOfWork.itemsRepository.Get(u => u.BrandFK == brandFk);
-            PrVM.welcomTredmarketProduction.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == brandFk);
-            PrVM.welcomTredmarketProduction.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == brandFk);
-            PrVM.welcomTredmarketProduction.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == brandFk);
-            PrVM.welcomTredmarketProduction.PreparatonLoginVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == brandFk);
-            PrVM.welcomTredmarketProduction.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
-            PrVM.welcomTredmarketProduction.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
-            PrVM.welcomTredmarketProduction.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
-            PrVM.welcomTredmarketProduction.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
-            PrVM.welcomTredmarketProduction.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
-            PrVM.welcomTredmarketProduction.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
-            PrVM.welcomTredmarketProduction.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == brandFk).ToList();
-            PrVM.tredMaeketVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
-            PrVM.Productionvm = _unitOfWork.itemsRepository.Get(u => u.ProductionID == id);
-            PrVM.componontVMList2 = _unitOfWork.ComponentRepository2.GetAll(incloudeProperties: "Production").Where(c => c.ProductionFK == id).ToList(); //هو يحتوي على قائمة من جدول المكونات واللي يساعده على العرض هي view
-            PrVM.ToolsVarityVM2 = _unitOfWork.PrepaToolsVarietyRepository2.GetAll(incloudeProperties: "Production").Where(c => c.ProductionFK == id).ToList(); //هو يحتوي على قائمة من جدول الأدوات واللي يساعده على العرض هي viewD
-            PrVM.stepsVM2 = _unitOfWork.StepsPreparationRepository2.GetAll(incloudeProperties: "Production").Where(c => c.ProductionFK == id).ToList(); //هو يحتوي على قائمة من جدول الأدوات واللي يساعده على العرض هي viewD
-            return View(PrVM);
-        }
-
-
+        
 
         public IActionResult CreateProduction() // After Enter تعديل Display التحضيرات والمكونات...
         {
@@ -383,10 +814,10 @@ namespace Test12.Controllers
                     _unitOfWork.Save();
                     TempData["success"] = "تم إضافة الاصناف بشكل ناجح";
                 }
-                return RedirectToAction("RedirectToCreateProduction", new { brandFK = PropaVM.tredMaeketVM.BrandID });
+                return RedirectToAction("RedirectToProduction", new { brandFK = PropaVM.tredMaeketVM.BrandID });
 
             }
-            return RedirectToAction("RedirectToCreateProduction", new { brandFK = PropaVM.tredMaeketVM.BrandID });
+            return RedirectToAction("RedirectToProduction", new { brandFK = PropaVM.tredMaeketVM.BrandID });
         }
 
 
@@ -695,7 +1126,7 @@ namespace Test12.Controllers
 
         // 2زر الحذف تبع المكونات 
         #region API CALLS 
-        [HttpDelete]
+        //[HttpDelete]
         public IActionResult Delete(int? id) //this is for delete button in rows component 
         {
             var ComponentDelete2 = _unitOfWork.ComponentRepository2.Get(u => u.ProdIngredientsID == id);
@@ -852,5 +1283,256 @@ namespace Test12.Controllers
 
 
 
+//[HttpPost] //This for Add Or Update Page . 
+//public IActionResult Upsert1(ProductionVM PropaVM, IFormFile? file, int selectedValue) // should insert name in Upsert view
+//{
+//    if (ModelState.IsValid)
+//    {
 
+//        //for update .. 
+//        int ProductionFK2 = PropaVM.Productionvm.ProductionID;
+//        int toolVarityID = PropaVM.Productionvm.ProductionID;
+//        int stepsID = PropaVM.Productionvm.ProductionID;
+
+//        string ProductionID = PropaVM.Productionvm.ProductionID.ToString();
+//        string ProductionFK = PropaVM.Productionvm.BrandFK.ToString();
+//        //this code for image if add or update.
+//        string wwwRootPath = _webHostEnvironment.WebRootPath; // get us root folder
+
+//        if (file != null)
+//        {
+//            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+
+//            // Construct the folder path where the image will be saved
+//            string folderPath = Path.Combine(wwwRootPath, "IMAGES", ProductionID);
+//            string ProductionPath = Path.Combine(folderPath, fileName);
+
+//            // Ensure the directory exists
+//            if (!Directory.Exists(folderPath))
+//            {
+//                Directory.CreateDirectory(folderPath);
+//            }
+
+//            // Delete old image if it exists
+//            if (!string.IsNullOrEmpty(PropaVM.Productionvm.ProductImage))
+//            {
+//                var oldImagePath = Path.Combine(folderPath, PropaVM.Productionvm.ProductImage);
+
+//                if (System.IO.File.Exists(oldImagePath))
+//                {
+//                    System.IO.File.Delete(oldImagePath);
+//                }
+//            }
+
+//            // Save the image with the new file name
+//            using (var fileStream = new FileStream(Path.Combine(ProductionPath), FileMode.Create))
+//            {
+//                file.CopyToAsync(fileStream);
+//            }
+
+//            // Store only the file name in the database
+//            PropaVM.Productionvm.ProductImage = fileName;
+//        }
+
+//        _unitOfWork.itemsRepository.Update(PropaVM.Productionvm); // تحديث Product
+//        _unitOfWork.Save();
+
+//        //ProductionIngredients 
+//        if (PropaVM.componontVMList2 != null) // تحديث المكونات
+//        {
+//            for (int i = 0; i < PropaVM.componontVMList2.Count; i++)
+//            {
+//                var Components = PropaVM.componontVMList2[i];
+
+//                int lastIdComponents = _unitOfWork.ComponentRepository2.GetLastComponentId();
+//                int LastId1Components = lastIdComponents + 1;
+
+//                var existingComponent = _unitOfWork.ComponentRepository2.Get(u => u.ProdIngredientsID == Components.ProdIngredientsID, incloudeProperties: "Production");
+//                if (existingComponent == null)
+//                {
+//                    var newComponent = new ProductionIngredients
+//                    {
+//                        ProdIngredientsID = LastId1Components,
+//                        ProductionFK = ProductionFK2,
+//                        ProdQuantity = Components.ProdQuantity,
+//                        ProdUnit = Components.ProdUnit,
+//                        ProdIngredientsName = Components.ProdIngredientsName
+//                    };
+//                    _unitOfWork.ComponentRepository2.Add(newComponent);
+//                    _unitOfWork.Save();
+
+//                }
+//                else
+//                {
+//                    existingComponent.ProdQuantity = Components.ProdQuantity;
+//                    existingComponent.ProdUnit = Components.ProdUnit;
+//                    existingComponent.ProdIngredientsName = Components.ProdIngredientsName;
+
+//                    _unitOfWork.ComponentRepository2.Update(existingComponent);
+//                    _unitOfWork.Save();
+//                }
+
+//            }
+//        }
+//        //أدوات التحضير والصنف2
+//        if (PropaVM.ToolsVarityVM2 != null) //تحديث الأدوات.
+//        {
+//            for (int i = 0; i < PropaVM.ToolsVarityVM2.Count; i++)
+//            {
+//                var Tools = PropaVM.ToolsVarityVM2[i];
+
+//                int lastIdTools = _unitOfWork.PrepaToolsVarietyRepository2.GetLastToolsId();
+//                int LastId1Tools = lastIdTools + 1;
+
+//                var existingtoolvariety = _unitOfWork.PrepaToolsVarietyRepository2.Get(u => u.ProdToolsID == Tools.ProdToolsID, incloudeProperties: "Production");
+//                if (existingtoolvariety == null)
+//                {
+//                    var firstRowToolAdd = new ProductionTools
+//                    {
+//                        ProdToolsID = LastId1Tools,
+//                        ProductionFK = ProductionFK2,
+//                        ProdTools = Tools.ProdTools,
+//                    };
+//                    _unitOfWork.PrepaToolsVarietyRepository2.Add(firstRowToolAdd);
+//                    _unitOfWork.Save();
+//                }
+//                else //if is exit from database
+//                {
+//                    existingtoolvariety.ProdToolsID = Tools.ProdToolsID;
+//                    existingtoolvariety.ProdTools = Tools.ProdTools;
+//                    _unitOfWork.PrepaToolsVarietyRepository2.Update(existingtoolvariety);
+//                    _unitOfWork.Save();
+//                }
+//            }
+//        }
+//        //الخطوات2 
+//        if (PropaVM.stepsVM2 != null)
+//        {
+//            for (int i = 0; i < PropaVM.stepsVM2.Count; i++)
+//            {
+//                var Steps = PropaVM.stepsVM2[i];
+
+//                string wwwRootPathSteps = _webHostEnvironment.WebRootPath; // get the root folder
+
+//                int LastId = _unitOfWork.StepsPreparationRepository2.GetLastStepId();
+//                int LastId1 = LastId + 1;
+
+//                var existingSteps9 = _unitOfWork.StepsPreparationRepository2.Get(u => u.ProdStepsID == Steps.ProdStepsID, incloudeProperties: "Production");
+//                if (existingSteps9 == null)
+//                {
+//                    var newStep = new ProductionSteps
+//                    {
+//                        ProdStepsID = LastId1,
+//                        ProductionFK = Steps.ProductionFK,
+//                        ProdText = Steps.ProdText,
+//                        ProdStepsNum = Steps.ProdStepsNum
+
+//                    };
+
+//                    string IDstep = newStep.ProdStepsID.ToString();
+//                    string ProductionVMFk = PropaVM.Productionvm.BrandFK.ToString();
+
+//                    string StepsPath = Path.Combine(wwwRootPath, "IMAGES", IDstep);
+
+//                    var file1Name = $"file1_{newStep.ProdStepsID}";
+//                    var file1ForStep = HttpContext.Request.Form.Files[file1Name];
+
+//                    if (file1ForStep != null)
+//                    {
+//                        if (!string.IsNullOrEmpty(Steps.ProdSImage)) // Check if there's an existing image path
+//                        {
+//                            var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", IDstep, newStep.ProdSImage);
+
+//                            if (System.IO.File.Exists(OldImagePath1))
+//                            {
+//                                System.IO.File.Delete(OldImagePath1); // Delete old image if it exists
+//                            }
+//                        }
+
+//                        string fileNameSteps1 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep.FileName);
+
+//                        //اذا المسار مش موجود سو مسار جديد 
+//                        if (!Directory.Exists(StepsPath))
+//                        {
+//                            Directory.CreateDirectory(StepsPath);
+//                        }
+
+//                        using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
+//                        {
+//                            file1ForStep.CopyToAsync(fileStream1);
+//                        }
+
+//                        newStep.ProdSImage = fileNameSteps1; // Update the image path
+//                        _unitOfWork.StepsPreparationRepository2.Add(newStep);
+//                        _unitOfWork.Save();
+//                    }
+//                }
+//                else
+//                {
+//                    string IDstep = Steps.ProdStepsID.ToString();
+//                    string ProductionVMFk = PropaVM.Productionvm.BrandFK.ToString();
+
+//                    string StepsPath = Path.Combine(wwwRootPath, "IMAGES", IDstep);
+
+//                    var file1Name = $"file1_{Steps.ProdStepsID}";
+//                    var file1ForStep = HttpContext.Request.Form.Files[file1Name];
+
+//                    if (file1ForStep != null)
+//                    {
+//                        if (!string.IsNullOrEmpty(Steps.ProdSImage)) // Check if there's an existing image path
+//                        {
+//                            var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", IDstep, Steps.ProdSImage);
+
+//                            if (System.IO.File.Exists(OldImagePath1))
+//                            {
+//                                System.IO.File.Delete(OldImagePath1); // Delete old image if it exists
+//                            }
+//                        }
+
+//                        string fileNameSteps1 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep.FileName);
+
+//                        //اذا المسار مش موجود سو مسار جديد 
+//                        if (!Directory.Exists(StepsPath))
+//                        {
+//                            Directory.CreateDirectory(StepsPath);
+//                        }
+
+//                        using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
+//                        {
+//                            file1ForStep.CopyToAsync(fileStream1);
+//                        }
+//                        Steps.ProdSImage = fileNameSteps1;
+//                    }
+
+//                    // Save or update Steps data to the database
+//                    if (Steps.ProductionFK == stepsID) // int stepsID = PrepaVM.PreparationVM.التحضير_ID;
+//                    {
+//                        var existingSteps = _unitOfWork.StepsPreparationRepository2.Get(u => u.ProdStepsID == Steps.ProdStepsID, incloudeProperties: "Production");
+
+//                        if (existingSteps != null)
+//                        {
+
+//                            existingSteps.ProdText = Steps.ProdText;
+//                            existingSteps.ProdSImage = Steps.ProdSImage;
+//                            existingSteps.ProdStepsNum = Steps.ProdStepsNum;
+
+//                            _unitOfWork.StepsPreparationRepository2.Update(existingSteps);
+//                        }
+//                        else
+//                        {
+//                            _unitOfWork.StepsPreparationRepository2.Add(Steps);
+//                        }
+//                        _unitOfWork.Save();
+//                    }
+//                }
+//            }
+//        }
+//        TempData["success"] = "تم تحديث الانتاج بشكل ناجح";
+//        return RedirectToAction("RedirectToUpsert1", new { id = PropaVM.Productionvm.ProductionID, brandFk = PropaVM.Productionvm.BrandFK });
+//    }
+//    else
+//    {
+//        return View(PropaVM);
+//    }
+//}
 

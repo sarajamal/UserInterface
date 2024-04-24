@@ -137,7 +137,7 @@ namespace Test12.Controllers
                             string ReadyProductsID = newfoods.ReadyProductsID.ToString();
 
 
-                            var FoodPath1 = Path.Combine(wwwRootFoodPath, "IMAGES", BrandFK, "ReadyProducts", ReadyProductsID);
+                            var FoodPath1 = Path.Combine(wwwRootFoodPath, "IMAGES", ReadyProductsID);
 
                             if (file1ForFood1 != null && file1ForFood1.Length > 0)
                             {
@@ -207,7 +207,7 @@ namespace Test12.Controllers
                         string BrandFK = foodready.BrandFK.ToString();
 
                         string wwwRootPathSteps = _webHostEnvironment.WebRootPath; // get the root folder
-                        var FoodPath1 = Path.Combine(wwwRootPathSteps, "IMAGES", BrandFK, "ReadyProducts", ReadyProductsID);
+                        var FoodPath1 = Path.Combine(wwwRootPathSteps, "IMAGES",  ReadyProductsID);
 
                         var file1Name = $"file1_{foodready.ReadyProductsID}";
                         var file1Forfoods = HttpContext.Request.Form.Files[file1Name];
@@ -216,7 +216,7 @@ namespace Test12.Controllers
                         {
                             if (!string.IsNullOrEmpty(foodready.ReadyProductsImage)) // Check if there's an existing image path
                             {
-                                var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", BrandFK, "ReadyProducts", ReadyProductsID, foodready.ReadyProductsImage);
+                                var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES",  ReadyProductsID, foodready.ReadyProductsImage);
 
                                 if (System.IO.File.Exists(OldImagePath1))
                                 {
@@ -278,7 +278,7 @@ namespace Test12.Controllers
             // Delete the associated image file
             if (!string.IsNullOrEmpty(deleteFinshFoodPicture.ReadyProductsImage))
             {
-                string imagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", BrandFK, "ReadyProduct", ReadyProductsID, deleteFinshFoodPicture.ReadyProductsImage);
+                string imagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", ReadyProductsID, deleteFinshFoodPicture.ReadyProductsImage);
                 if (System.IO.File.Exists(imagePath1))
                 {
                     System.IO.File.Delete(imagePath1);

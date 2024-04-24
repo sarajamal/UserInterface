@@ -140,7 +140,7 @@ namespace Test12.Controllers
                             string BrandFK = newDevice.BrandFK.ToString();
 
 
-                            var devicePath1 = Path.Combine(wwwRootDevicePath, "IMAGES", BrandFK, "DevicesAndTools", DevicesAndToolsID);
+                            var devicePath1 = Path.Combine(wwwRootDevicePath, "IMAGES", DevicesAndToolsID);
 
 
                             if (file1ForDevice1 != null && file1ForDevice1.Length > 0)
@@ -215,7 +215,7 @@ namespace Test12.Controllers
                         string wwwRootPathSteps = _webHostEnvironment.WebRootPath;
 
 
-                        var devicePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", BrandFK, "DevicesAndTools", DevicesAndToolsID);
+                        var devicePath1 = Path.Combine(wwwRootPathSteps, "IMAGES",  DevicesAndToolsID);
 
 
 
@@ -226,7 +226,7 @@ namespace Test12.Controllers
                         {
                             if (!string.IsNullOrEmpty(devices.DevicesAndTools_Image)) // Check if there's an existing image path
                             {
-                                var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", BrandFK, "DevicesAndTools", DevicesAndToolsID, devices.DevicesAndTools_Image);
+                                var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", DevicesAndToolsID, devices.DevicesAndTools_Image);
 
                                 if (System.IO.File.Exists(OldImagePath1))
                                 {
@@ -308,7 +308,7 @@ namespace Test12.Controllers
             // Delete the associated image file
             if (!string.IsNullOrEmpty(deleteDeviceToolPicture.DevicesAndTools_Image))
             {
-                string imagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", BrandFK, "DeviceAndTools", DevicesAndToolsID, deleteDeviceToolPicture.DevicesAndTools_Image);
+                string imagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES",  DevicesAndToolsID, deleteDeviceToolPicture.DevicesAndTools_Image);
                 if (System.IO.File.Exists(imagePath1))
                 {
                     System.IO.File.Delete(imagePath1);

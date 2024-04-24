@@ -304,7 +304,7 @@ namespace Test12.Controllers
                                 string BrandVMFk = setFK.BrandFK.ToString();
                                 string CleanStepsID1 = newStep.CleaStepsID.ToString();
 
-                                string stepPath = Path.Combine(wwwRootstepPath, "IMAGES", BrandVMFk, "Cleaning", CleanStepsID1);
+                                string stepPath = Path.Combine(wwwRootstepPath, "IMAGES", CleanStepsID1);
 
                                 if (file1ForStep1 != null && file1ForStep1.Length > 0)
                                 {
@@ -496,7 +496,7 @@ namespace Test12.Controllers
                             string IDstep = newStep.CleaStepsID.ToString();
                             string CleanVMFk = cleanVM.CleanViewModel.BrandFK.ToString();
 
-                            string StepsPath = Path.Combine(wwwRootPathSteps, "IMAGES", CleanVMFk, "Cleaning", IDstep);
+                            string StepsPath = Path.Combine(wwwRootPathSteps, "IMAGES", IDstep);
 
                             var file1Name = $"file1_{newStep.CleaStepsID}";
                             var file1ForStep = HttpContext.Request.Form.Files[file1Name];
@@ -505,7 +505,7 @@ namespace Test12.Controllers
                             {
                                 if (!string.IsNullOrEmpty(Steps.CleaStepsImage)) // Check if there's an existing image path
                                 {
-                                    var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", CleanVMFk, "Cleaning", IDstep, newStep.CleaStepsImage);
+                                    var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", IDstep, newStep.CleaStepsImage);
 
                                     if (System.IO.File.Exists(OldImagePath1))
                                     {
@@ -538,7 +538,7 @@ namespace Test12.Controllers
                             string IDstep = Steps.CleaStepsID.ToString();
                             string CleanVMFk = cleanVM.CleanViewModel.BrandFK.ToString();
 
-                            string StepsPath = Path.Combine(wwwRootPathSteps, "IMAGES", CleanVMFk, "Cleaning", IDstep);
+                            string StepsPath = Path.Combine(wwwRootPathSteps, "IMAGES", IDstep);
 
                             var file1Name = $"file1_{Steps.CleaStepsID}";
                             var file1ForStep = HttpContext.Request.Form.Files[file1Name];
@@ -547,7 +547,7 @@ namespace Test12.Controllers
                             {
                                 if (!string.IsNullOrEmpty(Steps.CleaStepsImage)) // Check if there's an existing image path
                                 {
-                                    var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", CleanVMFk, "Cleaning", IDstep, Steps.CleaStepsImage);
+                                    var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES",  IDstep, Steps.CleaStepsImage);
 
                                     if (System.IO.File.Exists(OldImagePath1))
                                     {
@@ -627,7 +627,7 @@ namespace Test12.Controllers
             // Delete the associated image file
             if (!string.IsNullOrEmpty(stepsToDelete.CleaStepsImage))
             {
-                string imagePath = Path.Combine(wwwRootPathSteps, "IMAGES", FKBrand, "Cleaning", IDStep, stepsToDelete.CleaStepsImage);
+                string imagePath = Path.Combine(wwwRootPathSteps, "IMAGES",  IDStep, stepsToDelete.CleaStepsImage);
                 if (System.IO.File.Exists(imagePath))
                 {
                     System.IO.File.Delete(imagePath);

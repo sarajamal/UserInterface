@@ -7,7 +7,7 @@ using Test12.Models.ViewModel;
 using Test12.Models.Models.Preparation;
 using Test12.Models.Models.trade_mark;
 using System.Text;
-using Test12.Models.Models.Clean;
+using Test12.Models.Models.Clean; 
 using Test12.Models.Models.Device_Tools;
 using Test12.Models.Models.Food;
 using Test12.Models.Models.Login;
@@ -308,6 +308,7 @@ namespace Test12.Controllers
             };
             LoMarket.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
             LoMarket.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == id);
+            LoMarket.LoginVM = _unitOfWork.loginRepository.Get(u => u.BrandFK == id);
             LoMarket.ProductionLoginVM = _unitOfWork.itemsRepository.Get(u => u.BrandFK == id);
             LoMarket.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == id);
             LoMarket.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == id);
@@ -319,6 +320,7 @@ namespace Test12.Controllers
             LoMarket.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == id).ToList();
             LoMarket.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == id).ToList();
             LoMarket.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == id).ToList();
+            LoMarket.DeviceToolsLoginVMlist = _unitOfWork.Device_tools1.GetAll().Where(u => u.BrandFK == id).ToList();
             LoMarket.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == id).ToList(); //هو يحتوي على قائمة من جدول المكونات واللي يساعده على العرض هي view
             ViewBag.IsAuthenticated = true;
             // Populate the model
@@ -326,31 +328,83 @@ namespace Test12.Controllers
             return View(LoMarket);
         }
 
-        public IActionResult MainsectionView(int? id)
+
+
+        //هذا الكود لإرسال رسالة باسم المستخدم 
+        [HttpPost]
+        public IActionResult PrintRequest(LoginTredMarktViewModel model)
         {
-            if (id == null)
+            if (ModelState.IsValid)
             {
-                // Handle the case where the id is null, for example:
-                return RedirectToAction("Error");
+                // Fetch user details
+                var user = _unitOfWork.loginRepository.Get(u => u.Email == model.LoginVM.Email);
+                var Brand = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == model.TredMarktVM.BrandID);
+                if (user != null)
+                {
+                    try
+                    {
+                        // Prepare and send an email
+                        SendEmail(user.Email, "bdooncode5@gmail.com",Brand.BrandName);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the exception
+                        ViewBag.Error = "Error while sending email: " + ex.Message;
+                    }
+                }
+                else
+                {
+                    ViewBag.Error = "No user found with the provided email.";
+                }
+                TempData["success"] = "لقد تلقينا طلبك لإعادة طباعة العلامة التجارية. ";
+
             }
+            return RedirectToAction("RedirectToWelcomTredMarket", new { brandId = model.TredMarktVM.BrandID });
+        }
 
-            LoginTredMarktViewModel LoMarket = new()
-            {
+        private void SendEmail(string fromEmail, string toEmail,string brandName)
+        {
+            MailMessage mail = new MailMessage();
+            mail.From = new MailAddress(fromEmail);
+            mail.To.Add(new MailAddress(toEmail));
+            mail.Subject = "إشعار بتعديل العلامة التجارية " + brandName;
+            string body = $@"
+            <html>
+            <head>
+                <style>
+                    .email-container {{ font-family: Arial, sans-serif; max-width: 600px; margin: auto; }}
+                    .email-content {{ text-align: center; }}
+                    .email-button {{ background-color: #004aad; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; }}
+                      {{
+                        color:#fff; }}
+                </style>
+            </head>
+            <body>
+                <div class='email-container'>
+                    <div class='email-content'>
+                    <h3>هذا المستخدم '{brandName}' طلب إعادة طباعة للعلامة التجارية الخاصة به</h3>
+                        
+                    </div>
+                </div>
+            </body>
+            </html>";
 
-                TredMarktVM = new Brands(),
-                //tredList = new List<العلامة_التجارية>(),
-                PreparatonLoginVMlist = new List<Preparations>(),
-                MainsectionVMlist = new List<MainSections>()
-            };
-            LoMarket.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
-            LoMarket.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == id).ToList();
-            LoMarket.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == id).ToList();
-            ViewBag.IsAuthenticated = true;
-            //LoMarket.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.ID_Login == id).ToList(); //هو يحتوي على قائمة من جدول المكونات واللي يساعده على العرض هي view
+            mail.Body = body;
+            mail.IsBodyHtml = true;
 
-            // Populate the model
+            SmtpClient smtp = new SmtpClient("smtp.gmail.com");
+            smtp.Port = 587;
+            smtp.Credentials = new NetworkCredential("bdooncode5@gmail.com", "nxuv iqwi awxg ihzy");
+            smtp.EnableSsl = true;
+            smtp.Send(mail);
+        }
 
-            return View(LoMarket);
+        //هذي لتسجيل الخروج
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Home"); // Redirect to the home/index page after logout
         }
     }
 }
