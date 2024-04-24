@@ -280,7 +280,9 @@ login-lbl{
     color: rgb(52, 92, 136);
     border-bottom: solid;
     border-bottom-width: 5px;
-    border-bottom-color:  rgb(30, 125, 193);
+    justify-content: space-between; /* Space between the child elements */
+    border-bottom-color: rgb(30, 125, 193);
+  
 }
 .main-container .main-sec {
     display: flex;
