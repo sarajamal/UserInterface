@@ -21,6 +21,7 @@ namespace Test12.Models.Models.Device_Tools
         [MaxLength(255)]
         public string? DevicesAndTools_Name { get; set; }
         [MaxLength(255)]
+        [ValidateNever]
         public string? DevicesAndTools_Image { get; set; }
 
         public int? BrandFK { get; set; }

@@ -18,11 +18,13 @@ namespace Test12.Models.Models.trade_mark
 
         [MaxLength(255)]
         public string? BrandName { get; set; }
+        [ValidateNever]
         public string? BrandCoverImage { get; set; }
         public DateTime? Date { get; set; }
 
         [ValidateNever]
-        public string? BrandLogoImage { get; set; } 
+        public string? BrandLogoImage { get; set; }
+        
         [ValidateNever]
         [MaxLength(255)]
         public string? CreatedBY { get; set; }   

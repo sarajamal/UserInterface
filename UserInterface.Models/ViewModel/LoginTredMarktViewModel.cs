@@ -23,13 +23,17 @@ namespace Test12.Models.ViewModel
         [ValidateNever]
         public ClientLogin LoginVM { get; set; }
         [ValidateNever]
+        public PreparationIngredients ComponentVM { get; set; }
+        [ValidateNever]
         public List<Preparations> PreparatonLoginVMlist { get; set; }
 
         [ValidateNever]
         public List<Production> ProductionLoginVMlist { get; set; }
 
         [ValidateNever]
-        public List<FoodStuffs> FoodLoginVMlist { get; set; }
+        public List<FoodStuffs> FoodLoginVMlist { get; set; } 
+        [ValidateNever]
+        public List<DevicesAndTools> DeviceToolsLoginVMlist { get; set; }
 
         [ValidateNever]
         public List<ReadyProducts> ReadyFoodLoginVMlist { get; set; }
@@ -60,6 +64,35 @@ namespace Test12.Models.ViewModel
 
         [ValidateNever]
         public ReadyProducts ReadyFoodLoginVM { get; set; }
-  
+        [ValidateNever]
+        public Preparations PreparationVM { get; set; }
+        [ValidateNever]
+        public List<PreparationIngredients> componontVMList { get; set; }
+        [ValidateNever]
+        public List<PreparationTools> PreparationsTools { get; set; }
+        [ValidateNever]
+        public List<PreparationTools> ToolsVarityVM { get; set; }
+        [ValidateNever]
+        public List<PreparationSteps> stepsVM { get; set; }
+        [ValidateNever]
+        [JsonIgnore]
+        public IEnumerable<Preparations> PreparationList { get; set; }
+        [ValidateNever]
+        [JsonIgnore]
+        public IEnumerable<Brands> tredMaeketVMList { get; set; }
+        [ValidateNever]
+        public LoginTredMarktViewModel WelcomTredMarketPrecomponent { set; get; }
+        [ValidateNever]
+        public LoginTredMarktViewModel welcomTredmarketProduction { set; get; }
+        [ValidateNever]
+        public Production Productionvm { get; set; }
+
+        [ValidateNever]
+        public List<ProductionIngredients> componontVMList2 { get; set; }
+        [ValidateNever]
+        public List<ProductionTools> ToolsVarityVM2 { get; set; }
+        [ValidateNever]
+        public List<ProductionSteps> stepsVM2 { get; set; }
+
     }
 }

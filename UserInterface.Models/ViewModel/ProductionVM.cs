@@ -10,8 +10,6 @@ namespace Test12.Models.ViewModel
     {
         [ValidateNever]
         public Production Productionvm { get; set; } 
-        [ValidateNever]
-        public Preparations PreparationVM { get; set; }
 
         [ValidateNever]
         public List<ProductionIngredients> componontVMList2 { get; set; }
