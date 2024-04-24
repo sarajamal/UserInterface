@@ -35,13 +35,13 @@
                                             <input asp-for="@itemFinshFood.ReadyProductsID" name="readyfoodlistVM[@i].ReadyProductsID" hidden />
                                             <input asp-for="@itemFinshFood.ReadyProductsImage" name="readyfoodlistVM[@i].ReadyProductsImage" hidden />
 
-                                           @*  @if (!string.IsNullOrEmpty(itemFinshFood.ReadyProductsName) || !string.IsNullOrEmpty(itemFinshFood.ReadyProductsImage))
+                                           @if (!string.IsNullOrEmpty(itemFinshFood.ReadyProductsName) || !string.IsNullOrEmpty(itemFinshFood.ReadyProductsImage))
                                             {
 
                                                 <div class="col-12 text-center">
                                                     <div>
                                                         <img id="PreviewPhoto1_@(itemFinshFood.ReadyProductsID)"
-                                                             src="https://manuals.befranchisor.com/IMAGES/@(Model.ReadyfoodVM.BrandFK)/ReadyProducts/@(Model.ReadyfoodVM.ReadyProductsID)/@(Model.ReadyfoodVM.ReadyProductsImage)"
+                                                             src="https://manuals.befranchisor.com/IMAGES/@(Model.ReadyfoodVM.ReadyProductsID)/@(Model.ReadyfoodVM.ReadyProductsImage)"
                                                              alt="Logo"
                                                              width="125" height="125" style="border: 1px; margin-top: 20px;">
                                                     </div>
@@ -54,7 +54,7 @@
 
                                                     </div>
                                                 </div>
-                                            } *@
+                                            } 
                                         </td>
 
                                     </tr>
