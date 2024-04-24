@@ -197,7 +197,7 @@ function AddnewRowstepsUpdate(preparationFk) {
     //take two parameter ID1 = ID_التحضير , id=ID for the step . 
     function Deletestep(id) { // after save in db . 
         Swal.fire({
-            title: 'تأكيد',
+            title: 'تأكيد !!!!!',
             text: " تأكد من حفظ المتغيرات على المعلومات - المكونات - الأجهزة والأدوات ",
             icon: 'warning',
             showCancelButton: true,
@@ -207,14 +207,9 @@ function AddnewRowstepsUpdate(preparationFk) {
             confirmButtonText: 'حذف '
         }).then((result) => {
             if (result.isConfirmed) {
-                var formData = new FormData();
-                formData.append("id", id);
                 $.ajax({
-                    url: '/Preparation/Deletesteps',
+                    url: '/Preparation/Deletesteps/'+ id,
                     type: 'DELETE',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
                     success: function (data) {
                         if (data.success) {
                             Swal.fire({

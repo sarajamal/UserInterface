@@ -57,7 +57,7 @@ function loadDataTable(id) {
                             data-action="FoodIndex"
                             data-id="${data}">
                        <i class="bi bi-pencil-square"></i> </button>             
-                       <a onClick=DelteFooodSave('/Food/DelteFooodSave/${data}') class="btn btn-style5 "> <i class="bi bi-trash-fill"></i></a>
+                       <button type="button" onClick=DelteFooodSave('${data}') class="btn btn-style5 "> <i class="bi bi-trash-fill"></i></button>
                     </div>`;
                 },
                 "width": "15%",
@@ -88,7 +88,7 @@ function DelteFooodSave(url) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: url, // Use the provided ID parameter
+                url:'/Food/DelteFooodSave/' +url,
                 type: 'DELETE',
                 success: function (data) {
                     if (data.success) {
@@ -97,7 +97,7 @@ function DelteFooodSave(url) {
                             title: 'تم الحذف بنجاح',
                             text: data.message
                         }).then(() => {
-                            location.reload(); // Reload the page after successful deletion
+                            window.location.href = data.redirectToUrl; // Perform the redirection
                         });
                     } else {
                         Swal.fire({

@@ -1,7 +1,4 @@
 ﻿
-
-
-
 function displaySelectedImage(input, imgId) {
 
     // Get the reference to the HTML img element based on the provided imgId
@@ -110,53 +107,53 @@ function AddnewFoods(FoodsFK) {
  
 
 ////زر الحذ في صفحة التعديل قبل الحفظ في قاعدة البيانات .
-function DeleteFoodRow1(button) {
-    Swal.fire({
-        title: 'هل أنت متأكد؟',
-        icon: 'warning',
-        showCancelButton: true,
-        cancelButtonText: 'الغاء',
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'نعم!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-                var row = button.closest("tr");
-                var rowIndex = parseInt(button.getAttribute("data-row-index"));
-                row.remove();
-                Swal.fire('Deleted!', 'تم الحذف بنجاح!', 'success');
-                updateRowIndicesAfterDeletion1(rowIndex); 
-        }
-    });
-}
-function updateRowIndicesAfterDeletion1(deletedIndex) {
-    var tableBody = document.querySelector("#tblFoods tbody");
-    var rows = tableBody.querySelectorAll("tr");
+//function DeleteFoodRow1(button) {
+//    Swal.fire({
+//        title: 'هل أنت متأكد؟',
+//        icon: 'warning',
+//        showCancelButton: true,
+//        cancelButtonText: 'الغاء',
+//        confirmButtonColor: '#d33',
+//        cancelButtonColor: '#3085d6',
+//        confirmButtonText: 'نعم!'
+//    }).then((result) => {
+//        if (result.isConfirmed) {
+//                var row = button.closest("tr");
+//                var rowIndex = parseInt(button.getAttribute("data-row-index"));
+//                row.remove();
+//                Swal.fire('Deleted!', 'تم الحذف بنجاح!', 'success');
+//                updateRowIndicesAfterDeletion1(rowIndex); 
+//        }
+//    });
+//}
+//function updateRowIndicesAfterDeletion1(deletedIndex) {
+//    var tableBody = document.querySelector("#tblFoods tbody");
+//    var rows = tableBody.querySelectorAll("tr");
 
-    rows.forEach((row, index) => {
-        if (index > deletedIndex) { // تحديث فقط للصفوف بعد الصف المحذوف
-            var newRowIndex = index - 1; // تقليل index بواحد
-            var inputsAndButtons = row.querySelectorAll("input, button");
+//    rows.forEach((row, index) => {
+//        if (index > deletedIndex) { // تحديث فقط للصفوف بعد الصف المحذوف
+//            var newRowIndex = index - 1; // تقليل index بواحد
+//            var inputsAndButtons = row.querySelectorAll("input, button");
 
-            inputsAndButtons.forEach(el => {
-                if (el.name) {
-                    el.name = el.name.replace(/\[\d+\]/, `[${newRowIndex}]`);
-                }
-                if (el.getAttribute("data-row-index") !== null) {
-                    el.setAttribute("data-row-index", newRowIndex);
-                }
-            });
-        }
-    });
+//            inputsAndButtons.forEach(el => {
+//                if (el.name) {
+//                    el.name = el.name.replace(/\[\d+\]/, `[${newRowIndex}]`);
+//                }
+//                if (el.getAttribute("data-row-index") !== null) {
+//                    el.setAttribute("data-row-index", newRowIndex);
+//                }
+//            });
+//        }
+//    });
 
-    newIndex = rows.length; // تحديث newIndex بناءً على عدد الصفوف المتبقية
-}
+//    newIndex = rows.length; // تحديث newIndex بناءً على عدد الصفوف المتبقية
+//}
 
-document.querySelector("#tblFoods tbody").addEventListener("click", function (event) {
-    if (event.target.classList.contains("data-row-index")) {
-        DeleteFoodRow1(event.target);
-    }
-});
+//document.querySelector("#tblFoods tbody").addEventListener("click", function (event) {
+//    if (event.target.classList.contains("data-row-index")) {
+//        DeleteFoodRow1(event.target);
+//    }
+//});
 
 //زر الحذف في صفحة الاضافة
 //function DeleteRow3(button) {

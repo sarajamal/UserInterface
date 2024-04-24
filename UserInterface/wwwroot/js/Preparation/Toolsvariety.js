@@ -13,7 +13,6 @@ function DeleteToolVariety(id) { //هذي فقط للعرض البرمجة في 
         if (result.isConfirmed) {
             $.ajax({
                 url: '/Preparation/DeleteToolVariety/' + id, // Use the provided ID parameter
-                type: 'DELETE',
                 success: function (data) {
                     if (data.success) {
                         Swal.fire({

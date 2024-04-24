@@ -100,6 +100,11 @@
                                             <a class="nav-link" href="@Url.Action("RedirectToCleanList", "Clean", new { brandFK = Model.CleanLoginVM.BrandFK })">التنظيف</a>
                                         </li>
                                      }
+                                    <li class="nav-item border p-2 mt-2">
+                                        <form asp-controller="Home" asp-action="Logout" method="post">
+                                            <button type="submit" class="btn btn-danger">تسجيل الخروج</button>
+                                        </form>
+                                    </li>
                                 </ul>
                             </nav>
                         </div>
@@ -112,11 +117,87 @@
 
 
 <body>
-    <div class="row custom-row">
+   
+    <div class="container login-sec">
+        <div class="card shadow border-0 mt-4">
+            <div id="Headcard" class="card-header bg-white bg-primary mb-3 ml-0 pt-4 custom-dark-bg">
+                <div class="row">
+                    <div class="col-12 text-center py-2">
+                        <table class="table table-style1 table-bordered table-striped py-5 mb-3 pb-4" id="tblData1" style="width:100%">
+                            <thead>
 
-        @Model.TredMarktVM.BrandName
-        <img class="card-img-right flex-auto d-none d-md-block" src="@Url.Content("~/IMAGES/BRAND/" + Model.TredMarktVM.BrandID + "/" + Model.TredMarktVM.BrandLogoImage)" alt="Card image cap" style="width: 150px; height: 100px">
-
+                                <tr >
+                                    <th style="text-align: center; font-size: medium; width: 393px;" class="text-center custom-font-bold sorting" rowspan="1" colspan="1">
+                                       القــائمة
+                                    </th>
+                                    <th style="text-align: center; font-size: medium; width: 393px;" class="text-center custom-font-bold sorting" rowspan="1" colspan="1">
+                                       العدد
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                    <tr>
+                                        <td style="text-align: center; padding-top:30px; ">
+                                        <h5 class="fnt-blue py-2">عدد التحضيرات</h5>
+                                        </td>
+                                    <td style="text-align: center;padding-top:30px;">
+                                        <h5 class="fnt-blue py-2">@Model.PreparatonLoginVMlist.Count</h5>
+                                        </td>
+                                    </tr>
+                                <tr>
+                                    <td style="text-align: center; padding-top:30px; ">
+                                        <h5 class="fnt-blue py-2">عدد الإنتاج</h5>
+                                    </td>
+                                    <td style="text-align: center;padding-top:30px;">
+                                        <h5 class="fnt-blue py-2">@Model.ProductionLoginVMlist.Count</h5>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: center; padding-top:30px; ">
+                                        <h5 class="fnt-blue py-2">عدد المواد الغذائية</h5>
+                                    </td>
+                                    <td style="text-align: center;padding-top:30px;">
+                                        <h5 class="fnt-blue py-2">@Model.ReadyFoodLoginVMlist.Count</h5>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: center; padding-top:30px; ">
+                                        <h5 class="fnt-blue py-2">عدد المنتجات الجاهزة </h5>
+                                    </td>
+                                    <td style="text-align: center;padding-top:30px;">
+                                        <h5 class="fnt-blue py-2">@Model.ReadyFoodLoginVMlist.Count</h5>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: center; padding-top:30px; ">
+                                        <h5 class="fnt-blue py-2">عدد الأجهزة والأدوات </h5>
+                                    </td>
+                                    <td style="text-align: center;padding-top:30px;">
+                                        <h5 class="fnt-blue py-2">@Model.DeviceToolsLoginVMlist.Count</h5>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: center; padding-top:30px; ">
+                                        <h5 class="fnt-blue py-2">عدد التنظيف</h5>
+                                    </td>
+                                    <td style="text-align: center;padding-top:30px;">
+                                        <h5 class="fnt-blue py-2">@Model.CleanLoginVMlist.Count</h5>
+                                    </td>
+                                </tr>
+                               
+                            </tbody>
+                        </table>
+                        <form id="account1" method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="PrintRequest">
+                            <input asp-for="@Model.LoginVM.Email" hidden />
+                            <input asp-for="@Model.TredMarktVM.BrandID" hidden/>
+                            <button type="submit" class="btn btn-info" style="font-size:16px;">
+                                <i class="fa fa-print"></i> طلب طباعة
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 

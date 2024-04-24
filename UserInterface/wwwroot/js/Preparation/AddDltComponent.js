@@ -13,7 +13,7 @@ function Delete(id) {
         if (result.isConfirmed) {
             $.ajax({
                 url: '/Preparation/Delete/' + id, // Use the provided ID parameter
-                type: 'DELETE',
+                /*type: 'DELETE',*/
                 success: function (data) {
                     if (data.success) {
                         Swal.fire({
@@ -221,3 +221,18 @@ function scrollToElement(element) {
         behavior: "smooth"
     });
 }
+
+ //بعد الضغط على tab فيصفحة information . 
+document.addEventListener('DOMContentLoaded', (event) => {
+    var tabElements = document.querySelectorAll('a[data-action="tab"]');
+
+    tabElements.forEach(function (tab) {
+        tab.addEventListener('click', function (e) {
+            e.preventDefault();
+            var href = this.getAttribute('href'); // Using href instead of data-action-url
+            if (href) {
+                window.location.href = href;
+            }
+        });
+    });
+});

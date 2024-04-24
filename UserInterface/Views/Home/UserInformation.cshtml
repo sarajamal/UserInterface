@@ -1,27 +1,74 @@
 ﻿@model LoginTredMarktViewModel
 
 @* أول صفحة بعد تسجيل الدخول  *@
-<div class="main-container" style="text-align: center;">
-   <div class="welcome-name">
-        <h1> مرحبا , @Model.LoginVM.Username!</h1>
-    </div>
+<header>
+    <div class="container-fluid ">  
+    <div class="main-container">
+        <div class="welcome-name">
+            <h1> مرحبا , @Model.LoginVM.Username!</h1>
+        </div>
 
-    <div class="container main-sec">
-        @foreach (var item in Model.tredList)
-        {
-            <div class="row">
-                <a href="@Url.Action("RedirectToWelcomTredMarket", "Home", new { brandId = item.BrandID })">
-                    @item.BrandName
-                    <img src="https://manuals.befranchisor.com/IMAGES/@(item.BrandID)/@(item.BrandLogoImage)" alt="Card image cap"
-                         height="80"
-                          width="70">
-                </a>
+        <div class="last-login-div">
+            <p> اخر تسجيل للدخول كان في :  @(Model.TredMarktVM.Date.HasValue ? Model.TredMarktVM.Date.Value.ToString("dd/MM/yyyy HH:mm:ss") : "No previous login recorded")</p>
+        </div>
+    </div>
+    </div>
+</header>
+
+<body >
+    <div class="container login-sec">
+        <div class="card shadow border-0 mt-4">
+            <div id="Headcard" class="card-header bg-white bg-primary mb-3 ml-0 pt-4 custom-dark-bg">
+                <div class="row">
+                    <div class="col-12 text-center py-2">
+                        <table class="table table-style1 table-bordered table-striped py-5 mb-3 pb-4" id="tblData1" style="width:100%">
+                            <thead>
+
+                                <tr>
+                                    <th style="text-align:center ;font-size:medium">
+                                        الرقم 
+                                    </th>
+                                    <th style="text-align:center ;font-size:medium">
+                                       العلامة التجارية Logo
+                                    </th>
+                                    <th>
+                                         اسم العلامة التجارية
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int counter = 1; // Initialize a counter variable starting at 1
+                                }
+                                @foreach (var item in Model.tredList)
+                                {
+                                    <tr>
+                                        <td style="text-align: center; padding-top:50px; ">
+                                            <h5 class="fnt-blue py-2">  @counter </h5>
+                                        </td>
+                                       
+                                        <!-- Align logo image to the right -->
+                                        <td style="text-align: center;">
+                                            <img src="https://manuals.befranchisor.com/IMAGES/@(item.BrandID)/@(item.BrandLogoImage)"
+                                                 alt="Logo for @item.BrandName"
+                                                 height="130"
+                                                 width="140">
+                                        </td>
+                                        <!-- Align brand name to the left -->
+                                        <td style="text-align: center; padding-top:50px; ">
+                                            <a href="@Url.Action("RedirectToWelcomTredMarket", "Home", new { brandId = item.BrandID })">
+                                                <h5 class="fnt-blue py-2">  @item.BrandName </h5>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    counter++; // Increment the counter at the end of each loop iteration
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-        } 
-        
+        </div>
     </div>
- 
-    <div class="last-login-div"> 
-        <p> اخر تسجيل للدخول كان في :  @(Model.TredMarktVM.Date.HasValue ? Model.TredMarktVM.Date.Value.ToString("dd/MM/yyyy HH:mm:ss") : "No previous login recorded")</p>
-    </div>
-</div>
+</body>

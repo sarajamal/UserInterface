@@ -15,7 +15,7 @@ builder.Services.AddDbContext<ApplicationDbContext>
     (options => options.UseSqlServer(builder.Configuration.GetConnectionString("DivCollection")));
 
 
-builder.Services.AddDistributedMemoryCache();
+//builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddSession(options =>
 {
@@ -29,6 +29,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     {
         options.Cookie.Name = "bdooncode5App";
         options.LoginPath = "/Home/Index"; // Redirect to the login page
+        options.LogoutPath = "/Home/Logout";
      });
 
 builder.Services.AddRazorPages();
@@ -55,7 +56,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseSession();
-app.MapRazorPages();
+//app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",

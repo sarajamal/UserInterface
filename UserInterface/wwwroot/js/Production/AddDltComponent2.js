@@ -13,7 +13,7 @@ function Delete(id) {
         if (result.isConfirmed) {
             $.ajax({
                 url: '/Production/Delete/' + id, // Use the provided ID parameter
-                type: 'DELETE',
+                //type: 'DELETE',
                 success: function (data) {
                     if (data.success) {
                         Swal.fire({

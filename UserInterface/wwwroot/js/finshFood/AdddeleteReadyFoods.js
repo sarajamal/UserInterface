@@ -24,27 +24,27 @@ function displaySelectedImage(input, imgId) {
     }
 }
 
-//function toggleAddButtonVisibility(value) {
+function toggleAddButtonVisibility(value) {
 
-//    var addButton = document.getElementById("addToolsButton");
-//    var redMessage = document.querySelector(".red-message");
-//    var saveButton = document.getElementById("saveChange");
+    var addButton = document.getElementById("addToolsButton");
+    var redMessage = document.querySelector(".red-message");
+    var saveButton = document.getElementById("saveChange");
 
 
-//    if (value.trim() !== "") {
-//        addButton.disabled = false; // Enable the button if text is entered
-//        saveButton.disabled = false; // Enable the button if text is entered
+    if (value.trim() !== "") {
+        addButton.disabled = false; // Enable the button if text is entered
+        saveButton.disabled = false; // Enable the button if text is entered
 
-//        redMessage.style.display = "none"; // Hide the red message
-//    }
+        redMessage.style.display = "none"; // Hide the red message
+    }
 
-//    // Disable all delete buttons with the class 'delete-button'
-//    var deleteButtons = document.querySelectorAll(".delete-button");
-//    deleteButtons.forEach(function (button) {
-//        button.disabled = true;
-//    });
+    // Disable all delete buttons with the class 'delete-button'
+    var deleteButtons = document.querySelectorAll(".delete-button");
+    deleteButtons.forEach(function (button) {
+        button.disabled = true;
+    });
 
-//}
+}
 
 
 //صفحة الاضافة منتجات جاهزة جديدة 

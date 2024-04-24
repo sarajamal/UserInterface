@@ -39,7 +39,7 @@ function loadDataTable(id) {
                         var numericFK = parseInt(row.brandFK, 10);
 
                         // Adjusted imagePath2 to point to the external server
-                        var imagePath2 = `https://manuals.befranchisor.com/IMAGES/${numericID}/${row.devicesAndTools_Image}`;
+                        var imagePath2 = `/IMAGES/${numericID}/${row.devicesAndTools_Image}`;
 
                         // Customize the content of the cell with both text and image
                         return `<img src="${imagePath2}" alt="Image" width="150" height="100"/>`;

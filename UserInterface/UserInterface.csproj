@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\IMAGES\1\**" />
+    <Content Remove="wwwroot\IMAGES\1\**" />
+    <EmbeddedResource Remove="wwwroot\IMAGES\1\**" />
+    <None Remove="wwwroot\IMAGES\1\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="chilkat-x64" Version="9.5.0.98" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
@@ -20,7 +28,6 @@
     <Folder Include="Areas\Model\Data\" />
     <Folder Include="Areas\Model\Models\" />
     <Folder Include="Areas\Model\Views\" />
-    <Folder Include="wwwroot\IMAGES\1\Cleaning\" />
   </ItemGroup>
 
   <ItemGroup>
