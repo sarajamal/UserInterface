@@ -9,14 +9,20 @@ namespace Test12.Models.ViewModel
     public class ProductionVM
     {
         [ValidateNever]
-        public Production Productionvm { get; set; } 
+        public Production Productionvm { get; set; }
+        [ValidateNever]
+        public ProductionIngredients componontVM2 { get; set; }
+        [ValidateNever]
+        public ProductionTools ToolsVarityVM2 { get; set; }
 
         [ValidateNever]
         public List<ProductionIngredients> componontVMList2 { get; set; }
         [ValidateNever]
-        public List<ProductionTools> ToolsVarityVM2 { get; set; }
+        public List<ProductionTools> ToolsVarityVM2List { get; set; }
         [ValidateNever]
-        public List<ProductionSteps> stepsVM2 { get; set; }
+        public List<ProductionSteps> stepsVM2List { get; set; }
+        [ValidateNever]
+        public ProductionSteps stepsVM2 { get; set; }
         //[ValidateNever]
         //public IEnumerable<SelectListItem> PreparationName { get; set; }
 

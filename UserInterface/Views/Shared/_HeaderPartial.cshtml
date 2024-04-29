@@ -2,15 +2,16 @@
 
 <header>
     <nav class="navbar navbar-light bg-white me-auto">
-        <div class="container-fluid ">
-            <a class="navbar-brand" href="#">
-                <img src="https://manuals.befranchisor.com/IMAGES/@(Model.TredMarktVM.BrandID)/@(Model.TredMarktVM.BrandCoverImage)" alt="Card image cap"
+        <div class="container-fluid">
+            <a class="navbar-brand" href="@Url.Action("RedirectToUserInformation", "Home", new { id = @Model.TredMarktVM.BrandID })">
+                <img src="https://manuals.befranchisor.com/IMAGES/@(Model.TredMarktVM.BrandID)/@(Model.TredMarktVM.BrandLogoImage)"
                      class="me-2"
-                     height="30"
-                      />
-
-                <small>  @Model.TredMarktVM.BrandName </small>
+                     height="50"
+                     width="70"
+                     alt="Logo" />
+                <small>@Model.TredMarktVM.BrandName</small>
             </a>
+      
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -99,6 +100,10 @@
                                             <a class="nav-link" href="@Url.Action("RedirectToCleanList", "Clean", new { brandFK = Model.CleanLoginVM.BrandFK })">التنظيف</a>
                                         </li>
                                     }
+                                    <li class="nav-item border p-2 mt-2">
+                                        <a class="nav-link styled-link" href="@Url.Action("RedirectToWelcomTredMarket", "Home", new { brandId = Model.TredMarktVM.BrandID})">الصفحة الرئيسية</a>
+                                    </li>
+
                                     <li class="nav-item border p-2 mt-2">
                                         <form asp-controller="Home" asp-action="Logout" method="post">
                                             <button type="submit" class="btn btn-danger">تسجيل الخروج</button>
