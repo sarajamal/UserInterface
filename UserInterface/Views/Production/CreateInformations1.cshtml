@@ -1,0 +1,325 @@
+﻿@model ProductionVM;
+
+<header>
+    <div>
+        @await Html.PartialAsync("_HeaderPartial", Model.welcomTredmarketProduction)
+    </div>
+</header>
+<body>
+    <div class="card shadow border-0 my-4 py-4">
+        <div class="card-header bg-navbar bf-bb bg-gradient ml-0 py-3">
+            <div class="row">
+                <div class="col-12 text-center">
+
+                    <h2 class="fnt-blue py-2">   إضافة الانتاج </h2>
+                </div>
+            </div>
+        </div>ُ
+
+
+        <form method="post" class="row" enctype="multipart/form-data" id="myForm1" >
+            <input asp-for="Productionvm.ProductionID" hidden />
+            <input asp-for="Productionvm.ProductImage" hidden />
+            <input asp-for="tredMaeketVM.BrandID" hidden />
+             <input asp-for="tredMaeketVM.BrandName" hidden />
+            <input asp-for="tredMaeketVM.Date" hidden />
+            <input asp-for="tredMaeketVM.BrandCoverImage" hidden />
+            <input asp-for="tredMaeketVM.BrandFooterImage" hidden />
+            <input asp-for="tredMaeketVM.BrandLogoImage" hidden />
+            @* <input type="hidden" id="order-input" name="Productionvm.Order" value="0.1" />*@
+
+
+            <div class="card-body p-4 py-4">
+                <div class="border p-3">
+
+                    @*added this class main-container-table*@
+                    <div class="main-container-table">
+
+
+                        <div id="exTab111" class="container">
+                            <!-- Tab table -->
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td class="active">
+                                            <a href="@Url.Action("RedirectToCreateInformations1", "Production", new {ProductionID = Model.Productionvm.ProductionID, brandFK = Model.welcomTredmarketProduction.TredMarktVM.BrandID })">المعلومات</a>
+                                        </td>
+                                        <td>
+                                            <a href="@Url.Action("RedirectToCreateComponent1", "Production", new { ProductionID = Model.Productionvm.ProductionID, brandFK = Model.Productionvm.BrandFK })">المكونات</a>
+                                        </td>
+                                        <td>
+                                            <a href="@Url.Action("RedirectToCreateTools1", "Production", new { ProductionID = Model.Productionvm.ProductionID, brandFK = Model.Productionvm.BrandFK })">الأدوات</a>
+                                        </td>
+                                        <td>
+                                            <a href="@Url.Action("RedirectToCreateSteps1", "Production", new { ProductionID = Model.Productionvm.ProductionID, brandFK = Model.Productionvm.BrandFK })">الخطوات</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <!-- Contents -->
+                            <div class="tab-content clearfix">
+
+                                @* المعلومات *@
+                                <div class="tab-pane active" id="1a">
+                                    <div>
+                                        <h4 style="text-align:right">المعلومات</h4>
+                                    </div>
+                                    <div class=" row">
+                                        <div class=" col-md-6 p-2">
+                                            <div class="form-group">
+
+                                                <label asp-for=" Productionvm.ProductName" class="control-label"> اسم الصنف </label>
+                                                <input asp-for=" Productionvm.ProductName " class="form-control" />
+                                                <span asp-validation-for=" Productionvm.ProductName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class=" col-md-6 p-2">
+                                            <div class="form-group">
+                                                <label asp-for=" Productionvm.VersionNumber" class="control-label">رقم النسخة</label>
+                                                <input asp-for="Productionvm.VersionNumber" class="form-control" value="1" readonly />
+                                                <span asp-validation-for=" Productionvm.VersionNumber" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class=" col-md-6 p-2">
+                                            <div class="form-group">
+                                                <label asp-for=" Productionvm.Expiry" class="control-label">مدة الصلاحية</label>
+                                                <input asp-for=" Productionvm.Expiry" class="form-control" />
+                                                <span asp-validation-for=" Productionvm.Expiry" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6 p-2">
+                                            <div class="form-group">
+
+                                                <label asp-for="Productionvm.ProductType" class="control-label">نوع الصنف</label>
+                                                <select asp-for="Productionvm.ProductType" class="form-select" id="selectType">
+                                                    <option value="" disabled selected>-- اختر نوع الصنف --</option>
+                                                    @foreach (var item in Model.itemList33333)
+                                                    {
+
+                                                        <option value="@item.ProductType">@item.ProductType</option>
+
+                                                    }
+                                                    <option value="0">أضف نوعًا جديدًا</option> <!-- The "Add New" option -->
+                                                </select>
+
+                                                <input asp-for="Productionvm.ProductType" class="form-control" id="customTypeInput" style="display: none" />
+                                                <div id="errorMessage" style="color: red; display: none;" class="py-3">
+                                                    . يجب ادخال نوع الصنف *
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class=" col-md-6 p-2">
+                                            <div class="form-group">
+                                                <label asp-for="  Productionvm.Station" class="control-label">المحطة</label>
+                                                <input asp-for="Productionvm.Station" class="form-control" />
+                                                <span asp-validation-for=" Productionvm.Station" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class=" col-md-6 p-2">
+                                            <div class="form-group">
+                                                <label asp-for=" Productionvm.PreparationTime" class="control-label"> وقت التحضير</label>
+                                                <input asp-for=" Productionvm.PreparationTime" class="form-control" />
+                                                <span asp-validation-for=" Productionvm.PreparationTime" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 btn-group">
+                                            <div class="form-group col-8 p-0">
+                                                
+                                                    <label asp-for=" Productionvm.ProductImage" class="ms-2"> ادخل صورة</label>
+                                                    <input type="file" name="file" class="form-control border-0 shadow" id="customFile"
+                                                    onchange="document.getElementById('PreviewPhoto').src= window.URL.createObjectURL(this.files[0])" />
+                                                    <div id="errorMessage1" style="color: red; display: none;" class="py-3">
+                                                        . يجب ادخال صورة الأصناف النهائية *
+                                                    </div>
+                                            </div>
+                                        </div>
+                                          @if (Model.Productionvm != null && Model.Productionvm.ProductionID == 0)
+                                        {
+                                            <div class="form-group col-4">
+                                                <div class="form-group col-12">
+                                                    <img id="PreviewPhoto" src="~/IMAGES/noImage.png" alt="Logo"
+                                                    width="125" height="125" style="border:1px ; margin-top:20px" required />
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="form-group col-4">
+                                                <div class="form-group col-4">
+                                                    <img src="@Url.Content("~/IMAGES/" + Model.Productionvm.ProductionID + "/" + Model.Productionvm.ProductImage)"
+                                                         alt="Logo" id="PreviewPhoto"
+                                                         width="125" height="125" style="border:1px ; margin-top:20px" />
+                                                </div>
+                                            </div>
+                                        }
+
+                                        @* List *@
+                                        @if (Model.Productionvm.ProductionID == 0)
+                                        {
+                                            <div class="form-floating py-2 col-12">
+                                                @{
+                                                    var sortedPreparationName = Model.itemsList.OrderBy(item => item.ProductionOrder).ToList();
+                                                }
+                                                <select asp-for="Productionvm.ProductionID" class="form-select" id="selectPreparation" name="selectedValue">
+                                                    <option value="" disabled selected>-- اختر مكان الصف الجديد--</option>
+                                                    @foreach (var item in sortedPreparationName)
+                                                    {
+                                                        <option value="@item.ProductionID">@item.ProductName</option>
+                                                    }
+                                                    <option value="0">اخر صف</option> <!-- The "Other" option -->
+                                                </select>
+                                            </div>
+                                        }
+                                      @*   <div class="form-group col-12 py-2">
+                                            <div style="text-align: left;">
+
+                                                <div class="form-group col-12 py-3 fxcc">
+                                                    <input type="submit" id="submitButton"
+                                                           value=" حفظ" href="@Url.Action("CreateProduction",
+                                                           "Production", new { id = Model.Productionvm.ProductionID,brandFK = Model.welcomTredmarketProduction.TredMarktVM.BrandID })" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
+                                                </div>
+                                            </div>
+                                        </div> *@
+                                   
+                                   
+
+                               
+
+                        @* أزرار الحفظ *@
+                       <div class="form-group col-12 py-2">
+                            <div style="text-align: left;">
+                                                <div class="form-group col-12 py-3 fxcc">
+                                                    <input type="submit" id="saveChange"
+                                                           value=" حفظ " href="@Url.Action("RedirectToCreateInformations1",
+                                                           "Production", new { brandFK = Model.Productionvm.BrandFK })" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
+                                                </div>
+
+                            </div>
+                        </div>
+                                    </div>
+                                </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+
+@* يجب إدخال نوع الصنف والصورة *@
+<script>
+    document.getElementById('submitButton').addEventListener('click', function (event) {
+        let isValid = true;
+
+        // Check if the product type is selected
+        let productType = document.getElementById('selectType').value;
+        if (!productType) {
+            document.getElementById('errorMessage').style.display = 'block';
+            isValid = false;
+        } else {
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        // Check if an image is selected
+        let fileInput = document.getElementById('customFile');
+        if (!fileInput.files.length) {
+            document.getElementById('errorMessage1').style.display = 'block';
+            isValid = false;
+        } else {
+            document.getElementById('errorMessage1').style.display = 'none';
+        }
+
+        if (!isValid) {
+            event.preventDefault(); // Prevent form submission if validation fails
+        }
+    });
+</script>
+
+@* 
+<script>
+    function displaySelectedImage(input, imgId) {
+
+        // Get the reference to the HTML img element based on the provided imgId
+        var imgElement = document.getElementById(imgId);
+
+        // Check if a file has been selected in the input element
+        if (input.files && input.files[0]) {
+
+            // Create a new FileReader object to read the selected file
+            var reader = new FileReader();
+
+            // Define an event handler for when the FileReader has finished reading the file
+            reader.onload = function (e) {
+
+                // Set the 'src' attribute of the img element to the read image data
+                imgElement.src = e.target.result;
+            };
+            // Read the selected file as a data URL (base64 encoded)
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+
+<script>
+    document.getElementById("submitButton").addEventListener("click", function (e) {
+        var customFileInput = document.getElementById("customFile");
+        var errorMessage1 = document.getElementById("errorMessage1");
+
+        if (customFileInput.files.length === 0) {
+            errorMessage1.style.display = "block";
+            e.preventDefault(); // Prevent the form from being submitted
+
+            var customFileOffset = customFileInput.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({
+                top: customFileOffset,
+                behavior: "smooth"
+            });
+
+        } else {
+            errorMessage1.style.display = "none";
+        }
+    });
+</script> *@
+
+@* رسالة يجب إدخال صورة التأصناف *@
+@* <script>
+    document.getElementById("submitButton").addEventListener("click", function (e) {
+        var customFileInput = document.getElementById("customFile");
+        var selectPreparation1 = document.getElementById("selectPreparation1");
+        var customTypeInput = document.getElementById("customTypeInput");
+        var errorMessage = document.getElementById("errorMessage");
+
+        if (customFileInput.files.length === 0) {
+            errorMessage.style.display = "block";
+            e.preventDefault(); // Prevent the form from being submitted
+
+            var customFileOffset = customFileInput.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({
+                top: customFileOffset,
+                behavior: "smooth"
+            });
+        } else {
+            errorMessage.style.display = "none";
+        }
+    });
+</script>
+ *@
+
+@section Scripts {
+
+    
+   
+
+    <script src="~/Js/Production/AddDltComponent2.js"></script>
+    <script src="~/Js/Production/Toolsvariety2.js"></script>
+    <script src="~/Js/Production/AddDLTsteps2.js"></script>
+    <script src="~/Js/Production/custom.js"></script>
+
+ 
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>

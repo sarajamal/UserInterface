@@ -79,7 +79,7 @@ namespace Test12.Controllers
 
         //زر الحذف في صفحة قائمة التنظيف 
         #region
-        [HttpDelete]
+        //[HttpDelete]
         public IActionResult DeleteCleanPost(int? id)
         {
             var deleteSteps = _unitOfWork.StepsCleanRepository3.GetAll(incloudeProperties: "Cleaning").Where(u => u.CleaningFK == id).ToList();
@@ -344,7 +344,7 @@ namespace Test12.Controllers
                     else
                     {
                         var getIdOrder = _unitOfWork.CleanRepository.Get(u => u.CleaningID == selectCleaning);
-                        double OldOrder = getIdOrder.CleaningOrder ?? 0.0f; // Default to 0.0f if Order is null
+                        int OldOrder = getIdOrder.CleaningID ; // Default to 0.0f if Order is null
                         double newOrder = OldOrder + 0.1f;
                         setFK.CleaningOrder = newOrder;
                     }

@@ -1,0 +1,229 @@
+﻿@model ProductionVM;
+
+<header>
+    <div>
+        @await Html.PartialAsync("_HeaderPartial", Model.welcomTredmarketProduction)
+    </div>
+</header>
+<body>
+    <div class="card shadow border-0 my-4 py-4">
+        <div class="card-header bg-navbar bf-bb bg-gradient ml-0 py-3">
+            <div class="row">
+                <div class="col-12 text-center">
+
+                    <h2 class="fnt-blue py-2">   إضافة الانتاج </h2>
+                </div>
+            </div>
+        </div>ُ
+
+
+        <form method="post" class="row" enctype="multipart/form-data" id="myForm1" >
+            <input asp-for="Productionvm.ProductionID" hidden />
+            <input asp-for="Productionvm.ProductImage" hidden />
+            <input asp-for="tredMaeketVM.BrandID" hidden />
+            <input asp-for="tredMaeketVM.BrandName" hidden />
+            <input asp-for="tredMaeketVM.Date" hidden />
+            <input asp-for="tredMaeketVM.BrandCoverImage" hidden />
+            <input asp-for="tredMaeketVM.BrandFooterImage" hidden />
+            <input asp-for="tredMaeketVM.BrandLogoImage" hidden />
+            @* <input type="hidden" id="order-input" name="Productionvm.Order" value="0.1" />*@
+
+
+            <div class="card-body p-4 py-4">
+                <div class="border p-3">
+
+                    @*added this class main-container-table*@
+                    <div class="main-container-table">
+
+
+                        <div id="exTab111" class="container">
+                            <!-- Tab table -->
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td class="active">
+                                            <a href="@Url.Action("RedirectToCreateInformations1", "Production", new {ProductionID = Model.Productionvm.ProductionID, brandFK = Model.welcomTredmarketProduction.TredMarktVM.BrandID })">المعلومات</a>
+                                        </td>
+                                        <td>
+                                            <a href="@Url.Action("RedirectToCreateComponent1", "Production", new { ProductionID = Model.Productionvm.ProductionID, brandFK = Model.Productionvm.BrandFK })">المكونات</a>
+                                        </td>
+                                        <td>
+                                            <a href="@Url.Action("RedirectToCreateTools1", "Production", new { ProductionID = Model.Productionvm.ProductionID, brandFK = Model.Productionvm.BrandFK })">الأدوات</a>
+                                        </td>
+                                        <td>
+                                            <a href="@Url.Action("RedirectToCreateSteps1", "Production", new { ProductionID = Model.Productionvm.ProductionID, brandFK = Model.Productionvm.BrandFK })">الخطوات</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                                    <div>
+                                        <h4 style="text-align:right">الأدوات</h4>
+                                    </div>
+
+                            <table id="tblToolVarity2" class="table table-style1 table-bordered table-striped" data-Production-id="@Model.Productionvm.ProductionID">
+                                <thead>
+                                    <tr>
+                                        <th class="col-1">رقم الأداة</th>
+                                        <th class="col-9"> الأدوات المستخدمة</th>
+
+                                        <th style="text-align:center;">
+                                            @if(Model.ToolsVarityVM2!=null && Model.ToolsVarityVM2.ProductionFK != 0)
+                                            {
+                                                <button type="button" class="btn btn-style2 fnt-white " onclick="AddRowToolnew22('@Model.Productionvm.ProductionID')">إضافة</button>
+
+                                            }else
+                                            {
+                                                <button type="button" class="btn btn-style2 fnt-white " onclick="AddRowToolnew2('@Model.Productionvm.ProductionID')">إضافة</button>
+
+                                            }
+                                           
+                                        </th>
+                                    </tr>
+                                </thead>
+             
+                                <tbody>
+                                    @if (Model.ToolsVarityVM2 != null && Model.ToolsVarityVM2.ProdToolsID != 0)
+                                    {
+                                            @for (int i = 0; i < Model.ToolsVarityVM2List.Count; i++)
+                                            {
+                                                var item = Model.ToolsVarityVM2List[i];
+                                            <tr>
+                                                <td style ="text-align:center;">@(i + 1)</td>
+                                                <td>
+
+                                                    <input asp-for="@item.ProdToolsID" name="ToolsVarityVM2List[@i].ProdToolsID" hidden />
+                                                    <input asp-for="@item.ProductionFK" name="ToolsVarityVM2List[@i].ProductionFK" hidden />
+
+                                                    <input asp-for="@item.ProdTools" class="form-control" name="ToolsVarityVM2List[@i].ProdTools" />
+                                                    <span asp-validation-for="@item.ProdTools" class="text-danger"></span>
+                                                </td>
+
+                                                <td style="text-align:center;">
+                                                    <button type="button" class="btn btn-danger" onclick="DeleteToolVariety2t1(@item.ProdToolsID)">حذف</button>
+                                                </td>
+                                            </tr>
+                                            }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td style="text-align:center;">1</td>
+
+                                            <td>
+                                                <input asp-for="@Model.Productionvm.ProductionID" id="ProductionId" hidden />
+
+                                                <input asp-for="ToolsVarityVM2.ProdTools" class="form-control" placeholder="الأدات المستخدمة" />
+                                                <span asp-validation-for="ToolsVarityVM2.ProdTools" class="text-danger"></span>
+                                                @* <input type="text" class="form-control" name="ProdTools" placeholder="الأدات المستخدمة" /> *@
+                                            </td>
+                                            <td></td>
+
+                                        </tr>
+                                    }
+                                   
+                                </tbody>
+
+                            </table>
+
+                              <div class="form-group col-12 py-2">
+                            <div style="text-align: left;">
+                              
+                                        <div class="form-group col-12 py-3 fxcc">
+                                            <input type="submit" id="saveChange"
+                                            value=" حفظ " href="@Url.Action("RedirectToCreateTools1",
+                                                           "Production", new { ProductionID = Model.Productionvm.ProductionID ,brandFK = Model.welcomTredmarketProduction.TredMarktVM.BrandID })
+                                            " style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
+                                        </div>
+                                 
+                                </div>
+                            </div>
+                        </div>
+            </div>        
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+
+
+@* 
+<script>
+    function displaySelectedImage(input, imgId) {
+
+        // Get the reference to the HTML img element based on the provided imgId
+        var imgElement = document.getElementById(imgId);
+
+        // Check if a file has been selected in the input element
+        if (input.files && input.files[0]) {
+
+            // Create a new FileReader object to read the selected file
+            var reader = new FileReader();
+
+            // Define an event handler for when the FileReader has finished reading the file
+            reader.onload = function (e) {
+
+                // Set the 'src' attribute of the img element to the read image data
+                imgElement.src = e.target.result;
+            };
+            // Read the selected file as a data URL (base64 encoded)
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+
+<script>
+    document.getElementById("submitButton").addEventListener("click", function (e) {
+        var customFileInput = document.getElementById("customFile");
+        var errorMessage1 = document.getElementById("errorMessage1");
+
+        if (customFileInput.files.length === 0) {
+            errorMessage1.style.display = "block";
+            e.preventDefault(); // Prevent the form from being submitted
+
+            var customFileOffset = customFileInput.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({
+                top: customFileOffset,
+                behavior: "smooth"
+            });
+
+        } else {
+            errorMessage1.style.display = "none";
+        }
+    });
+</script> *@
+
+@* رسالة يجب إدخال صورة التأصناف *@
+@* <script>
+    document.getElementById("submitButton").addEventListener("click", function (e) {
+        var customFileInput = document.getElementById("customFile");
+        var selectPreparation1 = document.getElementById("selectPreparation1");
+        var customTypeInput = document.getElementById("customTypeInput");
+        var errorMessage = document.getElementById("errorMessage");
+
+        if (customFileInput.files.length === 0) {
+            errorMessage.style.display = "block";
+            e.preventDefault(); // Prevent the form from being submitted
+
+            var customFileOffset = customFileInput.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({
+                top: customFileOffset,
+                behavior: "smooth"
+            });
+        } else {
+            errorMessage.style.display = "none";
+        }
+    });
+</script>
+ *@
+
+@section Scripts {
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+    <script src="~/Js/Production/Toolsvariety2.js"></script>
+
+ 
+}

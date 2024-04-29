@@ -59,7 +59,7 @@ function AddnewRowstepsUpdate2(ProductionFK) { //صفحة التعديل
                 </div>
                 <div class="form-group mt-2">
                     <input type="file" name="file1_${lastID}" class="border-0 shadow mt-5" id="customFile1_${lastID}" data-preview-id="PreviewPhoto1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
-                    <textarea class="form-control mt-2" id="stepsVM2_${newRowIndex}" name="stepsVM2[${newRowIndex}].ProdText" placeholder="وصف الخطوة"></textarea>
+                    <textarea class="form-control mt-2" id="stepsVM2{newRowIndex}" name="stepsVM2[${newRowIndex}].ProdText" placeholder="وصف الخطوة"></textarea>
                 </div>
             </div>
         </div>
@@ -72,8 +72,6 @@ function AddnewRowstepsUpdate2(ProductionFK) { //صفحة التعديل
        
     }
 }
-
-
 
  
 //صفحة الاضافة..
@@ -119,9 +117,9 @@ function addStep(productionFk) {
     var newCell = document.createElement("td");
     newCell.style.textAlign = "center";
     newCell.innerHTML = `
-        <input type="hidden" name="stepsVM2[${clickCount}].ProductionFK" value="${productionFk}" />
-        <input type="hidden" name="stepsVM2[${clickCount}].ProdStepsNum" value="${currentStep1Value}" />
-        <input type="hidden" name="stepsVM2[${clickCount}].ProdSImage" />
+        <input type="hidden" name="stepsVM2List[${clickCount}].ProductionFK" value="${productionFk}" />
+        <input type="hidden" name="stepsVM2List[${clickCount}].ProdStepsNum" value="${currentStep1Value}" />
+        <input type="hidden" name="stepsVM2List[${clickCount}].ProdSImage" />
         <div class="row">
             <div class="col-12 text-center">
                 <div>${currentStep1Value}</div>
@@ -130,7 +128,7 @@ function addStep(productionFk) {
                 </div>
                 <div class="form-group mt-2">
                     <input type="file" name="file1_${lastID}" class="border-0 shadow mt-5" id="customFile1_${lastID}" data-preview-id="PreviewPhoto1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
-                    <textarea class="form-control mt-2" id="stepsVM2_${clickCount}" name="stepsVM2[${clickCount}].ProdText" placeholder="وصف الخطوة"></textarea>
+                    <textarea class="form-control mt-2" id="stepsVM2List_${clickCount}" name="stepsVM2List[${clickCount}].ProdText" placeholder="وصف الخطوة"></textarea>
                 </div>
             </div>
         </div>
@@ -145,6 +143,80 @@ function addStep(productionFk) {
     console.log("newCell:", newCell); // Debugging log   
 }
 
+// صفحة الإضافة بعد الحفظ 
+var clickCount = 0;
+var lastID = 0; // Initialize lastID globally
+function AddnewRowstepsUpdate222(ProductionFK) { //صفحة التعديل
+
+    if (clickCount === 0) {
+        // Only retrieve lastID from server on the first click
+        $.ajax({
+            url: '/Production/GetLastId',
+            type: 'GET',
+            success: function (response) {
+                lastID = parseInt(response) + 1;
+                addStep2(ProductionFK);
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching last ID:', error);
+            }
+        });
+    } else {
+        // On subsequent clicks, increment lastID locally
+        lastID++;
+        addStep2(ProductionFK);
+    }
+
+    function addStep2(ProductionFK) {
+        var tableBody = document.querySelector("#tblSteps2 tbody");
+        var stepCells = tableBody.querySelectorAll("td");
+        var stepCellsCount = stepCells.length;
+
+        // Determine if adding to an existing row or creating a new row
+        var newRow;
+        if (stepCellsCount % 2 === 0) { // Every two clicks, start a new row
+            newRow = document.createElement("tr");
+            tableBody.appendChild(newRow);
+        } else {
+            // Get the last row in the table to append a new <td>
+            newRow = tableBody.lastElementChild;
+        }
+
+        newRowIndex = stepCellsCount;
+        var lastCell = stepCells[stepCells.length - 1];
+
+        var lastStepInput = lastCell ? lastCell.querySelector(`input[name$="ProdStepsNum"]`) : null;
+        var lastStepValue = lastStepInput ? parseInt(lastStepInput.value) : 0;
+        currentStep1Value = lastStepValue + 1;
+
+        // Create a new <td> for the current step
+        var newCell = document.createElement("td");
+        newCell.style.textAlign = "center";
+        newCell.innerHTML = `
+        <input type="hidden" name="stepsVM2List[${newRowIndex}].ProductionFK" value="${ProductionFK}" />
+        <input type="hidden" name="stepsVM2List[${newRowIndex}].ProdStepsNum" value="${currentStep1Value}" />
+        <input type="hidden" name="stepsVM2List[${newRowIndex}].ProdSImage" />
+        <div class="row">
+            <div class="col-12 text-center">
+                <div>${currentStep1Value}</div>
+                <div>
+                    <img id="PreviewPhoto1_${lastID}" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
+                </div>
+                <div class="form-group mt-2">
+                    <input type="file" name="file1_${lastID}" class="border-0 shadow mt-5" id="customFile1_${lastID}" data-preview-id="PreviewPhoto1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
+                    <textarea class="form-control mt-2" id="stepsVM2List{newRowIndex}" name="stepsVM2List[${newRowIndex}].ProdText" placeholder="وصف الخطوة"></textarea>
+                </div>
+            </div>
+        </div>
+    `;
+
+        // Append the new <td> to the current/new row
+        newRow.appendChild(newCell);
+        console.log("newCell:", newCell); // Debugging log   
+        clickCount++;
+
+    }
+}
 
 function displaySelectedImage(input, imgId) {
 
@@ -196,7 +268,7 @@ function displaySelectedImage(input, imgId) {
 function Deletestep(id) { // after save in db . 
     Swal.fire({
         title: 'تأكيد !!',
-        text: "تأكد من حفظ المتغيرات على المعلومات - المكونات - الأجهزة والأدوات ",
+        text: "تأكد أولا من حفظ أي الخطوات قمت بإضافتها قبل الحذف  ",
         icon: 'warning',
         showCancelButton: true,
         cancelButtonText: 'الغاء',
@@ -205,14 +277,9 @@ function Deletestep(id) { // after save in db .
         confirmButtonText: 'حذف '
     }).then((result) => {
         if (result.isConfirmed) {
-            var formData = new FormData();
-            formData.append("id", id);
             $.ajax({
-                url: '/Production/Deletestep',
-                type: 'DELETE',
-                data: formData,
-                processData: false,
-                contentType: false,
+                url: '/Production/Deletestep/' + id,
+
                 success: function (data) {
                     if (data.success) {
                         Swal.fire({

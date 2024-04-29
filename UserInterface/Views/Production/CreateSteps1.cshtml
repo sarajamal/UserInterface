@@ -1,0 +1,241 @@
+﻿@model ProductionVM;
+
+<header>
+    <div>
+        @await Html.PartialAsync("_HeaderPartial", Model.welcomTredmarketProduction)
+    </div>
+</header>
+<body>
+    <div class="card shadow border-0 my-4 py-4">
+        <div class="card-header bg-navbar bf-bb bg-gradient ml-0 py-3">
+            <div class="row">
+                <div class="col-12 text-center">
+
+                    <h2 class="fnt-blue py-2">   إضافة الانتاج </h2>
+                </div>
+            </div>
+        </div>ُ
+
+
+        <form method="post" class="row" enctype="multipart/form-data" id="myForm1" >
+            <input asp-for="Productionvm.ProductionID" hidden />
+            <input asp-for="Productionvm.ProductImage" hidden />
+            <input asp-for="tredMaeketVM.BrandID" hidden />
+            <input asp-for="tredMaeketVM.BrandName" hidden />
+            <input asp-for="tredMaeketVM.Date" hidden />
+            <input asp-for="tredMaeketVM.BrandCoverImage" hidden />
+            <input asp-for="tredMaeketVM.BrandFooterImage" hidden />
+            <input asp-for="tredMaeketVM.BrandLogoImage" hidden />
+            @* <input type="hidden" id="order-input" name="Productionvm.Order" value="0.1" />*@
+
+
+            <div class="card-body p-4 py-4">
+                <div class="border p-3">
+
+                    @*added this class main-container-table*@
+                    <div class="main-container-table">
+
+
+                        <div id="exTab111" class="container">
+                            <!-- Tab table -->
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td class="active">
+                                            <a href="@Url.Action("RedirectToCreateInformations1", "Production", new {ProductionID = Model.Productionvm.ProductionID, brandFK = Model.welcomTredmarketProduction.TredMarktVM.BrandID })">المعلومات</a>
+                                        </td>
+                                        <td>
+                                            <a href="@Url.Action("RedirectToCreateComponent1", "Production", new { ProductionID = Model.Productionvm.ProductionID, brandFK = Model.Productionvm.BrandFK })">المكونات</a>
+                                        </td>
+                                        <td>
+                                            <a href="@Url.Action("RedirectToCreateTools1", "Production", new { ProductionID = Model.Productionvm.ProductionID, brandFK = Model.Productionvm.BrandFK })">الأدوات</a>
+                                        </td>
+                                        <td>
+                                            <a href="@Url.Action("RedirectToCreateSteps1", "Production", new { ProductionID = Model.Productionvm.ProductionID, brandFK = Model.Productionvm.BrandFK })">الخطوات</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                                    <div>
+                                        <h4 style="text-align:right">الخطوات</h4>
+                                    </div>
+
+                            <table id="tblSteps2" class="table table-style1 table-bordered table-striped" data-production-id="@Model.Productionvm.ProductionID">
+                                @if (Model.stepsVM2List != null && Model.stepsVM2List.Count > 0)
+                                {
+                                    <tbody>
+                                        @for (int i = 0; i < Model.stepsVM2List.Count; i += 2) // Increment by 2
+                                        {
+                                            <tr>
+                                                @for (int j = i; j < i + 2 && j < Model.stepsVM2List.Count; j++) // Loop twice for two steps
+                                                {
+                                                    var itemStep = Model.stepsVM2List[j];
+
+                                                    <td style="text-align:center;">
+                                                        <input asp-for="@itemStep.ProdStepsID" name="stepsVM2List[@j].ProdStepsID" hidden />
+                                                        <input type="hidden" asp-for="@itemStep.ProductionFK" name="stepsVM2List[@j].ProductionFK" />
+                                                        <input asp-for="@itemStep.ProdSImage" name="stepsVM2List[@j].ProdSImage" hidden />
+                                                        <input asp-for="@itemStep.ProdStepsNum" name="stepsVM2List[@j].ProdStepsNum" hidden />
+
+                                                        @if (!string.IsNullOrEmpty(itemStep.ProdText) || !string.IsNullOrEmpty(itemStep.ProdSImage) || itemStep.ProdStepsNum != 0)
+                                                        {
+                                                            <div class="py-5">
+                                                                <button type="button" class="btn btn-danger delete-button"
+                                                                        id="deleteButton_@j"
+                                                                        onclick="Deletestep(@itemStep.ProdStepsID)">
+                                                                    حذف
+                                                                </button>
+                                                            </div>
+                                                            <div class="col-12 text-center">
+                                                                <div>
+                                                                    @itemStep.ProdStepsNum
+                                                                </div>
+                                                                <div>
+                                                                    <img src="@Url.Content("~/IMAGES/" + itemStep.ProdStepsID + "/" + itemStep.ProdSImage)"
+                                                                         id="PreviewPhoto1_@itemStep.ProdStepsID" width="125" height="125" style="border: 1px; margin-top: 20px;">
+                                                                </div>
+                                                                <div class="form-group mt-2">
+                                                                    <input type="file" name="file1_@itemStep.ProdStepsID" class="border-0 shadow mt-5" id="customFile1_@itemStep.ProdStepsID"
+                                                                           data-preview-id="PreviewPhoto1_@itemStep.ProdStepsID"
+                                                                           onchange="displaySelectedImage(this, 'PreviewPhoto1_@itemStep.ProdStepsID')" />
+
+                                                                    <textarea asp-for="@itemStep.ProdText" class="form-control mt-2" name="stepsVM2List[@j].ProdText"></textarea>
+                                                                    <span asp-validation-for="@itemStep.ProdText" class="text-danger"></span>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    </td>
+                                                }
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <tr>
+                                        <td colspan="1" style="text-align:right;">
+                                            <!-- Adjust colspan to match the number of columns you expect -->
+                                            <button type="button" id="addStepButton2" class="btn btn-style3 my-3" onclick="AddnewRowstepsUpdate222('@Model.Productionvm.ProductionID')">إضافة خطوات جديدة</button>
+                                            <div id="redMessage1" style="display:none; color:red;">
+                                                يجب إدخال خطوة واحدة على الأقل
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="1" style="text-align:right;">
+                                                <!-- Adjust colspan to match the number of columns you expect -->
+                                                <button type="button" id="addStepButton2" class="btn btn-style3 my-3" onclick="AddnewRowstepsNew2('@Model.Productionvm.ProductionID')">إضافة خطوات جديدة</button>
+                                                <div id="redMessage1" style="display:none; color:red;">
+                                                    يجب إدخال خطوة واحدة على الأقل
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                }
+                            </table>
+
+                            @* أزرار الحفظ *@
+                            
+                              <div class="form-group col-12 py-2">
+                            <div style="text-align: left;">
+                              
+                                        <div class="form-group col-12 py-3 fxcc">
+                                            <input type="submit" id="saveChange"
+                                            value=" حفظ " href="@Url.Action("RedirectToCreateSteps1",
+                                                           "Production", new { ProductionID = Model.Productionvm.ProductionID ,brandFK = Model.welcomTredmarketProduction.TredMarktVM.BrandID })
+                                            " style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
+                                        </div>
+                                 
+                                </div>
+                            </div>
+                        </div>
+            </div>        
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+
+
+@* 
+<script>
+    function displaySelectedImage(input, imgId) {
+
+        // Get the reference to the HTML img element based on the provided imgId
+        var imgElement = document.getElementById(imgId);
+
+        // Check if a file has been selected in the input element
+        if (input.files && input.files[0]) {
+
+            // Create a new FileReader object to read the selected file
+            var reader = new FileReader();
+
+            // Define an event handler for when the FileReader has finished reading the file
+            reader.onload = function (e) {
+
+                // Set the 'src' attribute of the img element to the read image data
+                imgElement.src = e.target.result;
+            };
+            // Read the selected file as a data URL (base64 encoded)
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+
+<script>
+    document.getElementById("submitButton").addEventListener("click", function (e) {
+        var customFileInput = document.getElementById("customFile");
+        var errorMessage1 = document.getElementById("errorMessage1");
+
+        if (customFileInput.files.length === 0) {
+            errorMessage1.style.display = "block";
+            e.preventDefault(); // Prevent the form from being submitted
+
+            var customFileOffset = customFileInput.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({
+                top: customFileOffset,
+                behavior: "smooth"
+            });
+
+        } else {
+            errorMessage1.style.display = "none";
+        }
+    });
+</script> *@
+
+@* رسالة يجب إدخال صورة التأصناف *@
+@* <script>
+    document.getElementById("submitButton").addEventListener("click", function (e) {
+        var customFileInput = document.getElementById("customFile");
+        var selectPreparation1 = document.getElementById("selectPreparation1");
+        var customTypeInput = document.getElementById("customTypeInput");
+        var errorMessage = document.getElementById("errorMessage");
+
+        if (customFileInput.files.length === 0) {
+            errorMessage.style.display = "block";
+            e.preventDefault(); // Prevent the form from being submitted
+
+            var customFileOffset = customFileInput.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({
+                top: customFileOffset,
+                behavior: "smooth"
+            });
+        } else {
+            errorMessage.style.display = "none";
+        }
+    });
+</script>
+ *@
+
+@section Scripts {
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+    <script src="~/Js/Production/AddDLTsteps2.js"></script>
+
+ 
+}

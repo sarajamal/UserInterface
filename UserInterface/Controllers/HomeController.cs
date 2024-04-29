@@ -163,7 +163,7 @@ namespace Test12.Controllers
                     }
                 }
 
-                ModelState.AddModelError(string.Empty, "خطأ في اسم المستخدم أو كلمة المرور."); // Incorrect username or password
+                ModelState.AddModelError(string.Empty, "خطأ في اسم المستخدم أو كلمة المرور.*"); // Incorrect username or password
                 return View(model);
             }
 
@@ -219,7 +219,11 @@ namespace Test12.Controllers
 
             return true; // Treat as inactive if last activity not found
         }
-
+        public IActionResult RedirectToUserInformation(int id)
+        {
+            TempData["id"] = id;
+            return RedirectToAction("UserInformation");
+        }
         public IActionResult UserInformation()
         {
             int? id = TempData["id"] as int?;

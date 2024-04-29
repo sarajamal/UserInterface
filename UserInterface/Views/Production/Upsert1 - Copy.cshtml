@@ -243,9 +243,9 @@
                                         <tbody>
                                             @if (Model.Productionvm.ProductionID != 0)
                                             {
-                                                @for (int i = 0; i < Model.ToolsVarityVM2.Count; i++)
+                                                @for (int i = 0; i < Model.ToolsVarityVM2List.Count; i++)
                                                 {
-                                                    var item = Model.ToolsVarityVM2[i];
+                                                    var item = Model.ToolsVarityVM2List[i];
                                                     <tr>
                                                         <td>@(i + 1)</td>
                                                         <td>
@@ -291,12 +291,12 @@
                                         <tbody>
                                             @if (Model.Productionvm.ProductionID != 0)
                                             {
-                                                for (int i = 0; i < Model.stepsVM2.Count; i += 2) // Increment by 2
+                                                for (int i = 0; i < Model.stepsVM2List.Count; i += 2) // Increment by 2
                                                 {
                                                     <tr>
-                                                        @for (int j = i; j < i + 2 && j < Model.stepsVM2.Count; j++) // Loop twice for two steps
+                                                        @for (int j = i; j < i + 2 && j < Model.stepsVM2List.Count; j++) // Loop twice for two steps
                                                         {
-                                                            var itemStep = Model.stepsVM2[j];
+                                                            var itemStep = Model.stepsVM2List[j];
 
                                                             <td style="text-align:center;">
                                                                 <input asp-for="@itemStep.ProdStepsID" name="stepsVM2[@j].ProdStepsID" hidden />

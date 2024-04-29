@@ -85,8 +85,7 @@ function DeletePreparationPost(url) {
         if (result.isConfirmed) {
             $.ajax({
                 url: url, // Use the provided ID parameter
-                type: 'DELETE',
-                success: function (data) {
+                 success: function (data) {
                     if (data.success) {
                         Swal.fire({
                             icon: 'success',

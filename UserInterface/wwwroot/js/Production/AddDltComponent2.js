@@ -2,7 +2,7 @@
 function Delete(id) {
     Swal.fire({
         title: 'تأكد !! ؟',
-        text: " قبل الحذف تأكد من حفظ الصفوف المضافة في المكونات",
+        text: " تأكد أولا من حفظ أي مكونات قمت بإضافتها قبل الحذف",
         icon: 'warning',
         showCancelButton: true,
         cancelButtonText: 'الغاء',
@@ -13,7 +13,6 @@ function Delete(id) {
         if (result.isConfirmed) {
             $.ajax({
                 url: '/Production/Delete/' + id, // Use the provided ID parameter
-                //type: 'DELETE',
                 success: function (data) {
                     if (data.success) {
                         Swal.fire({
@@ -33,6 +32,42 @@ function Delete(id) {
                 }
             });
         }
+    })
+}
+//صفحة الإضافة 
+function Deletec1(id) {
+    Swal.fire({
+        title: 'تأكد !! ؟',
+        text: " تأكد أولا من حفظ أي مكونات قمت بإضافتها قبل الحذف",
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText: 'الغاء',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'حذف '
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/Production/Deletec1/' + id, // Use the provided ID parameter
+                success: function (data) {
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'تم الحذف بنجاح',
+                            text: data.message
+                        }).then(() => {
+                            window.location.href = data.redirectToUrl; // Perform the redirection
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'خطأ',
+                            text: data.message
+                        });
+                    }
+                }
+            });
+        } 
     })
 }
 
@@ -158,27 +193,52 @@ function updateRowIndicesAfterDeletion99(deletedIndex) {
 //صفحة الإضافة 
 var newIndex = 0;
 function AddRowcomponentnew() {
-
     var tableBody = document.querySelector("#tbComponant tbody");
     var newRow = document.createElement("tr");
 
+    // Retrieve the data-Production-id attribute from the table.
     var componentFk = document.querySelector("#tbComponant").getAttribute("data-Production-id");
 
+    // newRowNumber should be the next index which is the current length of the tableBody children.
+    var newRowNumber = tableBody.children.length;
 
+    // Set the innerHTML of the newRow with the appropriate form controls and their names.
     newRow.innerHTML = `
-         <td><input  class="form-control" name="componontVMList2[${newIndex}].ProdIngredientsName"placeholder="المكون" /></td>
-         <td><input class="form-control" name="componontVMList2[${newIndex}].ProdQuantity"placeholder="الكمية"/></td>
-        <td><input  class="form-control" name="componontVMList2[${newIndex}].ProdUnit" placeholder="الوحدة"/></td>
-        
+        <td><input class="form-control" name="componontVMList2[${newRowNumber-1}].ProdIngredientsName" placeholder="المكون" /></td>
+        <td><input class="form-control" name="componontVMList2[${newRowNumber-1}].ProdQuantity" placeholder="الكمية"/></td>
+        <td><input class="form-control" name="componontVMList2[${newRowNumber-1}].ProdUnit" placeholder="الوحدة"/></td>
+        <td style="text-align:center;">
+            <input type="hidden" name="componontVMList2[${newRowNumber-1}].ProductionFK" value="${componentFk}" />
+            <button type="button" class="btn btn-style5" data-row-index="${newRowNumber-1}" onclick="DeleteRow99(this)">حذف</button>
+        </td>
+    `;
 
-    <td style="text-align:center;">
-    <input type="hidden" name="componontVMList[${newIndex}].ProductionFK" value="${componentFk}" />
-    <button type="button" class="btn btn-style5" data-row-index="${newIndex}" onclick="DeleteRow99(this)">حذف</button>
-    </td>
-`;
-
+    // Append the new row to the table body.
     tableBody.appendChild(newRow);
-    newIndex++;
+}
+function AddRowcomponentnew22() {
+    var tableBody = document.querySelector("#tbComponant tbody");
+    var newRow = document.createElement("tr");
+
+    // Retrieve the data-Production-id attribute from the table.
+    var componentFk = document.querySelector("#tbComponant").getAttribute("data-Production-id");
+
+    // newRowNumber should be the next index which is the current length of the tableBody children.
+    var newRowNumber = tableBody.children.length;
+
+    // Set the innerHTML of the newRow with the appropriate form controls and their names.
+    newRow.innerHTML = `
+        <td><input class="form-control" name="componontVMList2[${newRowNumber }].ProdIngredientsName" placeholder="المكون" /></td>
+        <td><input class="form-control" name="componontVMList2[${newRowNumber }].ProdQuantity" placeholder="الكمية"/></td>
+        <td><input class="form-control" name="componontVMList2[${newRowNumber }].ProdUnit" placeholder="الوحدة"/></td>
+        <td style="text-align:center;">
+            <input type="hidden" name="componontVMList2[${newRowNumber }].ProductionFK" value="${componentFk}" />
+            <button type="button" class="btn btn-style5" data-row-index="${newRowNumber }" onclick="DeleteRow99(this)">حذف</button>
+        </td>
+    `;
+
+    // Append the new row to the table body.
+    tableBody.appendChild(newRow);
 }
 
 function validateFormAndSubmit() {

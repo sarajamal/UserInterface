@@ -179,7 +179,7 @@ namespace Test12.Controllers
                             else
                             {
                                 var getIdOrder = _unitOfWork.Device_tools1.Get(u => u.DevicesAndToolsID == selectDevicetools);
-                                double OldOrder = getIdOrder.DevicesAndToolsOrder ?? 0.0f; // Default to 0.0f if Order is null
+                                int OldOrder = getIdOrder.DevicesAndToolsID ; // Default to 0.0f if Order is null
                                 double newOrder = OldOrder + 0.1f;
                                 newDevice.DevicesAndToolsOrder = newOrder;
                             }
@@ -295,7 +295,7 @@ namespace Test12.Controllers
 
         //زر الحذف في صفحة قائمة  الأدوات والأجهزة 
         #region
-        [HttpDelete]
+        //[HttpDelete]
         public IActionResult DelteToolsdevice(int? id)
         {
             string wwwRootPathSteps = _webHostEnvironment.WebRootPath;

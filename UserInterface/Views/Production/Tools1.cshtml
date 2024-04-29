@@ -11,7 +11,7 @@
             <div class="row">
                 <div class="col-12 text-center">
 
-                    <h2 class="fnt-blue py-2">   تعديل الأصناف </h2>
+                    <h2 class="fnt-blue py-2">   تعديل الإنتاج </h2>
                 </div>
             </div>
         </div>
@@ -41,21 +41,46 @@
                         <div id="exTab111" class="container">
                             <!-- Tab table -->
                             <table class="table table-bordered">
-                                <tbody>
-                                    <tr>
-                                        <td class="active">
-                                            <a href="@Url.Action("RedirectToInormation1", "Production", new {ProductionID = Model.Productionvm.ProductionID, brandFK = Model.welcomTredmarketProduction.TredMarktVM.BrandID })">المعلومات</a>
-                                        </td>
-                                        <td>
-                                            <a href="@Url.Action("RedirectToComponent1", "Production", new { ProductionID = Model.Productionvm.ProductionID, brandFK = Model.Productionvm.BrandFK })">المكونات</a>
-                                        </td>
-                                        <td>
-                                            <a href="@Url.Action("RedirectToTools1", "Production", new { ProductionID = Model.Productionvm.ProductionID, brandFK = Model.Productionvm.BrandFK })">الأدوات</a>
-                                        </td>
-                                        <td>
-                                            <a href="@Url.Action("RedirectToSteps1", "Production", new { ProductionID = Model.Productionvm.ProductionID, brandFK = Model.Productionvm.BrandFK })">الخطوات</a>
-                                        </td>
-                                    </tr>
+                                <!-- Information Tab -->
+                                <td class="active">
+
+                                    <a href="@Url.Action("RedirectToInormation1", "Production", new { ProductionID = Model.Productionvm.ProductionID, brandFK = Model.welcomTredmarketProduction.TredMarktVM.BrandID })">المعلومات</a>
+
+                                </td>
+                                <!-- Components Tab -->
+                                <td>
+                                    @if (Model.Productionvm.ProductionID != 0)
+                                    {
+                                        <a href="@Url.Action("RedirectToComponent1", "Production", new { ProductionID = Model.Productionvm.ProductionID, brandFK = Model.Productionvm.BrandFK })">المكونات</a>
+                                    }
+                                    else
+                                    {
+                                        <span>المكونات</span>
+                                    }
+                                </td>
+                                <!-- Tools Tab -->
+                                <td>
+                                    @if (Model.Productionvm.ProductionID != 0)
+                                    {
+                                        <a href="@Url.Action("RedirectToTools1", "Production", new { ProductionID = Model.Productionvm.ProductionID, brandFK = Model.Productionvm.BrandFK })">الأدوات</a>
+                                    }
+                                    else
+                                    {
+                                        <span>الأدوات</span>
+                                    }
+                                </td>
+                                <!-- Steps Tab -->
+                                <td>
+                                    @if (Model.Productionvm.ProductionID != 0)
+                                    {
+                                        <a href="@Url.Action("RedirectToSteps1", "Production", new { ProductionID = Model.Productionvm.ProductionID, brandFK = Model.Productionvm.BrandFK })">الخطوات</a>
+                                    }
+                                    else
+                                    {
+                                        <span>الخطوات</span>
+                                    }
+                                </td>
+                                </tr>
                                 </tbody>
                             </table>
 

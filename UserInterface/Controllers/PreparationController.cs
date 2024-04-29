@@ -795,7 +795,7 @@ namespace Test12.Controllers
                     else
                     {
                         var getIdOrder = _unitOfWork.PreparationRepository.Get(u => u.PreparationsID == selectedValue);
-                        double OldOrder = getIdOrder.PreparationsOrder ?? 0.0f; // Default to 0.0f if Order is null
+                        int OldOrder = getIdOrder.PreparationsID ; // Default to 0.0f if Order is null
                         double newOrder = OldOrder + 0.1f;
                         setFK.PreparationsOrder = newOrder;
                     }
@@ -886,14 +886,13 @@ namespace Test12.Controllers
 
         ////زر الحذف تبع صفحة تعديل الخطوات
         #region API CALLS
-        [HttpDelete]
         public IActionResult Deletesteps(int? id)
         {
             var stepsToDelete = _unitOfWork.StepsPreparationRepository.Get(u => u.PrepStepsID == id);
             var BrandFK = _unitOfWork.PreparationRepository.Get(u => u.PreparationsID == stepsToDelete.PreparationsFK);
 
             string IDStep = stepsToDelete.PrepStepsID.ToString();
-            string FKBrand = BrandFK.BrandFK.ToString();
+            //string FKBrand = BrandFK.BrandFK.ToString();
 
             //عشان أوجهه لصفحة التعديل 
             int PreparationFk = stepsToDelete.PreparationsFK;
@@ -938,14 +937,14 @@ namespace Test12.Controllers
             }
             _unitOfWork.Save();
 
-            return Json(new { success = true, redirectToUrl = Url.Action("RedirectToUpsert", new { id = PreparationFk, BrandFK = BranFK }) }); //أحتاج يرجع لنفس صفحة التعديل 
+            return Json(new { success = true, redirectToUrl = Url.Action("RedirectToSteps", new { PreparationID = PreparationFk, BrandFK = BranFK }) }); //أحتاج يرجع لنفس صفحة التعديل 
 
         }
         #endregion
 
         ////زر الحذف في صفحة قائمة التحضيرات 
         #region
-        [HttpDelete]
+        //[HttpDelete]
         public IActionResult DeletePreparationPost(int? id)
         {
             var DeleteTools = _unitOfWork.PrepaToolsVarietyRepository.GetAll(incloudeProperties: "Preparation").Where(u => u.PreparationsFK == id).ToList();
