@@ -252,7 +252,7 @@ namespace Test12.Controllers
 
         //POST صفحة الاضافة 
         [HttpPost]
-        public IActionResult CreateClean(CleanVM clean, int selectCleaning) // After Enter تعديل Display التحضيرات والمكونات...
+        public async Task<IActionResult> CreateClean(CleanVM clean, int selectCleaning) // After Enter تعديل Display التحضيرات والمكونات...
         {
 
             if (ModelState.IsValid)
@@ -317,7 +317,7 @@ namespace Test12.Controllers
 
                                     using (var fileStream = new FileStream(Path.Combine(stepPath, fileName11), FileMode.Create)) //save images
                                     {
-                                        file1ForStep1.CopyTo(fileStream);
+                                      await  file1ForStep1.CopyToAsync(fileStream);
                                     }
                                     //newStep.CleaStepsImage = fileName11;
                                 }
@@ -330,22 +330,24 @@ namespace Test12.Controllers
                     //// reOrder2 
                     if (selectCleaning == 0)
                     {
-                        // Get the maximum order value in the existing list
-                        double maxOrder = _unitOfWork.CleanRepository.GetAll()
-                            .Max(item => item.CleaningOrder) ?? 0.0f; // Default to 0.0f if there are no existing items
+                        int IDCleane = setFK.CleaningID;
+                        setFK.CleaningOrder = IDCleane; 
+                        //// Get the maximum order value in the existing list
+                        //double maxOrder = _unitOfWork.CleanRepository.GetAll()
+                        //    .Max(item => item.CleaningOrder) ?? 0.0f; // Default to 0.0f if there are no existing items
 
-                        // Round down the maxOrder value to the nearest integer
-                        int maxOrderAsInt = (int)Math.Floor(maxOrder);
+                        //// Round down the maxOrder value to the nearest integer
+                        //int maxOrderAsInt = (int)Math.Floor(maxOrder);
 
-                        // Set the new order value for the "اخرى" (Other) item
-                        double newOrder = maxOrderAsInt + 1.0f;
-                        setFK.CleaningOrder = newOrder;
+                        //// Set the new order value for the "اخرى" (Other) item
+                        //double newOrder = maxOrderAsInt + 1.0f;
+                        //setFK.CleaningOrder = newOrder;
                     }
                     else
                     {
                         var getIdOrder = _unitOfWork.CleanRepository.Get(u => u.CleaningID == selectCleaning);
                         int OldOrder = getIdOrder.CleaningID ; // Default to 0.0f if Order is null
-                        double newOrder = OldOrder + 0.1f;
+                        double newOrder = OldOrder + 0.1;
                         setFK.CleaningOrder = newOrder;
                     }
 
@@ -461,7 +463,7 @@ namespace Test12.Controllers
         }
 
         //[HttpPost] //This for Add Or Update Page . 
-        public IActionResult Upsert3(CleanVM cleanVM) // should insert name in Upsert view
+        public async Task<IActionResult> Upsert3(CleanVM cleanVM) // should insert name in Upsert view
         {
             if (ModelState.IsValid)
             {
@@ -522,7 +524,7 @@ namespace Test12.Controllers
 
                                 using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
                                 {
-                                    file1ForStep.CopyTo(fileStream1);
+                                  await  file1ForStep.CopyToAsync(fileStream1);
                                 }
 
                                 newStep.CleaStepsImage = fileNameSteps1; // Update the image path
@@ -564,7 +566,7 @@ namespace Test12.Controllers
 
                                 using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
                                 {
-                                    file1ForStep.CopyTo(fileStream1);
+                                   await file1ForStep.CopyToAsync(fileStream1);
                                 }
 
                                 Steps.CleaStepsImage = fileNameSteps1; // Update the image path

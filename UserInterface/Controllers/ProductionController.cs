@@ -116,7 +116,7 @@ namespace Test12.Controllers
         }
 
         [HttpPost] //This for Add Or Update Page . 
-        public IActionResult Informations1(LoginTredMarktViewModel PropaVM, IFormFile? file) // should insert name in Upsert view
+        public async Task <IActionResult> Informations1(LoginTredMarktViewModel PropaVM, IFormFile? file) // should insert name in Upsert view
         {
             if (ModelState.IsValid)
             {
@@ -152,7 +152,7 @@ namespace Test12.Controllers
                     // Save the image with the new file name
                     using (var fileStream = new FileStream(Path.Combine(ProductionPath), FileMode.Create))
                     {
-                        file.CopyToAsync(fileStream);
+                       await file.CopyToAsync(fileStream);
                     }
 
                     // Store only the file name in the database
@@ -401,7 +401,7 @@ namespace Test12.Controllers
         }
 
         [HttpPost] //This for Add Or Update Page . 
-        public IActionResult Steps1(LoginTredMarktViewModel PropaVM) // should insert name in Upsert view
+        public async Task<IActionResult> Steps1(LoginTredMarktViewModel PropaVM) // should insert name in Upsert view
         {
             if (ModelState.IsValid)
             {
@@ -462,7 +462,7 @@ namespace Test12.Controllers
 
                                 using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
                                 {
-                                    file1ForStep.CopyToAsync(fileStream1);
+                                   await file1ForStep.CopyToAsync(fileStream1);
                                 }
 
                                 newStep.ProdSImage = fileNameSteps1; // Update the image path
@@ -502,7 +502,7 @@ namespace Test12.Controllers
 
                                 using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
                                 {
-                                    file1ForStep.CopyToAsync(fileStream1);
+                                  await file1ForStep.CopyToAsync(fileStream1);
                                 }
                                 Steps.ProdSImage = fileNameSteps1;
                             }
@@ -614,7 +614,7 @@ namespace Test12.Controllers
             return View(PrVM);
         }
         [HttpPost]
-        public IActionResult CreateInformations1(ProductionVM PropaVM, IFormFile? file, int selectedValue, int selectPreparation1)
+        public async Task<IActionResult> CreateInformations1(ProductionVM PropaVM, IFormFile? file, int selectedValue, int selectPreparation1)
         {
             if (ModelState.IsValid)
             {
@@ -667,7 +667,7 @@ namespace Test12.Controllers
                         // Use the correct file path when creating FileStream
                         using (var stream = new FileStream(ProductionPath, FileMode.Create))
                         {
-                            file.CopyToAsync(stream);
+                           await file.CopyToAsync(stream);
                         }
 
                         setFK.ProductImage = fileName; // Save only the file name in the database
@@ -676,22 +676,24 @@ namespace Test12.Controllers
                     //// reOrder2 
                     if (selectedValue == 0)
                     {
-                        // Get the maximum order value in the existing list
-                        double maxOrder = _unitOfWork.itemsRepository.GetAll()
-                            .Max(item => item.ProductionOrder) ?? 0.0f; // Default to 0.0f if there are no existing items
+                        int IdProduction = setFK.ProductionID;
+                        setFK.ProductionOrder = IdProduction;
+                        //// Get the maximum order value in the existing list
+                        //double maxOrder = _unitOfWork.itemsRepository.GetAll()
+                        //    .Max(item => item.ProductionOrder) ?? 0.0f; // Default to 0.0f if there are no existing items
 
-                        // Round down the maxOrder value to the nearest integer
-                        int maxOrderAsInt = (int)Math.Floor(maxOrder);
+                        //// Round down the maxOrder value to the nearest integer
+                        //int maxOrderAsInt = (int)Math.Floor(maxOrder);
 
-                        // Set the new order value for the "اخرى" (Other) item
-                        double newOrder = maxOrderAsInt + 1.0f;
-                        setFK.ProductionOrder = newOrder;
+                        //// Set the new order value for the "اخرى" (Other) item
+                        //double newOrder = maxOrderAsInt + 1.0f;
+                        //setFK.ProductionOrder = newOrder;
                     }
                     else
                     {
                         var getIdOrder = _unitOfWork.itemsRepository.Get(u => u.ProductionID == selectedValue);
                         int OldOrder = getIdOrder.ProductionID ; // Default to 0.0f if Order is null
-                        double newOrder = OldOrder + 0.1f;
+                        double newOrder = OldOrder + 0.1;
                         setFK.ProductionOrder = newOrder;
                     }
 
@@ -771,7 +773,7 @@ namespace Test12.Controllers
                     _unitOfWork.ComponentRepository2.Add(firstComponent);
                     _unitOfWork.Save();
                 }
-                if (PropaVM.componontVMList2 != null && PropaVM.componontVMList2.Any()|| PropaVM.componontVM2!=null)
+                if (PropaVM.componontVMList2 != null && PropaVM.componontVMList2.Any())
                 { // if condition checks whether the PropaVM.componontVMList is not null and contains at least one item. 
                     for (int i = 0; i < PropaVM.componontVMList2.Count; i++)
                     {
@@ -783,7 +785,7 @@ namespace Test12.Controllers
                         if (existingComponent == null)
                         {
                             LastId1Components++;
-                            int componentId = PropaVM.Productionvm.ProductionID;
+                            //int componentId = PropaVM.Productionvm.ProductionID;
 
                             var newComponent = new ProductionIngredients
                             {
@@ -881,19 +883,30 @@ namespace Test12.Controllers
  
                 if (PropaVM.ToolsVarityVM2List != null && PropaVM.ToolsVarityVM2List.Any())
                 {
-                    foreach (var ToolAdd in PropaVM.ToolsVarityVM2List)
+                    for (int i = 0; i < PropaVM.ToolsVarityVM2List.Count; i++)
                     {
-                        if (ToolAdd != null && ToolAdd.ProdToolsID == 0)
-                        {
-                            LastId1Tools++;
+                        var Tools = PropaVM.ToolsVarityVM2List[i];
 
-                            var newtool = new ProductionTools
+                        int lastIdTools1 = _unitOfWork.PrepaToolsVarietyRepository2.GetLastToolsId();
+                        int LastId1Tools1 = lastIdTools1 + 1;
+
+                        var existingtoolvariety = _unitOfWork.PrepaToolsVarietyRepository2.Get(u => u.ProdToolsID == Tools.ProdToolsID, incloudeProperties: "Production");
+                        if (existingtoolvariety == null)
+                        {
+                            var firstRowToolAdd = new ProductionTools
                             {
-                                ProdToolsID = LastId1Tools,
+                                ProdToolsID = LastId1Tools1,
                                 ProductionFK = ProductionFK,
-                                ProdTools = ToolAdd.ProdTools
+                                ProdTools = Tools.ProdTools,
                             };
-                            _unitOfWork.PrepaToolsVarietyRepository2.Add(newtool);
+                            _unitOfWork.PrepaToolsVarietyRepository2.Add(firstRowToolAdd);
+                            _unitOfWork.Save();
+                        }
+                        else //if is exit from database
+                        {
+                            existingtoolvariety.ProdToolsID = Tools.ProdToolsID;
+                            existingtoolvariety.ProdTools = Tools.ProdTools;
+                            _unitOfWork.PrepaToolsVarietyRepository2.Update(existingtoolvariety);
                             _unitOfWork.Save();
                         }
                     }
@@ -952,7 +965,7 @@ namespace Test12.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateSteps1(ProductionVM PropaVM, IFormFile? file)
+        public async Task<IActionResult> CreateSteps1(ProductionVM PropaVM, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
@@ -1010,7 +1023,7 @@ namespace Test12.Controllers
 
                                 using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
                                 {
-                                    file1ForStep.CopyToAsync(fileStream1);
+                                   await file1ForStep.CopyToAsync(fileStream1);
                                 }
 
                                 newStep.ProdSImage = fileNameSteps1; // Update the image path
@@ -1051,7 +1064,7 @@ namespace Test12.Controllers
 
                                 using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
                                 {
-                                    file1ForStep.CopyToAsync(fileStream1);
+                                   await file1ForStep.CopyToAsync(fileStream1);
                                 }
                                 Steps.ProdSImage = fileNameSteps1;
                             }
@@ -1234,7 +1247,6 @@ namespace Test12.Controllers
                         }
                     }
 
-
                     // Remove the entity from the repository
                     _unitOfWork.StepsPreparationRepository2.Remove(delet);
                     _unitOfWork.Save();
@@ -1323,7 +1335,7 @@ namespace Test12.Controllers
                 }
             }
             _unitOfWork.Save();
-            return Json(new { success = true, redirectToUrl = Url.Action("RedirectToCreateSteps1 ", new { ProductionID = ProductionFK, BrandFK = BranFK }) }); //أحتاج يرجع لنفس صفحة التعديل 
+            return Json(new { success = true, redirectToUrl = Url.Action("RedirectToCreateSteps1", new { ProductionID = ProductionFK, BrandFK = BranFK }) }); //أحتاج يرجع لنفس صفحة التعديل 
 
         }
         #endregion

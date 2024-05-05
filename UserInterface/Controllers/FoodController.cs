@@ -99,7 +99,7 @@ namespace Test12.Controllers
 
 
         [HttpPost]
-        public IActionResult CreateFood(FoodVM FoodsVM, int selectFoodvalue)
+        public async Task<IActionResult> CreateFood(FoodVM FoodsVM, int selectFoodvalue)
         {
 
             if (ModelState.IsValid)
@@ -148,7 +148,7 @@ namespace Test12.Controllers
 
                                 using (var fileStream = new FileStream(Path.Combine(FoodPath1, fileName11), FileMode.Create)) //save images
                                 {
-                                    file1ForFood1.CopyTo(fileStream);
+                                  await file1ForFood1.CopyToAsync(fileStream);
                                 }
                                 newfoods.FoodStuffsImage = fileName11;
                             }
@@ -157,22 +157,24 @@ namespace Test12.Controllers
                             //// reOrder2 
                             if (selectFoodvalue == 0)
                             {
-                                // Get the maximum order value in the existing list
-                                double maxOrder = _unitOfWork.FoodRepository.GetAll()
-                                    .Max(item => item.FoodStuffsOrder) ?? 0.0f; // Default to 0.0f if there are no existing items
+                                int IDfoods = newfoods.FoodStuffsID;
+                                newfoods.FoodStuffsOrder = IDfoods; 
+                                //// Get the maximum order value in the existing list
+                                //double maxOrder = _unitOfWork.FoodRepository.GetAll()
+                                //    .Max(item => item.FoodStuffsOrder) ?? 0.0f; // Default to 0.0f if there are no existing items
 
-                                // Round down the maxOrder value to the nearest integer
-                                int maxOrderAsInt = (int)Math.Floor(maxOrder);
+                                //// Round down the maxOrder value to the nearest integer
+                                //int maxOrderAsInt = (int)Math.Floor(maxOrder);
 
-                                // Set the new order value for the "اخرى" (Other) item
-                                double newOrder = maxOrderAsInt + 1.0f;
-                                newfoods.FoodStuffsOrder = newOrder;
+                                //// Set the new order value for the "اخرى" (Other) item
+                                //double newOrder = maxOrderAsInt + 1.0f;
+                                //newfoods.FoodStuffsOrder = newOrder;
                             }
                             else
                             {
                                 var getIdOrder = _unitOfWork.FoodRepository.Get(u => u.FoodStuffsID == selectFoodvalue);
                                 int OldOrder = getIdOrder.FoodStuffsID; // Default to 0.0f if Order is null
-                                double newOrder = OldOrder + 0.1f;
+                                double newOrder = OldOrder + 0.1;
                                 newfoods.FoodStuffsOrder = newOrder;
                             }
 
@@ -191,7 +193,7 @@ namespace Test12.Controllers
 
 
         [HttpPost]
-        public IActionResult FoodIndex(FoodVM foodViewModel)
+        public async Task<IActionResult> FoodIndex(FoodVM foodViewModel)
         {
 
             if (ModelState.IsValid)
@@ -234,7 +236,7 @@ namespace Test12.Controllers
 
                             using (var fileStream1 = new FileStream(Path.Combine(FoodPath, fileNamefood1), FileMode.Create))
                             {
-                                file1Forfoods.CopyTo(fileStream1);
+                               await file1Forfoods.CopyToAsync(fileStream1);
                             }
                             foods.FoodStuffsImage = fileNamefood1; // Update the image path
                         }

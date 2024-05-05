@@ -104,7 +104,7 @@ namespace Test12.Controllers
 
 
         [HttpPost]
-        public IActionResult CreateIndex(Device_toolsVM device_ToolsVM, int selectDevicetools)
+        public async Task <IActionResult> CreateIndex(Device_toolsVM device_ToolsVM, int selectDevicetools)
         {
 
             if (ModelState.IsValid)
@@ -128,10 +128,7 @@ namespace Test12.Controllers
 
                             };
 
-
                             string wwwRootDevicePath = _webHostEnvironment.WebRootPath; // get us root folder
-
-
                             var file1Name1 = $"file1_{newDevice.DevicesAndToolsID}";
                             var file1ForDevice1 = HttpContext.Request.Form.Files[file1Name1];
 
@@ -154,7 +151,7 @@ namespace Test12.Controllers
 
                                 using (var fileStream = new FileStream(Path.Combine(devicePath1, fileName11), FileMode.Create)) //save images
                                 {
-                                    file1ForDevice1.CopyTo(fileStream);
+                                  await  file1ForDevice1.CopyToAsync(fileStream);
                                 }
                                 newDevice.DevicesAndTools_Image = fileName11;
 
@@ -165,22 +162,25 @@ namespace Test12.Controllers
                             //// reOrder2 
                             if (selectDevicetools == 0)
                             {
-                                // Get the maximum order value in the existing list
-                                double maxOrder = _unitOfWork.Device_tools1.GetAll()
-                                    .Max(item => item.DevicesAndToolsOrder) ?? 0.0f; // Default to 0.0f if there are no existing items
+                                int IDDevice = newDevice.DevicesAndToolsID;
+                                newDevice.DevicesAndToolsOrder = IDDevice; 
 
-                                // Round down the maxOrder value to the nearest integer
-                                int maxOrderAsInt = (int)Math.Floor(maxOrder);
+                                //// Get the maximum order value in the existing list
+                                //double maxOrder = _unitOfWork.Device_tools1.GetAll()
+                                //    .Max(item => item.DevicesAndToolsOrder) ?? 0.0f; // Default to 0.0f if there are no existing items
 
-                                // Set the new order value for the "اخرى" (Other) item
-                                double newOrder = maxOrderAsInt + 1.0f;
-                                newDevice.DevicesAndToolsOrder = newOrder;
+                                //// Round down the maxOrder value to the nearest integer
+                                //int maxOrderAsInt = (int)Math.Floor(maxOrder);
+
+                                //// Set the new order value for the "اخرى" (Other) item
+                                //double newOrder = maxOrderAsInt + 1.0f;
+                                //newDevice.DevicesAndToolsOrder = newOrder;
                             }
                             else
                             {
                                 var getIdOrder = _unitOfWork.Device_tools1.Get(u => u.DevicesAndToolsID == selectDevicetools);
                                 int OldOrder = getIdOrder.DevicesAndToolsID ; // Default to 0.0f if Order is null
-                                double newOrder = OldOrder + 0.1f;
+                                double newOrder = OldOrder + 0.1;
                                 newDevice.DevicesAndToolsOrder = newOrder;
                             }
 
@@ -197,7 +197,7 @@ namespace Test12.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(Device_toolsVM device_ToolsVM)
+        public async Task<IActionResult> Index(Device_toolsVM device_ToolsVM)
         {
 
             if (ModelState.IsValid)
@@ -243,7 +243,7 @@ namespace Test12.Controllers
                             }
                             using (var fileStream1 = new FileStream(Path.Combine(devicePath1, fileNameSteps1), FileMode.Create))
                             {
-                                file1ForDevice.CopyTo(fileStream1);
+                               await file1ForDevice.CopyToAsync(fileStream1);
                             }
 
                             devices.DevicesAndTools_Image = fileNameSteps1; // Update the image path
