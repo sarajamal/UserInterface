@@ -13,8 +13,14 @@
 
                     <h2 class="fnt-blue py-2">   إضافة الانتاج </h2>
                 </div>
+                <div class="col-12 text-center">
+                    @if (Model.Productionvm.ProductionID != 0)
+                    {
+                        <h4 class="fnt-blue py-2"> " @Model.Productionvm.ProductName " </h4>
+                    }
+                </div>
             </div>
-        </div>ُ
+        </div>
 
 
         <form method="post" class="row" enctype="multipart/form-data" id="myForm1" >
@@ -41,24 +47,47 @@
                             <table class="table table-bordered">
                                 <tbody>
                                     <tr>
-                                        <td class="active">
-                                            <a href="@Url.Action("RedirectToCreateInformations1", "Production", new {ProductionID = Model.Productionvm.ProductionID, brandFK = Model.welcomTredmarketProduction.TredMarktVM.BrandID })">المعلومات</a>
-                                        </td>
+                                        <!-- Information Tab -->
                                         <td>
-                                            <a href="@Url.Action("RedirectToCreateComponent1", "Production", new { ProductionID = Model.Productionvm.ProductionID, brandFK = Model.Productionvm.BrandFK })">المكونات</a>
+                                            <a class="nav-link" href="@Url.Action("RedirectToCreateInformations1", "Production", new { ProductionID = Model.Productionvm.ProductionID, brandFK = Model.welcomTredmarketProduction.TredMarktVM.BrandID })">المعلومات</a>
+
                                         </td>
+                                        <!-- Components Tab -->
                                         <td>
-                                            <a href="@Url.Action("RedirectToCreateTools1", "Production", new { ProductionID = Model.Productionvm.ProductionID, brandFK = Model.Productionvm.BrandFK })">الأدوات</a>
+                                            @if (Model.Productionvm.ProductionID != 0)
+                                            {
+                                                <a class="nav-link" href="@Url.Action("RedirectToCreateComponent1", "Production", new { ProductionID = Model.Productionvm.ProductionID, brandFK = Model.Productionvm.BrandFK })">المكونات</a>
+                                            }
+                                            else
+                                            {
+                                                <a class="nav-link">المكونات</a>
+                                            }
                                         </td>
+                                        <!-- Tools Tab -->
                                         <td>
-                                            <a href="@Url.Action("RedirectToCreateSteps1", "Production", new { ProductionID = Model.Productionvm.ProductionID, brandFK = Model.Productionvm.BrandFK })">الخطوات</a>
+                                            @if (Model.Productionvm.ProductionID != 0)
+                                            {
+                                                <a class="nav-link" href="@Url.Action("RedirectToCreateTools1", "Production", new { ProductionID = Model.Productionvm.ProductionID, brandFK = Model.Productionvm.BrandFK })">الأدوات</a>
+                                            }
+                                            else
+                                            {
+                                                <a class="nav-link">الأدوات</a>
+                                            }
+                                        </td>
+                                        <!-- Steps Tab -->
+                                        <td>
+                                            @if (Model.Productionvm.ProductionID != 0)
+                                            {
+                                                <a class="nav-link" href="@Url.Action("RedirectToCreateSteps1", "Production", new { ProductionID = Model.Productionvm.ProductionID, brandFK = Model.Productionvm.BrandFK })">الخطوات</a>
+                                            }
+                                            else
+                                            {
+                                                <a class="nav-link">الخطوات</a>
+                                            }
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-
-                            <!-- Contents -->
-                            <div class="tab-content clearfix">
 
                                 @* المعلومات *@
                                 <div class="tab-pane active" id="1a">
@@ -138,7 +167,7 @@
                                                     </div>
                                             </div>
                                         </div>
-                                          @if (Model.Productionvm != null && Model.Productionvm.ProductionID == 0)
+                                          @if (Model.Productionvm.ProductionID == 0)
                                         {
                                             <div class="form-group col-4">
                                                 <div class="form-group col-12">
@@ -201,11 +230,13 @@
 
                             </div>
                         </div>
-                                    </div>
-                                </div>
-                    </div>
-                </div>
-            </div>
+                       </div>
+                   </div> 
+               </div>
+             </div>
+           </div>
+         </div>
+            
         </form>
     </div>
 </body>
@@ -321,5 +352,5 @@
 
  
 }
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+@* <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script> *@

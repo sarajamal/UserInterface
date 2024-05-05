@@ -10,8 +10,13 @@
         <div class="card-header bg-navbar bf-bb bg-gradient ml-0 py-3">
             <div class="row">
                 <div class="col-12 text-center">
-
                     <h2 class="fnt-blue py-2">   تعديل الانتاج </h2>
+                </div>
+                <div class="col-12 text-center">
+                    @if (Model.Productionvm.ProductionID != 0)
+                    {
+                        <h4 class="fnt-blue py-2"> " @Model.Productionvm.ProductName " </h4>
+                    }                
                 </div>
             </div>
         </div>
@@ -41,6 +46,8 @@
                         <div id="exTab111" class="container">
                             <!-- Tab table -->
                             <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
                                 <!-- Information Tab -->
                                 <td class="active">
                                    
@@ -164,7 +171,7 @@
 @section Scripts{
    
     <script src="~/Js/Production/AddDltComponent2.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  @*   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script> *@
     
         }

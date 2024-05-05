@@ -13,6 +13,12 @@
 
                     <h2 class="fnt-blue py-2"> تعديل التحضيرات </h2>
                 </div>
+                <div class="col-12 text-center">
+                    @if (Model.PreparationVM.PreparationsID != 0)
+                    {
+                        <h4 class="fnt-blue py-2"> " @Model.PreparationVM.prepareName " </h4>
+                    }
+                </div>
             </div>
         </div>
 
@@ -215,8 +221,8 @@ function validateرقم_الخطوة2(input, index) {
 
 @section Scripts {
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+   @*  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script> *@
 
     <script src="~/Js/Preparation/AddDltComponent.js"></script>
    
