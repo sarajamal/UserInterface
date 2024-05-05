@@ -78,7 +78,7 @@ function DelteFooodSave(url) {
 
     Swal.fire({
         title: 'هل أنت متأكد ؟',
-        text: " هل تريد استعادة ماتم حذفه؟",
+        text: " هل تريد استعادة ماتم حذفه؟المواد الغذائية",
         icon: 'warning',
         showCancelButton: true,
         cancelButtonText: 'الغاء',
@@ -89,7 +89,7 @@ function DelteFooodSave(url) {
         if (result.isConfirmed) {
             $.ajax({
                 url:'/Food/DelteFooodSave/' +url,
-                type: 'DELETE',
+                //type: 'DELETE',
                 success: function (data) {
                     if (data.success) {
                         Swal.fire({

@@ -36,6 +36,43 @@ function DeleteToolVariety(id) { //هذي فقط للعرض البرمجة في 
     })
 }
 
+//الإضافة 
+function DeleteToolVarietyT1(id) { //هذي فقط للعرض البرمجة في controller , هذي للحذف بعد الحفظ في قاعدة البيانات . 
+    Swal.fire({
+        title: 'تأكيد !!',
+        text: "تأكد من حفظ الصفوف المضافة في الادوات قبل الحذف ",
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText: 'الغاء',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'حذف '
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/Preparation/DeleteToolVarietyT1/' + id, // Use the provided ID parameter
+                success: function (data) {
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'تم الحذف بنجاح',
+                            text: data.message
+                        }).then(() => {
+                            window.location.href = data.redirectToUrl; // Perform the redirection
+
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'خطأ',
+                            text: data.message
+                        });
+                    }
+                }
+            });
+        }
+    })
+}
 
 function AddRowTool(PreparationsFK) { //صفحة التعديل 
     var tableBody = document.querySelector("#tblToolVarity tbody");
@@ -58,27 +95,53 @@ function AddRowTool(PreparationsFK) { //صفحة التعديل
 
 
 
-var newRowNumber = 0;
 var numeric = 2;
 function AddRowToolnew(PreparationsFK) { //صفحة الإضافة
     var tableBody = document.querySelector("#tblToolVarity tbody");
 
     var newRow = document.createElement("tr");
+    var newRowNumber = tableBody.children.length;
+
     newRow.innerHTML = `
 
         <td style="text-align:center;">${numeric}</td>
-        <td><input name="ToolsVarityVM[${newRowNumber }].PrepTools" class="form-control"  placeholder="الأدات المستخدمة" /></td>
+        <td><input name="ToolsVarityVMList[${newRowNumber-1}].PrepTools" class="form-control"  placeholder="الأدات المستخدمة" /></td>
        <td style="text-align:center;" >
-            <input type="hidden" name="ToolsVarityVM[${newRowNumber }].PreparationsFK" value="${PreparationsFK}"  />
+            <input type="hidden" name="ToolsVarityVMList[${newRowNumber-1}].PreparationsFK" value="${PreparationsFK}"  />
               
-            <button type="button" class="btn btn-style5" data-row-index="${newRowNumber }" onclick="DeleteRow61(this)">حذف</button> 
+            <button type="button" class="btn btn-style5" data-row-index="${newRowNumber-1}" onclick="DeleteRow61(this)">حذف</button> 
         </td>
          `;
 
     tableBody.appendChild(newRow);
     newRowNumber++;
-    numeric++;
+    // Increment the numeric counter when a new row is added
+    numeric = newRowNumber + 1; // Make sure numeric is now set to the next number}
 }
+
+//صفحة الإضافة 
+function AddRowToolnew22(PreparationsFK) { //صفحة الإضافة
+    var tableBody = document.querySelector("#tblToolVarity tbody");
+
+    var newRow = document.createElement("tr");
+    var newRowNumber = tableBody.children.length;
+
+    newRow.innerHTML = `
+
+        <td style="text-align:center;">${newRowNumber+1}</td>
+        <td><input name="ToolsVarityVMList[${newRowNumber}].PrepTools" class="form-control"  placeholder="الأدات المستخدمة" /></td>
+       <td style="text-align:center;" >
+            <input type="hidden" name="ToolsVarityVMList[${newRowNumber}].PreparationsFK" value="${PreparationsFK}"  />
+              
+            <button type="button" class="btn btn-style5" data-row-index="${newRowNumber}" onclick="DeleteRow61(this)">حذف</button> 
+        </td>
+         `;
+
+    tableBody.appendChild(newRow);
+    // Increment the numeric counter when a new row is added
+    newRowNumber ++; // Make sure numeric is now set to the next number}
+}
+
 //صفحة الإضافة زر الحذف 
 function DeleteRow61(button) { // AJAX قبل تحفظ في قاعدة البيانات ماتحتاج controller
     var rowIndex = parseInt(button.getAttribute("data-row-index"));
@@ -95,6 +158,7 @@ function DeleteRow61(button) { // AJAX قبل تحفظ في قاعدة البي�
             var tableBody = document.querySelector("#tblToolVarity tbody");
             var rows = tableBody.children;
             button.closest("tr").remove();
+            numeric--;
 
             // Update row numbers
             for (var i = 0; i < rows.length; i++) {

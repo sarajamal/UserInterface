@@ -36,7 +36,7 @@ function loadDataTable(id) {
                     var numericFK = parseInt(row.brandFK, 10);
 
                     // Include the full URL of the external server in imagePath3
-                    var imagePath3 = `/IMAGES/ReadyProducts/${numericID}/${data}`;
+                    var imagePath3 = `/IMAGES/${numericID}/${data}`;
 
                     return `<img src="${imagePath3}" alt="Image" width="150" height="100"/>`;
                 },
@@ -73,7 +73,7 @@ function loadDataTable(id) {
 function DeleteFinshFood(url) {
     Swal.fire({
         title: 'هل أنت متأكد ؟',
-        text: " هل تريد استعادة ماتم حذفه؟",
+        text: " في المنتجات الجاهزة هل تريد استعادة ماتم حذفه؟",
         icon: 'warning',
         showCancelButton: true,
         cancelButtonText: 'الغاء',
@@ -84,7 +84,7 @@ function DeleteFinshFood(url) {
         if (result.isConfirmed) {
             $.ajax({
                 url: url, // Use the provided ID parameter
-                type: 'DELETE',
+                //type: 'DELETE',
                 success: function (data) {
                     if (data.success) {
                         Swal.fire({

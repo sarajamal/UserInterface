@@ -2,7 +2,7 @@
 function Delete(id) {
     Swal.fire({
         title: 'تأكد !! ',
-        text: " قبل الحذف تأكد من حفظ الصفوف المضافة في المكونات ",
+        text: "تأكد أولا من حفظ أي مكونات قمت بإضافتها قبل الحذف ",
         icon: 'warning',
         showCancelButton: true,
         cancelButtonText: 'الغاء',
@@ -35,7 +35,43 @@ function Delete(id) {
         }
     })
 }
-
+//صفحة الإضافة 
+function Deletec2(id) {
+    Swal.fire({
+        title: 'تأكد !! ',
+        text: "تأكد أولا من حفظ أي مكونات قمت بإضافتها قبل الحذف ",
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText: 'الغاء',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'حذف '
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/Preparation/Deletec2/' + id, // Use the provided ID parameter
+                /*type: 'DELETE',*/
+                success: function (data) {
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'تم الحذف بنجاح',
+                            text: data.message
+                        }).then(() => {
+                            window.location.href = data.redirectToUrl; // Perform the redirection
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'خطأ',
+                            text: data.message
+                        });
+                    }
+                }
+            });
+        }
+    })
+}
 //صفحة التعديل
 function AddRowcomponentUpdate() {
     var tableBody = document.querySelector("#tbComponant tbody");
@@ -160,31 +196,53 @@ function updateRowIndicesAfterDeletion1(deletedIndex) {
 }
 
 //صفحة الإضافة 
-var newIndex = 0;
 function AddRowcomponentnew() {
 
     var tableBody = document.querySelector("#tbComponant tbody");
     var newRow = document.createElement("tr");
 
     var PreparationsFK = document.querySelector("#tbComponant").getAttribute("data-preparation-id");
-
+    // newRowNumber should be the next index which is the current length of the tableBody children.
+    var newRowNumber = tableBody.children.length;
 
     newRow.innerHTML = `
-         <td><input  class="form-control" name="componontVMList[${newIndex}].PrepIngredientsName" placeholder="المكون"/></td>
-         <td><input class="form-control" name="componontVMList[${newIndex}].PrepQuantity"placeholder="الكمية"/></td>
-        <td><input  class="form-control" name="componontVMList[${newIndex}].PrepUnit" placeholder="الوحدة"/></td>
+         <td><input  class="form-control" name="componontVMList[${newRowNumber-1}].PrepIngredientsName" placeholder="المكون"/></td>
+         <td><input class="form-control" name="componontVMList[${newRowNumber-1}].PrepQuantity"placeholder="الكمية"/></td>
+        <td><input  class="form-control" name="componontVMList[${newRowNumber-1}].PrepUnit" placeholder="الوحدة"/></td>
         
 
     <td style="text-align:center;">
-    <input type="hidden" name="componontVMList[${newIndex}].PreparationsFK" value="${PreparationsFK}" />
-    <button type="button" class="btn btn-style5" data-row-index="${newIndex}" onclick="DeleteRow1(this)">حذف</button>
+    <input type="hidden" name="componontVMList[${newRowNumber-1}].PreparationsFK" value="${PreparationsFK}" />
+    <button type="button" class="btn btn-style5" data-row-index="${newRowNumber-1}" onclick="DeleteRow1(this)">حذف</button>
     </td>
 `;
 
     tableBody.appendChild(newRow);
-    newIndex++;
 }
 
+function AddRowcomponentnew22() {
+
+    var tableBody = document.querySelector("#tbComponant tbody");
+    var newRow = document.createElement("tr");
+
+    var PreparationsFK = document.querySelector("#tbComponant").getAttribute("data-preparation-id");
+    // newRowNumber should be the next index which is the current length of the tableBody children.
+    var newRowNumber = tableBody.children.length;
+
+    newRow.innerHTML = `
+        <td><input class="form-control" name="componontVMList[${newRowNumber}].PrepIngredientsName" placeholder="المكون" /></td>
+        <td><input class="form-control" name="componontVMList[${newRowNumber}].PrepQuantity" placeholder="الكمية"/></td>
+        <td><input class="form-control" name="componontVMList[${newRowNumber}].PrepUnit" placeholder="الوحدة"/></td>
+        
+
+   <td style="text-align:center;">
+        <input type="hidden" name="componontVMList[${newRowNumber}].PreparationsFK" value="${PreparationsFK}" />
+        <button type="button" class="btn btn-style5" data-row-index="${newRowNumber}" onclick="DeleteRow16(this)">حذف</button>
+        </td>
+`;
+
+    tableBody.appendChild(newRow);
+}
 //يجب إضافة خطوة واحدة على الأقل 
 function validateAndSubmit() {
     var stepCount = document.querySelectorAll("#tblSteps tbody td").length;

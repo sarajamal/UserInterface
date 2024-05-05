@@ -12,7 +12,11 @@ namespace Test12.Models.ViewModel
         [ValidateNever]
         public List<PreparationIngredients> componontVMList { get; set; }
         [ValidateNever]
-        public List<PreparationTools> ToolsVarityVM { get; set; }
+        public PreparationIngredients componontVM { get; set; }
+        [ValidateNever]
+        public PreparationTools ToolsVarityVM { get; set; }
+        [ValidateNever]
+        public List<PreparationTools> ToolsVarityVMList { get; set; }
         [ValidateNever]
         public List<PreparationSteps> stepsVM { get; set; }
 

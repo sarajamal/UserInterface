@@ -79,7 +79,7 @@ function DelteToolsdevice(url) {
 
     Swal.fire({
         title: 'هل أنت متأكد ؟',
-        text: " هل تريد استعادة ماتم حذفه؟",
+        text: "الاجهزة والأدوات  هل تريد استعادة ماتم حذفه؟",
         icon: 'warning',
         showCancelButton: true,
         cancelButtonText: 'الغاء',
@@ -90,7 +90,7 @@ function DelteToolsdevice(url) {
         if (result.isConfirmed) {
             $.ajax({
                 url: url, // Use the provided ID parameter
-                type: 'DELETE',
+                //type: 'DELETE',
                 success: function (data) {
                     if (data.success) {
                         Swal.fire({

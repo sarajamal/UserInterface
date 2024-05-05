@@ -87,34 +87,34 @@
                         </form>
                     </section> *@
                     <section>
-                        <form id="account" method="post" enctype="multipart/form-data">
+                        <form asp-action="Index" asp-controller="Home" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+                            <input type="hidden" name="__RequestVerificationToken" value="@Html.AntiForgeryToken()">
+
+                            <!-- Validation Summary for displaying all error messages in one place -->
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                             <div class="form-floating mb-3">
                                 <input asp-for="LoginVM.Username" class="form-control" id="floatingInput" placeholder="اسم المستخدم">
                                 <label asp-for="LoginVM.Username" class="form-label">اسم المستخدم</label>
-                                <span asp-validation-for="LoginVM.Username" class="text-danger"></span>
+                                <span asp-validation-for="LoginVM.Username" class="text-danger"></span> <!-- Display specific field error -->
                             </div>
 
                             <div class="form-floating mb-3">
                                 <input asp-for="LoginVM.Password" class="form-control" id="floatingPassword" placeholder="كلمة المرور">
                                 <label asp-for="LoginVM.Password" class="form-label">كلمة المرور</label>
-                                <div id="errorMessage" style="color: red; display: none;" class="py-3">
-                                    . أدخل كلمة المرور *
-                                </div>
-                                <span asp-validation-for="LoginVM.Password" class="text-danger"></span>
+                                <span asp-validation-for="LoginVM.Password" class="text-danger"></span> <!-- Display specific field error -->
                             </div>
+
                             <div>
                                 <p>
                                     <a asp-controller="Forget" asp-action="ForgetPassword" class="fnt-blue">هل نسيت كلمة المرور ؟</a>
                                 </p>
                             </div>
                             <div>
-                                <button id="loginsubmit" asp-controller="Home" asp-action="Index" type="submit"
-                                        class="w-100 btn btn-lg fnt-white btn-style1">
+                                <button id="loginsubmit" type="submit" class="w-100 btn btn-lg fnt-white btn-style1">
                                     تسجيل الدخول
                                 </button>
                             </div>
-
                         </form>
                     </section>
             </div>
@@ -122,26 +122,33 @@
     </div>
 </div>
 </div>
+
 <script>
-    document.getElementById('loginsubmit').addEventListener('click', function (event) {
-        // Get the value of the password input field using its ID
-        var passwordInput = document.getElementById('PasswordInput').value.trim();
+    function validateForm() {
+        var isValid = true;
+        var username = document.getElementById('floatingInput').value.trim();
+        var password = document.getElementById('floatingPassword').value.trim();
+        var usernameError = document.getElementById('usernameError');
+        var passwordError = document.getElementById('passwordError');
 
-        // Get the div element for displaying the error message
-        var errorMessageDiv = document.getElementById('errorMessage');
-
-        // Check if the password is empty
-        if (!passwordInput) {
-            // Prevent form submission
-            event.preventDefault();
-
-            // Display the error message
-            errorMessageDiv.style.display = 'block';
+        // Check if Username is empty
+        if (username === '') {
+            usernameError.style.display = 'block';
+            isValid = false;
         } else {
-            // Hide the error message if the password is not empty
-            errorMessageDiv.style.display = 'none';
+            usernameError.style.display = 'none';
         }
-    });
+
+        // Check if Password is empty
+        if (password === '') {
+            passwordError.style.display = 'block';
+            isValid = false;
+        } else {
+            passwordError.style.display = 'none';
+        }
+
+        return isValid;
+    }
 </script>
 
 @* <h2>تسجيل الدخول .</h2>

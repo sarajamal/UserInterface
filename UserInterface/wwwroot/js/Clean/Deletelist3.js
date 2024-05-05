@@ -70,7 +70,7 @@ function DeleteCleanPost(url) {
         if (result.isConfirmed) {
             $.ajax({
                 url: url, // Use the provided ID parameter
-                type: 'DELETE',
+                //type: 'DELETE',
                 success: function (data) {
                     if (data.success) {
                         Swal.fire({
