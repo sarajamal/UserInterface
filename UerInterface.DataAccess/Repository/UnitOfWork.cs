@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using Test12.DataAccess.Data;
+﻿using Test12.DataAccess.Data;
 using Test12.DataAccess.Repository.IRepository;
 using Test12.DataAccess.RepositoryPro;
 using Test12.DataAccess.RepositoryPro.IRepositoryPro1;
-using Test12.Models.Models.Clean;
 
 namespace Test12.DataAccess.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDbContext _context;
- 
+
         public IPreparationRepository PreparationRepository { get; private set; } // constructor 
         public IComponentRepository ComponentRepository { get; private set; }
         public IPrepaToolsVarietyRepository PrepaToolsVarietyRepository { get; private set; }
@@ -35,7 +28,7 @@ namespace Test12.DataAccess.Repository
         public IMainsectionRepository MainsectionRepository { get; private set; }
         public IFoodRepository FoodRepository { get; private set; }
         public IReadyFoodRepository readyFoodRepository { get; private set; }
- 
+
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -56,13 +49,13 @@ namespace Test12.DataAccess.Repository
             MainsectionRepository = new MainsectionRepository(_context);
             FoodRepository = new FoodRepository(_context);
             readyFoodRepository = new ReadyFoodRepository(_context);
-         }
+        }
 
         public void Save()
         {
             _context.SaveChanges();
         }
- 
+
     }
 
 }

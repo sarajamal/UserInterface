@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserInterface", "UserInterface\UserInterface.csproj", "{FFF40C90-AD5E-406F-A951-1FDDC5F84CC5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{02E18729-9871-4CEB-9ECC-9105C1492292} = {02E18729-9871-4CEB-9ECC-9105C1492292}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UerInterface.DataAccess", "UerInterface.DataAccess\UerInterface.DataAccess.csproj", "{510440D4-F392-43D3-B215-D11D368A5E29}"
 EndProject

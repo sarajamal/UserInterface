@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -14,21 +12,21 @@ namespace Test12.Models.Models.Production
 
         [Key]
         public int ProductionID { get; set; }
-        
+
         public double? ProductionOrder { get; set; }
 
         public string? ProductName { get; set; }
 
         [MaxLength(255)]
         public string? VersionNumber { get; set; }
-       
+
         [BindProperty]
         public string? ProductType { get; set; }
-      
+
         public string? Expiry { get; set; }
- 
+
         public string? Station { get; set; }
- 
+
         public string? PreparationTime { get; set; }
         [ValidateNever]
         public string? ProductImage { get; set; }

@@ -1,6 +1,5 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 using Test12.DataAccess.Data;
 using Test12.DataAccess.Repository.IRepository;
 using Test12.Models.Models.Preparation;
@@ -22,18 +21,18 @@ namespace Test12.DataAccess.Repository
             {
                 // Update properties for Step 1
                 objFormDb.PrepText = obj.PrepText;
-                
+
                 if (obj.PrepImage != null)
                 {
                     objFormDb.PrepImage = obj.PrepImage;
                 }
-               
+
                 // Save changes to the database
                 _context.Entry(objFormDb).State = EntityState.Modified;
                 _context.SaveChanges();
             }
 
-         }
+        }
 
         // New function to get the last ID
         public int GetLastStepId()

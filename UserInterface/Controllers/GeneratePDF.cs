@@ -346,7 +346,7 @@
 //            // Add a page break after the table
 //            HTML += "<div style='page-break-after: always;'></div>";
 //            // Now, you can start a new page with a header or any other content
-          
+
 //            HTML += 
 //             $"<header>التحضيرات</header>" + // Add the header
 //                         "<underline></underline>"; // Add the underline
@@ -408,7 +408,7 @@
 
 //            try
 //            {
-                
+
 //                var renderer = new ChromePdfRenderer();
 //                renderer.RenderingOptions.Timeout = 200; // Set the timeout to 2 minutes (in seconds)
 //                var pdfDocument = renderer.RenderHtmlAsPdf(HTML); 

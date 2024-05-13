@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Test12.DataAccess.Data;
+﻿using Test12.DataAccess.Data;
 using Test12.DataAccess.Repository.IRepository;
 using Test12.Models.Models;
-using Test12.Models.Models.Clean;
 
 namespace Test12.DataAccess.Repository
 {
@@ -21,8 +15,8 @@ namespace Test12.DataAccess.Repository
 
         public void Update(MainSections obj)
         {
-             
+
         }
-    
+
     }
 }

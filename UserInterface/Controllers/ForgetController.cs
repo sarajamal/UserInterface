@@ -1,14 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Net.Mail;
 using System.Net;
+using System.Net.Mail;
 using System.Security.Cryptography;
-using Test12.Models.ViewModel;
 using Test12.DataAccess.Repository.IRepository;
-using NuGet.Common;
-using Test12.Models.Models.Food;
-using Test12.Models.Models.trade_mark;
 using Test12.Models.Models.Login;
-using System.Net.Http;
+using Test12.Models.ViewModel;
 
 
 namespace Test12.Controllers

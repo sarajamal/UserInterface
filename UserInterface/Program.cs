@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Test12.DataAccess.Data;
-using Test12.DataAccess.Repository.IRepository;
 using Test12.DataAccess.Repository;
+using Test12.DataAccess.Repository.IRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +15,7 @@ builder.Services.AddDbContext<ApplicationDbContext>
     (options => options.UseSqlServer(builder.Configuration.GetConnectionString("DivCollection")));
 
 
-//builder.Services.AddDistributedMemoryCache();
+builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddSession(options =>
 {
@@ -30,7 +30,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.Cookie.Name = "bdooncode5App";
         options.LoginPath = "/Home/Index"; // Redirect to the login page
         options.LogoutPath = "/Home/Logout";
-     });
+    });
 
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

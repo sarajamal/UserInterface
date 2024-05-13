@@ -19,7 +19,7 @@ namespace Test12.Models.ViewModel
         public List<Brands> tredList { get; set; }
 
         [ValidateNever]
-        public Brands TredMarktVM { get; set; } 
+        public Brands TredMarktVM { get; set; }
         [ValidateNever]
         public ClientLogin LoginVM { get; set; }
         [ValidateNever]
@@ -31,18 +31,18 @@ namespace Test12.Models.ViewModel
         public List<Production> ProductionLoginVMlist { get; set; }
 
         [ValidateNever]
-        public List<FoodStuffs> FoodLoginVMlist { get; set; } 
+        public List<FoodStuffs> FoodLoginVMlist { get; set; }
         [ValidateNever]
         public List<DevicesAndTools> DeviceToolsLoginVMlist { get; set; }
 
         [ValidateNever]
         public List<ReadyProducts> ReadyFoodLoginVMlist { get; set; }
-     
+
         [ValidateNever]
         public List<Cleaning> CleanLoginVMlist { get; set; }
 
         [ValidateNever]
-        public List <MainSections> MainsectionVMlist { get; set; }
+        public List<MainSections> MainsectionVMlist { get; set; }
 
         [ValidateNever]
         public MainSections MainsectionVM { get; set; }

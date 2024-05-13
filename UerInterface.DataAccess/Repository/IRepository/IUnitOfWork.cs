@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Test12.DataAccess.RepositoryPro.IRepositoryPro1;
-using Test12.Models.Models.Clean;
+﻿using Test12.DataAccess.RepositoryPro.IRepositoryPro1;
 
 namespace Test12.DataAccess.Repository.IRepository
 {
@@ -20,15 +14,15 @@ namespace Test12.DataAccess.Repository.IRepository
         IStepsProductionRepository2 StepsPreparationRepository2 { get; }
         ITredMarketRepository TredMarketRepository { get; }
         ILoginRepository loginRepository { get; }
-       ICleanRepository CleanRepository { get; }
+        ICleanRepository CleanRepository { get; }
         IStepsCleanRepository3 StepsCleanRepository3 { get; }
         IDevice_ToolsRepository Device_tools1 { get; }
         IMainsectionRepository MainsectionRepository { get; }
         IFoodRepository FoodRepository { get; }
         IReadyFoodRepository readyFoodRepository { get; }
-       
+
 
         void Save();
-      
+
     }
 }

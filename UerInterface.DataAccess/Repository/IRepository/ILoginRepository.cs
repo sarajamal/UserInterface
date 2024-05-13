@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Test12.Models.Models.Login;
-using Test12.Models.Models.Production;
+﻿using Test12.Models.Models.Login;
 
 namespace Test12.DataAccess.Repository.IRepository
 {
