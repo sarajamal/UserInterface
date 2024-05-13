@@ -1,12 +1,5 @@
-﻿
-using Azure.Core;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using System.Web.Http.ModelBinding;
-using Test12.DataAccess.Repository;
+﻿using Microsoft.AspNetCore.Mvc;
 using Test12.DataAccess.Repository.IRepository;
-using Test12.Models.Models.Preparation;
 using Test12.Models.Models.Production;
 using Test12.Models.Models.trade_mark;
 using Test12.Models.ViewModel;
@@ -116,11 +109,11 @@ namespace Test12.Controllers
         }
 
         [HttpPost] //This for Add Or Update Page . 
-        public async Task <IActionResult> Informations1(LoginTredMarktViewModel PropaVM, IFormFile? file) // should insert name in Upsert view
+        public async Task<IActionResult> Informations1(LoginTredMarktViewModel PropaVM, IFormFile? file) // should insert name in Upsert view
         {
             if (ModelState.IsValid)
             {
-                
+
                 string ProductionID = PropaVM.Productionvm.ProductionID.ToString();
                 string wwwRootPath = _webHostEnvironment.WebRootPath; // get us root folder
 
@@ -152,7 +145,7 @@ namespace Test12.Controllers
                     // Save the image with the new file name
                     using (var fileStream = new FileStream(Path.Combine(ProductionPath), FileMode.Create))
                     {
-                       await file.CopyToAsync(fileStream);
+                        await file.CopyToAsync(fileStream);
                     }
 
                     // Store only the file name in the database
@@ -257,7 +250,7 @@ namespace Test12.Controllers
                     }
                 }
 
-                        TempData["success"] = "تم تحديث المكونات بشكل ناجح";
+                TempData["success"] = "تم تحديث المكونات بشكل ناجح";
                 return RedirectToAction("RedirectToComponent1", new { ProductionID = PropaVM.Productionvm.ProductionID, brandFk = PropaVM.Productionvm.BrandFK });
             }
             else
@@ -347,7 +340,7 @@ namespace Test12.Controllers
                         }
                     }
                 }
-     
+
                 TempData["success"] = "تم تحديث الأدوات بشكل ناجح";
                 return RedirectToAction("RedirectToTools1", new { ProductionID = PropaVM.Productionvm.ProductionID, brandFk = PropaVM.Productionvm.BrandFK });
             }
@@ -462,7 +455,7 @@ namespace Test12.Controllers
 
                                 using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
                                 {
-                                   await file1ForStep.CopyToAsync(fileStream1);
+                                    await file1ForStep.CopyToAsync(fileStream1);
                                 }
 
                                 newStep.ProdSImage = fileNameSteps1; // Update the image path
@@ -502,7 +495,7 @@ namespace Test12.Controllers
 
                                 using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
                                 {
-                                  await file1ForStep.CopyToAsync(fileStream1);
+                                    await file1ForStep.CopyToAsync(fileStream1);
                                 }
                                 Steps.ProdSImage = fileNameSteps1;
                             }
@@ -531,7 +524,7 @@ namespace Test12.Controllers
                     }
                 }
 
-            TempData["success"] = "تم تحديث الخطوات بشكل ناجح";
+                TempData["success"] = "تم تحديث الخطوات بشكل ناجح";
                 return RedirectToAction("RedirectToSteps1", new { ProductionID = PropaVM.Productionvm.ProductionID, brandFk = PropaVM.Productionvm.BrandFK });
             }
             else
@@ -581,7 +574,7 @@ namespace Test12.Controllers
             PrVM.welcomTredmarketProduction.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
             PrVM.welcomTredmarketProduction.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
             PrVM.welcomTredmarketProduction.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == brandFK).ToList();
-            if (ProductionID==0|| ProductionID==null)
+            if (ProductionID == 0 || ProductionID == null)
             {
                 PrVM.Productionvm = new Production();
             }
@@ -667,7 +660,7 @@ namespace Test12.Controllers
                         // Use the correct file path when creating FileStream
                         using (var stream = new FileStream(ProductionPath, FileMode.Create))
                         {
-                           await file.CopyToAsync(stream);
+                            await file.CopyToAsync(stream);
                         }
 
                         setFK.ProductImage = fileName; // Save only the file name in the database
@@ -692,7 +685,7 @@ namespace Test12.Controllers
                     else
                     {
                         var getIdOrder = _unitOfWork.itemsRepository.Get(u => u.ProductionID == selectedValue);
-                        int OldOrder = getIdOrder.ProductionID ; // Default to 0.0f if Order is null
+                        int OldOrder = getIdOrder.ProductionID; // Default to 0.0f if Order is null
                         double newOrder = OldOrder + 0.1;
                         setFK.ProductionOrder = newOrder;
                     }
@@ -750,10 +743,10 @@ namespace Test12.Controllers
             return View(PrVM);
         }
         [HttpPost]
-        public IActionResult CreateComponent1(ProductionVM PropaVM )
+        public IActionResult CreateComponent1(ProductionVM PropaVM)
         {
             int ProductionFK = PropaVM.Productionvm.ProductionID;
-           
+
             if (ModelState.IsValid)
             {
                 int lastIdComponents = _unitOfWork.ComponentRepository2.GetLastComponentId();
@@ -810,7 +803,7 @@ namespace Test12.Controllers
                     }
                 }
                 _unitOfWork.Save();
-                    TempData["success"] = "تم إضافة المكونات بشكل ناجح";
+                TempData["success"] = "تم إضافة المكونات بشكل ناجح";
                 return RedirectToAction("RedirectToCreateComponent1", new { ProductionID = PropaVM.Productionvm.ProductionID, brandFk = PropaVM.tredMaeketVM.BrandID });
             }
             return View(PropaVM);
@@ -880,7 +873,7 @@ namespace Test12.Controllers
                     _unitOfWork.PrepaToolsVarietyRepository2.Add(firstRowToolAdd);
                     _unitOfWork.Save();
                 }
- 
+
                 if (PropaVM.ToolsVarityVM2List != null && PropaVM.ToolsVarityVM2List.Any())
                 {
                     for (int i = 0; i < PropaVM.ToolsVarityVM2List.Count; i++)
@@ -1023,7 +1016,7 @@ namespace Test12.Controllers
 
                                 using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
                                 {
-                                   await file1ForStep.CopyToAsync(fileStream1);
+                                    await file1ForStep.CopyToAsync(fileStream1);
                                 }
 
                                 newStep.ProdSImage = fileNameSteps1; // Update the image path
@@ -1064,7 +1057,7 @@ namespace Test12.Controllers
 
                                 using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
                                 {
-                                   await file1ForStep.CopyToAsync(fileStream1);
+                                    await file1ForStep.CopyToAsync(fileStream1);
                                 }
                                 Steps.ProdSImage = fileNameSteps1;
                             }
@@ -1092,7 +1085,7 @@ namespace Test12.Controllers
                         }
                     }
                 }
-                    TempData["success"] = "تم إضافة الخطوات بشكل ناجح";
+                TempData["success"] = "تم إضافة الخطوات بشكل ناجح";
                 return RedirectToAction("RedirectToCreateSteps1", new { ProductionID = PropaVM.Productionvm.ProductionID, brandFk = PropaVM.tredMaeketVM.BrandID });
 
             }
@@ -1168,7 +1161,7 @@ namespace Test12.Controllers
         }
         #endregion
 
-       //----------------------------------------------------------------------------------------------------------------//
+        //----------------------------------------------------------------------------------------------------------------//
         // 2زر الحذف تبع المكونات 
         #region API CALLS 
         //[HttpDelete]

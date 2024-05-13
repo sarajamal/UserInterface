@@ -1,7 +1,7 @@
 ﻿
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using Test12.Models.Models.trade_mark;
 
@@ -9,7 +9,7 @@ namespace Test12.Models.Models.Preparation
 {
     public class Preparations
     {
-    
+
         [Key]
         public int PreparationsID { get; set; }
         public double? PreparationsOrder { get; set; }

@@ -1,23 +1,21 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using System.Net.Mail;
+using System.Text;
+using System.Text.Json;
 using Test12.DataAccess.Repository.IRepository;
 using Test12.Models.Models;
-using Test12.Models.ViewModel;
-using Test12.Models.Models.Preparation;
-using Test12.Models.Models.trade_mark;
-using System.Text;
-using Test12.Models.Models.Clean; 
+using Test12.Models.Models.Clean;
 using Test12.Models.Models.Device_Tools;
 using Test12.Models.Models.Food;
 using Test12.Models.Models.Login;
-using Test12.Models.Models.ReadyFood;
+using Test12.Models.Models.Preparation;
 using Test12.Models.Models.Production;
-using System.Net.Mail;
-using System.Net;
-using System.Security.Cryptography;
-using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
+using Test12.Models.Models.ReadyFood;
+using Test12.Models.Models.trade_mark;
+using Test12.Models.ViewModel;
 
 namespace Test12.Controllers
 {
@@ -31,7 +29,6 @@ namespace Test12.Controllers
             _unitOfWork = unitOfWork;
             _httpClient = httpClient;
         }
-
         public async Task<IActionResult> Index()
         {
             return View();
@@ -348,7 +345,7 @@ namespace Test12.Controllers
                     try
                     {
                         // Prepare and send an email
-                        SendEmail(user.Email, "bdooncode5@gmail.com",Brand.BrandName);
+                        SendEmail(user.Email, "bdooncode5@gmail.com", Brand.BrandName);
                     }
                     catch (Exception ex)
                     {
@@ -366,7 +363,7 @@ namespace Test12.Controllers
             return RedirectToAction("RedirectToWelcomTredMarket", new { brandId = model.TredMarktVM.BrandID });
         }
 
-        private void SendEmail(string fromEmail, string toEmail,string brandName)
+        private void SendEmail(string fromEmail, string toEmail, string brandName)
         {
             MailMessage mail = new MailMessage();
             mail.From = new MailAddress(fromEmail);

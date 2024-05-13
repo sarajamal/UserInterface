@@ -1,12 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Test12.DataAccess.Data;
 using Test12.DataAccess.Repository;
-using Test12.DataAccess.Repository.IRepository;
 using Test12.DataAccess.RepositoryPro.IRepositoryPro1;
 using Test12.Models.Models.Production;
 
@@ -32,7 +26,7 @@ namespace Test12.DataAccess.RepositoryPro
                 {
                     objFormDb.ProdSImage = obj.ProdSImage;
                 }
-               
+
                 // Save changes to the database
                 _context.Entry(objFormDb).State = EntityState.Modified;
                 _context.SaveChanges();
@@ -62,5 +56,5 @@ namespace Test12.DataAccess.RepositoryPro
         //    }
         //}
     }
-    
+
 }

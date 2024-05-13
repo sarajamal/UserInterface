@@ -104,7 +104,7 @@ namespace Test12.Controllers
 
 
         [HttpPost]
-        public async Task <IActionResult> CreateIndex(Device_toolsVM device_ToolsVM, int selectDevicetools)
+        public async Task<IActionResult> CreateIndex(Device_toolsVM device_ToolsVM, int selectDevicetools)
         {
 
             if (ModelState.IsValid)
@@ -151,7 +151,7 @@ namespace Test12.Controllers
 
                                 using (var fileStream = new FileStream(Path.Combine(devicePath1, fileName11), FileMode.Create)) //save images
                                 {
-                                  await  file1ForDevice1.CopyToAsync(fileStream);
+                                    await file1ForDevice1.CopyToAsync(fileStream);
                                 }
                                 newDevice.DevicesAndTools_Image = fileName11;
 
@@ -163,7 +163,7 @@ namespace Test12.Controllers
                             if (selectDevicetools == 0)
                             {
                                 int IDDevice = newDevice.DevicesAndToolsID;
-                                newDevice.DevicesAndToolsOrder = IDDevice; 
+                                newDevice.DevicesAndToolsOrder = IDDevice;
 
                                 //// Get the maximum order value in the existing list
                                 //double maxOrder = _unitOfWork.Device_tools1.GetAll()
@@ -179,7 +179,7 @@ namespace Test12.Controllers
                             else
                             {
                                 var getIdOrder = _unitOfWork.Device_tools1.Get(u => u.DevicesAndToolsID == selectDevicetools);
-                                int OldOrder = getIdOrder.DevicesAndToolsID ; // Default to 0.0f if Order is null
+                                int OldOrder = getIdOrder.DevicesAndToolsID; // Default to 0.0f if Order is null
                                 double newOrder = OldOrder + 0.1;
                                 newDevice.DevicesAndToolsOrder = newOrder;
                             }
@@ -215,7 +215,7 @@ namespace Test12.Controllers
                         string wwwRootPathSteps = _webHostEnvironment.WebRootPath;
 
 
-                        var devicePath1 = Path.Combine(wwwRootPathSteps, "IMAGES",  DevicesAndToolsID);
+                        var devicePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", DevicesAndToolsID);
 
 
 
@@ -243,7 +243,7 @@ namespace Test12.Controllers
                             }
                             using (var fileStream1 = new FileStream(Path.Combine(devicePath1, fileNameSteps1), FileMode.Create))
                             {
-                               await file1ForDevice.CopyToAsync(fileStream1);
+                                await file1ForDevice.CopyToAsync(fileStream1);
                             }
 
                             devices.DevicesAndTools_Image = fileNameSteps1; // Update the image path
@@ -308,7 +308,7 @@ namespace Test12.Controllers
             // Delete the associated image file
             if (!string.IsNullOrEmpty(deleteDeviceToolPicture.DevicesAndTools_Image))
             {
-                string imagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES",  DevicesAndToolsID, deleteDeviceToolPicture.DevicesAndTools_Image);
+                string imagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", DevicesAndToolsID, deleteDeviceToolPicture.DevicesAndTools_Image);
                 if (System.IO.File.Exists(imagePath1))
                 {
                     System.IO.File.Delete(imagePath1);

@@ -1,17 +1,14 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
 using Test12.Models.Models;
 using Test12.Models.Models.Clean;
 using Test12.Models.Models.Device_Tools;
+using Test12.Models.Models.Food;
+using Test12.Models.Models.Login;
 using Test12.Models.Models.Preparation;
 using Test12.Models.Models.Production;
-using Test12.Models.Models.trade_mark;
-using Test12.Models.Models.Food;
 using Test12.Models.Models.ReadyFood;
-using Test12.Models.Models.Login;
+using Test12.Models.Models.trade_mark;
 
 namespace Test12.DataAccess.Data
 {

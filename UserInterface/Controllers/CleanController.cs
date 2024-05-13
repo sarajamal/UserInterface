@@ -317,7 +317,7 @@ namespace Test12.Controllers
 
                                     using (var fileStream = new FileStream(Path.Combine(stepPath, fileName11), FileMode.Create)) //save images
                                     {
-                                      await  file1ForStep1.CopyToAsync(fileStream);
+                                        await file1ForStep1.CopyToAsync(fileStream);
                                     }
                                     //newStep.CleaStepsImage = fileName11;
                                 }
@@ -331,7 +331,7 @@ namespace Test12.Controllers
                     if (selectCleaning == 0)
                     {
                         int IDCleane = setFK.CleaningID;
-                        setFK.CleaningOrder = IDCleane; 
+                        setFK.CleaningOrder = IDCleane;
                         //// Get the maximum order value in the existing list
                         //double maxOrder = _unitOfWork.CleanRepository.GetAll()
                         //    .Max(item => item.CleaningOrder) ?? 0.0f; // Default to 0.0f if there are no existing items
@@ -346,7 +346,7 @@ namespace Test12.Controllers
                     else
                     {
                         var getIdOrder = _unitOfWork.CleanRepository.Get(u => u.CleaningID == selectCleaning);
-                        int OldOrder = getIdOrder.CleaningID ; // Default to 0.0f if Order is null
+                        int OldOrder = getIdOrder.CleaningID; // Default to 0.0f if Order is null
                         double newOrder = OldOrder + 0.1;
                         setFK.CleaningOrder = newOrder;
                     }
@@ -524,7 +524,7 @@ namespace Test12.Controllers
 
                                 using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
                                 {
-                                  await  file1ForStep.CopyToAsync(fileStream1);
+                                    await file1ForStep.CopyToAsync(fileStream1);
                                 }
 
                                 newStep.CleaStepsImage = fileNameSteps1; // Update the image path
@@ -549,7 +549,7 @@ namespace Test12.Controllers
                             {
                                 if (!string.IsNullOrEmpty(Steps.CleaStepsImage)) // Check if there's an existing image path
                                 {
-                                    var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES",  IDstep, Steps.CleaStepsImage);
+                                    var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", IDstep, Steps.CleaStepsImage);
 
                                     if (System.IO.File.Exists(OldImagePath1))
                                     {
@@ -566,7 +566,7 @@ namespace Test12.Controllers
 
                                 using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
                                 {
-                                   await file1ForStep.CopyToAsync(fileStream1);
+                                    await file1ForStep.CopyToAsync(fileStream1);
                                 }
 
                                 Steps.CleaStepsImage = fileNameSteps1; // Update the image path
@@ -629,7 +629,7 @@ namespace Test12.Controllers
             // Delete the associated image file
             if (!string.IsNullOrEmpty(stepsToDelete.CleaStepsImage))
             {
-                string imagePath = Path.Combine(wwwRootPathSteps, "IMAGES",  IDStep, stepsToDelete.CleaStepsImage);
+                string imagePath = Path.Combine(wwwRootPathSteps, "IMAGES", IDStep, stepsToDelete.CleaStepsImage);
                 if (System.IO.File.Exists(imagePath))
                 {
                     System.IO.File.Delete(imagePath);
@@ -683,4 +683,4 @@ namespace Test12.Controllers
             }
         }
     }
-        }
+}

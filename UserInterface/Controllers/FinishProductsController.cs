@@ -1,9 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Test12.DataAccess.Repository;
+﻿using Microsoft.AspNetCore.Mvc;
 using Test12.DataAccess.Repository.IRepository;
-using Test12.Models.Models.Device_Tools;
-using Test12.Models.Models.Food;
 using Test12.Models.Models.ReadyFood;
 using Test12.Models.Models.trade_mark;
 using Test12.Models.ViewModel;
@@ -75,12 +71,12 @@ namespace Test12.Controllers
                 tredMaeketReadyfoodVM = new Brands(),
 
             };
-           
-                RDVM.tredMaeketReadyfoodVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
-                RDVM.ReadyfoodVM = _unitOfWork.readyFoodRepository.Get(u => u.ReadyProductsID == id);
-                RDVM.readyfoodlistVM = _unitOfWork.readyFoodRepository.GetAll(incloudeProperties: "Brand").Where(u => u.ReadyProductsID == id).ToList(); //هو يحتوي على قائمة من جدول المكونات واللي يساعده على العرض هي view
 
-                return View(RDVM);
+            RDVM.tredMaeketReadyfoodVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
+            RDVM.ReadyfoodVM = _unitOfWork.readyFoodRepository.Get(u => u.ReadyProductsID == id);
+            RDVM.readyfoodlistVM = _unitOfWork.readyFoodRepository.GetAll(incloudeProperties: "Brand").Where(u => u.ReadyProductsID == id).ToList(); //هو يحتوي على قائمة من جدول المكونات واللي يساعده على العرض هي view
+
+            return View(RDVM);
         }
 
         public IActionResult createFoodfonsh(int? id)
@@ -150,7 +146,7 @@ namespace Test12.Controllers
 
                                 using (var fileStream = new FileStream(Path.Combine(FoodPath1, fileName11), FileMode.Create)) //save images
                                 {
-                                   await file1ForFood1.CopyToAsync(fileStream);
+                                    await file1ForFood1.CopyToAsync(fileStream);
                                 }
                                 newfoods.ReadyProductsImage = fileName11;
                             }
@@ -160,7 +156,7 @@ namespace Test12.Controllers
                             if (selectFoodReadyValue == 0)
                             {
                                 int IDfinish = newfoods.ReadyProductsID;
-                                newfoods.ReadyProductsOrder = IDfinish; 
+                                newfoods.ReadyProductsOrder = IDfinish;
                                 //// Get the maximum order value in the existing list
                                 //double maxOrder = _unitOfWork.readyFoodRepository.GetAll()
                                 //    .Max(item => item.ReadyProductsOrder) ?? 0.0f; // Default to 0.0f if there are no existing items
@@ -175,7 +171,7 @@ namespace Test12.Controllers
                             else
                             {
                                 var getIdOrder = _unitOfWork.readyFoodRepository.Get(u => u.ReadyProductsID == selectFoodReadyValue);
-                                int OldOrder = getIdOrder.ReadyProductsID ; // Default to 0.0f if Order is null
+                                int OldOrder = getIdOrder.ReadyProductsID; // Default to 0.0f if Order is null
                                 double newOrder = OldOrder + 0.1;
                                 newfoods.ReadyProductsOrder = newOrder;
                             }
@@ -209,7 +205,7 @@ namespace Test12.Controllers
                         string BrandFK = foodready.BrandFK.ToString();
 
                         string wwwRootPathSteps = _webHostEnvironment.WebRootPath; // get the root folder
-                        var FoodPath1 = Path.Combine(wwwRootPathSteps, "IMAGES",  ReadyProductsID);
+                        var FoodPath1 = Path.Combine(wwwRootPathSteps, "IMAGES", ReadyProductsID);
 
                         var file1Name = $"file1_{foodready.ReadyProductsID}";
                         var file1Forfoods = HttpContext.Request.Form.Files[file1Name];
@@ -218,7 +214,7 @@ namespace Test12.Controllers
                         {
                             if (!string.IsNullOrEmpty(foodready.ReadyProductsImage)) // Check if there's an existing image path
                             {
-                                var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES",  ReadyProductsID, foodready.ReadyProductsImage);
+                                var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", ReadyProductsID, foodready.ReadyProductsImage);
 
                                 if (System.IO.File.Exists(OldImagePath1))
                                 {
@@ -236,7 +232,7 @@ namespace Test12.Controllers
 
                             using (var fileStream1 = new FileStream(Path.Combine(FoodPath1, fileNamefood1), FileMode.Create))
                             {
-                               await file1Forfoods.CopyToAsync(fileStream1);
+                                await file1Forfoods.CopyToAsync(fileStream1);
                             }
 
                             foodready.ReadyProductsImage = fileNamefood1; // Update the image path
@@ -300,7 +296,7 @@ namespace Test12.Controllers
         [HttpGet]
         public IActionResult GetAll(int? id)
         {
- 
+
             IEnumerable<ReadyProducts> objfoodList = _unitOfWork.readyFoodRepository.GetAll()
                 .Where(u => u.BrandFK == id).OrderBy(item => item.ReadyProductsOrder).ToList();
 
@@ -325,4 +321,4 @@ namespace Test12.Controllers
 }
 
 
-     
+

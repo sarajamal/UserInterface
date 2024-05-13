@@ -2,7 +2,6 @@
 using System.Text.Json.Serialization;
 using Test12.Models.Models.Production;
 using Test12.Models.Models.trade_mark;
-using Test12.Models.Models.Preparation;
 
 namespace Test12.Models.ViewModel
 {
@@ -38,7 +37,7 @@ namespace Test12.Models.ViewModel
         public IEnumerable<Production> itemList33333 { get; set; }
         [ValidateNever]
         [JsonIgnore]
-        public LoginTredMarktViewModel welcomTredmarketProduction { get; set; } 
+        public LoginTredMarktViewModel welcomTredmarketProduction { get; set; }
 
     }
 }

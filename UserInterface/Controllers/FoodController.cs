@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NuGet.Packaging.Signing;
 using Test12.DataAccess.Repository.IRepository;
-using Test12.Models.Models.Device_Tools;
 using Test12.Models.Models.Food;
 using Test12.Models.Models.trade_mark;
 using Test12.Models.ViewModel;
@@ -34,10 +32,10 @@ namespace Test12.Controllers
 
             FoodVM FDVM = new()
             {
-               
+
                 FoodViewMList = _unitOfWork.FoodRepository.GetAll()
                 .Where(u => u.BrandFK == brandFK).OrderBy(item => item.FoodStuffsOrder).ToList(),
-            WelcomTredmarketFood = new LoginTredMarktViewModel()
+                WelcomTredmarketFood = new LoginTredMarktViewModel()
 
             };
             FDVM.WelcomTredmarketFood.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFK);
@@ -148,7 +146,7 @@ namespace Test12.Controllers
 
                                 using (var fileStream = new FileStream(Path.Combine(FoodPath1, fileName11), FileMode.Create)) //save images
                                 {
-                                  await file1ForFood1.CopyToAsync(fileStream);
+                                    await file1ForFood1.CopyToAsync(fileStream);
                                 }
                                 newfoods.FoodStuffsImage = fileName11;
                             }
@@ -158,7 +156,7 @@ namespace Test12.Controllers
                             if (selectFoodvalue == 0)
                             {
                                 int IDfoods = newfoods.FoodStuffsID;
-                                newfoods.FoodStuffsOrder = IDfoods; 
+                                newfoods.FoodStuffsOrder = IDfoods;
                                 //// Get the maximum order value in the existing list
                                 //double maxOrder = _unitOfWork.FoodRepository.GetAll()
                                 //    .Max(item => item.FoodStuffsOrder) ?? 0.0f; // Default to 0.0f if there are no existing items
@@ -236,7 +234,7 @@ namespace Test12.Controllers
 
                             using (var fileStream1 = new FileStream(Path.Combine(FoodPath, fileNamefood1), FileMode.Create))
                             {
-                               await file1Forfoods.CopyToAsync(fileStream1);
+                                await file1Forfoods.CopyToAsync(fileStream1);
                             }
                             foods.FoodStuffsImage = fileNamefood1; // Update the image path
                         }

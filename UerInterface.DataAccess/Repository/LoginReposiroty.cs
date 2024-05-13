@@ -1,11 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Text;
-using System.Threading.Tasks;
 using Test12.DataAccess.Data;
 using Test12.DataAccess.Repository.IRepository;
 using Test12.Models.Models.Login;
-using Test12.Models.Models.Production;
 
 namespace Test12.DataAccess.Repository
 {
@@ -16,7 +14,7 @@ namespace Test12.DataAccess.Repository
         public LoginReposiroty(ApplicationDbContext context) : base(context)
         {
             _context = context;
-           
+
         }
 
         public void Update(ClientLogin obj)
@@ -229,6 +227,6 @@ namespace Test12.DataAccess.Repository
 
     }
 }
-   
-      
- 
+
+
+

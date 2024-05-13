@@ -73,7 +73,7 @@ namespace Test12.Controllers
             PrVM.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFk);
             PrVM.PreparationVM = _unitOfWork.PreparationRepository.Get(u => u.PreparationsID == PreparationID);
             PrVM.componontVMList = _unitOfWork.ComponentRepository.GetAll(incloudeProperties: "Preparation").Where(c => c.PreparationsFK == PreparationID).ToList(); //هو يحتوي على قائمة من جدول المكونات واللي يساعده على العرض هي view
-            PrVM.PreparationsTools = _unitOfWork.PrepaToolsVarietyRepository.GetAll(incloudeProperties: "Preparation").Where(c => c.PreparationsFK == PreparationID).ToList(); 
+            PrVM.PreparationsTools = _unitOfWork.PrepaToolsVarietyRepository.GetAll(incloudeProperties: "Preparation").Where(c => c.PreparationsFK == PreparationID).ToList();
 
 
             return View(PrVM);
@@ -117,7 +117,7 @@ namespace Test12.Controllers
                     // Save the new file
                     using (var stream = new FileStream(PreparationPath, FileMode.Create))
                     {
-                       await file.CopyToAsync(stream); // Correctly await the async method
+                        await file.CopyToAsync(stream); // Correctly await the async method
                     }
 
                     PrepaVM.PreparationVM.prepareImage = fileName; // Store only the file name in the database
@@ -256,7 +256,7 @@ namespace Test12.Controllers
                         }
                     }
                 }
-            TempData["success"] = "تم تحديث المكونات بشكل ناجح";
+                TempData["success"] = "تم تحديث المكونات بشكل ناجح";
                 return RedirectToAction("RedirectToComponent", new { PreparationID = PrepaVM.PreparationVM.PreparationsID, brandFk = PrepaVM.PreparationVM.BrandFK });
             }
             return View(PrepaVM);
@@ -264,7 +264,7 @@ namespace Test12.Controllers
 
         //الانتقال الى صفحة الأدوات1 --------------------------------------------------------------
         public IActionResult RedirectToTools(int? PreparationID, int? brandFk)
-         {
+        {
             TempData["BrandFK"] = brandFk;
             TempData["PreparationID"] = PreparationID;
             TempData.Keep("BrandFK");
@@ -403,7 +403,7 @@ namespace Test12.Controllers
         }
 
         [HttpPost] // This is for Add or Update Page.
-        public async Task <IActionResult> Steps(LoginTredMarktViewModel PrepaVM)
+        public async Task<IActionResult> Steps(LoginTredMarktViewModel PrepaVM)
         {
             if (ModelState.IsValid)
             {
@@ -465,7 +465,7 @@ namespace Test12.Controllers
 
                                 using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
                                 {
-                                  await file1ForStep.CopyToAsync(fileStream1);
+                                    await file1ForStep.CopyToAsync(fileStream1);
                                 }
 
                                 newStep.PrepImage = fileNameSteps1; // Update the image path
@@ -505,7 +505,7 @@ namespace Test12.Controllers
 
                                 using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
                                 {
-                                   await file1ForStep.CopyToAsync(fileStream1);
+                                    await file1ForStep.CopyToAsync(fileStream1);
                                 }
                                 Steps.PrepImage = fileNameSteps1;
                             }
@@ -534,7 +534,7 @@ namespace Test12.Controllers
                     }
 
                 }
-            TempData["success"] = "تم تحديث الخطوات بشكل ناجح";
+                TempData["success"] = "تم تحديث الخطوات بشكل ناجح";
                 return RedirectToAction("RedirectToSteps", new { PreparationID = PrepaVM.PreparationVM.PreparationsID, brandFk = PrepaVM.PreparationVM.BrandFK });
             }
             return View(PrepaVM);
@@ -578,7 +578,7 @@ namespace Test12.Controllers
             PrVM.WelcomTredMarketPrecomponent.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
             PrVM.WelcomTredMarketPrecomponent.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
             PrVM.WelcomTredMarketPrecomponent.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == brandFK).ToList();
-            if(PreparationID ==0 || PreparationID == null)
+            if (PreparationID == 0 || PreparationID == null)
             {
                 PrVM.PreparationVM = new Preparations();
             }
@@ -596,7 +596,7 @@ namespace Test12.Controllers
         }
 
         [HttpPost] //This for Add Or Update Page . 
-        public async Task <IActionResult> CreateInformations(PreComViewModel PrepaVM, IFormFile? file, int selectedValue) // should insert name in Upsert view
+        public async Task<IActionResult> CreateInformations(PreComViewModel PrepaVM, IFormFile? file, int selectedValue) // should insert name in Upsert view
         {
             if (ModelState.IsValid)
             {
@@ -633,7 +633,7 @@ namespace Test12.Controllers
 
                         // Combine paths using Path.Combine, ensuring all arguments are strings
                         // Combine paths using Path.Combine, ensuring all arguments are strings
-                        string PreparationDirectory = Path.Combine(wwwRootPath, "IMAGES",  PreparationsID);
+                        string PreparationDirectory = Path.Combine(wwwRootPath, "IMAGES", PreparationsID);
 
                         //اذا المسار مش موجود سو مسار جديد 
                         if (!Directory.Exists(PreparationDirectory))
@@ -648,7 +648,7 @@ namespace Test12.Controllers
                         // Use the correct file path when creating FileStream
                         using (var stream = new FileStream(PreparationPath, FileMode.Create))
                         {
-                           await file.CopyToAsync(stream);
+                            await file.CopyToAsync(stream);
                         }
 
                         setFK.prepareImage = fileName; // Save only the file name in the database
@@ -675,7 +675,7 @@ namespace Test12.Controllers
                     else
                     {
                         var getIdOrder = _unitOfWork.PreparationRepository.Get(u => u.PreparationsID == selectedValue);
-                        int OldOrder = getIdOrder.PreparationsID ; // Default to 0.0f if Order is null
+                        int OldOrder = getIdOrder.PreparationsID; // Default to 0.0f if Order is null
                         double newOrder = OldOrder + 0.1;
                         setFK.PreparationsOrder = newOrder;
                     }
@@ -685,7 +685,7 @@ namespace Test12.Controllers
                     TempData["success"] = "تم إضافة التحضيرات بشكل ناجح";
                 }
             }
-            return RedirectToAction("RedirectToCreateInformations", new { PreparationID =  PrepaVM.PreparationVM.PreparationsID ,brandFK = PrepaVM.tredMaeketVM.BrandID });
+            return RedirectToAction("RedirectToCreateInformations", new { PreparationID = PrepaVM.PreparationVM.PreparationsID, brandFK = PrepaVM.tredMaeketVM.BrandID });
         }
         //---------------------------------------------------------------------------------------------------------------
 
@@ -762,7 +762,7 @@ namespace Test12.Controllers
                 }
                 if (PrepaVM.componontVMList != null && PrepaVM.componontVMList.Any())
                 { // if condition checks whether the PrepaVM.componontVMList is not null and contains at least one item. 
-                    for (int i = 0; i< PrepaVM.componontVMList.Count; i++)
+                    for (int i = 0; i < PrepaVM.componontVMList.Count; i++)
                     {
                         var Components = PrepaVM.componontVMList[i];
                         int lastIdComponents1 = _unitOfWork.ComponentRepository.GetLastComponentId();
@@ -772,7 +772,7 @@ namespace Test12.Controllers
                         if (existingComponent == null)
                         {
                             LastId1Components++;
-                            var componentId = PrepaVM.PreparationVM.PreparationsID; 
+                            var componentId = PrepaVM.PreparationVM.PreparationsID;
 
                             var newComponent = new PreparationIngredients
                             {
@@ -798,7 +798,7 @@ namespace Test12.Controllers
                 }
                 _unitOfWork.Save();
                 TempData["success"] = "تم إضافة المكونات بشكل ناجح";
-                return RedirectToAction("RedirectToCreateComponent", new { PreparationID = PrepaVM.PreparationVM.PreparationsID, brandFK = PrepaVM.tredMaeketVM.BrandID }); 
+                return RedirectToAction("RedirectToCreateComponent", new { PreparationID = PrepaVM.PreparationVM.PreparationsID, brandFK = PrepaVM.tredMaeketVM.BrandID });
             }
             return View(PrepaVM);
         }
@@ -858,7 +858,7 @@ namespace Test12.Controllers
                 int preparationFK = PrepaVM.PreparationVM.PreparationsID;
                 int lastIdTools = _unitOfWork.PrepaToolsVarietyRepository.GetLastToolsId();
                 int LastId1Tools = lastIdTools + 1;
-                if(PrepaVM.ToolsVarityVM != null)
+                if (PrepaVM.ToolsVarityVM != null)
                 {
                     var firstRowToolAdd = new PreparationTools
                     {
@@ -869,7 +869,7 @@ namespace Test12.Controllers
                     _unitOfWork.PrepaToolsVarietyRepository.Add(firstRowToolAdd);
                     _unitOfWork.Save();
                 }
-              
+
                 if (PrepaVM.ToolsVarityVMList != null && PrepaVM.ToolsVarityVMList.Any())
                 {
                     for (int i = 0; i < PrepaVM.ToolsVarityVMList.Count; i++)
@@ -949,7 +949,7 @@ namespace Test12.Controllers
             return View(PrVM);
         }
         [HttpPost] // This is for Add or Update Page.
-        public async Task <IActionResult> CreateSteps(PreComViewModel PrepaVM)
+        public async Task<IActionResult> CreateSteps(PreComViewModel PrepaVM)
         {
             if (ModelState.IsValid)
             {
@@ -1010,7 +1010,7 @@ namespace Test12.Controllers
 
                                 using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
                                 {
-                                   await file1ForStep.CopyToAsync(fileStream1);
+                                    await file1ForStep.CopyToAsync(fileStream1);
                                 }
 
                                 newStep.PrepImage = fileNameSteps1; // Update the image path
@@ -1021,7 +1021,7 @@ namespace Test12.Controllers
                         else
                         {
                             string IDstep = Steps.PrepStepsID.ToString();
-                            int stepsID = PrepaVM.PreparationVM.PreparationsID; 
+                            int stepsID = PrepaVM.PreparationVM.PreparationsID;
                             string preparationVMFk = PrepaVM.PreparationVM.BrandFK.ToString();
 
                             string StepsPath = Path.Combine(wwwRootPath, "IMAGES", IDstep);
@@ -1051,7 +1051,7 @@ namespace Test12.Controllers
 
                                 using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
                                 {
-                                   await file1ForStep.CopyToAsync(fileStream1);
+                                    await file1ForStep.CopyToAsync(fileStream1);
                                 }
                                 Steps.PrepImage = fileNameSteps1;
                             }
@@ -1079,7 +1079,7 @@ namespace Test12.Controllers
                         }
                     }
                 }
-            TempData["success"] = "تم تحديث الخطوات بشكل ناجح";
+                TempData["success"] = "تم تحديث الخطوات بشكل ناجح";
                 return RedirectToAction("RedirectToCreateSteps", new { PreparationID = PrepaVM.PreparationVM.PreparationsID, brandFk = PrepaVM.PreparationVM.BrandFK });
             }
             return View(PrepaVM);
@@ -1287,7 +1287,7 @@ namespace Test12.Controllers
 
                     if (!string.IsNullOrEmpty(delet.PrepImage))
                     {
-                        string imagePath = Path.Combine(_webHostEnvironment.WebRootPath, "IMAGES",  IDStep, delet.PrepImage);
+                        string imagePath = Path.Combine(_webHostEnvironment.WebRootPath, "IMAGES", IDStep, delet.PrepImage);
                         if (System.IO.File.Exists(imagePath))
                         {
                             System.IO.File.Delete(imagePath);
@@ -1300,7 +1300,7 @@ namespace Test12.Controllers
 
             }
             var DeleteoneOflist = _unitOfWork.PreparationRepository.Get(u => u.PreparationsID == id);
-            int PreparaionID = DeleteoneOflist.PreparationsID; 
+            int PreparaionID = DeleteoneOflist.PreparationsID;
             string FKBrandToRedyrect = DeleteoneOflist.BrandFK.ToString();
 
             //عشان أوجهه لصفحة List 
@@ -1315,7 +1315,7 @@ namespace Test12.Controllers
 
             if (!string.IsNullOrEmpty(DeleteoneOflist.prepareImage))
             {
-                string imagePath = Path.Combine(_webHostEnvironment.WebRootPath, "IMAGES",  IDStep2, DeleteoneOflist.prepareImage);
+                string imagePath = Path.Combine(_webHostEnvironment.WebRootPath, "IMAGES", IDStep2, DeleteoneOflist.prepareImage);
                 if (System.IO.File.Exists(imagePath))
                 {
                     System.IO.File.Delete(imagePath);

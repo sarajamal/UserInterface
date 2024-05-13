@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Test12.DataAccess.Data;
+﻿using Test12.DataAccess.Data;
 using Test12.DataAccess.Repository.IRepository;
-using Test12.Models.Models.Device_Tools;
 using Test12.Models.Models.Food;
 
 namespace Test12.DataAccess.Repository

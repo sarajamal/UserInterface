@@ -1,19 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Test12.Models.Models.Preparation
 {
     public class PreparationSteps
     {
         [Key]
-         public int PrepStepsID { get; set; }
-        
+        public int PrepStepsID { get; set; }
+
         public string? PrepText { get; set; }
         public int? PrepStepsNum { get; set; }
 
@@ -24,7 +19,7 @@ namespace Test12.Models.Models.Preparation
         [ForeignKey("PreparationsFK")]
         [ValidateNever]
         public Preparations? Preparation { get; set; }
-  
+
 
     }
 }
