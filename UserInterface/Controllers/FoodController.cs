@@ -18,33 +18,34 @@ namespace Test12.Controllers
             _webHostEnvironment = hostEnvironment;
 
         }
+
+        //=========================GET LIST ===================================================
         public IActionResult RedirectToFoodList(int brandFK)
         {
             TempData["BrandFK"] = brandFK;
             TempData.Keep("BrandFK");
             return RedirectToAction("FoodList");
         }
-
         public IActionResult FoodList() //this for display List Of التحضيرات Page1
         {
             int? brandFK = TempData["BrandFK"] as int?;
             TempData.Keep("BrandFK"); // Keep the TempData for further use
 
-            FoodVM FDVM = new()
+            LoginTredMarktViewModel FDVM = new()
             {
 
-                FoodViewMList = _unitOfWork.FoodRepository.GetAll()
+                FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll()
                 .Where(u => u.BrandFK == brandFK).OrderBy(item => item.FoodStuffsOrder).ToList(),
                 WelcomTredmarketFood = new LoginTredMarktViewModel()
 
             };
             FDVM.WelcomTredmarketFood.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFK);
             FDVM.WelcomTredmarketFood.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == brandFK);
-            FDVM.WelcomTredmarketFood.ProductionLoginVM = _unitOfWork.itemsRepository.Get(u => u.BrandFK == brandFK);
+            FDVM.WelcomTredmarketFood.Productionvm = _unitOfWork.itemsRepository.Get(u => u.BrandFK == brandFK);
             FDVM.WelcomTredmarketFood.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == brandFK);
             FDVM.WelcomTredmarketFood.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == brandFK);
             FDVM.WelcomTredmarketFood.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == brandFK);
-            FDVM.WelcomTredmarketFood.PreparatonLoginVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == brandFK);
+            FDVM.WelcomTredmarketFood.PreparationVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == brandFK);
             FDVM.WelcomTredmarketFood.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
             FDVM.WelcomTredmarketFood.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
             FDVM.WelcomTredmarketFood.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
@@ -57,56 +58,135 @@ namespace Test12.Controllers
             // Display the updated list
             return View(FDVM);
         }
+        #region API CALLS 
+        [HttpGet]
+        public IActionResult GetAll(int? id)
+        {
 
+            IEnumerable<FoodStuffs> objfoodList = _unitOfWork.FoodRepository.GetAll()
+                .Where(u => u.BrandFK == id).OrderBy(item => item.FoodStuffsOrder).ToList();
+
+            return Json(new { data = objfoodList });
+        }
+        #endregion
+        //============================================================================
+
+        //---------------------------------صفحة التعديل -----------------------------
         public IActionResult FoodIndex(int? id)
         {
             TempData.Keep("BrandFK"); // Keep the TempData for further use
 
-            FoodVM FDVM = new()
+            LoginTredMarktViewModel FDVM = new()
             {
-                FoodViewM = new FoodStuffs(),
-                FoodViewMList = new List<FoodStuffs>(),
+                FoodLoginVM = new FoodStuffs(),
+                FoodLoginVMlist = new List<FoodStuffs>(),
                 tredMaeketFoodsVM = new Brands(),
 
             };
 
             FDVM.tredMaeketFoodsVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
-            FDVM.FoodViewM = _unitOfWork.FoodRepository.Get(u => u.FoodStuffsID == id);
-            FDVM.FoodViewMList = _unitOfWork.FoodRepository.GetAll(incloudeProperties: "Brand").Where(u => u.FoodStuffsID == id).ToList(); //هو يحتوي على قائمة من جدول المكونات واللي يساعده على العرض هي view
+            FDVM.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.FoodStuffsID == id);
+            FDVM.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll(incloudeProperties: "Brand").Where(u => u.FoodStuffsID == id).ToList(); //هو يحتوي على قائمة من جدول المكونات واللي يساعده على العرض هي view
 
             return View(FDVM);
         }
+        [HttpPost]
+        public async Task<IActionResult> FoodIndex(LoginTredMarktViewModel foodViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                if (foodViewModel.FoodLoginVMlist != null)
+                {
+                    for (int i = 0; i < foodViewModel.FoodLoginVMlist.Count; i++)
+                    {
+                        var foods = foodViewModel.FoodLoginVMlist[i];
 
+                        string FoodStuffsID = foods.FoodStuffsID.ToString();
+                        string BrandFK = foods.BrandFK.ToString();
+
+                        string wwwRootPathSteps = _webHostEnvironment.WebRootPath; // get the root folder
+                        var FoodPath = Path.Combine(wwwRootPathSteps, "IMAGES", FoodStuffsID);
+
+
+                        var file1Name = $"file1_{foods.FoodStuffsID}";
+                        var file1Forfoods = HttpContext.Request.Form.Files[file1Name];
+
+                        if (file1Forfoods != null)
+                        {
+                            if (!string.IsNullOrEmpty(foods.FoodStuffsImage)) // Check if there's an existing image path
+                            {
+                                var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", FoodStuffsID, foods.FoodStuffsImage);
+
+                                if (System.IO.File.Exists(OldImagePath1))
+                                {
+                                    System.IO.File.Delete(OldImagePath1); // Delete old image if it exists
+                                }
+                            }
+                            string fileNamefood1 = Guid.NewGuid().ToString() + Path.GetExtension(file1Forfoods.FileName);
+
+                            //اذا المسار مش موجود سو مسار جديد 
+                            if (!Directory.Exists(FoodPath))
+                            {
+                                Directory.CreateDirectory(FoodPath);
+                            }
+
+                            using (var fileStream1 = new FileStream(Path.Combine(FoodPath, fileNamefood1), FileMode.Create))
+                            {
+                                await file1Forfoods.CopyToAsync(fileStream1);
+                            }
+                            foods.FoodStuffsImage = fileNamefood1; // Update the image path
+                        }
+                        var existingFoods = _unitOfWork.FoodRepository.Get(u => u.FoodStuffsID == foods.FoodStuffsID);
+                        if (existingFoods != null)
+                        {
+
+                            existingFoods.FoodStuffsName = foods.FoodStuffsName;
+                            existingFoods.FoodStuffsImage = foods.FoodStuffsImage;
+
+                            _unitOfWork.FoodRepository.Update(existingFoods);
+                        }
+                        else
+                        {
+                            _unitOfWork.FoodRepository.Add(foods);
+                        }
+                        _unitOfWork.Save();
+                    }
+                }
+            }
+            TempData["success"] = "تم تحديث المواد الغذائية بشكل ناجح";
+            return RedirectToAction("RedirectToFoodList", new { brandFK = foodViewModel.FoodLoginVM.BrandFK });
+        }
+        //============================================================================
+
+        //------------------------------صفحة الإضافة-----------------------------------
         public IActionResult CreateFood(int? id)
         {
-            FoodVM FooVM = new()
+            LoginTredMarktViewModel FooVM = new()
             {
-                FoodViewM = new FoodStuffs(),
-                FoodViewMList = new List<FoodStuffs>(),
+                FoodLoginVM = new FoodStuffs(),
+                FoodLoginVMlist = new List<FoodStuffs>(),
+                FoodsLoginVMorder = new List<FoodStuffs>(),
                 tredMaeketFoodsVM = new Brands(),
 
             };
 
             FooVM.tredMaeketFoodsVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
-            FooVM.FoodsVMorder = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == id);
-            FooVM.FoodViewM = new FoodStuffs();
-            FooVM.FoodViewMList = new List<FoodStuffs>();
+            FooVM.FoodsLoginVMorder = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == id);
+            FooVM.FoodLoginVM = new FoodStuffs();
+            FooVM.FoodLoginVMlist = new List<FoodStuffs>();
 
             return View(FooVM);
         }
-
-
         [HttpPost]
-        public async Task<IActionResult> CreateFood(FoodVM FoodsVM, int selectFoodvalue)
+        public async Task<IActionResult> CreateFood(LoginTredMarktViewModel FoodsVM, int selectFoodvalue)
         {
-
             if (ModelState.IsValid)
             {
                 int foodFK = FoodsVM.tredMaeketFoodsVM.BrandID;
-                if (FoodsVM.FoodViewM.FoodStuffsID == 0)
+                if (FoodsVM.FoodLoginVM.FoodStuffsID == 0)
                 {
 
-                    foreach (var foodAdd in FoodsVM.FoodViewMList)
+                    foreach (var foodAdd in FoodsVM.FoodLoginVMlist)
                     {
                         int lastId = _unitOfWork.FoodRepository.GetLastStepId();
                         int LastId1 = lastId + 1;
@@ -130,12 +210,9 @@ namespace Test12.Controllers
 
                             string FoodStuffsID = newfoods.FoodStuffsID.ToString();
                             string BrandFK = newfoods.BrandFK.ToString();
-
-
                             var FoodPath1 = Path.Combine(wwwRootFoodPath, "IMAGES", FoodStuffsID);
 
-
-                            if (file1ForFood1 != null && file1ForFood1.Length > 0)
+                           if (file1ForFood1 != null && file1ForFood1.Length > 0)
                             {
                                 string fileName11 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForFood1.FileName);
 
@@ -187,83 +264,7 @@ namespace Test12.Controllers
             TempData["success"] = "تم إضافة المواد الغذائية بشكل ناجح";
             return RedirectToAction("RedirectToFoodList", new { brandFK = FoodsVM.tredMaeketFoodsVM.BrandID });
         }
-
-
-
-        [HttpPost]
-        public async Task<IActionResult> FoodIndex(FoodVM foodViewModel)
-        {
-
-            if (ModelState.IsValid)
-            {
-                if (foodViewModel.FoodViewMList != null)
-                {
-                    for (int i = 0; i < foodViewModel.FoodViewMList.Count; i++)
-                    {
-                        var foods = foodViewModel.FoodViewMList[i];
-
-                        string FoodStuffsID = foods.FoodStuffsID.ToString();
-                        string BrandFK = foods.BrandFK.ToString();
-
-                        string wwwRootPathSteps = _webHostEnvironment.WebRootPath; // get the root folder
-                        var FoodPath = Path.Combine(wwwRootPathSteps, "IMAGES", FoodStuffsID);
-
-
-                        var file1Name = $"file1_{foods.FoodStuffsID}";
-                        var file1Forfoods = HttpContext.Request.Form.Files[file1Name];
-
-                        if (file1Forfoods != null)
-                        {
-                            if (!string.IsNullOrEmpty(foods.FoodStuffsImage)) // Check if there's an existing image path
-                            {
-                                var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", FoodStuffsID, foods.FoodStuffsImage);
-
-                                if (System.IO.File.Exists(OldImagePath1))
-                                {
-                                    System.IO.File.Delete(OldImagePath1); // Delete old image if it exists
-                                }
-                            }
-
-                            string fileNamefood1 = Guid.NewGuid().ToString() + Path.GetExtension(file1Forfoods.FileName);
-
-                            //اذا المسار مش موجود سو مسار جديد 
-                            if (!Directory.Exists(FoodPath))
-                            {
-                                Directory.CreateDirectory(FoodPath);
-                            }
-
-                            using (var fileStream1 = new FileStream(Path.Combine(FoodPath, fileNamefood1), FileMode.Create))
-                            {
-                                await file1Forfoods.CopyToAsync(fileStream1);
-                            }
-                            foods.FoodStuffsImage = fileNamefood1; // Update the image path
-                        }
-
-                        var existingFoods = _unitOfWork.FoodRepository.Get(u => u.FoodStuffsID == foods.FoodStuffsID);
-
-                        if (existingFoods != null)
-                        {
-
-                            existingFoods.FoodStuffsName = foods.FoodStuffsName;
-
-                            existingFoods.FoodStuffsImage = foods.FoodStuffsImage;
-
-                            _unitOfWork.FoodRepository.Update(existingFoods);
-                        }
-                        else
-                        {
-                            _unitOfWork.FoodRepository.Add(foods);
-                        }
-                        _unitOfWork.Save();
-                    }
-                }
-            }
-            TempData["success"] = "تم تحديث المواد الغذائية بشكل ناجح";
-
-            return RedirectToAction("RedirectToFoodList", new { brandFK = foodViewModel.FoodViewM.BrandFK });
-        }
-
-
+        //============================================================================
 
         //زر الحذف في صفحة قائمة  المواد الغذائية 
         #region
@@ -294,20 +295,7 @@ namespace Test12.Controllers
         }
         #endregion
 
-
-        // تبع List 
-        #region API CALLS 
-        [HttpGet]
-        public IActionResult GetAll(int? id)
-        {
-
-            IEnumerable<FoodStuffs> objfoodList = _unitOfWork.FoodRepository.GetAll()
-                .Where(u => u.BrandFK == id).OrderBy(item => item.FoodStuffsOrder).ToList();
-
-            return Json(new { data = objfoodList });
-        }
-        #endregion
-
+        //-------------------GET LAST ID----------------------------------------------
         [HttpGet]
         public IActionResult GetLastId()
         {

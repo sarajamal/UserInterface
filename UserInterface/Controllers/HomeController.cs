@@ -176,11 +176,15 @@ namespace Test12.Controllers
 
         private void RecordUserActivity(int userId)
         {
-            // Store the current date/time as the user's last login time in the database
-            _unitOfWork.loginRepository.UpdateLastLoginTime(userId, DateTime.Now);
+            // Specify the Saudi Arabia Standard Time Zone
+            TimeZoneInfo saudiTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Arabian Standard Time");
+            DateTime saudiTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, saudiTimeZone);
 
-            // Store the current date/time as the user's last activity in the session
-            HttpContext.Session.SetString($"LastActivity_{userId}", DateTime.Now.ToString());
+            // Update the last login time with Saudi Arabia time
+            _unitOfWork.loginRepository.UpdateLastLoginTime(userId, saudiTime);
+
+            // Update the session with Saudi Arabia time
+            HttpContext.Session.SetString($"LastActivity_{userId}", saudiTime.ToString());
         }
 
         // Pass the authenticated flag to UserInformation action
@@ -293,8 +297,8 @@ namespace Test12.Controllers
             {
 
                 TredMarktVM = new Brands(),
-                PreparatonLoginVM = new Preparations(),
-                ProductionLoginVM = new Production(),
+                PreparationVM = new Preparations(),
+                Productionvm = new Production(),
                 FoodLoginVM = new FoodStuffs(),
                 CleanLoginVM = new Cleaning(),
                 DeviceToolsLoginVM = new DevicesAndTools(),
@@ -310,11 +314,11 @@ namespace Test12.Controllers
             LoMarket.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
             LoMarket.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == id);
             LoMarket.LoginVM = _unitOfWork.loginRepository.Get(u => u.BrandFK == id);
-            LoMarket.ProductionLoginVM = _unitOfWork.itemsRepository.Get(u => u.BrandFK == id);
+            LoMarket.Productionvm = _unitOfWork.itemsRepository.Get(u => u.BrandFK == id);
             LoMarket.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == id);
             LoMarket.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == id);
             LoMarket.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == id);
-            LoMarket.PreparatonLoginVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == id);
+            LoMarket.PreparationVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == id);
             LoMarket.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == id).ToList();
             LoMarket.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == id).ToList();
             LoMarket.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == id).ToList();

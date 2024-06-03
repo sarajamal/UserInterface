@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Test12.DataAccess.Repository;
 using Test12.DataAccess.Repository.IRepository;
 using Test12.Models.Models.Clean;
+using Test12.Models.Models.Preparation;
 using Test12.Models.Models.trade_mark;
 using Test12.Models.ViewModel;
 
@@ -45,11 +48,11 @@ namespace Test12.Controllers
 
             CLVM.WelcomTredMarketClean.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFK);
             CLVM.WelcomTredMarketClean.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == brandFK);
-            CLVM.WelcomTredMarketClean.ProductionLoginVM = _unitOfWork.itemsRepository.Get(u => u.BrandFK == brandFK);
+            CLVM.WelcomTredMarketClean.Productionvm = _unitOfWork.itemsRepository.Get(u => u.BrandFK == brandFK);
             CLVM.WelcomTredMarketClean.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == brandFK);
             CLVM.WelcomTredMarketClean.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == brandFK);
             CLVM.WelcomTredMarketClean.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == brandFK);
-            CLVM.WelcomTredMarketClean.PreparatonLoginVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == brandFK);
+            CLVM.WelcomTredMarketClean.PreparationVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == brandFK);
             CLVM.WelcomTredMarketClean.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
             CLVM.WelcomTredMarketClean.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
             CLVM.WelcomTredMarketClean.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
@@ -153,25 +156,26 @@ namespace Test12.Controllers
             //return Json(new { success = true, redirectToUrl = Url.Action("RedirectToCleanList", new { BrandFK = FKBrandToRedyrect1 }) }); //أحتاج يرجع لنفس صفحة التعديل 
         }
         #endregion
-
-        public IActionResult RedirectToUpsert3(int? id, int? brandFk)
+        //---------------------------------صفحة إضافة المعلومات -----------------------------------------------//
+        public IActionResult RedirectToCreateClean(int? CleanID, int? brandFk)
         {
             TempData["BrandFK"] = brandFk;
-            TempData["ID"] = id;
+            TempData["ID"] = CleanID;
             TempData.Keep("BrandFK");
-            return RedirectToAction("Upsert3");
+            return RedirectToAction("CreateCleanInformation");
         }
 
         //صفحة التعديل   
-        public IActionResult Upsert3() // After Enter تعديل Display التحضيرات والمكونات...
+        public IActionResult CreateCleanInformation() // After Enter تعديل Display التحضيرات والمكونات...
         {
             int? brandFk = TempData["BrandFK"] as int?;
-            int? id = TempData["ID"] as int?;
+            int? CleanID = TempData["ID"] as int?;
             CleanVM CLVM = new()
             {
                 CleanViewModel = new Cleaning(),
                 CleanList = new List<Cleaning>(),
-                CleaningSteps = new List<CleaningSteps>(),
+                CleaningVMorder = new List<Cleaning>(),
+                CleaningStepsList = new List<CleaningSteps>(),
                 tredMaeketCleanVM = new Brands(),
                 WelcomTredMarketClean = new LoginTredMarktViewModel()
 
@@ -179,11 +183,11 @@ namespace Test12.Controllers
 
             CLVM.WelcomTredMarketClean.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFk);
             CLVM.WelcomTredMarketClean.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == brandFk);
-            CLVM.WelcomTredMarketClean.ProductionLoginVM = _unitOfWork.itemsRepository.Get(u => u.BrandFK == brandFk);
+            CLVM.WelcomTredMarketClean.Productionvm = _unitOfWork.itemsRepository.Get(u => u.BrandFK == brandFk);
             CLVM.WelcomTredMarketClean.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == brandFk);
             CLVM.WelcomTredMarketClean.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == brandFk);
             CLVM.WelcomTredMarketClean.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == brandFk);
-            CLVM.WelcomTredMarketClean.PreparatonLoginVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == brandFk);
+            CLVM.WelcomTredMarketClean.PreparationVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == brandFk);
             CLVM.WelcomTredMarketClean.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
             CLVM.WelcomTredMarketClean.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
             CLVM.WelcomTredMarketClean.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
@@ -191,75 +195,30 @@ namespace Test12.Controllers
             CLVM.WelcomTredMarketClean.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
             CLVM.WelcomTredMarketClean.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
             CLVM.WelcomTredMarketClean.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == brandFk).ToList();
-
-            CLVM.CleanList = _unitOfWork.CleanRepository.GetAll().Where(c => c.CleaningID == id).ToList();
-            CLVM.tredMaeketCleanVM = _unitOfWork.TredMarketRepository.Get(c => c.BrandID == id);
-            CLVM.CleanViewModel = _unitOfWork.CleanRepository.Get(c => c.CleaningID == id);
-            CLVM.CleaningSteps = _unitOfWork.StepsCleanRepository3.GetAll().Where(c => c.CleaningFK == id).ToList();
-
-            return View(CLVM);
-        }
-
-        public IActionResult RedirectToCreateClean(int brandFk)
-        {
-            TempData["BrandFK"] = brandFk;
-            TempData.Keep("BrandFK");
-            return RedirectToAction("CreateClean");
-        }
-
-        //صفحة الاضافة
-        public IActionResult CreateClean() // After Enter تعديل Display التحضيرات والمكونات...
-        {
-            int? brandFK = TempData["BrandFK"] as int?;
-            TempData.Keep("BrandFK"); // Keep the TempData for further use
-            CleanVM CLVM = new()
+            CLVM.CleanList = _unitOfWork.CleanRepository.GetAll().Where(c => c.BrandFK == brandFk).ToList();
+            CLVM.CleaningVMorder = _unitOfWork.CleanRepository.GetAll().Where(c => c.BrandFK == brandFk).ToList();
+            CLVM.tredMaeketCleanVM = _unitOfWork.TredMarketRepository.Get(c => c.BrandID == brandFk);
+            CLVM.CleaningStepsList = _unitOfWork.StepsCleanRepository3.GetAll().Where(c => c.CleaningFK == CleanID).ToList();
+            if (CleanID == 0 || CleanID == null)
             {
-                CleanViewModel = new Cleaning(),
-                CleaningVMorder = new List<Cleaning>(),
-                CleaningSteps = new List<CleaningSteps>(),
-                tredMaeketCleanVM = new Brands(),
-                WelcomTredMarketClean = new LoginTredMarktViewModel()
+                CLVM.CleanViewModel = new Cleaning();
+            }
+            else
+            {
+                CLVM.CleanViewModel = _unitOfWork.CleanRepository.Get(c => c.CleaningID == CleanID);
 
-            };
-
-            CLVM.WelcomTredMarketClean.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFK);
-            CLVM.WelcomTredMarketClean.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == brandFK);
-            CLVM.WelcomTredMarketClean.ProductionLoginVM = _unitOfWork.itemsRepository.Get(u => u.BrandFK == brandFK);
-            CLVM.WelcomTredMarketClean.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == brandFK);
-            CLVM.WelcomTredMarketClean.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == brandFK);
-            CLVM.WelcomTredMarketClean.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == brandFK);
-            CLVM.WelcomTredMarketClean.PreparatonLoginVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == brandFK);
-            CLVM.WelcomTredMarketClean.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
-            CLVM.WelcomTredMarketClean.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
-            CLVM.WelcomTredMarketClean.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
-            CLVM.WelcomTredMarketClean.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
-            CLVM.WelcomTredMarketClean.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
-            CLVM.WelcomTredMarketClean.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
-            CLVM.WelcomTredMarketClean.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == brandFK).ToList();
-
-            CLVM.CleanList = _unitOfWork.CleanRepository.GetAll().Where(c => c.CleaningID == brandFK).ToList();
-            CLVM.tredMaeketCleanVM = _unitOfWork.TredMarketRepository.Get(c => c.BrandID == brandFK);
-            CLVM.CleanViewModel = _unitOfWork.CleanRepository.Get(c => c.CleaningID == brandFK);
-            CLVM.CleaningSteps = _unitOfWork.StepsCleanRepository3.GetAll().Where(c => c.CleaningFK == brandFK).ToList();
-
-            CLVM.CleaningVMorder = _unitOfWork.CleanRepository.GetAll().Where(c => c.BrandFK == brandFK).ToList();
-            CLVM.tredMaeketCleanVM = _unitOfWork.TredMarketRepository.Get(c => c.BrandID == brandFK);
-            CLVM.CleanViewModel = new Cleaning();
-            CLVM.CleaningSteps = new List<CleaningSteps>();
-
+            }
             return View(CLVM);
         }
 
-        //POST صفحة الاضافة 
+         //POST صفحة الاضافة 
         [HttpPost]
-        public async Task<IActionResult> CreateClean(CleanVM clean, int selectCleaning) // After Enter تعديل Display التحضيرات والمكونات...
+        public IActionResult CreateCleanInformation(CleanVM clean, int selectCleaning) // After Enter تعديل Display التحضيرات والمكونات...
         {
 
             if (ModelState.IsValid)
             {
-
                 var FK = clean.tredMaeketCleanVM.BrandID;
-
                 if (clean.CleanViewModel.CleaningID == 0)  // if Add 
                 {
 
@@ -272,61 +231,9 @@ namespace Test12.Controllers
                     };
                     _unitOfWork.CleanRepository.Add(setFK);
                     _unitOfWork.Save();
-                    int FKClean = setFK.CleaningID;
 
-                    //الخطوات
-
-                    if (clean.CleaningSteps != null)
-                    {
-                        foreach (var stepAdd in clean.CleaningSteps)
-                        {
-
-                            if (stepAdd != null && stepAdd.CleaStepsID == 0)
-                            {
-                                string wwwRootstepPath = _webHostEnvironment.WebRootPath; // get us root folder
-
-
-                                int CleaningFK = FKClean;
-                                int LastId = _unitOfWork.CleanRepository.GetLastStepId();
-                                int LastId1 = LastId + 1;
-                                var newStep = new CleaningSteps
-                                {
-                                    CleaStepsID = LastId1,
-                                    CleaningFK = CleaningFK,
-                                    CleaText = stepAdd.CleaText,
-                                    CleaStepsNum = stepAdd.CleaStepsNum
-
-                                };
-
-                                var file1Name1 = $"file1_{newStep.CleaStepsID}";
-                                var file1ForStep1 = HttpContext.Request.Form.Files[file1Name1];
-
-                                string BrandVMFk = setFK.BrandFK.ToString();
-                                string CleanStepsID1 = newStep.CleaStepsID.ToString();
-
-                                string stepPath = Path.Combine(wwwRootstepPath, "IMAGES", CleanStepsID1);
-
-                                if (file1ForStep1 != null && file1ForStep1.Length > 0)
-                                {
-                                    string fileName11 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep1.FileName);
-
-                                    if (!Directory.Exists(stepPath))
-                                    {
-                                        Directory.CreateDirectory(stepPath);
-                                    }
-
-                                    using (var fileStream = new FileStream(Path.Combine(stepPath, fileName11), FileMode.Create)) //save images
-                                    {
-                                        await file1ForStep1.CopyToAsync(fileStream);
-                                    }
-                                    //newStep.CleaStepsImage = fileName11;
-                                }
-                                _unitOfWork.StepsCleanRepository3.Add(newStep);
-                                _unitOfWork.Save();
-                            }
-                        }
-                    }
-
+                     clean.CleanViewModel.CleaningID = setFK.CleaningID;
+                    
                     //// reOrder2 
                     if (selectCleaning == 0)
                     {
@@ -355,130 +262,134 @@ namespace Test12.Controllers
                     _unitOfWork.Save();
                     TempData["success"] = "تم إضافة التنظيف بشكل ناجح";
                 }
-
-
-                //if (ModelState.IsValid)
-                //{
-
-                //    var FK = clean.tredMaeketCleanVM.BrandID;
-
-                //    if (clean.CleanViewModel.CleaningID == 0)  // if Add 
-                //    {
-
-                //        var setFK = new Cleaning
-                //        {
-                //            BrandFK = FK,
-                //            DeviceName = clean.CleanViewModel.DeviceName,
-                //            Note = clean.CleanViewModel.Note,
-
-                //        };
-                //        _unitOfWork.CleanRepository.Add(setFK);
-                //        _unitOfWork.Save();
-                //        int FKClean = setFK.CleaningID;
-
-                //        //الخطوات
-
-                //        if (clean.CleaningSteps != null)
-                //        {
-                //            foreach (var stepAdd in clean.CleaningSteps)
-                //            {
-
-                //                if (stepAdd != null && stepAdd.CleaStepsID == 0)
-                //                {
-                //                    string wwwRootstepPath = _webHostEnvironment.WebRootPath; // get us root folder
-
-
-                //                    int CleaningFK = FKClean;
-                //                    int LastId = _unitOfWork.CleanRepository.GetLastStepId();
-                //                    int LastId1 = LastId + 1;
-                //                    var newStep = new CleaningSteps
-                //                    {
-                //                        CleaStepsID = LastId1,
-                //                        CleaningFK = CleaningFK,
-                //                        CleaText = stepAdd.CleaText,
-                //                        CleaStepsNum = stepAdd.CleaStepsNum
-
-                //                    };
-
-                //                    var file1Name1 = $"file1_{newStep.CleaStepsID}";
-                //                    var file1ForStep1 = HttpContext.Request.Form.Files[file1Name1];
-
-                //                    string BrandVMFk = setFK.BrandFK.ToString();
-                //                    string CleanStepsID1 = newStep.CleaStepsID.ToString();
-
-                //                    string stepPath = Path.Combine(wwwRootstepPath, "IMAGES", BrandVMFk, "Cleaning", CleanStepsID1);
-
-                //                    if (file1ForStep1 != null && file1ForStep1.Length > 0)
-                //                    {
-                //                        string fileName11 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep1.FileName);
-
-                //                        if (!Directory.Exists(stepPath))
-                //                        {
-                //                            Directory.CreateDirectory(stepPath);
-                //                        }
-
-                //                        using (var fileStream = new FileStream(Path.Combine(stepPath, fileName11), FileMode.Create)) //save images
-                //                        {
-                //                            file1ForStep1.CopyTo(fileStream);
-                //                        }
-                //                        newStep.CleaStepsImage = fileName11;
-                //                    }
-                //                    _unitOfWork.StepsCleanRepository3.Add(newStep);
-                //                    _unitOfWork.Save();
-                //                }
-                //            }
-                //        }
-
-                //        //// reOrder2 
-                //        if (selectCleaning == 0)
-                //        {
-                //            // Get the maximum order value in the existing list
-                //            double maxOrder = _unitOfWork.CleanRepository.GetAll()
-                //                .Max(item => item.CleaningOrder) ?? 0.0f; // Default to 0.0f if there are no existing items
-
-                //            // Round down the maxOrder value to the nearest integer
-                //            int maxOrderAsInt = (int)Math.Floor(maxOrder);
-
-                //            // Set the new order value for the "اخرى" (Other) item
-                //            double newOrder = maxOrderAsInt + 1.0f;
-                //            setFK.CleaningOrder = newOrder;
-                //        }
-                //        else
-                //        {
-                //            var getIdOrder = _unitOfWork.CleanRepository.Get(u => u.CleaningID == selectCleaning);
-                //            double OldOrder = getIdOrder.CleaningOrder ?? 0.0f; // Default to 0.0f if Order is null
-                //            double newOrder = OldOrder + 0.1f;
-                //            setFK.CleaningOrder = newOrder;
-                //        }
-
-                //        List<Cleaning> objCleanList = _unitOfWork.CleanRepository.GetAll().OrderBy(item => item.CleaningOrder).ToList();
-                //        _unitOfWork.Save();
-                //        TempData["success"] = "تم إضافة التنظيف بشكل ناجح";
-                //    }
-
-
-
             }
-            return RedirectToAction("RedirectToCleanList", new { brandFK = clean.tredMaeketCleanVM.BrandID });
+            return RedirectToAction("RedirectToCreateClean", new { CleanID = clean.CleanViewModel.CleaningID, brandFK = clean.tredMaeketCleanVM.BrandID });
+        }
+//------------------------------- صفخة التعديل المعلومات -----------------------------------------------------------//
+        public IActionResult RedirectToClean(int? CleanID , int? brandFk)
+        {
+            TempData["BrandFK"] = brandFk;
+            TempData["ID"] = CleanID;
+            TempData.Keep("BrandFK");
+            return RedirectToAction("CleanInformation");
+        }
+        public IActionResult CleanInformation() // After Enter تعديل Display التحضيرات والمكونات...
+        {
+            int? brandFK = TempData["BrandFK"] as int?;
+            int? CleanID = TempData["ID"] as int?;
+            TempData.Keep("BrandFK"); // Keep the TempData for further use
+            CleanVM CLVM = new()
+            {
+                CleanViewModel = new Cleaning(),
+                CleaningVMorder = new List<Cleaning>(),
+                CleaningStepsList = new List<CleaningSteps>(),
+                tredMaeketCleanVM = new Brands(),
+                WelcomTredMarketClean = new LoginTredMarktViewModel()
+
+            };
+
+            CLVM.WelcomTredMarketClean.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFK);
+            CLVM.WelcomTredMarketClean.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == brandFK);
+            CLVM.WelcomTredMarketClean.Productionvm = _unitOfWork.itemsRepository.Get(u => u.BrandFK == brandFK);
+            CLVM.WelcomTredMarketClean.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == brandFK);
+            CLVM.WelcomTredMarketClean.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == brandFK);
+            CLVM.WelcomTredMarketClean.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == brandFK);
+            CLVM.WelcomTredMarketClean.PreparationVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == brandFK);
+            CLVM.WelcomTredMarketClean.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            CLVM.WelcomTredMarketClean.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            CLVM.WelcomTredMarketClean.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            CLVM.WelcomTredMarketClean.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            CLVM.WelcomTredMarketClean.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            CLVM.WelcomTredMarketClean.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            CLVM.WelcomTredMarketClean.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == brandFK).ToList();
+
+            CLVM.CleanList = _unitOfWork.CleanRepository.GetAll().Where(c => c.CleaningID == CleanID).ToList();
+            CLVM.tredMaeketCleanVM = _unitOfWork.TredMarketRepository.Get(c => c.BrandID == brandFK);
+            CLVM.CleanViewModel = _unitOfWork.CleanRepository.Get(c => c.CleaningID == CleanID);
+            CLVM.CleaningStepsList = _unitOfWork.StepsCleanRepository3.GetAll().Where(c => c.CleaningFK == CleanID).ToList();
+            CLVM.CleaningVMorder = _unitOfWork.CleanRepository.GetAll().Where(c => c.BrandFK == CleanID).ToList();
+      
+            return View(CLVM);
         }
 
-        //[HttpPost] //This for Add Or Update Page . 
-        public async Task<IActionResult> Upsert3(CleanVM cleanVM) // should insert name in Upsert view
+        [HttpPost] //This for Add Or Update Page . 
+        public IActionResult CleanInformation(CleanVM cleanVM) // should insert name in Upsert view
         {
             if (ModelState.IsValid)
             {
-                //for update .. 
+                 //for update .. 
                 int stepsID = cleanVM.CleanViewModel.CleaningID;
 
                 _unitOfWork.CleanRepository.Update(cleanVM.CleanViewModel);
                 _unitOfWork.Save();
 
-                //الخطوات
-                if (cleanVM.CleaningSteps != null)
+              
+                TempData["success"] = "تم تحديث التنظيف بشكل ناجح";
+
+                return RedirectToAction("RedirectToClean", new { CleanID = cleanVM.CleanViewModel.CleaningID, brandFK = cleanVM.CleanViewModel.BrandFK });
+            }
+
+            else
+            {
+                return View(cleanVM);
+            }
+        }
+
+        // --------------------------------------صفحة إضافة الخطوات ------------------------------------------------
+        public IActionResult RedirectToCreateCleanSteps(int? CleanID, int? brandFk)
+        {
+            TempData["BrandFK"] = brandFk;
+            TempData["ID"] = CleanID;
+            TempData.Keep("BrandFK");
+            return RedirectToAction("CreateCleanStep");
+        }
+        public IActionResult CreateCleanStep() // After Enter تعديل Display التحضيرات والمكونات...
+        {
+            int? brandFk = TempData["BrandFK"] as int?;
+            int? CleanID = TempData["ID"] as int?;
+            CleanVM CLVM = new()
+            {
+                CleanViewModel = new Cleaning(),
+                CleanList = new List<Cleaning>(),
+                CleaningStepsList = new List<CleaningSteps>(),
+                tredMaeketCleanVM = new Brands(),
+                WelcomTredMarketClean = new LoginTredMarktViewModel()
+
+            };
+
+            CLVM.WelcomTredMarketClean.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFk);
+            CLVM.WelcomTredMarketClean.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == brandFk);
+            CLVM.WelcomTredMarketClean.Productionvm = _unitOfWork.itemsRepository.Get(u => u.BrandFK == brandFk);
+            CLVM.WelcomTredMarketClean.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == brandFk);
+            CLVM.WelcomTredMarketClean.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == brandFk);
+            CLVM.WelcomTredMarketClean.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == brandFk);
+            CLVM.WelcomTredMarketClean.PreparationVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == brandFk);
+            CLVM.WelcomTredMarketClean.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            CLVM.WelcomTredMarketClean.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            CLVM.WelcomTredMarketClean.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            CLVM.WelcomTredMarketClean.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            CLVM.WelcomTredMarketClean.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            CLVM.WelcomTredMarketClean.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == brandFk).ToList();
+            CLVM.WelcomTredMarketClean.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == brandFk).ToList();
+            CLVM.CleanList = _unitOfWork.CleanRepository.GetAll().Where(c => c.CleaningID == CleanID).ToList();
+            CLVM.tredMaeketCleanVM = _unitOfWork.TredMarketRepository.Get(c => c.BrandID == brandFk);
+            CLVM.CleanViewModel = _unitOfWork.CleanRepository.Get(c => c.CleaningID == CleanID);
+            CLVM.CleaningStepsList = _unitOfWork.StepsCleanRepository3.GetAll().Where(c => c.CleaningFK == CleanID).ToList();
+
+            return View(CLVM);
+        }
+
+        [HttpPost] 
+        public async Task<IActionResult> CreateCleanStep(CleanVM cleanVM) // should insert name in Upsert view
+        {
+            if (ModelState.IsValid)
+            {
+                int stepsID = cleanVM.CleanViewModel.CleaningID; 
+                if (cleanVM.CleaningStepsList != null)
                 {
-                    for (int i = 0; i < cleanVM.CleaningSteps.Count; i++)
+                    for (int i = 0; i < cleanVM.CleaningStepsList.Count; i++)
                     {
-                        var Steps = cleanVM.CleaningSteps[i];
+                        var Steps = cleanVM.CleaningStepsList[i];
 
                         string wwwRootPathSteps = _webHostEnvironment.WebRootPath;
                         int LastId = _unitOfWork.CleanRepository.GetLastStepId();
@@ -532,11 +443,9 @@ namespace Test12.Controllers
                                 _unitOfWork.Save();
 
                             }
-
                         }
                         else
                         {
-
                             string IDstep = Steps.CleaStepsID.ToString();
                             string CleanVMFk = cleanVM.CleanViewModel.BrandFK.ToString();
 
@@ -579,7 +488,6 @@ namespace Test12.Controllers
 
                                 if (existingSteps != null)
                                 {
-
                                     existingSteps.CleaStepsImage = Steps.CleaStepsImage;
                                     existingSteps.CleaText = Steps.CleaText;
                                     existingSteps.CleaStepsNum = Steps.CleaStepsNum;
@@ -596,11 +504,189 @@ namespace Test12.Controllers
                         }
                     }
                 }
-                TempData["success"] = "تم تحديث التنظيف بشكل ناجح";
-
-                return RedirectToAction("RedirectToCleanList", new { brandFK = cleanVM.CleanViewModel.BrandFK });
+                TempData["success"] = "تم إضافة التنظيف بشكل ناجح";
+                return RedirectToAction("RedirectToCreateCleanSteps", new { CleanID = cleanVM.CleanViewModel.CleaningID, brandFK = cleanVM.CleanViewModel.BrandFK });
             }
+            else
+            {
+                return View(cleanVM);
+            }
+        }
 
+        //---------------------------------------------صفحة تعديل الخطوات----------------------------------------------------
+        public IActionResult RedirectToCleanStep(int? CleanID, int? brandFk)
+        {
+            TempData["BrandFK"] = brandFk;
+            TempData["ID"] = CleanID;
+            TempData.Keep("BrandFK");
+            return RedirectToAction("CleanStep");
+        }
+        public IActionResult CleanStep() // After Enter تعديل Display التحضيرات والمكونات...
+        {
+            int? brandFK = TempData["BrandFK"] as int?;
+            int? CleanID = TempData["ID"] as int?;
+            TempData.Keep("BrandFK"); // Keep the TempData for further use
+            CleanVM CLVM = new()
+            {
+                CleanViewModel = new Cleaning(),
+                CleaningVMorder = new List<Cleaning>(),
+                CleaningStepsList = new List<CleaningSteps>(),
+                tredMaeketCleanVM = new Brands(),
+                WelcomTredMarketClean = new LoginTredMarktViewModel()
+
+            };
+            CLVM.WelcomTredMarketClean.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFK);
+            CLVM.WelcomTredMarketClean.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == brandFK);
+            CLVM.WelcomTredMarketClean.Productionvm = _unitOfWork.itemsRepository.Get(u => u.BrandFK == brandFK);
+            CLVM.WelcomTredMarketClean.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == brandFK);
+            CLVM.WelcomTredMarketClean.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == brandFK);
+            CLVM.WelcomTredMarketClean.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == brandFK);
+            CLVM.WelcomTredMarketClean.PreparationVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == brandFK);
+            CLVM.WelcomTredMarketClean.MainsectionVMlist = _unitOfWork.MainsectionRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            CLVM.WelcomTredMarketClean.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            CLVM.WelcomTredMarketClean.ProductionLoginVMlist = _unitOfWork.itemsRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            CLVM.WelcomTredMarketClean.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            CLVM.WelcomTredMarketClean.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            CLVM.WelcomTredMarketClean.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == brandFK).ToList();
+            CLVM.WelcomTredMarketClean.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == brandFK).ToList();
+
+            CLVM.CleanList = _unitOfWork.CleanRepository.GetAll().Where(c => c.CleaningID == CleanID).ToList();
+            CLVM.tredMaeketCleanVM = _unitOfWork.TredMarketRepository.Get(c => c.BrandID == brandFK);
+            CLVM.CleanViewModel = _unitOfWork.CleanRepository.Get(c => c.CleaningID == CleanID);
+            CLVM.CleaningStepsList = _unitOfWork.StepsCleanRepository3.GetAll().Where(c => c.CleaningFK == CleanID).ToList();
+            CLVM.CleaningVMorder = _unitOfWork.CleanRepository.GetAll().Where(c => c.BrandFK == CleanID).ToList();
+
+            return View(CLVM);
+        }
+        [HttpPost]
+        public async Task<IActionResult> CleanStep(CleanVM cleanVM) // should insert name in Upsert view
+        {
+            if (ModelState.IsValid)
+            {
+                int stepsID = cleanVM.CleanViewModel.CleaningID;
+                if (cleanVM.CleaningStepsList != null)
+                {
+                    for (int i = 0; i < cleanVM.CleaningStepsList.Count; i++)
+                    {
+                        var Steps = cleanVM.CleaningStepsList[i];
+
+                        string wwwRootPathSteps = _webHostEnvironment.WebRootPath;
+                        int LastId = _unitOfWork.CleanRepository.GetLastStepId();
+                        int LastId1 = LastId + 1;
+
+                        var existingSteps9 = _unitOfWork.StepsCleanRepository3.Get(u => u.CleaStepsID == Steps.CleaStepsID, incloudeProperties: "Cleaning");
+                        if (existingSteps9 == null)
+                        {
+                            var newStep = new CleaningSteps
+                            {
+                                CleaStepsID = LastId1,
+                                CleaningFK = Steps.CleaningFK,
+                                CleaText = Steps.CleaText,
+                                CleaStepsNum = Steps.CleaStepsNum
+
+                            };
+
+                            string IDstep = newStep.CleaStepsID.ToString();
+                            string CleanVMFk = cleanVM.CleanViewModel.BrandFK.ToString();
+
+                            string StepsPath = Path.Combine(wwwRootPathSteps, "IMAGES", IDstep);
+
+                            var file1Name = $"file1_{newStep.CleaStepsID}";
+                            var file1ForStep = HttpContext.Request.Form.Files[file1Name];
+
+                            if (file1ForStep != null)
+                            {
+                                if (!string.IsNullOrEmpty(Steps.CleaStepsImage)) // Check if there's an existing image path
+                                {
+                                    var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", IDstep, newStep.CleaStepsImage);
+
+                                    if (System.IO.File.Exists(OldImagePath1))
+                                    {
+                                        System.IO.File.Delete(OldImagePath1); // Delete old image if it exists
+                                    }
+                                }
+                                string fileNameSteps1 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep.FileName);
+
+                                //اذا المسار مش موجود سو مسار جديد 
+                                if (!Directory.Exists(StepsPath))
+                                {
+                                    Directory.CreateDirectory(StepsPath);
+                                }
+
+                                using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
+                                {
+                                    await file1ForStep.CopyToAsync(fileStream1);
+                                }
+
+                                newStep.CleaStepsImage = fileNameSteps1; // Update the image path
+                                _unitOfWork.StepsCleanRepository3.Add(newStep);
+                                _unitOfWork.Save();
+
+                            }
+                        }
+                        else
+                        {
+                            string IDstep = Steps.CleaStepsID.ToString();
+                            string CleanVMFk = cleanVM.CleanViewModel.BrandFK.ToString();
+
+                            string StepsPath = Path.Combine(wwwRootPathSteps, "IMAGES", IDstep);
+
+                            var file1Name = $"file1_{Steps.CleaStepsID}";
+                            var file1ForStep = HttpContext.Request.Form.Files[file1Name];
+
+                            if (file1ForStep != null)
+                            {
+                                if (!string.IsNullOrEmpty(Steps.CleaStepsImage)) // Check if there's an existing image path
+                                {
+                                    var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", IDstep, Steps.CleaStepsImage);
+
+                                    if (System.IO.File.Exists(OldImagePath1))
+                                    {
+                                        System.IO.File.Delete(OldImagePath1); // Delete old image if it exists
+                                    }
+                                }
+                                string fileNameSteps1 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep.FileName);
+
+                                //اذا المسار مش موجود سو مسار جديد 
+                                if (!Directory.Exists(StepsPath))
+                                {
+                                    Directory.CreateDirectory(StepsPath);
+                                }
+
+                                using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
+                                {
+                                    await file1ForStep.CopyToAsync(fileStream1);
+                                }
+
+                                Steps.CleaStepsImage = fileNameSteps1; // Update the image path
+                            }
+
+                            // Save or update Steps data to the database
+                            if (Steps.CleaningFK == stepsID) // int stepsID = PrepaVM.PreparationVM.التحضير_ID;
+                            {
+                                var existingSteps = _unitOfWork.StepsCleanRepository3.Get(u => u.CleaStepsID == Steps.CleaStepsID, incloudeProperties: "Cleaning");
+
+                                if (existingSteps != null)
+                                {
+                                    existingSteps.CleaStepsImage = Steps.CleaStepsImage;
+                                    existingSteps.CleaText = Steps.CleaText;
+                                    existingSteps.CleaStepsNum = Steps.CleaStepsNum;
+
+                                    _unitOfWork.StepsCleanRepository3.Update(existingSteps);
+                                }
+                                else
+                                {
+                                    _unitOfWork.StepsCleanRepository3.Add(Steps);
+                                }
+
+                                _unitOfWork.Save();
+                            }
+                        }
+                    }
+                }
+                TempData["success"] = "تم تحديث الخطوات بشكل ناجح";
+                return RedirectToAction("RedirectToCleanStep", new { CleanID = cleanVM.CleanViewModel.CleaningID, brandFK = cleanVM.CleanViewModel.BrandFK });
+            }
             else
             {
                 return View(cleanVM);
@@ -609,13 +695,13 @@ namespace Test12.Controllers
 
         //زر الحذف تبع صفحة تعديل الخطوات
         #region API CALLS
-        [HttpDelete]
+        //[HttpDelete]
         public IActionResult Deletestep3(int? id)
         {
             var stepsToDelete = _unitOfWork.StepsCleanRepository3.Get(u => u.CleaStepsID == id);
 
             var BrandFK = _unitOfWork.CleanRepository.Get(u => u.CleaningID == stepsToDelete.CleaningFK);
-
+            int? brandfk = BrandFK.BrandFK; 
             string IDStep = stepsToDelete.CleaStepsID.ToString();
             string FKBrand = BrandFK.BrandFK.ToString();
 
@@ -658,11 +744,7 @@ namespace Test12.Controllers
             }
             _unitOfWork.Save();
 
-            return Json(new
-            {
-                success = true,
-                message = ""
-            });
+            return Json(new { success = true, redirectToUrl = Url.Action("RedirectToCleanStep", new { CleanID = CleaningFK, brandFK = brandfk }) });
         }
         #endregion
 
@@ -684,3 +766,282 @@ namespace Test12.Controllers
         }
     }
 }
+
+
+//if (ModelState.IsValid)
+//{
+
+//    var FK = clean.tredMaeketCleanVM.BrandID;
+
+//    if (clean.CleanViewModel.CleaningID == 0)  // if Add 
+//    {
+
+//        var setFK = new Cleaning
+//        {
+//            BrandFK = FK,
+//            DeviceName = clean.CleanViewModel.DeviceName,
+//            Note = clean.CleanViewModel.Note,
+
+//        };
+//        _unitOfWork.CleanRepository.Add(setFK);
+//        _unitOfWork.Save();
+//        int FKClean = setFK.CleaningID;
+
+//        //الخطوات
+
+//        if (clean.CleaningSteps != null)
+//        {
+//            foreach (var stepAdd in clean.CleaningSteps)
+//            {
+
+//                if (stepAdd != null && stepAdd.CleaStepsID == 0)
+//                {
+//                    string wwwRootstepPath = _webHostEnvironment.WebRootPath; // get us root folder
+
+
+//                    int CleaningFK = FKClean;
+//                    int LastId = _unitOfWork.CleanRepository.GetLastStepId();
+//                    int LastId1 = LastId + 1;
+//                    var newStep = new CleaningSteps
+//                    {
+//                        CleaStepsID = LastId1,
+//                        CleaningFK = CleaningFK,
+//                        CleaText = stepAdd.CleaText,
+//                        CleaStepsNum = stepAdd.CleaStepsNum
+
+//                    };
+
+//                    var file1Name1 = $"file1_{newStep.CleaStepsID}";
+//                    var file1ForStep1 = HttpContext.Request.Form.Files[file1Name1];
+
+//                    string BrandVMFk = setFK.BrandFK.ToString();
+//                    string CleanStepsID1 = newStep.CleaStepsID.ToString();
+
+//                    string stepPath = Path.Combine(wwwRootstepPath, "IMAGES", BrandVMFk, "Cleaning", CleanStepsID1);
+
+//                    if (file1ForStep1 != null && file1ForStep1.Length > 0)
+//                    {
+//                        string fileName11 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep1.FileName);
+
+//                        if (!Directory.Exists(stepPath))
+//                        {
+//                            Directory.CreateDirectory(stepPath);
+//                        }
+
+//                        using (var fileStream = new FileStream(Path.Combine(stepPath, fileName11), FileMode.Create)) //save images
+//                        {
+//                            file1ForStep1.CopyTo(fileStream);
+//                        }
+//                        newStep.CleaStepsImage = fileName11;
+//                    }
+//                    _unitOfWork.StepsCleanRepository3.Add(newStep);
+//                    _unitOfWork.Save();
+//                }
+//            }
+//        }
+
+//        //// reOrder2 
+//        if (selectCleaning == 0)
+//        {
+//            // Get the maximum order value in the existing list
+//            double maxOrder = _unitOfWork.CleanRepository.GetAll()
+//                .Max(item => item.CleaningOrder) ?? 0.0f; // Default to 0.0f if there are no existing items
+
+//            // Round down the maxOrder value to the nearest integer
+//            int maxOrderAsInt = (int)Math.Floor(maxOrder);
+
+//            // Set the new order value for the "اخرى" (Other) item
+//            double newOrder = maxOrderAsInt + 1.0f;
+//            setFK.CleaningOrder = newOrder;
+//        }
+//        else
+//        {
+//            var getIdOrder = _unitOfWork.CleanRepository.Get(u => u.CleaningID == selectCleaning);
+//            double OldOrder = getIdOrder.CleaningOrder ?? 0.0f; // Default to 0.0f if Order is null
+//            double newOrder = OldOrder + 0.1f;
+//            setFK.CleaningOrder = newOrder;
+//        }
+
+//        List<Cleaning> objCleanList = _unitOfWork.CleanRepository.GetAll().OrderBy(item => item.CleaningOrder).ToList();
+//        _unitOfWork.Save();
+//        TempData["success"] = "تم إضافة التنظيف بشكل ناجح";
+//    }
+
+//الخطوات في صففحة الإنشاء 
+//الخطوات
+
+//if (clean.CleaningSteps != null)
+//{
+//    foreach (var stepAdd in clean.CleaningSteps)
+//    {
+
+//        if (stepAdd != null && stepAdd.CleaStepsID == 0)
+//        {
+//            string wwwRootstepPath = _webHostEnvironment.WebRootPath; // get us root folder
+
+
+//            int CleaningFK = FKClean;
+//            int LastId = _unitOfWork.CleanRepository.GetLastStepId();
+//            int LastId1 = LastId + 1;
+//            var newStep = new CleaningSteps
+//            {
+//                CleaStepsID = LastId1,
+//                CleaningFK = CleaningFK,
+//                CleaText = stepAdd.CleaText,
+//                CleaStepsNum = stepAdd.CleaStepsNum
+
+//            };
+
+//            var file1Name1 = $"file1_{newStep.CleaStepsID}";
+//            var file1ForStep1 = HttpContext.Request.Form.Files[file1Name1];
+
+//            string BrandVMFk = setFK.BrandFK.ToString();
+//            string CleanStepsID1 = newStep.CleaStepsID.ToString();
+
+//            string stepPath = Path.Combine(wwwRootstepPath, "IMAGES", CleanStepsID1);
+
+//            if (file1ForStep1 != null && file1ForStep1.Length > 0)
+//            {
+//                string fileName11 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep1.FileName);
+
+//                if (!Directory.Exists(stepPath))
+//                {
+//                    Directory.CreateDirectory(stepPath);
+//                }
+
+//                using (var fileStream = new FileStream(Path.Combine(stepPath, fileName11), FileMode.Create)) //save images
+//                {
+//                    await file1ForStep1.CopyToAsync(fileStream);
+//                }
+//                //newStep.CleaStepsImage = fileName11;
+//            }
+//            _unitOfWork.StepsCleanRepository3.Add(newStep);
+//            _unitOfWork.Save();
+//        }
+//    }
+//}
+
+//الخطوات تبع التحديث 
+//الخطوات
+//if (cleanVM.CleaningSteps != null)
+//{
+//    for (int i = 0; i < cleanVM.CleaningSteps.Count; i++)
+//    {
+//        var Steps = cleanVM.CleaningSteps[i];
+
+//        string wwwRootPathSteps = _webHostEnvironment.WebRootPath;
+//        int LastId = _unitOfWork.CleanRepository.GetLastStepId();
+//        int LastId1 = LastId + 1;
+//        var existingSteps9 = _unitOfWork.StepsCleanRepository3.Get(u => u.CleaStepsID == Steps.CleaStepsID, incloudeProperties: "Cleaning");
+//        if (existingSteps9 == null)
+//        {
+//            var newStep = new CleaningSteps
+//            {
+//                CleaStepsID = LastId1,
+//                CleaningFK = Steps.CleaningFK,
+//                CleaText = Steps.CleaText,
+//                CleaStepsNum = Steps.CleaStepsNum
+
+//            };
+
+//            string IDstep = newStep.CleaStepsID.ToString();
+//            string CleanVMFk = cleanVM.CleanViewModel.BrandFK.ToString();
+
+//            string StepsPath = Path.Combine(wwwRootPathSteps, "IMAGES", IDstep);
+
+//            var file1Name = $"file1_{newStep.CleaStepsID}";
+//            var file1ForStep = HttpContext.Request.Form.Files[file1Name];
+
+//            if (file1ForStep != null)
+//            {
+//                if (!string.IsNullOrEmpty(Steps.CleaStepsImage)) // Check if there's an existing image path
+//                {
+//                    var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", IDstep, newStep.CleaStepsImage);
+
+//                    if (System.IO.File.Exists(OldImagePath1))
+//                    {
+//                        System.IO.File.Delete(OldImagePath1); // Delete old image if it exists
+//                    }
+//                }
+//                string fileNameSteps1 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep.FileName);
+
+//                //اذا المسار مش موجود سو مسار جديد 
+//                if (!Directory.Exists(StepsPath))
+//                {
+//                    Directory.CreateDirectory(StepsPath);
+//                }
+
+//                using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
+//                {
+//                    await file1ForStep.CopyToAsync(fileStream1);
+//                }
+
+//                newStep.CleaStepsImage = fileNameSteps1; // Update the image path
+//                _unitOfWork.StepsCleanRepository3.Add(newStep);
+//                _unitOfWork.Save();
+
+//            }
+
+//        }
+//        else
+//        {
+
+//            string IDstep = Steps.CleaStepsID.ToString();
+//            string CleanVMFk = cleanVM.CleanViewModel.BrandFK.ToString();
+
+//            string StepsPath = Path.Combine(wwwRootPathSteps, "IMAGES", IDstep);
+
+//            var file1Name = $"file1_{Steps.CleaStepsID}";
+//            var file1ForStep = HttpContext.Request.Form.Files[file1Name];
+
+//            if (file1ForStep != null)
+//            {
+//                if (!string.IsNullOrEmpty(Steps.CleaStepsImage)) // Check if there's an existing image path
+//                {
+//                    var OldImagePath1 = Path.Combine(wwwRootPathSteps, "IMAGES", IDstep, Steps.CleaStepsImage);
+
+//                    if (System.IO.File.Exists(OldImagePath1))
+//                    {
+//                        System.IO.File.Delete(OldImagePath1); // Delete old image if it exists
+//                    }
+//                }
+//                string fileNameSteps1 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForStep.FileName);
+
+//                //اذا المسار مش موجود سو مسار جديد 
+//                if (!Directory.Exists(StepsPath))
+//                {
+//                    Directory.CreateDirectory(StepsPath);
+//                }
+
+//                using (var fileStream1 = new FileStream(Path.Combine(StepsPath, fileNameSteps1), FileMode.Create))
+//                {
+//                    await file1ForStep.CopyToAsync(fileStream1);
+//                }
+
+//                Steps.CleaStepsImage = fileNameSteps1; // Update the image path
+//            }
+
+//            // Save or update Steps data to the database
+//            if (Steps.CleaningFK == stepsID) // int stepsID = PrepaVM.PreparationVM.التحضير_ID;
+//            {
+//                var existingSteps = _unitOfWork.StepsCleanRepository3.Get(u => u.CleaStepsID == Steps.CleaStepsID, incloudeProperties: "Cleaning");
+
+//                if (existingSteps != null)
+//                {
+
+//                    existingSteps.CleaStepsImage = Steps.CleaStepsImage;
+//                    existingSteps.CleaText = Steps.CleaText;
+//                    existingSteps.CleaStepsNum = Steps.CleaStepsNum;
+
+//                    _unitOfWork.StepsCleanRepository3.Update(existingSteps);
+//                }
+//                else
+//                {
+//                    _unitOfWork.StepsCleanRepository3.Add(Steps);
+//                }
+
+//                _unitOfWork.Save();
+//            }
+//        }
+//    }
+//}
