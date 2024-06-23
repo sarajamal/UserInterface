@@ -1,4 +1,5 @@
-﻿@model CleanVM;
+﻿@model LoginTredMarktViewModel
+
 <header>
     <div>
         @await Html.PartialAsync("_HeaderPartial", Model.WelcomTredMarketClean)
@@ -57,12 +58,12 @@
                         <tbody>
                             @if (Model.CleanViewModel.CleaningID != 0)
                             {
-                                for (int i = 0; i < Model.CleaningSteps.Count; i += 2) // Increment by 2
+                                for (int i = 0; i < Model.CleaningStepsList.Count; i += 2) // Increment by 2
                                 {
                                     <tr>
-                                        @for (int j = i; j < i + 2 && j < Model.CleaningSteps.Count; j++) // Loop twice for two steps
+                                            @for (int j = i; j < i + 2 && j < Model.CleaningStepsList.Count; j++) // Loop twice for two steps
                                         {
-                                            var itemStep = Model.CleaningSteps[j];
+                                                var itemStep = Model.CleaningStepsList[j];
 
                                             <td style="text-align:center;">
                                                 <input asp-for="@itemStep.CleaStepsID" name="CleaningSteps[@j].CleaStepsID" hidden />

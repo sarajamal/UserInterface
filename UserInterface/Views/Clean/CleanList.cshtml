@@ -1,4 +1,4 @@
-﻿@model CleanVM
+﻿@model LoginTredMarktViewModel
 
 @{
     ViewData["Title"] = "CleanList";
@@ -35,7 +35,7 @@
                             <div style="text-align:center">
                                 
                                 <a class=" btn btn-style2 fnt-white px-4 add-button" href="@Url.Action("RedirectToCreateClean",
-                                "Clean", new { brandFK = Model.WelcomTredMarketClean.TredMarktVM.BrandID })">
+                                "Clean", new { brandFk = Model.WelcomTredMarketClean.TredMarktVM.BrandID })">
 
                                     <i class="bi bi-plus-circle"></i>
                                 </a>

@@ -1,0 +1,105 @@
+﻿@model LoginTredMarktViewModel;
+<header>
+    <div>
+        @await Html.PartialAsync("_HeaderPartial", Model.WelcomTredMarketClean)
+    </div>
+</header>
+<body>
+    <div class="card shadow border-0 my-4 py-4">
+        <div class="card-header bg-navbar bf-bb bg-gradient ml-0 py-3">
+            <div class="row">
+                <div class="col-12 text-center">
+
+                    <h2 class="fnt-blue py-2"> تعديل التنظيف </h2>
+                </div>
+                <div class="col-12 text-center">
+                    @if (Model.CleanViewModel.CleaningID != 0)
+                    {
+                        <h4 class="fnt-blue py-2"> " @Model.CleanViewModel.DeviceName " </h4>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <form method="post" class="row" enctype="multipart/form-data">
+
+
+            <input asp-for="CleanViewModel.CleaningID" hidden />
+            <input asp-for="CleanViewModel.BrandFK" hidden />
+            <input asp-for="CleanViewModel.CleaningOrder" hidden />
+
+
+            @*added this class main-container-table*@
+            <div class="card-body p-4 py-4">
+                <div class="border p-3">
+
+                    @*added this class main-container-table*@
+                    <div id="exTab1" class="container">
+                        <!-- Tabs Header-->
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td class="active">
+                                        <a class="nav-link" href="@Url.Action("RedirectToClean", "Clean", new { CleanID = Model.CleanViewModel.CleaningID, brandFK = Model.CleanViewModel.BrandFK })">المعلومات</a>
+                                    </td>
+                                    <td>
+                                        @if (Model.CleanViewModel.CleaningID != 0)
+                                        {
+                                            <a class="nav-link" href="@Url.Action("RedirectToCleanStep", "Clean", new { CleanID = Model.CleanViewModel.CleaningID, brandFK = Model.CleanViewModel.BrandFK })">الخطوات</a>
+                                        }
+                                        else
+                                        {
+                                            <a class="nav-link">الخطوات</a>
+                                        }
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div>
+                            <h4 style="text-align:right">المعلومات</h4>
+                        </div>
+                        <div class=" row">
+                            <div class=" col-md-6 p-2">
+                                <div class="form-group">
+
+                                    <label asp-for=" CleanViewModel.DeviceName" class="control-label"> اسم التنظيف </label>
+                                    <input asp-for=" CleanViewModel.DeviceName " class="form-control" />
+                                    <span asp-validation-for=" CleanViewModel.DeviceName" class="text-danger"></span>
+                                </div>
+                            </div>
+
+
+                            <div class=" col-md-6 p-2">
+                                <div class="form-group">
+                                    <label asp-for=" CleanViewModel.Note" class="control-label">الملاحظة</label>
+                                    <input asp-for=" CleanViewModel.Note" class="form-control" />
+                                    <span asp-validation-for=" CleanViewModel.Note" class="text-danger"></span>
+                                </div>
+                            </div>
+                   
+
+                    @* أزرار الحفظ وحفظ التغييرات *@
+                            <div class="form-group col-12 py-2">
+                                <div style="text-align: center;">
+
+                                    <div class="form-group col-12 py-3 fxcc">
+                                        <input type="submit" id="submitButton"
+                                               value="  حفظ التغيرات" href="@Url.Action("RedirectToClean",
+                                                           "Clean", new { CleanID = Model.CleanViewModel.CleaningID, brandFK = Model.WelcomTredMarketClean.TredMarktVM.BrandID })" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>     
+            </div>
+            </div>
+          </div>
+        </form>
+    </div>
+</body>
+
+@section Scripts{
+
+
+    <script src="~/Js/Clean/AddDLTsteps3.js"></script>
+        }

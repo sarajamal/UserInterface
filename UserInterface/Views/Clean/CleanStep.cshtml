@@ -1,0 +1,149 @@
+﻿@model LoginTredMarktViewModel
+<header>
+
+    <div>
+        @await Html.PartialAsync("_HeaderPartial", Model.WelcomTredMarketClean)
+    </div>
+</header>
+<body>
+    <div class="card shadow border-0 my-4 py-4">
+        <div class="card-header bg-navbar bf-bb bg-gradient ml-0 py-3">
+            <div class="row">
+                <div class="col-12 text-center">
+
+                    <h2 class="fnt-blue py-2"> تعديل التنظيف </h2>
+                </div>
+                <div class="col-12 text-center">
+                    @if (Model.CleanViewModel.CleaningID != 0)
+                    {
+                        <h4 class="fnt-blue py-2"> " @Model.CleanViewModel.DeviceName " </h4>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <form method="post" class="row" enctype="multipart/form-data" id="MyForm">
+
+
+            <input asp-for="CleanViewModel.CleaningID" hidden />
+            <input asp-for="CleanViewModel.BrandFK" hidden />
+            <input asp-for="CleanViewModel.CleaningOrder" hidden />
+
+
+            @*added this class main-container-table*@
+            <div class="card-body p-4 py-4">
+                <div class="border p-3">
+
+                    @*added this class main-container-table*@
+                    <div class="main-container-table">
+
+                        <div id="exTab11111" class="container">
+                            <!-- Tab table -->
+                            <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td class="active">
+                                        <a class="nav-link" href="@Url.Action("RedirectToClean", "Clean", new { CleanID = Model.CleanViewModel.CleaningID, brandFK = Model.CleanViewModel.BrandFK })">المعلومات</a>
+                                    </td>
+                                    <td>
+                                        @if (Model.CleanViewModel.CleaningID != 0)
+                                        {
+                                            <a class="nav-link" href="@Url.Action("RedirectToCleanStep", "Clean", new { CleanID = Model.CleanViewModel.CleaningID, brandFK = Model.CleanViewModel.BrandFK })">الخطوات</a>
+                                        }
+                                        else
+                                        {
+                                            <a class="nav-link">الخطوات</a>
+                                        }
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="form-group col-4 py-2 ">
+                            <h4 style="text-align:right">الخطوات</h4>
+                        </div>
+                                <table id="tblSteps3" class="table table-bordered table-striped" data-Cleaning-id="@Model.CleanViewModel.CleaningID">
+
+                                <tbody>
+                                    @if (Model.CleanViewModel.CleaningID != 0)
+                                    {
+                                        for (int i = 0; i < Model.CleaningStepsList.Count; i += 2) // Increment by 2
+                                        {
+                                            <tr>
+                                                @for (int j = i; j < i + 2 && j < Model.CleaningStepsList.Count; j++) // Loop twice for two steps
+                                                {
+                                                    var itemStep = Model.CleaningStepsList[j];
+
+                                                    <td style="text-align:center;">
+                                                            <input asp-for="@itemStep.CleaStepsID" name="CleaningStepsList[@j].CleaStepsID" hidden />
+                                                            <input type="hidden" asp-for="@itemStep.CleaningFK" name="CleaningStepsList[@j].CleaningFK" />
+                                                            <input asp-for="@itemStep.CleaStepsImage" name="CleaningStepsList[@j].CleaStepsImage" hidden />
+                                                            <input asp-for="@itemStep.CleaStepsNum" name="CleaningStepsList[@j].CleaStepsNum" hidden />
+
+                                                        @if (!string.IsNullOrEmpty(itemStep.CleaStepsImage) || !string.IsNullOrEmpty(itemStep.CleaText) || itemStep.CleaStepsNum != 0)
+                                                        {
+                                                            <div class="py-5">
+                                                                <button type="button" class="btn btn-danger delete-button"
+                                                                        id="deleteButton_@j"
+                                                                        onclick="Deletestep3(@itemStep.CleaStepsID)">
+                                                                    حذف
+                                                                </button>
+                                                            </div>
+                                                            <div class="col-12 text-center">
+                                                                <div>
+                                                                    @itemStep.CleaStepsNum
+                                                                </div>
+                                                                <div>
+                                                                    <img src="@Url.Content("~/IMAGES/" + itemStep.CleaStepsID + "/" + itemStep.CleaStepsImage)"
+                                                                         id="PreviewPhoto1_@itemStep.CleaStepsID" width="125" height="125" style="border: 1px; margin-top: 20px;">
+                                                                </div>
+                                                                <div class="form-group mt-2">
+                                                                    <input type="file" name="file1_@itemStep.CleaStepsID" class="border-0 shadow mt-5" id="customFile1_@itemStep.CleaStepsID"
+                                                                           data-preview-id="PreviewPhoto1_@itemStep.CleaStepsID"
+                                                                           onchange="displaySelectedImage(this,'PreviewPhoto1_@itemStep.CleaStepsID')" />
+
+                                                                        <textarea asp-for="@itemStep.CleaText" class="form-control mt-2" name="CleaningStepsList[@j].CleaText"></textarea>
+                                                                    <span asp-validation-for="@itemStep.CleaText" class="text-danger"></span>
+                                                                </div>
+                                                            </div>
+
+                                                        }
+                                                    </td>
+                                                }
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+
+                            @* زر إضافة خطوات جديدة *@
+                            <tr>
+                                <td colspan="1" style="text-align:right;">
+                                    <button type="button" id="addStepButton3" class="btn btn-style1 fnt-white my-3" onclick="AddnewRowstepsUpdate3('@Model.CleanViewModel.CleaningID')" abled>إضافة خطوات جديدة </button>
+                                </td>
+                            </tr>
+
+                    @* أزرار الحفظ وحفظ التغييرات *@
+                            <div class="form-group col-12 py-2">
+                                <div style="text-align: left;">
+
+                                    <div class="form-group col-12 py-3 fxcc">
+                                        <input type="submit" id="submitButton"
+                                               value=" حفظ التغيرات" href="@Url.Action("RedirectToCleanStep",
+                                                           "Clean", new { CleanID = Model.CleanViewModel.CleaningID, brandFK = Model.WelcomTredMarketClean.TredMarktVM.BrandID })" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            </div>
+            </div>
+            </div>
+        </form>
+    </div>
+</body>
+
+@section Scripts{
+
+
+    <script src="~/Js/Clean/AddDLTsteps3.js"></script>
+        }
