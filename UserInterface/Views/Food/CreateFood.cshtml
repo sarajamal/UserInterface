@@ -1,4 +1,4 @@
-﻿@model FoodVM
+﻿@model LoginTredMarktViewModel
 
 <div class="modal fade" id="CreateFoods" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -18,11 +18,11 @@
 
                     <input asp-for="tredMaeketFoodsVM.BrandID" hidden />
                      <input asp-for="tredMaeketFoodsVM.BrandName" hidden />
-                    <input asp-for="tredMaeketFoodsVM.Date" hidden />
+                    <input asp-for="tredMaeketFoodsVM.Date1" hidden />
                     <input asp-for="tredMaeketFoodsVM.BrandCoverImage" hidden />
                     <input asp-for="tredMaeketFoodsVM.BrandFooterImage" hidden />
                     <input asp-for="tredMaeketFoodsVM.BrandLogoImage" hidden />
-                    <input asp-for="FoodViewM.FoodStuffsID" hidden />
+                    <input asp-for="FoodLoginVM.FoodStuffsID" hidden />
 
                     <table id="tblFoods" class="table table-style1 table-bordered table-striped" data-DeviceTools-id="@Model.tredMaeketFoodsVM.BrandID">
                         <thead>
@@ -47,9 +47,9 @@
 
                     <div class="form-floating py-2 col-12">
                         @{
-                            var sortedFoodsName = Model.FoodsVMorder.OrderBy(item => item.FoodStuffsOrder).ToList();
+                            var sortedFoodsName = Model.FoodsLoginVMorder.OrderBy(item => item.FoodStuffsOrder).ToList();
                         }
-                        <select asp-for="FoodViewM.FoodStuffsID" class="form-select" id="selectFoodvalues" name="selectFoodvalue">
+                        <select asp-for="FoodLoginVM.FoodStuffsID" class="form-select" id="selectFoodvalues" name="selectFoodvalue">
                             <option value="" disabled selected>-- اختر مكان الصف الجديد--</option>
                             @foreach (var item in sortedFoodsName)
                             {

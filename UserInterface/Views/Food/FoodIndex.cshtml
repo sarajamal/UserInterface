@@ -1,4 +1,4 @@
-﻿@model FoodVM
+﻿@model LoginTredMarktViewModel
 
 <div class="modal fade" id="FoodsIndex" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -15,25 +15,25 @@
                 <form method="post" class="row" enctype="multipart/form-data" asp-action="FoodIndex" asp-controller="Food">
 
 
-                    <input asp-for="FoodViewM.BrandFK" hidden />
-                    <input asp-for="FoodViewM.FoodStuffsID" hidden />
+                    <input asp-for="FoodLoginVM.BrandFK" hidden />
+                    <input asp-for="FoodLoginVM.FoodStuffsID" hidden />
 
 
-                    <table id="tblFood" class="table table-bordered table-striped" data-Food-id="@Model.FoodViewM.FoodStuffsID">
+                    <table id="tblFood" class="table table-bordered table-striped" data-Food-id="@Model.FoodLoginVM.FoodStuffsID">
 
                         <tbody>
-                            @if (Model.FoodViewM.FoodStuffsID != 0)
+                            @if (Model.FoodLoginVM.FoodStuffsID != 0)
                             {
-                                @for (int i = 0; i < Model.FoodViewMList.Count; i++)
+                                @for (int i = 0; i < Model.FoodLoginVMlist.Count; i++)
                                 {
-                                    var itemFood = Model.FoodViewMList[i];
+                                    var itemFood = Model.FoodLoginVMlist[i];
                                     <tr>
                                         <td style="text-align:center;">
 
-                                            <input asp-for="@itemFood.FoodStuffsID" name="FoodViewMList[@i].FoodStuffsID" hidden />
-                                            <input asp-for="@itemFood.BrandFK" name="FoodViewMList[@i].BrandFK" hidden />
+                                            <input asp-for="@itemFood.FoodStuffsID" name="FoodLoginVMlist[@i].FoodStuffsID" hidden />
+                                            <input asp-for="@itemFood.BrandFK" name="FoodLoginVMlist[@i].BrandFK" hidden />
 
-                                            <input asp-for="@itemFood.FoodStuffsImage" name="FoodViewMList[@i].FoodStuffsImage" hidden />
+                                            <input asp-for="@itemFood.FoodStuffsImage" name="FoodLoginVMlist[@i].FoodStuffsImage" hidden />
 
 
 
@@ -44,7 +44,7 @@
 
                                                     <div>
                                                         <img id="PreviewPhoto1_@itemFood.FoodStuffsID"
-                                                             src="https://manuals.befranchisor.com/IMAGES/@(Model.FoodViewM.FoodStuffsID)/@(Model.FoodViewM.FoodStuffsImage)" 
+                                                             src="/IMAGES/@(Model.FoodLoginVM.FoodStuffsID)/@(Model.FoodLoginVM.FoodStuffsImage)" 
                                                              alt="Logo"
                                                              width="125" height="125" style="border: 1px; margin-top: 20px;">
                                                     </div>
@@ -52,7 +52,7 @@
                                                     <div class="form-group mt-2">
                                                         <input type="file" name="file1_@itemFood.FoodStuffsID" class="border-0 shadow mt-5" id="customFile1_@itemFood.FoodStuffsID" onchange="displaySelectedImage(this, 'PreviewPhoto1_@itemFood.FoodStuffsID')">
 
-                                                        <textarea asp-for="@itemFood.FoodStuffsName" class="form-control mt-2" name="FoodViewMList[@i].FoodStuffsName"></textarea>
+                                                        <textarea asp-for="@itemFood.FoodStuffsName" class="form-control mt-2" name="FoodLoginVMlist[@i].FoodStuffsName"></textarea>
                                                         <span asp-validation-for="@itemFood.FoodStuffsName" class="text-danger"></span>
 
 

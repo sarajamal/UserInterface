@@ -1,9 +1,9 @@
 ﻿@model LoginTredMarktViewModel
 
-<header>
-    <nav class="navbar navbar-light bg-white me-auto">
+<header class="position-sticky top-0  shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container-fluid">
-            <a class="navbar-brand" href="@Url.Action("RedirectToUserInformation", "Home", new { id = Model.TredMarktVM.BrandID })">
+            <a class="navbar-brand fw-bold" href="@Url.Action("RedirectToUserInformation", "Home", new { id = Model.TredMarktVM.BrandID })">
                 <img src="https://manuals.befranchisor.com/IMAGES/@(Model.TredMarktVM.BrandID)/@(Model.TredMarktVM.BrandLogoImage)"
                      class="me-2"
                      height="50"
@@ -11,197 +11,139 @@
                      alt="Logo" />
                 <small>@Model.TredMarktVM.BrandName</small>
             </a>
-       
-            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="offcanvas offcanvas-start text-bg-dark bg-navbar" tabindex="-4" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
-                <div class="offcanvas-header bg-navbar">
-                    <h4  id="offcanvasDarkNavbarLabel">قم بالتعديل</h4>
-                    <button type="button" class="btn-close btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body bg-navbar">
-                    <nav id="TableOfContents me-auto " >
-                        <div class="bd-toc mt-3 mb-4 my-md-0 ps-xl-2 mb-lg-4 text-muted">
-                            <strong class="d-block h6 my-2 pb-2 border-bottom"></strong>
-
-                            <nav id="TableOfContents " >
-                                <ul class="navbar-nav flex-grow-1">
-                                    @if (Model.DeviceToolsLoginVM == null || Model.DeviceToolsLoginVM.BrandFK == null || Model.DeviceToolsLoginVM.BrandFK == 0)
-                                    {
-                                        <li class="nav-item border p-2 mt-2  "><a class="nav-link  " >الأجهزةوالأدوات</a></li>
-                                    }
-                                    else
-                                    {
-                                        <li class="nav-item border p-2 mt-2">
-                                            <a class="nav-link" href="@Url.Action("RedirectToDeviceToolsList", "Device_tool", new { brandFK = Model.DeviceToolsLoginVM.BrandFK })">الأجهزةوالأدوات</a>
-                                        </li>
-                                    }
-
-                                    @if (Model.FoodLoginVM == null || Model.FoodLoginVM.BrandFK == null || Model.FoodLoginVM.BrandFK == 0)
-                                    {
-                                        <li class="nav-item border p-2 mt-2  "><a class="nav-link  " >المواد الغذائية</a></li>
-                                    }
-                                    else
-                                    {
-                                        <li class="nav-item border p-2 mt-2">
-                                            <a class="nav-link" href="@Url.Action("RedirectToFoodList", "Food", new { brandFK = Model.FoodLoginVM.BrandFK })">المواد الغذائية</a>
-                                        </li>
-                                    }
-
-                                    @if (Model.PreparatonLoginVM == null || Model.PreparatonLoginVM.BrandFK == null || Model.PreparatonLoginVM.BrandFK == 0)
-                                    {
-                                        <li id="navPreparationNoID" class="nav-item border p-2 mt-2">
-                                            <a class="nav-link">التحضيرات</a>
-                                        </li>
-                                    }
-                                    else
-                                    {
-                                        <li class="nav-item border p-2 mt-2">
-                                            <a class="nav-link" href="@Url.Action("RedirectToPreparation", "Preparation", new { brandFK = Model.PreparatonLoginVM.BrandFK })">التحضيرات</a>
-                                        </li>
-                                       
-                                    }
-
-                                    @if (Model.ProductionLoginVM == null || Model.ProductionLoginVM.BrandFK == null || Model.ProductionLoginVM.BrandFK == 0)
-                                    {
-
-                                        <li class="nav-item border p-2 mt-2  ">
-                                            <a class="nav-link  " >الانتاج</a>
-                                        </li>
-                                    }
-                                    else
-                                    {
-
-                                        <li class="nav-item border p-2 mt-2">
-                                            <a class="nav-link" href="@Url.Action("RedirectToProduction", "Production", new { brandFK = Model.ProductionLoginVM.BrandFK })">الإنتاج</a>
-                                        </li>
-                                       
-                                    }
-
-                                    @if (Model.ReadyFoodLoginVM == null || Model.ReadyFoodLoginVM.BrandFK == null || Model.ReadyFoodLoginVM.BrandFK == 0)
-                                    {
-                                        <li class="nav-item border p-2 mt-2  "><a class="nav-link  "> المنتجات الجاهزة</a></li>
-                                    }
-                                    else
-                                    {
-                                        <li class="nav-item border p-2 mt-2">
-                                            <a class="nav-link" href="@Url.Action("RedirectToFinishProductionList", "FinishProducts", new { brandFK = Model.ReadyFoodLoginVM.BrandFK })">المنتجات الجاهزة</a>
-                                        </li>
-                                    }
-
-                                    @if (Model.CleanLoginVM == null || Model.CleanLoginVM.BrandFK == null || Model.CleanLoginVM.BrandFK == 0)
-                                    {
-                                        <li class="nav-item border p-2 mt-2  "><a class="nav-link  "> التنظيف</a></li>
-                                    }
-                                    else
-                                    {
-                                        <li class="nav-item border p-2 mt-2">
-                                            <a class="nav-link" href="@Url.Action("RedirectToCleanList", "Clean", new { brandFK = Model.CleanLoginVM.BrandFK })">التنظيف</a>
-                                        </li>
-                                     }
-                                    <li class="nav-item border p-2 mt-2">
-                                        <a class="nav-link styled-link" href="@Url.Action("RedirectToWelcomTredMarket", "Home", new { brandId = Model.TredMarktVM.BrandID})">الصفحة الرئيسية</a>
-                                    </li>
-                                    <li class="nav-item border p-2 mt-2">
-                                        <form asp-controller="Home" asp-action="Logout" method="post">
-                                            <button type="submit" class="btn btn-danger">تسجيل الخروج</button>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </nav>
-                </div>
+           
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="styled-link" href="@Url.Action("RedirectToUserInformation", "Home", new { id = @Model.TredMarktVM.BrandID })">علامتك التجارية </a>
+                    </li>
+                    <li class="nav-item">
+                        <form asp-controller="Home" asp-action="Logout" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-unstyled">تسجيل الخروج</button>
+                        </form>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
 </header>
 
-
 <body>
-   
-    <div class="container login-sec">
-        <div class="card shadow border-0 mt-4">
-            <div id="Headcard" class="card-header bg-white bg-primary mb-3 ml-0 pt-4 custom-dark-bg">
-                <div class="row">
-                    <div class="col-12 text-center py-2">
-                        <table class="table table-style1 table-bordered table-striped py-5 mb-3 pb-4" id="tblData1" style="width:100%">
-                            <thead>
-
-                                <tr >
-                                    <th style="text-align: center; font-size: medium; width: 393px;" class="text-center custom-font-bold sorting" rowspan="1" colspan="1">
-                                       القــائمة
-                                    </th>
-                                    <th style="text-align: center; font-size: medium; width: 393px;" class="text-center custom-font-bold sorting" rowspan="1" colspan="1">
-                                       العدد
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                    <tr>
-                                        <td style="text-align: center; padding-top:30px; ">
-                                        <h5 class="fnt-blue py-2">عدد التحضيرات</h5>
-                                        </td>
-                                    <td style="text-align: center;padding-top:30px;">
-                                        <h5 class="fnt-blue py-2">@Model.PreparatonLoginVMlist.Count</h5>
-                                        </td>
-                                    </tr>
-                                <tr>
-                                    <td style="text-align: center; padding-top:30px; ">
-                                        <h5 class="fnt-blue py-2">عدد الإنتاج</h5>
-                                    </td>
-                                    <td style="text-align: center;padding-top:30px;">
-                                        <h5 class="fnt-blue py-2">@Model.ProductionLoginVMlist.Count</h5>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align: center; padding-top:30px; ">
-                                        <h5 class="fnt-blue py-2">عدد المواد الغذائية</h5>
-                                    </td>
-                                    <td style="text-align: center;padding-top:30px;">
-                                        <h5 class="fnt-blue py-2">@Model.FoodLoginVMlist.Count</h5>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align: center; padding-top:30px; ">
-                                        <h5 class="fnt-blue py-2">عدد المنتجات الجاهزة </h5>
-                                    </td>
-                                    <td style="text-align: center;padding-top:30px;">
-                                        <h5 class="fnt-blue py-2">@Model.ReadyFoodLoginVMlist.Count</h5>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align: center; padding-top:30px; ">
-                                        <h5 class="fnt-blue py-2">عدد الأجهزة والأدوات </h5>
-                                    </td>
-                                    <td style="text-align: center;padding-top:30px;">
-                                        <h5 class="fnt-blue py-2">@Model.DeviceToolsLoginVMlist.Count</h5>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align: center; padding-top:30px; ">
-                                        <h5 class="fnt-blue py-2">عدد التنظيف</h5>
-                                    </td>
-                                    <td style="text-align: center;padding-top:30px;">
-                                        <h5 class="fnt-blue py-2">@Model.CleanLoginVMlist.Count</h5>
-                                    </td>
-                                </tr>
-                               
-                            </tbody>
-                        </table>
-                        <form id="account1" method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="PrintRequest">
-                            <input asp-for="@Model.LoginVM.Email" hidden />
-                            <input asp-for="@Model.TredMarktVM.BrandID" hidden/>
-                            <button type="submit" class="btn btn-info" style="font-size:16px;">
-                                <i class="fa fa-print"></i> طلب طباعة
-                            </button>
-                        </form>
+    <div class="row mt-4">
+        <div class="col-10">
+            <div class="container-header">
+                <div class="card shadow border-0 mt-4">
+                    <div id="Headcard" class="card-header bg-white bg-primary mb-3 pt-4 custom-dark-bg">
+                        <div class="row">
+                            <div class="col-12 text-center py-2">
+                                <table class="table table-style123 table-bordered table-striped py-5 mb-3 pb-4" id="tblData1" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="table-header" colspan="2">القائمة</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-center"><h5 class="fnt-blue py-2">عدد التحضيرات</h5></td>
+                                            <td class="text-center"><h5 class="fnt-blue py-2">@Model.PreparatonLoginVMlist.Count</h5></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center"><h5 class="fnt-blue py-2">عدد الإنتاج</h5></td>
+                                            <td class="text-center"><h5 class="fnt-blue py-2">@Model.ProductionLoginVMlist.Count</h5></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center"><h5 class="fnt-blue py-2">عدد المواد الغذائية</h5></td>
+                                            <td class="text-center"><h5 class="fnt-blue py-2">@Model.FoodLoginVMlist.Count</h5></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center"><h5 class="fnt-blue py-2">عدد المنتجات الجاهزة</h5></td>
+                                            <td class="text-center"><h5 class="fnt-blue py-2">@Model.ReadyFoodLoginVMlist.Count</h5></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center"><h5 class="fnt-blue py-2">عدد الأجهزة والأدوات</h5></td>
+                                            <td class="text-center"><h5 class="fnt-blue py-2">@Model.DeviceToolsLoginVMlist.Count</h5></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center"><h5 class="fnt-blue py-2">عدد التنظيف</h5></td>
+                                            <td class="text-center"><h5 class="fnt-blue py-2">@Model.CleanLoginVMlist.Count</h5></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="PrintRequest">
+                                    <input asp-for="@Model.LoginVM.Email" hidden />
+                                    <input asp-for="@Model.TredMarktVM.BrandID" hidden />
+                                    <button type="submit" class="btn btn-info" style="font-size:16px;">
+                                        <i class="fa fa-print"></i> طلب طباعة
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-2 mt-4">
+            <div class="shadow rounded position-sticky" id="Menu-list">
+                <div class="border-bottom border-3 p-2">
+                    <h4 class="text-center fst-italic fw-bold mt-3 fnt-blue">دليل الوصفات</h4>
+                    <ul class="list-group list-group-flush overflow-auto px-0">
+                        @if (Model.DeviceToolsLoginVM == null || Model.DeviceToolsLoginVM.BrandFK == null || Model.DeviceToolsLoginVM.BrandFK == 0)
+                        {
+                            <li class="Menu-item p-3 mb-2 border"><a class="nav-link fnt-blue">الأجهزة والأدوات</a></li>
+                        }
+                        else
+                        {
+                            <li class="Menu-item p-3 mb-2 border"><a class="nav-link fnt-blue" href="@Url.Action("RedirectToDeviceToolsList", "Device_tool", new { brandFK = Model.DeviceToolsLoginVM.BrandFK })">الأجهزة والأدوات</a></li>
+                        }
+
+                        @if (Model.FoodLoginVM == null || Model.FoodLoginVM.BrandFK == null || Model.FoodLoginVM.BrandFK == 0)
+                        {
+                            <li class="Menu-item p-3 mb-2 border"><a class="nav-link fnt-blue">المواد الغذائية</a></li>
+                        }
+                        else
+                        {
+                            <li class="Menu-item p-3 mb-2 border"><a class="nav-link fnt-blue" href="@Url.Action("RedirectToFoodList", "Food", new { brandFK = Model.FoodLoginVM.BrandFK })">المواد الغذائية</a></li>
+                        }
+
+                        @if (Model.PreparationVM == null || Model.PreparationVM.BrandFK == null || Model.PreparationVM.BrandFK == 0)
+                        {
+                            <li id="navPreparationNoID" class="Menu-item p-3 mb-2 border"><a class="nav-link fnt-blue">التحضيرات</a></li>
+                        }
+                        else
+                        {
+                            <li class="Menu-item p-3 mb-2 border"><a class="nav-link fnt-blue" href="@Url.Action("RedirectToPreparation", "Preparation", new { brandFK = Model.PreparationVM.BrandFK })">التحضيرات</a></li>
+                        }
+
+                        @if (Model.Productionvm == null || Model.Productionvm.BrandFK == null || Model.Productionvm.BrandFK == 0)
+                        {
+                            <li class="Menu-item p-3 mb-2 border"><a class="nav-link fnt-blue">الانتاج</a></li>
+                        }
+                        else
+                        {
+                            <li class="Menu-item p-3 mb-2 border"><a class="nav-link fnt-blue" href="@Url.Action("RedirectToProduction", "Production", new { brandFK = Model.Productionvm.BrandFK })">الإنتاج</a></li>
+                        }
+
+                        @if (Model.ReadyFoodLoginVM == null || Model.ReadyFoodLoginVM.BrandFK == null || Model.ReadyFoodLoginVM.BrandFK == 0)
+                        {
+                            <li class="Menu-item p-3 mb-2 border"><a class="nav-link fnt-blue">المنتجات الجاهزة</a></li>
+                        }
+                        else
+                        {
+                            <li class="Menu-item p-3 mb-2 border"><a class="nav-link fnt-blue" href="@Url.Action("RedirectToFinishProductionList", "FinishProducts", new { brandFK = Model.ReadyFoodLoginVM.BrandFK })">المنتجات الجاهزة</a></li>
+                        }
+
+                        @if (Model.CleanViewModel == null || Model.CleanViewModel.BrandFK == null || Model.CleanViewModel.BrandFK == 0)
+                        {
+                            <li class="Menu-item p-3 mb-2 border"><a class="nav-link fnt-blue">التنظيف</a></li>
+                        }
+                        else
+                        {
+                            <li class="Menu-item p-3 mb-2 border"><a class="nav-link fnt-blue" href="@Url.Action("RedirectToCleanList", "Clean", new { brandFK = Model.CleanViewModel.BrandFK })">التنظيف</a></li>
+                        }
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 </body>
-
-
