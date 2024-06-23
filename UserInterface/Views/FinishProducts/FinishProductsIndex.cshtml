@@ -1,4 +1,4 @@
-﻿@model ReadyFoodViewmodel
+﻿@model LoginTredMarktViewModel
 
 <div class="modal fade" id="FinishProductIndex" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -15,25 +15,25 @@
                 <form method="post" class="row" enctype="multipart/form-data" asp-action="FinishProductsIndex" asp-controller="FinishProducts">
 
 
-                    <table id="tblFinishFood" class="table table-bordered table-striped" data-FinshFood-id="@Model.ReadyfoodVM.ReadyProductsID">
-                        <input asp-for="ReadyfoodVM.ReadyProductsID" hidden />
-                        <input asp-for="ReadyfoodVM.BrandFK" hidden />
+                    <table id="tblFinishFood" class="table table-bordered table-striped" data-FinshFood-id="@Model.ReadyFoodLoginVM.ReadyProductsID">
+                        <input asp-for="ReadyFoodLoginVM.ReadyProductsID" hidden />
+                        <input asp-for="ReadyFoodLoginVM.BrandFK" hidden />
 
 
                         <tbody>
 
-                            @if (Model.ReadyfoodVM.ReadyProductsID != 0)
+                            @if (Model.ReadyFoodLoginVM.ReadyProductsID != 0)
                             {
 
-                                @for (int i = 0; i < Model.readyfoodlistVM.Count; i++)
+                                @for (int i = 0; i < Model.ReadyFoodLoginVMlist.Count; i++)
                                 {
-                                    var itemFinshFood = Model.readyfoodlistVM[i];
+                                    var itemFinshFood = Model.ReadyFoodLoginVMlist[i];
 
                                     <tr>
                                         <td style="text-align:center;">
-                                            <input asp-for="@itemFinshFood.BrandFK" name="readyfoodlistVM[@i].BrandFK" hidden />
-                                            <input asp-for="@itemFinshFood.ReadyProductsID" name="readyfoodlistVM[@i].ReadyProductsID" hidden />
-                                            <input asp-for="@itemFinshFood.ReadyProductsImage" name="readyfoodlistVM[@i].ReadyProductsImage" hidden />
+                                            <input asp-for="@itemFinshFood.BrandFK" name="ReadyFoodLoginVMlist[@i].BrandFK" hidden />
+                                            <input asp-for="@itemFinshFood.ReadyProductsID" name="ReadyFoodLoginVMlist[@i].ReadyProductsID" hidden />
+                                            <input asp-for="@itemFinshFood.ReadyProductsImage" name="ReadyFoodLoginVMlist[@i].ReadyProductsImage" hidden />
 
                                            @if (!string.IsNullOrEmpty(itemFinshFood.ReadyProductsName) || !string.IsNullOrEmpty(itemFinshFood.ReadyProductsImage))
                                             {
@@ -41,7 +41,7 @@
                                                 <div class="col-12 text-center">
                                                     <div>
                                                         <img id="PreviewPhoto1_@(itemFinshFood.ReadyProductsID)"
-                                                             src="https://manuals.befranchisor.com/IMAGES/@(Model.ReadyfoodVM.ReadyProductsID)/@(Model.ReadyfoodVM.ReadyProductsImage)"
+                                                             src="/IMAGES/@(Model.ReadyFoodLoginVM.ReadyProductsID)/@(Model.ReadyFoodLoginVM.ReadyProductsImage)"
                                                              alt="Logo"
                                                              width="125" height="125" style="border: 1px; margin-top: 20px;">
                                                     </div>
@@ -49,7 +49,7 @@
                                                     <div class="form-group mt-2">
                                                         <input type="file" name="file1_@itemFinshFood.ReadyProductsID" class="border-0 shadow mt-5" id="customFile1_@itemFinshFood.ReadyProductsID" onchange="displaySelectedImage(this, 'PreviewPhoto1_@itemFinshFood.ReadyProductsID')">
 
-                                                        <textarea asp-for="@itemFinshFood.ReadyProductsName" class="form-control mt-2" name="readyfoodlistVM[@i].ReadyProductsName"></textarea>
+                                                        <textarea asp-for="@itemFinshFood.ReadyProductsName" class="form-control mt-2" name="ReadyFoodLoginVMlist[@i].ReadyProductsName"></textarea>
                                                         <span asp-validation-for="@itemFinshFood.ReadyProductsName" class="text-danger"></span>
 
                                                     </div>
@@ -65,7 +65,7 @@
                     </table>
                     <div class="modal-footer">
                         <input type="submit" id="saveChange" value=" حفظ التغييرات"
-                         asp-action="FinishProductsIndex" asp-route-id="@Model.ReadyfoodVM.ReadyProductsID"
+                               asp-action="FinishProductsIndex" asp-route-id="@Model.ReadyFoodLoginVM.ReadyProductsID"
                                style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
                     </div>
                 </form>

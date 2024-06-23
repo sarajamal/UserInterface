@@ -1,4 +1,4 @@
-﻿@model Device_toolsVM
+﻿@model LoginTredMarktViewModel
 
 <div class="modal fade" id="Index" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -13,23 +13,23 @@
 
                 <form method="post" class="row" enctype="multipart/form-data" asp-action="Index" asp-controller="Device_tool">
 
-                    <input asp-for="Device_toolVM.DevicesAndToolsID" hidden />
-                    <input asp-for="Device_toolVM.BrandFK" hidden />
+                    <input asp-for="DeviceToolsLoginVM.DevicesAndToolsID" hidden />
+                    <input asp-for="DeviceToolsLoginVM.BrandFK" hidden />
 
-                    <table id="tblDeviceTools" class="table table-bordered table-striped" data-DeviceTools-id="@Model.Device_toolVM.BrandFK">
+                    <table id="tblDeviceTools" class="table table-bordered table-striped" data-DeviceTools-id="@Model.DeviceToolsLoginVM.BrandFK">
 
                         <tbody>
-                            @if (Model.Device_toolVM.BrandFK != 0)
+                            @if (Model.DeviceToolsLoginVM.BrandFK != 0)
                             {
-                                @for (int i = 0; i < Model.Devices_toolsVM.Count; i++)
+                                @for (int i = 0; i < Model.DeviceToolsLoginVMlist.Count; i++)
                                 {
-                                    var itemDevice = Model.Devices_toolsVM[i];
+                                    var itemDevice = Model.DeviceToolsLoginVMlist[i];
                                     <tr>
                                         <td style="text-align:center;">
 
-                                            <input asp-for="@itemDevice.DevicesAndToolsID" name="Devices_toolsVM[@i].DevicesAndToolsID" hidden />
-                                            <input asp-for="@itemDevice.BrandFK" name="Devices_toolsVM[@i].BrandFK" hidden />
-                                            <input asp-for="@itemDevice.DevicesAndTools_Image" name="Devices_toolsVM[@i].DevicesAndTools_Image" hidden />
+                                            <input asp-for="@itemDevice.DevicesAndToolsID" name="DeviceToolsLoginVMlist[@i].DevicesAndToolsID" hidden />
+                                            <input asp-for="@itemDevice.BrandFK" name="DeviceToolsLoginVMlist[@i].BrandFK" hidden />
+                                            <input asp-for="@itemDevice.DevicesAndTools_Image" name="DeviceToolsLoginVMlist[@i].DevicesAndTools_Image" hidden />
 
                                             @if (!string.IsNullOrEmpty(itemDevice.DevicesAndTools_Name) || !string.IsNullOrEmpty(itemDevice.DevicesAndTools_Image))
                                             {
@@ -37,13 +37,13 @@
                                                 <div class="col-12 text-center">
                                                     <div>
                                                         <img id="PreviewPhoto1_@itemDevice.DevicesAndToolsID"
-                                                             src="/IMAGES/@(Model.Device_toolVM.DevicesAndToolsID)/@(Model.Device_toolVM.DevicesAndTools_Image)" width="125" height="125" style="border: 1px; margin-top: 20px;" alt="Device or Tool Image">
+                                                             src="/IMAGES/@(Model.DeviceToolsLoginVM.DevicesAndToolsID)/@(Model.DeviceToolsLoginVM.DevicesAndTools_Image)" width="125" height="125" style="border: 1px; margin-top: 20px;" alt="Device or Tool Image">
                                                     </div>
 
                                                     <div class="form-group mt-2">
                                                         <input type="file" name="file1_@itemDevice.DevicesAndToolsID" class="border-0 shadow mt-5" id="customFile1_@itemDevice.DevicesAndToolsID" onchange="displaySelectedImage(this, 'PreviewPhoto1_@itemDevice.DevicesAndToolsID')">
 
-                                                        <textarea asp-for="@itemDevice.DevicesAndTools_Name" class="form-control mt-2" name="Devices_toolsVM[@i].DevicesAndTools_Name"></textarea>
+                                                        <textarea asp-for="@itemDevice.DevicesAndTools_Name" class="form-control mt-2" name="DeviceToolsLoginVMlist[@i].DevicesAndTools_Name"></textarea>
                                                         <span asp-validation-for="@itemDevice.DevicesAndTools_Name" class="text-danger"></span>
 
                                                     </div>
@@ -59,7 +59,7 @@
 
                     <div class="modal-footer">
                         <input type="submit" id="saveChange" value=" حفظ التغييرات"
-                               asp-action="Index" asp-route-id="@Model.Device_toolVM.BrandFK"
+                               asp-action="Index" asp-route-id="@Model.DeviceToolsLoginVM.BrandFK"
                                style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
                     </div>
                 </form>

@@ -1,4 +1,4 @@
-﻿@model ReadyFoodViewmodel
+﻿@model LoginTredMarktViewModel
 
 <div class="modal fade" id="CreateFinshFoods" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -16,14 +16,14 @@
 
                     <input asp-for="tredMaeketReadyfoodVM.BrandID" hidden />
                      <input asp-for="tredMaeketReadyfoodVM.BrandName" hidden />
-                    <input asp-for="tredMaeketReadyfoodVM.Date" hidden />
+                    <input asp-for="tredMaeketReadyfoodVM.Date1" hidden />
                     <input asp-for="tredMaeketReadyfoodVM.BrandCoverImage" hidden />
                     <input asp-for="tredMaeketReadyfoodVM.BrandFooterImage" hidden />
                     <input asp-for="tredMaeketReadyfoodVM.BrandLogoImage" hidden />
-                    <input asp-for="ReadyfoodVM.ReadyProductsID" hidden />
+                    <input asp-for="ReadyFoodLoginVM.ReadyProductsID" hidden />
 
 
-                    <table id="tblFinishFood" class="table table-style1 table-bordered table-striped" data-FinshFood-id="@Model.ReadyfoodVM.ReadyProductsID">
+                    <table id="tblFinishFood" class="table table-style1 table-bordered table-striped" data-FinshFood-id="@Model.ReadyFoodLoginVM.ReadyProductsID">
                         <thead>
                             <tr>
                                 <th class="col-5" style="text-align:center  ;width:40%">
@@ -47,7 +47,7 @@
                         @{
                             var sortedFoodsName = Model.FoodReadyVMorder.OrderBy(item => item.ReadyProductsOrder).ToList();
                         }
-                        <select asp-for="ReadyfoodVM.ReadyProductsID" class="form-select" id="selectFoodvalues" name="selectFoodReadyValue">
+                        <select asp-for="ReadyFoodLoginVM.ReadyProductsID" class="form-select" id="selectFoodvalues" name="selectFoodReadyValue">
                             <option value="" disabled selected>-- اختر مكان الصف الجديد--</option>
                             @foreach (var item in sortedFoodsName)
                             {

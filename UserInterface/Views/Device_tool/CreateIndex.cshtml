@@ -1,4 +1,4 @@
-﻿@model Device_toolsVM
+﻿@model LoginTredMarktViewModel
 
 <div class="modal fade" id="CreateDeviceTools" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -15,11 +15,11 @@
 
                     <input asp-for="tredMaeketToolsVM.BrandID" hidden />
                      <input asp-for="tredMaeketToolsVM.BrandName" hidden />
-                    <input asp-for="tredMaeketToolsVM.Date" hidden />
+                    <input asp-for="tredMaeketToolsVM.Date1" hidden />
                     <input asp-for="tredMaeketToolsVM.BrandCoverImage" hidden />
                     <input asp-for="tredMaeketToolsVM.BrandLogoImage" hidden />
                     <input asp-for="tredMaeketToolsVM.BrandFooterImage" hidden />                  
-                    <input asp-for="Device_toolVM.DevicesAndToolsID" hidden />
+                    <input asp-for="DeviceToolsLoginVM.DevicesAndToolsID" hidden />
 
                     <table id="tblDeviceTools" class="table table-style1  table-bordered table-striped" data-DeviceTools-id="@Model.tredMaeketToolsVM.BrandID">
                         <thead>
@@ -42,7 +42,7 @@
                         @{
                             var sortedDeviceToolsName = Model.Devices_toolsVMorder.OrderBy(item => item.DevicesAndToolsOrder).ToList();
                         }
-                        <select asp-for="Device_toolVM.DevicesAndToolsID" class="form-select" id="selectDevicetools" name="selectDevicetools">
+                        <select asp-for="DeviceToolsLoginVM.DevicesAndToolsID" class="form-select" id="selectDevicetools" name="selectDevicetools">
                             <option value="" disabled selected>-- اختر مكان الصف الجديد--</option>
                             @foreach (var item in sortedDeviceToolsName)
                             {
