@@ -1,4 +1,4 @@
-﻿@model ProductionVM;
+﻿@model LoginTredMarktViewModel;
 
 <header>
     <div>
@@ -28,7 +28,7 @@
             <input asp-for="Productionvm.ProductImage" hidden />
             <input asp-for="tredMaeketVM.BrandID" hidden />
             <input asp-for="tredMaeketVM.BrandName" hidden />
-            <input asp-for="tredMaeketVM.Date" hidden />
+            <input asp-for="tredMaeketVM.Date1" hidden />
             <input asp-for="tredMaeketVM.BrandCoverImage" hidden />
             <input asp-for="tredMaeketVM.BrandFooterImage" hidden />
             <input asp-for="tredMaeketVM.BrandLogoImage" hidden />
@@ -116,7 +116,7 @@
                                                             <div class="py-5">
                                                                 <button type="button" class="btn btn-danger delete-button"
                                                                         id="deleteButton_@j"
-                                                                        onclick="Deletestep(@itemStep.ProdStepsID)">
+                                                                        onclick="Deletestep2(@itemStep.ProdStepsID)">
                                                                     حذف
                                                                 </button>
                                                             </div>

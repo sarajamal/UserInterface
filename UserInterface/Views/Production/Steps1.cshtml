@@ -11,7 +11,7 @@
             <div class="row">
                 <div class="col-12 text-center">
 
-                    <h2 class="fnt-blue py-2">   تعديل الأصناف </h2>
+                    <h2 class="fnt-blue py-2">   تعديل الإنتاج </h2>
                 </div>
                 <div class="col-12 text-center">
                     @if (Model.Productionvm.ProductionID != 0)
@@ -29,7 +29,7 @@
             <input asp-for="Productionvm.BrandFK" hidden />
             <input asp-for="TredMarktVM.BrandID" hidden />
             <input asp-for="TredMarktVM.BrandName" hidden />
-            <input asp-for="TredMarktVM.Date" hidden />
+            <input asp-for="TredMarktVM.Date1" hidden />
             <input asp-for="TredMarktVM.BrandCoverImage" hidden />
             <input asp-for="TredMarktVM.BrandFooterImage" hidden />
             <input asp-for="TredMarktVM.BrandLogoImage" hidden />
@@ -101,18 +101,18 @@
                             <tbody>
                                 @if (Model.Productionvm.ProductionID != 0)
                                 {
-                                    for (int i = 0; i < Model.stepsVM2.Count; i += 2) // Increment by 2
+                                        for (int i = 0; i < Model.stepsVM2List.Count; i += 2) // Increment by 2
                                     {
                                         <tr>
-                                            @for (int j = i; j < i + 2 && j < Model.stepsVM2.Count; j++) // Loop twice for two steps
+                                            @for (int j = i; j < i + 2 && j < Model.stepsVM2List.Count; j++) // Loop twice for two steps
                                             {
-                                                var itemStep = Model.stepsVM2[j];
+                                                    var itemStep = Model.stepsVM2List[j];
 
                                                 <td style="text-align:center;">
-                                                    <input asp-for="@itemStep.ProdStepsID" name="stepsVM2[@j].ProdStepsID" hidden />
-                                                    <input type="hidden" asp-for="@itemStep.ProductionFK" name="stepsVM2[@j].ProductionFK" />
-                                                    <input asp-for="@itemStep.ProdSImage" name="stepsVM2[@j].ProdSImage" hidden />
-                                                    <input asp-for="@itemStep.ProdStepsNum" name="stepsVM2[@j].ProdStepsNum" hidden />
+                                                        <input asp-for="@itemStep.ProdStepsID" name="stepsVM2List[@j].ProdStepsID" hidden />
+                                                        <input type="hidden" asp-for="@itemStep.ProductionFK" name="stepsVM2List[@j].ProductionFK" />
+                                                        <input asp-for="@itemStep.ProdSImage" name="stepsVM2List[@j].ProdSImage" hidden />
+                                                        <input asp-for="@itemStep.ProdStepsNum" name="stepsVM2List[@j].ProdStepsNum" hidden />
 
                                                     @if (!string.IsNullOrEmpty(itemStep.ProdText) || !string.IsNullOrEmpty(itemStep.ProdSImage) || itemStep.ProdStepsNum != 0)
                                                     {

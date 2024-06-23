@@ -1,4 +1,4 @@
-﻿ @model PreComViewModel;
+﻿ @model LoginTredMarktViewModel;
 
 <header>
     <div>
@@ -31,7 +31,7 @@
             <input asp-for="PreparationVM.BrandFK" hidden />
             <input asp-for="@Model.tredMaeketVM.BrandID" class="form-control" hidden />
             <input asp-for="@Model.tredMaeketVM.BrandName" class="form-control" hidden />
-            <input asp-for="@Model.tredMaeketVM.Date" class="form-control" hidden />
+            <input asp-for="@Model.tredMaeketVM.Date1" class="form-control" hidden />
             <input asp-for="tredMaeketVM.BrandCoverImage" hidden />
             <input asp-for="tredMaeketVM.BrandLogoImage" hidden />
             <input asp-for="tredMaeketVM.BrandFooterImage" hidden />
@@ -117,7 +117,7 @@
                                                             <div class="py-5">
                                                                 <button type="button" class="btn btn-danger delete-button"
                                                                         id="deleteButton_@j"
-                                                                        onclick="Deletestep(@itemStep.PrepStepsID)">
+                                                                        onclick="Deletestep2(@itemStep.PrepStepsID)">
                                                                     حذف
                                                                 </button>
                                                             </div>
@@ -177,7 +177,7 @@
 
                                     <div class="form-group col-12 py-3 fxcc">
                                         <input type="submit" id="saveChange"
-                                               value=" حفظ التغييرات" href="@Url.Action("RedirectToCreateSteps",
+                                               value=" حفظ " href="@Url.Action("RedirectToCreateSteps",
                                                   "Preparation", new { PreparationID = Model.PreparationVM.PreparationsID,brandFK = Model.WelcomTredMarketPrecomponent.TredMarktVM.BrandID })" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
                                     </div>
                                 </div>

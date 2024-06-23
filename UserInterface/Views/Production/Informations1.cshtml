@@ -24,12 +24,11 @@
 
         <form method="post" class="row" enctype="multipart/form-data" data-id="@TempData["ID"]" id="myForm">
             <input asp-for="Productionvm.ProductionID" hidden />
-            <input asp-for="Productionvm.ProductType" hidden />
             <input asp-for="Productionvm.ProductImage" hidden />
             <input asp-for="Productionvm.BrandFK" hidden />
             <input asp-for="TredMarktVM.BrandID" hidden />
             <input asp-for="TredMarktVM.BrandName" hidden />
-            <input asp-for="TredMarktVM.Date" hidden />
+            <input asp-for="TredMarktVM.Date1" hidden />
             <input asp-for="TredMarktVM.BrandCoverImage" hidden />
             <input asp-for="TredMarktVM.BrandFooterImage" hidden />
             <input asp-for="TredMarktVM.BrandLogoImage" hidden />
@@ -124,17 +123,10 @@
                                         </div>
 
                                         <div class="col-md-6 p-2">
-                                            <div class="form-group">
-                                                @if (Model.Productionvm.ProductionID != 0)
-                                                {
+                                            <div class="form-group">                                               
                                                     <label asp-for="Productionvm.ProductType" class="control-label">نوع الصنف</label>
                                                     <input asp-for="Productionvm.ProductType" class="form-control" />
-                                                }
-
-                                                <input asp-for="Productionvm.ProductType" class="form-control" id="customTypeInput" style="display: none" />
-                                                <div id="errorMessage" style="color: red; display: none;" class="py-3">
-                                                    . يجب ادخال نوع الصنف *
-                                                </div>
+                                                    <span asp-validation-for=" Productionvm.ProductType" class="text-danger"></span>
                                             </div>
                                         </div>
 

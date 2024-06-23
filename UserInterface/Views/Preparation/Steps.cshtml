@@ -5,42 +5,35 @@
         @await Html.PartialAsync("_HeaderPartial", Model.WelcomTredMarketPrecomponent)
     </div>
 </header>
+
 <body>
     <div class="card shadow border-0 my-4 py-4">
         <div class="card-header bg-navbar bf-bb bg-gradient ml-0 py-3">
             <div class="row">
                 <div class="col-12 text-center">
-
-                    <h2 class="fnt-blue py-2"> تعديل التحضيرات </h2>
+                    <h2 class="fnt-blue py-2">تعديل التحضيرات</h2>
                 </div>
                 <div class="col-12 text-center">
                     @if (Model.PreparationVM.PreparationsID != 0)
                     {
-                        <h4 class="fnt-blue py-2"> " @Model.PreparationVM.prepareName " </h4>
+                        <h4 class="fnt-blue py-2"> " @Model.PreparationVM.prepareName "</h4>
                     }
                 </div>
             </div>
         </div>
 
-
         <form method="post" class="row" enctype="multipart/form-data">
-
             <input asp-for="PreparationVM.PreparationsID" hidden />
             <input asp-for="PreparationVM.BrandFK" hidden />
             <input asp-for="PreparationVM.prepareImage" hidden />
-            <input asp-for="TredMarktVM.Date" hidden />
+            <input asp-for="TredMarktVM.Date1" hidden />
             <input asp-for="TredMarktVM.BrandCoverImage" hidden />
             <input asp-for="TredMarktVM.BrandLogoImage" hidden />
             <input asp-for="TredMarktVM.BrandFooterImage" hidden />
-            @* <input type="hidden" id="order-input" name="PreparationVM.Order" value="0.1" />*@
-
 
             <div class="card-body p-4 py-4">
                 <div class="border p-3">
-
-                    @*added this class main-container-table*@
                     <div class="main-container-table">
-
                         <div id="exTab11111" class="container">
                             <!-- Tab table -->
                             <table class="table table-bordered">
@@ -53,103 +46,81 @@
                                             <a href="@Url.Action("RedirectToComponent", "Preparation", new { PreparationID = Model.PreparationVM.PreparationsID, brandFK = Model.PreparationVM.BrandFK })">المكونات</a>
                                         </td>
                                         <td>
-                                    <a href="@Url.Action("RedirectToTools", "Preparation", new { PreparationID = Model.PreparationVM.PreparationsID, brandFK = Model.PreparationVM.BrandFK })">الأدوات</a>
+                                            <a href="@Url.Action("RedirectToTools", "Preparation", new { PreparationID = Model.PreparationVM.PreparationsID, brandFK = Model.PreparationVM.BrandFK })">الأدوات</a>
                                         </td>
                                         <td>
-                                         <a href="@Url.Action("RedirectToSteps", "Preparation", new { PreparationID = Model.PreparationVM.PreparationsID, brandFK = Model.PreparationVM.BrandFK })">الخطوات</a>
+                                            <a href="@Url.Action("RedirectToSteps", "Preparation", new { PreparationID = Model.PreparationVM.PreparationsID, brandFK = Model.PreparationVM.BrandFK })">الخطوات</a>
                                         </td>
-                                        </tr>
+                                    </tr>
                                 </tbody>
                             </table>
 
-                            @*الخطوات*@
-
-                                    <div class="form-group col-4 py-2 ">
-                                        <h4 style="text-align:right"> الخطوات</h4>
-                                    </div>
-                                    <table id="tblSteps" class="table table-bordered table-striped" data-preparation-id="@Model.PreparationVM.PreparationsID">
-
-                                        <tbody>
-                                            @if (Model.PreparationVM.PreparationsID != 0)
-                                            {
-                                                for (int i = 0; i < Model.stepsVM.Count; i += 2) // Increment by 2
+                            <!-- Steps -->
+                            <div class="form-group col-4 py-2">
+                                <h4 style="text-align:right">الخطوات</h4>
+                            </div>
+                            <table id="tblSteps" class="table table-bordered table-striped" data-preparation-id="@Model.PreparationVM.PreparationsID">
+                                <tbody>
+                                    @if (Model.PreparationVM.PreparationsID != 0)
+                                    {
+                                        for (int i = 0; i < Model.stepsVM.Count; i += 2) // Increment by 2
+                                        {
+                                            <tr>
+                                                @for (int j = i; j < i + 2 && j < Model.stepsVM.Count; j++) // Loop twice for two steps
                                                 {
-                                                    <tr>
-                                                        @for (int j = i; j < i + 2 && j < Model.stepsVM.Count; j++) // Loop twice for two steps
+                                                    var itemStep = Model.stepsVM[j];
+                                                    <td style="text-align:center;">
+                                                        <input asp-for="@itemStep.PrepStepsID" name="stepsVM[@j].PrepStepsID" hidden />
+                                                        <input type="hidden" asp-for="@itemStep.PreparationsFK" name="stepsVM[@j].PreparationsFK" />
+                                                        <input asp-for="@itemStep.PrepImage" name="stepsVM[@j].PrepImage" hidden />
+                                                        <input asp-for="@itemStep.PrepStepsNum" name="stepsVM[@j].PrepStepsNum" hidden />
+                                                        @if (!string.IsNullOrEmpty(itemStep.PrepText) || !string.IsNullOrEmpty(itemStep.PrepImage) || itemStep.PrepStepsNum != 0)
                                                         {
-                                                            var itemStep = Model.stepsVM[j];
-
-                                                            <td style="text-align:center;">
-                                                                <input asp-for="@itemStep.PrepStepsID" name="stepsVM[@j].PrepStepsID" hidden />
-                                                                <input type="hidden" asp-for="@itemStep.PreparationsFK" name="stepsVM[@j].PreparationsFK" />
-                                                                <input asp-for="@itemStep.PrepImage" name="stepsVM[@j].PrepImage" hidden />
-                                                                <input asp-for="@itemStep.PrepStepsNum" name="stepsVM[@j].PrepStepsNum" hidden />
-                                                              @if (!string.IsNullOrEmpty(itemStep.PrepText) || !string.IsNullOrEmpty(itemStep.PrepImage) || itemStep.PrepStepsNum != 0)
-                                                                {
-                                                                    <div class="py-5">
-                                                                        <button type="button" class="btn btn-danger delete-button"
-                                                                                id="deleteButton_@j"
-                                                                                onclick="Deletestep(@itemStep.PrepStepsID)">
-                                                                            حذف
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="col-12 text-center">
-                                                                        <div>
-                                                                            @itemStep.PrepStepsNum
-                                                                        </div>
-                                                                        <div>
-                                                                            <img src="@Url.Content("~/IMAGES/" + itemStep.PrepStepsID + "/" + itemStep.PrepImage)"
-                                                                                 id="PreviewPhoto1_@itemStep.PrepStepsID" width="125" height="125" style="border: 1px; margin-top: 20px;">
-                                                                        </div>
-                                                                        <div class="form-group mt-2">
-                                                                            <input type="file" name="file1_@itemStep.PrepStepsID" class="border-0 shadow mt-5" id="customFile1_@itemStep.PrepStepsID"
-                                                                                   data-preview-id="PreviewPhoto1_@itemStep.PrepStepsID"
-                                                                                   onchange="displaySelectedImage(this,'PreviewPhoto1_@itemStep.PrepStepsID')" />
-
-                                                                            <textarea asp-for="@itemStep.PrepText" class="form-control mt-2" name="stepsVM[@j].PrepText"></textarea>
-                                                                            <span asp-validation-for="@itemStep.PrepText" class="text-danger"></span>
-                                                                        </div>
-                                                                    </div>
-
-                                                                } 
-                                                            </td>
+                                                            <div class="py-5">
+                                                                <button type="button" class="btn btn-danger delete-button" id="deleteButton_@j" onclick="Deletestep(@itemStep.PrepStepsID)">حذف</button>
+                                                            </div>
+                                                            <div class="col-12 text-center">
+                                                                <div>@itemStep.PrepStepsNum</div>
+                                                                <div>
+                                                                    <img src="@Url.Content("~/IMAGES/" + itemStep.PrepStepsID + "/" + itemStep.PrepImage)" id="PreviewPhoto1_@itemStep.PrepStepsID" width="125" height="125" style="border: 1px; margin-top: 20px;" />
+                                                                </div>
+                                                                <div class="form-group mt-2">
+                                                                    <input type="file" name="file1_@itemStep.PrepStepsID" class="border-0 shadow mt-5" id="customFile1_@itemStep.PrepStepsID" data-preview-id="PreviewPhoto1_@itemStep.PrepStepsID" onchange="displaySelectedImage(this, 'PreviewPhoto1_@itemStep.PrepStepsID')" />
+                                                                    <textarea asp-for="@itemStep.PrepText" class="form-control mt-2" name="stepsVM[@j].PrepText"></textarea>
+                                                                    <span asp-validation-for="@itemStep.PrepText" class="text-danger"></span>
+                                                                </div>
+                                                            </div>
                                                         }
-                                                    </tr>
+                                                    </td>
                                                 }
-                                            }
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
 
-                                        </tbody>
-                                    </table>
+                            <!-- Add new steps button -->
+                            <div class="form-group col-12 py-2">
+                                <div style="text-align:right;">
+                                    <button type="button" id="addStepButton" class="btn btn-style3 my-3" onclick="AddnewRowstepsUpdate('@Model.PreparationVM.PreparationsID')">إضافة خطوات جديدة</button>
+                                </div>
+                            </div>
 
-                                    @* زر إضافة خطوات جديدة *@
-                                    <tr>
-                                        <td colspan="1" style="text-align:right;">
-
-                                            <button type="button" id="addStepButton" class="btn btn-style3 my-3" onclick="AddnewRowstepsUpdate('@Model.PreparationVM.PreparationsID')" abled>إضافة خطوات جديدة </button>
-
-
-                                        </td>
-                                    </tr>
-
-                                    <div class="form-group col-12 py-2">
-                                        <div style="text-align: left;">
-
-                                            <div class="form-group col-12 py-3 fxcc">
-                                                <input type="submit" id="saveChange"
-                                                       value=" حفظ التغييرات" href="@Url.Action("RedirectToSteps",
-                                "Preparation", new { PreparationID = Model.PreparationVM.PreparationsID,brandFK = Model.WelcomTredMarketPrecomponent.TredMarktVM.BrandID })" style="text-align:center" class="btn btn-style1 fnt-white me-3" abled />
-                                            </div>
-                                        </div>
+                            <!-- Save changes button -->
+                            <div class="form-group col-12 py-2">
+                                <div style="text-align:left;">
+                                    <div class="form-group col-12 py-3 fxcc">
+                                        <input type="submit" id="saveChange" value="حفظ التغييرات" href="@Url.Action("RedirectToSteps", "Preparation", new { PreparationID = Model.PreparationVM.PreparationsID, brandFK = Model.WelcomTredMarketPrecomponent.TredMarktVM.BrandID })" class="btn btn-style1 fnt-white me-3" />
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
     </div>
-
 </body>
-
 @* 
 <script>
     function displaySelectedImage(input, imgId) {

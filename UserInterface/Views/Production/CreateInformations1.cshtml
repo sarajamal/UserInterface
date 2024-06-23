@@ -1,4 +1,4 @@
-﻿@model ProductionVM;
+﻿@model LoginTredMarktViewModel;
 
 <header>
     <div>
@@ -28,7 +28,7 @@
             <input asp-for="Productionvm.ProductImage" hidden />
             <input asp-for="tredMaeketVM.BrandID" hidden />
              <input asp-for="tredMaeketVM.BrandName" hidden />
-            <input asp-for="tredMaeketVM.Date" hidden />
+            <input asp-for="tredMaeketVM.Date1" hidden />
             <input asp-for="tredMaeketVM.BrandCoverImage" hidden />
             <input asp-for="tredMaeketVM.BrandFooterImage" hidden />
             <input asp-for="tredMaeketVM.BrandLogoImage" hidden />
@@ -242,7 +242,7 @@
 </body>
 
 @* يجب إدخال نوع الصنف والصورة *@
-<script>
+@* <script>
     document.getElementById('submitButton').addEventListener('click', function (event) {
         let isValid = true;
 
@@ -268,7 +268,7 @@
             event.preventDefault(); // Prevent form submission if validation fails
         }
     });
-</script>
+</script> *@
 
 @* 
 <script>
@@ -316,29 +316,7 @@
     });
 </script> *@
 
-@* رسالة يجب إدخال صورة التأصناف *@
-@* <script>
-    document.getElementById("submitButton").addEventListener("click", function (e) {
-        var customFileInput = document.getElementById("customFile");
-        var selectPreparation1 = document.getElementById("selectPreparation1");
-        var customTypeInput = document.getElementById("customTypeInput");
-        var errorMessage = document.getElementById("errorMessage");
 
-        if (customFileInput.files.length === 0) {
-            errorMessage.style.display = "block";
-            e.preventDefault(); // Prevent the form from being submitted
-
-            var customFileOffset = customFileInput.getBoundingClientRect().top + window.scrollY;
-            window.scrollTo({
-                top: customFileOffset,
-                behavior: "smooth"
-            });
-        } else {
-            errorMessage.style.display = "none";
-        }
-    });
-</script>
- *@
 
 @section Scripts {
 

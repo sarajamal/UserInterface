@@ -28,7 +28,7 @@
             <input asp-for="PreparationVM.PreparationsID" hidden />
             <input asp-for="PreparationVM.BrandFK" hidden />
             <input asp-for="PreparationVM.prepareImage" hidden />
-            <input asp-for="TredMarktVM.Date" hidden />
+            <input asp-for="TredMarktVM.Date1" hidden />
             <input asp-for="TredMarktVM.BrandCoverImage" hidden />
             <input asp-for="TredMarktVM.BrandLogoImage" hidden />
             <input asp-for="TredMarktVM.BrandFooterImage" hidden />
@@ -83,17 +83,17 @@
                                 <tbody>
                                     @if (Model.PreparationVM.PreparationsID != 0)
                                     {
-                                        @for (int i = 0; i < Model.ToolsVarityVM.Count; i++)
+                                        @for (int i = 0; i < Model.ToolsVarityVMList.Count; i++)
                                         {
-                                            var item = Model.ToolsVarityVM[i];
+                                            var item = Model.ToolsVarityVMList[i];
                                             <tr>
                                                 <td style="text-align:center;">@(i + 1)</td>
                                                 <td>
                                                     @*Id is important but should be hidden*@
-                                                    <input asp-for="@item.PrepToolsID" name="ToolsVarityVM[@i].PrepToolsID" hidden />
-                                                    <input asp-for="@item.PreparationsFK" name="ToolsVarityVM[@i].PreparationsFK" hidden />
+                                                    <input asp-for="@item.PrepToolsID" name="ToolsVarityVMList[@i].PrepToolsID" hidden />
+                                                    <input asp-for="@item.PreparationsFK" name="ToolsVarityVMList[@i].PreparationsFK" hidden />
 
-                                                    <input asp-for="@item.PrepTools" class="form-control" name="ToolsVarityVM[@i].PrepTools" />
+                                                    <input asp-for="@item.PrepTools" class="form-control" name="ToolsVarityVMList[@i].PrepTools" />
                                                     <span asp-validation-for="@item.PrepTools" class="text-danger"></span>
                                                 </td>
 

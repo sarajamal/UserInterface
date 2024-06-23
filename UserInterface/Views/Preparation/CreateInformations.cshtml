@@ -1,4 +1,4 @@
-﻿ @model PreComViewModel;
+﻿ @model LoginTredMarktViewModel
 
 <header>
     <div>
@@ -32,7 +32,7 @@
 
             <input asp-for="@Model.tredMaeketVM.BrandID" class="form-control" hidden />
             <input asp-for="@Model.tredMaeketVM.BrandName" class="form-control" hidden />
-            <input asp-for="@Model.tredMaeketVM.Date" class="form-control" hidden />
+            <input asp-for="@Model.tredMaeketVM.Date1" class="form-control" hidden />
             <input asp-for="tredMaeketVM.BrandCoverImage" hidden />
             <input asp-for="tredMaeketVM.BrandLogoImage" hidden />
             <input asp-for="tredMaeketVM.BrandFooterImage" hidden />
@@ -438,12 +438,12 @@
                                 <div class="form-group col-12 py-5 fxcc">
                                     <input asp-for="@Model.tredMaeketVM.BrandID" class="form-control" hidden />
                                      <input asp-for="@Model.tredMaeketVM.BrandName" class="form-control" hidden />
-                                    <input asp-for="@Model.tredMaeketVM.Date" class="form-control" hidden />
+                                    <input asp-for="@Model.tredMaeketVM.Date111111" class="form-control" hidden />
                                     <input asp-for="tredMaeketVM.BrandCoverImage" hidden />
                                     <input asp-for="tredMaeketVM.BrandLogoImage" hidden />
                                     <input asp-for="tredMaeketVM.BrandFooterImage" hidden />
 
-                                    <input type="button" onclick="validateAndSubmit()" value=" حفظ"   
+                                    <input type="button" onclick="valiDate11111AndSubmit()" value=" حفظ"   
                                            style="text-align:center" class="btn btn-style1 fnt-white me-3" id="submitButton" />
                                 </div>
                             </div>
@@ -476,8 +476,8 @@
 </script>
 
 
-
-<script>
+@* رسالة يجب إضافة صورة *@
+@* <script>
     document.getElementById("submitButton").addEventListener("click", function (e) {
         var customFileInput = document.getElementById("customFile");
         var errorMessage = document.getElementById("errorMessage");
@@ -496,61 +496,12 @@
             errorMessage.style.display = "none";
         }
     });
-</script>
-@*<script>
-    var currentNumber = 1;
-
-    function validateرقم_الخطوة1(input, index) {
-        console.log("validateرقم_الخطوة1 function called"); // Debugging
-        var رقم_الخطوة1 = parseInt(input.value);
-
-        if (index === 0) {
-            // If this is the first input, ensure it's 1
-            if (رقم_الخطوة1 !== 1) {
-                input.setCustomValidity("الرقم الأول يجب أن يكون 1");
-            } else {
-                input.setCustomValidity('');
-                currentNumber = 3; // Reset currentNumber to 1 for the next input
-            }
-        } else {
-            // For subsequent inputs, enforce sequential incrementation
-            if (isNaN(رقم_الخطوة1) || رقم_الخطوة1 !== currentNumber) {
-                input.setCustomValidity("الرقم يجب أن يكون " + currentNumber);
-            } else {
-                input.setCustomValidity('');
-                currentNumber += 2; // Increment the current number for the next validation
-            }
-        }
-    }
-</script>
-
-<script>
-var currentNumber = 2;
-
-function validateرقم_الخطوة2(input, index) {
-        console.log("validateرقم_الخطوة2 function called"); // Corrected function name
-    var رقم_الخطوة2 = parseInt(input.value);
-
-    if (index === 0) {
-        // If this is the first input, ensure it's 2 (not 1)
-        if (رقم_الخطوة2 !== 2) { // Corrected expected value
-            input.setCustomValidity("الرقم الأول يجب أن يكون 2");
-        } else {
-            input.setCustomValidity('');
-            currentNumber = 4; // Reset currentNumber to 2 for the next input
-        }
-    } else {
-        // For subsequent inputs, enforce sequential incrementation
-        if (isNaN(رقم_الخطوة2) || رقم_الخطوة2 !== currentNumber) {
-            input.setCustomValidity("الرقم يجب أن يكون " + currentNumber);
-        } else {
-            input.setCustomValidity('');
-            currentNumber += 2; // Increment the current number by 2 for the next validation
-        }
-    }
-}
-
 </script> *@
+
+
+
+
+
 
 @section Scripts{
 

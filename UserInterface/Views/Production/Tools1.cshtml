@@ -29,7 +29,7 @@
             <input asp-for="Productionvm.BrandFK" hidden />
             <input asp-for="TredMarktVM.BrandID" hidden />
             <input asp-for="TredMarktVM.BrandName" hidden />
-            <input asp-for="TredMarktVM.Date" hidden />
+            <input asp-for="TredMarktVM.Date1" hidden />
             <input asp-for="TredMarktVM.BrandCoverImage" hidden />
             <input asp-for="TredMarktVM.BrandFooterImage" hidden />
             <input asp-for="TredMarktVM.BrandLogoImage" hidden />
@@ -114,17 +114,17 @@
                             <tbody>
                                 @if (Model.Productionvm.ProductionID != 0)
                                 {
-                                    @for (int i = 0; i < Model.ToolsVarityVM2.Count; i++)
+                                    @for (int i = 0; i < Model.ToolsVarityVM2List.Count; i++)
                                     {
-                                        var item = Model.ToolsVarityVM2[i];
+                                            var item = Model.ToolsVarityVM2List[i];
                                         <tr>
                                        <td style="text-align:center;">@(i + 1)</td>
                                             <td>
 
-                                                <input asp-for="@item.ProdToolsID" name="ToolsVarityVM2[@i].ProdToolsID" hidden />
-                                                <input asp-for="@item.ProductionFK" name="ToolsVarityVM2[@i].ProductionFK" hidden />
+                                                    <input asp-for="@item.ProdToolsID" name="ToolsVarityVM2List[@i].ProdToolsID" hidden />
+                                                    <input asp-for="@item.ProductionFK" name="ToolsVarityVM2List[@i].ProductionFK" hidden />
 
-                                                <input asp-for="@item.ProdTools" class="form-control" name="ToolsVarityVM2[@i].ProdTools" />
+                                                    <input asp-for="@item.ProdTools" class="form-control" name="ToolsVarityVM2List[@i].ProdTools" />
                                                 <span asp-validation-for="@item.ProdTools" class="text-danger"></span>
                                             </td>
 
