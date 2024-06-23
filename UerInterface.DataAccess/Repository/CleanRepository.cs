@@ -15,11 +15,12 @@ namespace Test12.DataAccess.Repository
 
         public void Update(Cleaning obj)
         {
-            var objFormDb = _context.Cleaning.FirstOrDefault(u => u.BrandFK == obj.BrandFK);
+            var objFormDb = _context.Cleaning.FirstOrDefault(u => u.CleaningID == obj.CleaningID);
             if (objFormDb != null)
             {
 
                 objFormDb.DeviceName = obj.DeviceName;
+                objFormDb.Note = obj.Note;
 
                 _context.SaveChanges();
             }

@@ -116,14 +116,14 @@ namespace Test12.DataAccess.Repository
             if (user != null)
             {
                 // Check if LastLoginTime is not set
-                if (user.Date == null || user.Date == DateTime.MinValue)
+                if (user.Date1 == null || user.Date1 == DateTime.MinValue)
                 {
                     // Set a default value here before saving
-                    user.Date = DateTime.UtcNow; // You can set any default value you prefer
+                    user.Date1 = DateTime.UtcNow; // You can set any default value you prefer
                 }
                 else
                 {
-                    user.Date = lastLoginTime; // Update the last login time
+                    user.Date1 = lastLoginTime; // Update the last login time
                 }
 
                 _context.SaveChanges();

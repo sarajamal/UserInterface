@@ -24,7 +24,7 @@ namespace Test12.DataAccess.Repository
 
         public ICleanRepository CleanRepository { get; private set; }
         public IStepsCleanRepository3 StepsCleanRepository3 { get; private set; }
-        public IDevice_ToolsRepository Device_tools1 { get; private set; }
+        public IDevice_ToolsRepository DevicesAndTools { get; private set; }
         public IMainsectionRepository MainsectionRepository { get; private set; }
         public IFoodRepository FoodRepository { get; private set; }
         public IReadyFoodRepository readyFoodRepository { get; private set; }
@@ -45,7 +45,7 @@ namespace Test12.DataAccess.Repository
             loginRepository = new LoginReposiroty(_context);
             CleanRepository = new CleanRepository(_context);
             StepsCleanRepository3 = new StepsCleanRepository3(_context);
-            Device_tools1 = new Device_ToolsRepository(_context);
+            DevicesAndTools = new Device_ToolsRepository(_context);
             MainsectionRepository = new MainsectionRepository(_context);
             FoodRepository = new FoodRepository(_context);
             readyFoodRepository = new ReadyFoodRepository(_context);

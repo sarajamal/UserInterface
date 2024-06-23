@@ -16,7 +16,7 @@ namespace Test12.DataAccess.Repository.IRepository
         ILoginRepository loginRepository { get; }
         ICleanRepository CleanRepository { get; }
         IStepsCleanRepository3 StepsCleanRepository3 { get; }
-        IDevice_ToolsRepository Device_tools1 { get; }
+        IDevice_ToolsRepository DevicesAndTools { get; }
         IMainsectionRepository MainsectionRepository { get; }
         IFoodRepository FoodRepository { get; }
         IReadyFoodRepository readyFoodRepository { get; }
