@@ -27,28 +27,16 @@
     font-style: normal;
 }
 
-/*this for «·’›Õ… «·—∆Ì”Ì… «·„ÊÃÊœ… ›Ì WelcomeTredMarket*/ 
-.styled-link {
-    display: inline-block;
-    padding: 0.375rem 0.75rem; /* Button-like padding */
-    font-size: 1rem; /* Matching the button font size */
-    font-weight: 400;
-    line-height: 1.5;
-    text-align: center;
-    color: #fff !important; /* White text */
-    background-color: #35A8DF; /* The color you specified */
-    border: 1px solid #35A8DF; /* Border color to match background */
-    text-decoration: none; /* Remove underline from links */
-    border-radius: 0.25rem; /* Rounded corners like the button */
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
 
-.styled-link:hover, .styled-link:focus {
-    color: #fff; /* Keep text white on hover/focus */
-    background-color: #2c99c6; /* Slightly darker shade on hover/focus */
-    border-color: #2c99c6; /* Border color to match */
+.logout-button {
+    font-weight: bold; /* Bold */
+    font-style: italic; /* Italic */
+    text-decoration: underline; /* Underline */
+    color: #035a8d; /* Optional: Set color */
+    background: none; /* Ensure no background if using btn-unstyled */
+    border: none; /* Ensure no border if using btn-unstyled */
+    cursor: pointer; /* Pointer cursor on hover */
 }
-
 html {
     font-size: 14px;
 }
@@ -260,9 +248,7 @@ form-control:focus {
     border-bottom-color: rgb(30, 125, 193);
     font-family: 'Almarai', sans-serif;
 }
-    .modal-header table tbody tr.img-upload  {
-        max-width: 
-    }
+   
 
 .modal-footer {
     justify-content: center;
@@ -279,21 +265,24 @@ form-control:focus {
     }
     /*======================= Custom CSS ============================================*/
     /*------------------Home index Page*/
-    .container.login-sec {
-        
-        max-width: 600px !important;
-    }
-.login-sec .card {
-        
-        box-shadow: rgba(103, 104, 105, 0.8) 2px 2px 8px 4px;
-        background-color: rgb(255, 255, 255);
-        border-radius: 20px;
+.container.login-sec {
+    max-width: 600px !important;
 }
-.login-fld:focus .login-lbl {
-        display: none;
-    }
-login-lbl{
 
+.login-sec .card {
+    box-shadow: rgba(103, 104, 105, 0.8) 2px 2px 8px 4px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 20px;
+}
+
+.login-sec input:focus + .login-lbl {
+    display: none; /* Assuming you want to hide labels when input is focused, adjust selector accordingly */
+}
+
+login-lbl {
+    color: #333; /* Default text color for labels */
+    font-size: 14px; /* Default font size for labels */
+    display: block; /* Make sure labels are block level by default */
 }
 /*------------------Home userInformation Page*/
 .main-container {
@@ -316,9 +305,11 @@ login-lbl{
 .main-container .welcome-name h1 {
         font-size: 20px;
         padding: 10px;
-}
+        text-align: right;
+        margin-right:5px;
+    }
 .main-container .welcome-name{
-    width: 25%;
+    width: 40%;
 }
 .main-container .main-sec .row {
     padding: 10px 5px;
@@ -334,12 +325,13 @@ login-lbl{
         cursor: pointer;
     }
 
-.last-login-div {  
-    margin:0;
-    padding :10px;
-    font-size:16px;
-    font-weight:500;
-    width: 25%;
+.last-login-div {
+    margin-left: 5px;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    width: 40%;
+    text-align: left; /* Centers text horizontally within the element */
 }
 /*------------------Forget Password Page*/
 section.forget-pass {
@@ -369,7 +361,7 @@ div .container.frgt {
 /*nav bar */
 header .navbar {
     background-color: #Fff;
-    border-bottom: 3px solid;
+    border-bottom: none;
     border-color: #35A8DF;
 }
 
@@ -392,11 +384,7 @@ header .offcanvas-body {
 header .navbar .nav-item .nav-link, header .navbar .nav-item .nav-link:hover {
     color: rgb(52, 92, 136);
     font-family: 'Almarai', sans-serif;
-} {
-    color: rgb(52, 92, 136);
-    font-family: 'Almarai', sans-serif;
-}
-
+} 
 header .navbar .nav-item:hover {
     background: rgba(132, 189, 224, 0.46);
     color: rgb(52, 92, 136);
@@ -424,7 +412,7 @@ label{
     position: absolute;
     bottom: 0;
     width: 100%;
-    margin: 10px 0 0 0;
+    margin: 12px 0 0 0;
     padding: 5px;
     background-color: #676869;
     vertical-align: middle;
@@ -548,4 +536,245 @@ table input[type="file"]{
     padding: 0 4px; /* Assuming you want the same padding for all */
     text-align: center;
     font-size: medium;
+}
+
+/*-----------------------------Home-UserInterface-Page*/
+.card-Welcom {
+    margin-top: 50px;
+    background-color: #fff;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    max-width: 900px; /* Important to limit the card width */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    padding: 20px; /* Added padding for content spacing */
+}
+
+.welcome-header {
+    text-align: center;
+    margin-top: 10px; /* Reduced top margin */
+    font-size: 24px; /* Adjusted font size for better readability */
+    color: #035a8d; /* Dark blue color for text */
+}
+
+.btn-style22 {
+    font-family: 'Almarai', sans-serif;
+    background-color: #035a8d; /* Dark blue color */
+    color: white;
+    border: none;
+    text-align: center;
+    font-size: 16px; /* Adjusted font size */
+    padding: 10px 20px; /* Adjusted padding for better clickability */
+    font-weight: bold;
+    width: auto;
+    display: inline-block;
+    margin-top: 20px; /* Adjusted top margin for button */
+    border-radius: 5px; /* Rounded corners for buttons */
+    transition: background-color 0.3s ease; /* Smooth transition on hover */
+}
+
+    .btn-style22:hover {
+        background-color: #35A8DF; /* Blue on hover */
+        color: #fff;
+    }
+
+/* Additional class for button margin */
+.btn-margin {
+    margin-top: 10px; /* Adds margin at the top of the button */
+}
+
+.rowCard {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col-sm-12-card {
+    flex: 1 1 100%;
+}
+
+.col-md-6-card {
+    flex: 1 1 50%;
+    padding: 20px;
+}
+
+.text-center img {
+    max-height: 150px; /* Increased max height for better visibility */
+    border-radius: 10px; /* Rounded corners for images */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow for images */
+}
+
+/* Navbar Styles */
+header {
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    color: #035a8d; /* Default dark blue color for text */
+    text-decoration: none; /* Remove underline from links */
+}
+
+    .navbar-brand small {
+        color: #035a8d; /* Dark blue color for BrandName */
+        transition: color 0.3s ease-in-out;
+        margin-left: 8px;
+    }
+
+    .navbar-brand:hover small {
+        color: #35A8DF; /* Lighter blue color on hover */
+    }
+
+    .navbar-brand img {
+        max-height: 50px; /* Smaller max height for the navbar */
+        border-radius: 5px; /* Rounded corners for images */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow for images */
+        transition: transform 0.2s ease-in-out;
+        margin-left: 8px;
+    }
+
+        .navbar-brand img:hover {
+            transform: scale(1.05);
+        }
+
+
+.btn-unstyled {
+    font-size: 16px;
+    font-weight: 500;
+    color: #035a8d;
+    background: none;
+    border: none;
+    padding: 0;
+    margin-left: 15px;
+    transition: color 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+    .btn-unstyled:hover {
+        color: #35A8DF;
+    }
+
+.styled-link {
+    font-size: 16px;
+    font-weight: 500;
+    color: #035a8d;
+    background: none;
+    border: none;
+    padding: 0;
+    margin-left: 15px;
+    transition: color 0.2s ease-in-out;
+    cursor: pointer;
+}
+    .styled-link:hover {
+        color: #35A8DF;
+    }
+
+/* Menu List Styles */
+#Menu-list {
+    top: 5rem;
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    padding: 0;
+}
+
+    #Menu-list ul {
+        padding: 0;
+        margin: 0;
+    }
+
+        #Menu-list ul::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        #Menu-list ul::-webkit-scrollbar-track {
+            background-color: #f1f1f1;
+        }
+
+        #Menu-list ul::-webkit-scrollbar-thumb {
+            background-color: #c1c1c1;
+            border-radius: 10px;
+        }
+
+            #Menu-list ul::-webkit-scrollbar-thumb:hover {
+                background-color: #a0a0a0;
+            }
+
+.Menu-item {
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+    .Menu-item:hover {
+        background-color: #f8f9fa;
+    }
+
+    .Menu-item a {
+        display: block;
+        width: 100%;
+        height: 100%;
+        text-decoration: none;
+        color: #035a8d; /* Changed to fnt-blue */
+    }
+
+    .Menu-item:hover a {
+        color: #035a8d !important;
+    }
+/* Card and Table Styles */
+
+/* Table Styles */
+.table-style123 {
+    width: 60%;
+    margin-bottom: 1rem;
+    color: #212529;
+}
+
+.table-style123 th, .table-style1 td {
+    padding: 1rem;
+    vertical-align: middle;
+    border-top: 1px solid #dee2e6;
+}
+
+.table-style123 thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+    background-color: #035a8d;
+    color: white;
+    font-weight: bold;
+    padding: 1rem;
+    text-align: center;
+    border-radius: 0 0 10px 10px;
+}
+
+.table-style123 tbody tr:nth-child(odd) {
+    background-color: #f8f9fa;
+}
+
+.table-style123 tbody tr:hover {
+    background-color: #e9ecef;
+}
+
+
+.custom-dark-bg {
+    background-color: #035a8d;
+    color: #ffffff;
+}
+
+.fnt-blue {
+    color: #035a8d !important;
+}
+
+.btn-info {
+    background-color: #35a8df;
+    border-color: #35a8df;
+}
+
+    .btn-info:hover {
+        background-color: #0288d1;
+        border-color: #0288d1;
+    }
+.style-font {
+    text-decoration: underline !important; /* Add underline */
+    text-decoration-color: #0d6efd; /* Optional: specify color of underline */
 }

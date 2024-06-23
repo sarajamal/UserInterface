@@ -300,7 +300,7 @@ namespace Test12.Controllers
                 PreparationVM = new Preparations(),
                 Productionvm = new Production(),
                 FoodLoginVM = new FoodStuffs(),
-                CleanLoginVM = new Cleaning(),
+                CleanViewModel = new Cleaning(),
                 DeviceToolsLoginVM = new DevicesAndTools(),
                 ReadyFoodLoginVM = new ReadyProducts(),
                 //tredList = new List<العلامة_التجارية>(),
@@ -309,13 +309,14 @@ namespace Test12.Controllers
                 CleanLoginVMlist = new List<Cleaning>(),
                 ProductionLoginVMlist = new List<Production>(),
                 ReadyFoodLoginVMlist = new List<ReadyProducts>(),
+                DeviceToolsLoginVMlist = new List<DevicesAndTools>(),
                 MainsectionVMlist = new List<MainSections>()
             };
             LoMarket.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
-            LoMarket.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == id);
+            LoMarket.DeviceToolsLoginVM = _unitOfWork.DevicesAndTools.Get(u => u.BrandFK == id);
             LoMarket.LoginVM = _unitOfWork.loginRepository.Get(u => u.BrandFK == id);
             LoMarket.Productionvm = _unitOfWork.itemsRepository.Get(u => u.BrandFK == id);
-            LoMarket.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == id);
+            LoMarket.CleanViewModel = _unitOfWork.CleanRepository.Get(u => u.BrandFK == id);
             LoMarket.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == id);
             LoMarket.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == id);
             LoMarket.PreparationVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == id);
@@ -325,7 +326,7 @@ namespace Test12.Controllers
             LoMarket.PreparatonLoginVMlist = _unitOfWork.PreparationRepository.GetAll().Where(u => u.BrandFK == id).ToList();
             LoMarket.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll().Where(u => u.BrandFK == id).ToList();
             LoMarket.CleanLoginVMlist = _unitOfWork.CleanRepository.GetAll().Where(u => u.BrandFK == id).ToList();
-            LoMarket.DeviceToolsLoginVMlist = _unitOfWork.Device_tools1.GetAll().Where(u => u.BrandFK == id).ToList();
+            LoMarket.DeviceToolsLoginVMlist = _unitOfWork.DevicesAndTools.GetAll().Where(u => u.BrandFK == id).ToList();
             LoMarket.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == id).ToList(); //هو يحتوي على قائمة من جدول المكونات واللي يساعده على العرض هي view
             ViewBag.IsAuthenticated = true;
             // Populate the model

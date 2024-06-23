@@ -32,7 +32,7 @@ namespace Test12.Controllers
 
             LoginTredMarktViewModel PrVM = new()
             {
-                DeviceToolsLoginVMlist = _unitOfWork.Device_tools1.GetAll()
+                DeviceToolsLoginVMlist = _unitOfWork.DevicesAndTools.GetAll()
                 .Where(u => u.BrandFK == brandFK).OrderBy(item => item.DevicesAndToolsOrder).ToList(),
 
 
@@ -40,9 +40,9 @@ namespace Test12.Controllers
 
             };
             PrVM.WelcomtredmarketDeviceTools.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFK);
-            PrVM.WelcomtredmarketDeviceTools.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == brandFK);
+            PrVM.WelcomtredmarketDeviceTools.DeviceToolsLoginVM = _unitOfWork.DevicesAndTools.Get(u => u.BrandFK == brandFK);
             PrVM.WelcomtredmarketDeviceTools.Productionvm = _unitOfWork.itemsRepository.Get(u => u.BrandFK == brandFK);
-            PrVM.WelcomtredmarketDeviceTools.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == brandFK);
+            PrVM.WelcomtredmarketDeviceTools.CleanViewModel = _unitOfWork.CleanRepository.Get(u => u.BrandFK == brandFK);
             PrVM.WelcomtredmarketDeviceTools.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == brandFK);
             PrVM.WelcomtredmarketDeviceTools.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == brandFK);
             PrVM.WelcomtredmarketDeviceTools.PreparationVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == brandFK);
@@ -55,20 +55,20 @@ namespace Test12.Controllers
             PrVM.WelcomtredmarketDeviceTools.tredList = _unitOfWork.TredMarketRepository.GetAll().Where(c => c.BrandID == brandFK).ToList();
 
             PrVM.tredMaeketToolsVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFK);
-            PrVM.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.DevicesAndToolsID == brandFK);
-            PrVM.DeviceToolsLoginVMlist = _unitOfWork.Device_tools1.GetAll(incloudeProperties: "Brand").Where(u => u.DevicesAndToolsID == brandFK).ToList();
+            PrVM.DeviceToolsLoginVM = _unitOfWork.DevicesAndTools.Get(u => u.DevicesAndToolsID == brandFK);
+            PrVM.DeviceToolsLoginVMlist = _unitOfWork.DevicesAndTools.GetAll(incloudeProperties: "Brand").Where(u => u.DevicesAndToolsID == brandFK).ToList();
             // Store the FK value in TempData
             TempData["ID"] = brandFK;
-            // Display the updated list
+            // Display the upDate1d list
             return View(PrVM);
-        } 
+        }
 
         #region API CALLS 
         [HttpGet]
         public IActionResult GetAll(int? id)
         {
 
-            IEnumerable<DevicesAndTools> objPreparationList = _unitOfWork.Device_tools1.GetAll()
+            IEnumerable<DevicesAndTools> objPreparationList = _unitOfWork.DevicesAndTools.GetAll()
                 .Where(u => u.BrandFK == id).OrderBy(item => item.DevicesAndToolsOrder).ToList();
 
             return Json(new { data = objPreparationList });
@@ -90,8 +90,8 @@ namespace Test12.Controllers
             };
 
             PrVM.tredMaeketToolsVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
-            PrVM.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.DevicesAndToolsID == id);
-            PrVM.DeviceToolsLoginVMlist = _unitOfWork.Device_tools1.GetAll(incloudeProperties: "Brand").Where(u => u.DevicesAndToolsID == id).ToList(); //هو يحتوي على قائمة من جدول المكونات واللي يساعده على العرض هي view
+            PrVM.DeviceToolsLoginVM = _unitOfWork.DevicesAndTools.Get(u => u.DevicesAndToolsID == id);
+            PrVM.DeviceToolsLoginVMlist = _unitOfWork.DevicesAndTools.GetAll(incloudeProperties: "Brand").Where(u => u.DevicesAndToolsID == id).ToList(); //هو يحتوي على قائمة من جدول المكونات واللي يساعده على العرض هي view
 
             return View(PrVM);
         }
@@ -143,7 +143,7 @@ namespace Test12.Controllers
                             devices.DevicesAndTools_Image = fileNameSteps1; // Update the image path
                         }
 
-                        var existingDevices = _unitOfWork.Device_tools1.Get(u => u.DevicesAndToolsID == devices.DevicesAndToolsID);
+                        var existingDevices = _unitOfWork.DevicesAndTools.Get(u => u.DevicesAndToolsID == devices.DevicesAndToolsID);
 
                         if (existingDevices != null)
                         {
@@ -152,15 +152,15 @@ namespace Test12.Controllers
 
                             existingDevices.DevicesAndTools_Image = devices.DevicesAndTools_Image;
 
-                            _unitOfWork.Device_tools1.Update(existingDevices);
+                            _unitOfWork.DevicesAndTools.Update(existingDevices);
                         }
                         else
                         {
-                            _unitOfWork.Device_tools1.Add(devices);
+                            _unitOfWork.DevicesAndTools.Add(devices);
                         }
                         _unitOfWork.Save();
                     }
-                } 
+                }
             }
             TempData["success"] = "تم تحديث الأجهزة والأدوات بشكل ناجح";
             return RedirectToAction("RedirectToDeviceToolsList", new { brandFK = device_ToolsVM.DeviceToolsLoginVM.BrandFK });
@@ -179,7 +179,7 @@ namespace Test12.Controllers
             };
 
             PrVM.tredMaeketToolsVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == id);
-            PrVM.Devices_toolsVMorder = _unitOfWork.Device_tools1.GetAll().Where(u => u.BrandFK == id);
+            PrVM.Devices_toolsVMorder = _unitOfWork.DevicesAndTools.GetAll().Where(u => u.BrandFK == id);
             PrVM.DeviceToolsLoginVM = new DevicesAndTools();
             PrVM.DeviceToolsLoginVMlist = new List<DevicesAndTools>();
 
@@ -192,85 +192,93 @@ namespace Test12.Controllers
             if (ModelState.IsValid)
             {
                 int DeviceFK = device_ToolsVM.tredMaeketToolsVM.BrandID;
-                if (device_ToolsVM.DeviceToolsLoginVM.DevicesAndToolsID == 0)
+
+                for (int i = 0; i < device_ToolsVM.DeviceToolsLoginVMlist.Count; i++)
                 {
-                    foreach (var deviceAdd in device_ToolsVM.DeviceToolsLoginVMlist)
+                    var devices = device_ToolsVM.DeviceToolsLoginVMlist[i];
+                    var newDevice = new DevicesAndTools
                     {
-                        if (deviceAdd != null && deviceAdd.DevicesAndToolsID == 0)
+                        DevicesAndToolsID = devices.DevicesAndToolsID,
+                        BrandFK = DeviceFK,
+                        DevicesAndTools_Name = devices.DevicesAndTools_Name,
+                    };
+
+                    string wwwRootDevicePath = _webHostEnvironment.WebRootPath; // get us root folder
+                    var file1Name1 = $"file1_{newDevice.DevicesAndToolsID}";
+                    var file1ForDevice1 = HttpContext.Request.Form.Files[file1Name1];
+
+                    string DevicesAndToolsID = newDevice.DevicesAndToolsID.ToString();
+                    string BrandFK = newDevice.BrandFK.ToString();
+
+                    var devicePath1 = Path.Combine(wwwRootDevicePath, "IMAGES", DevicesAndToolsID);
+
+                    if (file1ForDevice1 != null && file1ForDevice1.Length > 0)
+                    {
+                        string fileName11 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForDevice1.FileName);
+
+                        if (!Directory.Exists(devicePath1))
                         {
-                            int LastId = _unitOfWork.Device_tools1.GetLastStepId();
-                            int LastId1 = LastId + 1;
-                            var newDevice = new DevicesAndTools
-                            {
-                                DevicesAndToolsID = LastId1,
-                                BrandFK = DeviceFK,
-                                DevicesAndTools_Name = deviceAdd.DevicesAndTools_Name,
-
-                            };
-
-                            string wwwRootDevicePath = _webHostEnvironment.WebRootPath; // get us root folder
-                            var file1Name1 = $"file1_{newDevice.DevicesAndToolsID}";
-                            var file1ForDevice1 = HttpContext.Request.Form.Files[file1Name1];
-
-                            string DevicesAndToolsID = newDevice.DevicesAndToolsID.ToString();
-                            string BrandFK = newDevice.BrandFK.ToString();
-
-                            var devicePath1 = Path.Combine(wwwRootDevicePath, "IMAGES", DevicesAndToolsID);
-
-                            if (file1ForDevice1 != null && file1ForDevice1.Length > 0)
-                            {
-                                string fileName11 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForDevice1.FileName);
-
-                                if (!Directory.Exists(devicePath1))
-                                {
-                                    Directory.CreateDirectory(devicePath1);
-                                }
-
-                                using (var fileStream = new FileStream(Path.Combine(devicePath1, fileName11), FileMode.Create)) //save images
-                                {
-                                    await file1ForDevice1.CopyToAsync(fileStream);
-                                }
-                                newDevice.DevicesAndTools_Image = fileName11;
-
-                            }
-                            _unitOfWork.Device_tools1.Add(newDevice);
-                            _unitOfWork.Save();
-
-                            //// reOrder2 
-                            if (selectDevicetools == 0)
-                            {
-                                int IDDevice = newDevice.DevicesAndToolsID;
-                                newDevice.DevicesAndToolsOrder = IDDevice;
-
-                                //// Get the maximum order value in the existing list
-                                //double maxOrder = _unitOfWork.Device_tools1.GetAll()
-                                //    .Max(item => item.DevicesAndToolsOrder) ?? 0.0f; // Default to 0.0f if there are no existing items
-
-                                //// Round down the maxOrder value to the nearest integer
-                                //int maxOrderAsInt = (int)Math.Floor(maxOrder);
-
-                                //// Set the new order value for the "اخرى" (Other) item
-                                //double newOrder = maxOrderAsInt + 1.0f;
-                                //newDevice.DevicesAndToolsOrder = newOrder;
-                            }
-                            else
-                            {
-                                var getIdOrder = _unitOfWork.Device_tools1.Get(u => u.DevicesAndToolsID == selectDevicetools);
-                                int OldOrder = getIdOrder.DevicesAndToolsID; // Default to 0.0f if Order is null
-                                double newOrder = OldOrder + 0.1;
-                                newDevice.DevicesAndToolsOrder = newOrder;
-                            }
-
-                            List<DevicesAndTools> obdeviceToolsList = _unitOfWork.Device_tools1.GetAll().OrderBy(item => item.DevicesAndToolsOrder).ToList();
-                            _unitOfWork.Save();
+                            Directory.CreateDirectory(devicePath1);
                         }
+
+                        using (var fileStream = new FileStream(Path.Combine(devicePath1, fileName11), FileMode.Create)) //save images
+                        {
+                            await file1ForDevice1.CopyToAsync(fileStream);
+                        }
+                        newDevice.DevicesAndTools_Image = fileName11;
+                    }
+                    //// reOrder2 
+                    if (selectDevicetools == 0)
+                    {
+                        int IDDevice = newDevice.DevicesAndToolsID;
+                        newDevice.DevicesAndToolsOrder = IDDevice;
+
+                        //// Get the maximum order value in the existing list
+                        //double maxOrder = _unitOfWork.Device_tools1.GetAll()
+                        //    .Max(item => item.DevicesAndToolsOrder) ?? 0.0f; // Default to 0.0f if there are no existing items
+
+                        //// Round down the maxOrder value to the nearest integer
+                        //int maxOrderAsInt = (int)Math.Floor(maxOrder);
+
+                        //// Set the new order value for the "اخرى" (Other) item
+                        //double newOrder = maxOrderAsInt + 1.0f;
+                        //newDevice.DevicesAndToolsOrder = newOrder;
+                    }
+                    else
+                    {
+                        var getIdOrder = _unitOfWork.DevicesAndTools.Get(u => u.DevicesAndToolsID == selectDevicetools);
+                        int OldOrder = getIdOrder.DevicesAndToolsID; // Default to 0.0f if Order is null
+                        double newOrder = OldOrder + 0.1;
+                        newDevice.DevicesAndToolsOrder = newOrder;
                     }
 
+                    var existingDevices = _unitOfWork.DevicesAndTools.Get(u => u.DevicesAndToolsID == devices.DevicesAndToolsID);
+
+                    if (existingDevices != null)
+                    {
+                        existingDevices.DevicesAndTools_Name = devices.DevicesAndTools_Name;
+                        existingDevices.DevicesAndTools_Image = newDevice.DevicesAndTools_Image ?? existingDevices.DevicesAndTools_Image;
+                        existingDevices.DevicesAndToolsOrder = newDevice.DevicesAndToolsOrder;
+                        _unitOfWork.DevicesAndTools.Update(existingDevices);
+                    }
+                    else
+                    {
+                        _unitOfWork.DevicesAndTools.Add(newDevice);
+                    }
+
+                    _unitOfWork.Save();
+
+                    
+                    List<DevicesAndTools> obdeviceToolsList = _unitOfWork.DevicesAndTools.GetAll().OrderBy(item => item.DevicesAndToolsOrder).ToList();
+                    _unitOfWork.Save();
                 }
+
+                TempData["success"] = "تم إضافة الأجهزة والأدوات بشكل ناجح";
+                return RedirectToAction("RedirectToDeviceToolsList", new { brandFK = device_ToolsVM.tredMaeketToolsVM.BrandID });
             }
 
-            TempData["success"] = "تم إضافة الأجهزة والأدوات بشكل ناجح";
-            return RedirectToAction("RedirectToDeviceToolsList", new { brandFK = device_ToolsVM.tredMaeketToolsVM.BrandID });
+            // Handle the case where ModelState is not valid
+            return View(device_ToolsVM);
         }
         //============================================================================
 
@@ -281,7 +289,7 @@ namespace Test12.Controllers
         {
             string wwwRootPathSteps = _webHostEnvironment.WebRootPath;
 
-            var deleteDeviceToolPicture = _unitOfWork.Device_tools1.Get(u => u.DevicesAndToolsID == id);
+            var deleteDeviceToolPicture = _unitOfWork.DevicesAndTools.Get(u => u.DevicesAndToolsID == id);
 
             string DevicesAndToolsID = deleteDeviceToolPicture.DevicesAndToolsID.ToString();
             string BrandFK = deleteDeviceToolPicture.BrandFK.ToString();
@@ -296,7 +304,7 @@ namespace Test12.Controllers
                 }
             }
 
-            _unitOfWork.Device_tools1.Remove(deleteDeviceToolPicture);
+            _unitOfWork.DevicesAndTools.Remove(deleteDeviceToolPicture);
             _unitOfWork.Save();
 
             return Json(new { success = true, redirectToUrl = Url.Action("RedirectToDeviceToolsList", new { BrandFK = BrandFK }) }); //أحتاج يرجع لنفس صفحة التعديل 
@@ -309,7 +317,7 @@ namespace Test12.Controllers
         {
             try
             {
-                int lastId = _unitOfWork.Device_tools1.GetLastStepId();
+                int lastId = _unitOfWork.DevicesAndTools.GetLastStepId();
                 return Ok(lastId);
             }
             catch (Exception ex)
@@ -318,5 +326,27 @@ namespace Test12.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+        //=========================================POST Add ID ===================================
+        [HttpPost]
+        public IActionResult GetAddID(int BrandFK, LoginTredMarktViewModel device_ToolsVM)
+        {
+            // Fetch the production and steps associated with the given ProductionFK
+            device_ToolsVM.DeviceToolsLoginVM = _unitOfWork.DevicesAndTools.Get(u => u.BrandFK == BrandFK);
+            device_ToolsVM.DeviceToolsLoginVMlist = _unitOfWork.DevicesAndTools.GetAll(incloudeProperties: "Brand").Where(u => u.BrandFK == BrandFK).ToList();
+
+            // Create a new step
+            var newDevice = new DevicesAndTools
+            {
+                BrandFK = BrandFK,
+            };
+
+            // Save the new step to the database
+            _unitOfWork.DevicesAndTools.Add(newDevice);
+            _unitOfWork.Save();
+
+            // Return the new step's ID
+            return Json(newDevice.DevicesAndToolsID);
+        }
+        //============================================================================
     }
 }

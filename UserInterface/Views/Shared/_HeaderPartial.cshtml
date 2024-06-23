@@ -3,7 +3,7 @@
 <header>
     <nav class="navbar navbar-light bg-white me-auto">
         <div class="container-fluid">
-            <a class="navbar-brand" href="@Url.Action("RedirectToUserInformation", "Home", new { id = @Model.TredMarktVM.BrandID })">
+            <a class="navbar-brand fw-bold" href="@Url.Action("RedirectToUserInformation", "Home", new { id = @Model.TredMarktVM.BrandID })">
                 <img src="https://manuals.befranchisor.com/IMAGES/@(Model.TredMarktVM.BrandID)/@(Model.TredMarktVM.BrandLogoImage)"
                      class="me-2"
                      height="50"
@@ -11,7 +11,7 @@
                      alt="Logo" />
                 <small>@Model.TredMarktVM.BrandName</small>
             </a>
-      
+
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -22,89 +22,68 @@
                 </div>
                 <div class="offcanvas-body bg-navbar">
                     <nav id="TableOfContents me-auto ">
-                        <div class="bd-toc mt-3 mb-4 my-md-0 ps-xl-2 mb-lg-4 text-muted">
-                            <strong class="d-block h6 my-2 pb-2 border-bottom"></strong>
+                        <div class="bd-toc text-muted">
 
                             <nav id="TableOfContents ">
                                 <ul class="navbar-nav flex-grow-1">
+                                    <li class="Menu-item p-3 mb-2 border">
+                                        <a class="nav-link style-font fnt-blue fw-bold fs" href="@Url.Action("RedirectToWelcomTredMarket", "Home", new { brandId = Model.TredMarktVM.BrandID})">الصفحة الرئيسية</a>
+                                    </li>
                                     @if (Model.DeviceToolsLoginVM == null || Model.DeviceToolsLoginVM.BrandFK == null || Model.DeviceToolsLoginVM.BrandFK == 0)
                                     {
-                                        <li class="nav-item border p-2 mt-2  "><a class="nav-link  ">الأجهزةوالأدوات</a></li>
+                                        <li class="Menu-item p-3 mb-2 border"><a class="nav-link fnt-blue">الأجهزة والأدوات</a></li>
                                     }
                                     else
                                     {
-                                        <li class="nav-item border p-2 mt-2">
-                                            <a class="nav-link" href="@Url.Action("RedirectToDeviceToolsList", "Device_tool", new { brandFK = Model.DeviceToolsLoginVM.BrandFK })">الأجهزةوالأدوات</a>
-                                        </li>
+                                        <li class="Menu-item p-3 mb-2 border"><a class="nav-link fnt-blue" href="@Url.Action("RedirectToDeviceToolsList", "Device_tool", new { brandFK = Model.DeviceToolsLoginVM.BrandFK })">الأجهزة والأدوات</a></li>
                                     }
 
                                     @if (Model.FoodLoginVM == null || Model.FoodLoginVM.BrandFK == null || Model.FoodLoginVM.BrandFK == 0)
                                     {
-                                        <li class="nav-item border p-2 mt-2  "><a class="nav-link  ">المواد الغذائية</a></li>
+                                        <li class="Menu-item p-3 mb-2 border"><a class="nav-link fnt-blue">المواد الغذائية</a></li>
                                     }
                                     else
                                     {
-                                        <li class="nav-item border p-2 mt-2">
-                                            <a class="nav-link" href="@Url.Action("RedirectToFoodList", "Food", new { brandFK = Model.FoodLoginVM.BrandFK })">المواد الغذائية</a>
-                                        </li>
+                                        <li class="Menu-item p-3 mb-2 border"><a class="nav-link fnt-blue" href="@Url.Action("RedirectToFoodList", "Food", new { brandFK = Model.FoodLoginVM.BrandFK })">المواد الغذائية</a></li>
                                     }
 
-                                    @if (Model.PreparatonLoginVM == null || Model.PreparatonLoginVM.BrandFK == null || Model.PreparatonLoginVM.BrandFK == 0)
+                                    @if (Model.PreparationVM == null || Model.PreparationVM.BrandFK == null || Model.PreparationVM.BrandFK == 0)
                                     {
-                                        <li id="navPreparationNoID" class="nav-item border p-2 mt-2">
-                                            <a class="nav-link">التحضيرات</a>
-                                        </li>
+                                        <li id="navPreparationNoID" class="Menu-item p-3 mb-2 border"><a class="nav-link fnt-blue">التحضيرات</a></li>
                                     }
                                     else
                                     {
-                                        <li class="nav-item border p-2 mt-2">
-                                            <a class="nav-link" href="@Url.Action("RedirectToPreparation", "Preparation", new { brandFK = Model.PreparatonLoginVM.BrandFK })">التحضيرات</a>
-                                        </li>
-
+                                        <li class="Menu-item p-3 mb-2 border"><a class="nav-link fnt-blue" href="@Url.Action("RedirectToPreparation", "Preparation", new { brandFK = Model.PreparationVM.BrandFK })">التحضيرات</a></li>
                                     }
 
-                                    @if (Model.ProductionLoginVM == null || Model.ProductionLoginVM.BrandFK == null || Model.ProductionLoginVM.BrandFK == 0)
+                                    @if (Model.Productionvm == null || Model.Productionvm.BrandFK == null || Model.Productionvm.BrandFK == 0)
                                     {
-
-                                        <li class="nav-item border p-2 mt-2  ">
-                                            <a class="nav-link  ">الانتاج</a>
-                                        </li>
+                                        <li class="Menu-item p-3 mb-2 border"><a class="nav-link fnt-blue">الانتاج</a></li>
                                     }
                                     else
                                     {
-
-                                        <li class="nav-item border p-2 mt-2">
-                                            <a class="nav-link" href="@Url.Action("RedirectToProduction", "Production", new { brandFK = Model.ProductionLoginVM.BrandFK })">الإنتاج</a>
-                                        </li>
-
+                                        <li class="Menu-item p-3 mb-2 border"><a class="nav-link fnt-blue" href="@Url.Action("RedirectToProduction", "Production", new { brandFK = Model.Productionvm.BrandFK })">الإنتاج</a></li>
                                     }
 
                                     @if (Model.ReadyFoodLoginVM == null || Model.ReadyFoodLoginVM.BrandFK == null || Model.ReadyFoodLoginVM.BrandFK == 0)
                                     {
-                                        <li class="nav-item border p-2 mt-2  "><a class="nav-link  "> المنتجات الجاهزة</a></li>
+                                        <li class="Menu-item p-3 mb-2 border"><a class="nav-link fnt-blue">المنتجات الجاهزة</a></li>
                                     }
                                     else
                                     {
-                                        <li class="nav-item border p-2 mt-2">
-                                            <a class="nav-link" href="@Url.Action("RedirectToFinishProductionList", "FinishProducts", new { brandFK = Model.ReadyFoodLoginVM.BrandFK })">المنتجات الجاهزة</a>
-                                        </li>
+                                        <li class="Menu-item p-3 mb-2 border"><a class="nav-link fnt-blue" href="@Url.Action("RedirectToFinishProductionList", "FinishProducts", new { brandFK = Model.ReadyFoodLoginVM.BrandFK })">المنتجات الجاهزة</a></li>
                                     }
 
-                                    @if (Model.CleanLoginVM == null || Model.CleanLoginVM.BrandFK == null || Model.CleanLoginVM.BrandFK == 0)
+                                    @if (Model.CleanViewModel == null || Model.CleanViewModel.BrandFK == null || Model.CleanViewModel.BrandFK == 0)
                                     {
-                                        <li class="nav-item border p-2 mt-2  "><a class="nav-link  "> التنظيف</a></li>
+                                        <li class="Menu-item p-3 mb-2 border"><a class="nav-link fnt-blue">التنظيف</a></li>
                                     }
                                     else
                                     {
-                                        <li class="nav-item border p-2 mt-2">
-                                            <a class="nav-link" href="@Url.Action("RedirectToCleanList", "Clean", new { brandFK = Model.CleanLoginVM.BrandFK })">التنظيف</a>
-                                        </li>
+                                        <li class="Menu-item p-3 mb-2 border"><a class="nav-link fnt-blue" href="@Url.Action("RedirectToCleanList", "Clean", new { brandFK = Model.CleanViewModel.BrandFK })">التنظيف</a></li>
                                     }
-                                    <li class="nav-item border p-2 mt-2">
-                                        <a class="nav-link styled-link" href="@Url.Action("RedirectToWelcomTredMarket", "Home", new { brandId = Model.TredMarktVM.BrandID})">الصفحة الرئيسية</a>
-                                    </li>
-
-                                    <li class="nav-item border p-2 mt-2">
+     
+                                    <li class="Menu-item p-3 mb-2 border">
                                         <form asp-controller="Home" asp-action="Logout" method="post">
                                             <button type="submit" class="btn btn-danger">تسجيل الخروج</button>
                                         </form>
@@ -118,7 +97,6 @@
         </div>
     </nav>
 </header>
-
 
  
 

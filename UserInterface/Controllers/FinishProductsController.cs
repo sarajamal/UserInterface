@@ -39,9 +39,9 @@ namespace Test12.Controllers
 
             };
             FooReadyVM.WelcomTredmarketReadyFood.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFK);
-            FooReadyVM.WelcomTredmarketReadyFood.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == brandFK);
+            FooReadyVM.WelcomTredmarketReadyFood.DeviceToolsLoginVM = _unitOfWork.DevicesAndTools.Get(u => u.BrandFK == brandFK);
             FooReadyVM.WelcomTredmarketReadyFood.Productionvm = _unitOfWork.itemsRepository.Get(u => u.BrandFK == brandFK);
-            FooReadyVM.WelcomTredmarketReadyFood.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == brandFK);
+            FooReadyVM.WelcomTredmarketReadyFood.CleanViewModel = _unitOfWork.CleanRepository.Get(u => u.BrandFK == brandFK);
             FooReadyVM.WelcomTredmarketReadyFood.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == brandFK);
             FooReadyVM.WelcomTredmarketReadyFood.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == brandFK);
             FooReadyVM.WelcomTredmarketReadyFood.PreparationVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == brandFK);
@@ -182,92 +182,93 @@ namespace Test12.Controllers
         [HttpPost]
         public async Task<IActionResult> createFoodfonsh(LoginTredMarktViewModel FoodsReadyVM, int selectFoodReadyValue)
         {
-
             if (ModelState.IsValid)
             {
                 int foodFK = FoodsReadyVM.tredMaeketReadyfoodVM.BrandID;
-                if (FoodsReadyVM.ReadyFoodLoginVM.ReadyProductsID == 0)
-                {
-
-                    foreach (var ReadyfoodAdd in FoodsReadyVM.ReadyFoodLoginVMlist)
+                    for (int i = 0; i < FoodsReadyVM.ReadyFoodLoginVMlist.Count; i++)
                     {
+                        var foodready = FoodsReadyVM.ReadyFoodLoginVMlist[i];
+                        //int LastId = _unitOfWork.readyFoodRepository.GetLastStepId();
+                        //int LastId1 = LastId + 1;
 
-                        if (ReadyfoodAdd != null && ReadyfoodAdd.ReadyProductsID == 0)
+                        var newfoods = new ReadyProducts
                         {
-                            int LastId = _unitOfWork.readyFoodRepository.GetLastStepId();
-                            int LastId1 = LastId + 1;
-                            var newfoods = new ReadyProducts
+                            ReadyProductsID = foodready.ReadyProductsID,
+                            BrandFK = foodFK,
+                            ReadyProductsName = foodready.ReadyProductsName,
+
+                        };
+
+                        string wwwRootFoodPath = _webHostEnvironment.WebRootPath; // get us root folder
+                        var file1Name1 = $"file1_{newfoods.ReadyProductsID}";
+                        var file1ForFood1 = HttpContext.Request.Form.Files[file1Name1];
+
+
+                        string BrandFK = newfoods.BrandFK.ToString();
+                        string ReadyProductsID = newfoods.ReadyProductsID.ToString();
+                        var FoodPath1 = Path.Combine(wwwRootFoodPath, "IMAGES", ReadyProductsID);
+
+                        if (file1ForFood1 != null && file1ForFood1.Length > 0)
+                        {
+                            string fileName11 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForFood1.FileName);
+
+                            if (!Directory.Exists(FoodPath1))
                             {
-                                ReadyProductsID = LastId1,
-                                BrandFK = foodFK,
-                                ReadyProductsName = ReadyfoodAdd.ReadyProductsName,
-
-                            };
-
-                            string wwwRootFoodPath = _webHostEnvironment.WebRootPath; // get us root folder
-
-
-                            var file1Name1 = $"file1_{newfoods.ReadyProductsID}";
-                            var file1ForFood1 = HttpContext.Request.Form.Files[file1Name1];
-
-
-                            string BrandFK = newfoods.BrandFK.ToString();
-                            string ReadyProductsID = newfoods.ReadyProductsID.ToString();
-
-
-                            var FoodPath1 = Path.Combine(wwwRootFoodPath, "IMAGES", ReadyProductsID);
-
-                            if (file1ForFood1 != null && file1ForFood1.Length > 0)
-                            {
-                                string fileName11 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForFood1.FileName);
-
-                                if (!Directory.Exists(FoodPath1))
-                                {
-                                    Directory.CreateDirectory(FoodPath1);
-                                }
-
-                                using (var fileStream = new FileStream(Path.Combine(FoodPath1, fileName11), FileMode.Create)) //save images
-                                {
-                                    await file1ForFood1.CopyToAsync(fileStream);
-                                }
-                                newfoods.ReadyProductsImage = fileName11;
-                            }
-                            _unitOfWork.readyFoodRepository.Add(newfoods);
-                            _unitOfWork.Save();
-                            //// reOrder2 
-                            if (selectFoodReadyValue == 0)
-                            {
-                                int IDfinish = newfoods.ReadyProductsID;
-                                newfoods.ReadyProductsOrder = IDfinish;
-                                //// Get the maximum order value in the existing list
-                                //double maxOrder = _unitOfWork.readyFoodRepository.GetAll()
-                                //    .Max(item => item.ReadyProductsOrder) ?? 0.0f; // Default to 0.0f if there are no existing items
-
-                                //// Round down the maxOrder value to the nearest integer
-                                //int maxOrderAsInt = (int)Math.Floor(maxOrder);
-
-                                //// Set the new order value for the "اخرى" (Other) item
-                                //double newOrder = maxOrderAsInt + 1.0f;
-                                //newfoods.ReadyProductsOrder = newOrder;
-                            }
-                            else
-                            {
-                                var getIdOrder = _unitOfWork.readyFoodRepository.Get(u => u.ReadyProductsID == selectFoodReadyValue);
-                                int OldOrder = getIdOrder.ReadyProductsID; // Default to 0.0f if Order is null
-                                double newOrder = OldOrder + 0.1;
-                                newfoods.ReadyProductsOrder = newOrder;
+                                Directory.CreateDirectory(FoodPath1);
                             }
 
-                            List<ReadyProducts> obdeviceToolsList = _unitOfWork.readyFoodRepository.GetAll().OrderBy(item => item.ReadyProductsOrder).ToList();
-                            _unitOfWork.Save();
+                            using (var fileStream = new FileStream(Path.Combine(FoodPath1, fileName11), FileMode.Create)) //save images
+                            {
+                                await file1ForFood1.CopyToAsync(fileStream);
+                            }
+                            newfoods.ReadyProductsImage = fileName11;
                         }
+                    //// reOrder2 
+                    if (selectFoodReadyValue == 0)
+                    {
+                        int IDfinish = newfoods.ReadyProductsID;
+                        newfoods.ReadyProductsOrder = IDfinish;
+                        //// Get the maximum order value in the existing list
+                        //double maxOrder = _unitOfWork.readyFoodRepository.GetAll()
+                        //    .Max(item => item.ReadyProductsOrder) ?? 0.0f; // Default to 0.0f if there are no existing items
+
+                        //// Round down the maxOrder value to the nearest integer
+                        //int maxOrderAsInt = (int)Math.Floor(maxOrder);
+
+                        //// Set the new order value for the "اخرى" (Other) item
+                        //double newOrder = maxOrderAsInt + 1.0f;
+                        //newfoods.ReadyProductsOrder = newOrder;
+                    }
+                    else
+                    {
+                        var getIdOrder = _unitOfWork.readyFoodRepository.Get(u => u.ReadyProductsID == selectFoodReadyValue);
+                        int OldOrder = getIdOrder.ReadyProductsID; // Default to 0.0f if Order is null
+                        double newOrder = OldOrder + 0.1;
+                        newfoods.ReadyProductsOrder = newOrder;
                     }
 
-                }
-            }
+                    var existingFoodReady = _unitOfWork.readyFoodRepository.Get(u => u.ReadyProductsID == foodready.ReadyProductsID);
 
-            TempData["success"] = "تم إضافة المنتجات الجاهزة بشكل ناجح";
-            return RedirectToAction("RedirectToFinishProductionList", new { brandFK = FoodsReadyVM.tredMaeketReadyfoodVM.BrandID });
+                        if (existingFoodReady != null)
+                        {
+                            existingFoodReady.ReadyProductsName = foodready.ReadyProductsName;
+                        existingFoodReady.ReadyProductsOrder = newfoods.ReadyProductsOrder;
+                            existingFoodReady.ReadyProductsImage = newfoods.ReadyProductsImage ?? existingFoodReady.ReadyProductsImage;
+                        _unitOfWork.readyFoodRepository.Update(existingFoodReady);
+                        }
+                        else
+                        {
+                            _unitOfWork.readyFoodRepository.Add(foodready);
+                        }
+                        _unitOfWork.Save();
+
+                        List<ReadyProducts> obdeviceToolsList = _unitOfWork.readyFoodRepository.GetAll().OrderBy(item => item.ReadyProductsOrder).ToList();
+                        _unitOfWork.Save();
+                    }
+                    TempData["success"] = "تم إضافة المنتجات الجاهزة بشكل ناجح";
+                    return RedirectToAction("RedirectToFinishProductionList", new { brandFK = FoodsReadyVM.tredMaeketReadyfoodVM.BrandID });
+            }
+            return View(FoodsReadyVM);
         }
         //============================================================================
 
@@ -317,7 +318,29 @@ namespace Test12.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
-        //============================================================================ 
+        //============================================================================
+        //=========================================POST Add ID ===================================
+        [HttpPost]
+        public IActionResult GetAddID(int BrandFK, LoginTredMarktViewModel FoodsReadyVM)
+        {
+            // Fetch the production and steps associated with the given ProductionFK
+            FoodsReadyVM.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == BrandFK);
+            FoodsReadyVM.ReadyFoodLoginVMlist = _unitOfWork.readyFoodRepository.GetAll(incloudeProperties: "Brand").Where(u => u.BrandFK == BrandFK).ToList();
+            // Create a new step
+            var newDevice = new ReadyProducts
+            {
+                BrandFK = BrandFK,
+            };
+
+            // Save the new step to the database
+            _unitOfWork.readyFoodRepository.Add(newDevice);
+            _unitOfWork.Save();
+
+            // Return the new step's ID
+            return Json(newDevice.ReadyProductsID);
+        }
+        //============================================================================
+
     }
 }
 

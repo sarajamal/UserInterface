@@ -40,9 +40,9 @@ namespace Test12.Controllers
 
             };
             FDVM.WelcomTredmarketFood.TredMarktVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandFK);
-            FDVM.WelcomTredmarketFood.DeviceToolsLoginVM = _unitOfWork.Device_tools1.Get(u => u.BrandFK == brandFK);
+            FDVM.WelcomTredmarketFood.DeviceToolsLoginVM = _unitOfWork.DevicesAndTools.Get(u => u.BrandFK == brandFK);
             FDVM.WelcomTredmarketFood.Productionvm = _unitOfWork.itemsRepository.Get(u => u.BrandFK == brandFK);
-            FDVM.WelcomTredmarketFood.CleanLoginVM = _unitOfWork.CleanRepository.Get(u => u.BrandFK == brandFK);
+            FDVM.WelcomTredmarketFood.CleanViewModel = _unitOfWork.CleanRepository.Get(u => u.BrandFK == brandFK);
             FDVM.WelcomTredmarketFood.ReadyFoodLoginVM = _unitOfWork.readyFoodRepository.Get(u => u.BrandFK == brandFK);
             FDVM.WelcomTredmarketFood.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == brandFK);
             FDVM.WelcomTredmarketFood.PreparationVM = _unitOfWork.PreparationRepository.Get(u => u.BrandFK == brandFK);
@@ -177,92 +177,97 @@ namespace Test12.Controllers
 
             return View(FooVM);
         }
+
         [HttpPost]
         public async Task<IActionResult> CreateFood(LoginTredMarktViewModel FoodsVM, int selectFoodvalue)
         {
             if (ModelState.IsValid)
             {
                 int foodFK = FoodsVM.tredMaeketFoodsVM.BrandID;
-                if (FoodsVM.FoodLoginVM.FoodStuffsID == 0)
+
+                for (int i = 0; i < FoodsVM.FoodLoginVMlist.Count; i++)
                 {
+                    var foods = FoodsVM.FoodLoginVMlist[i];
 
-                    foreach (var foodAdd in FoodsVM.FoodLoginVMlist)
+                    var newfoods = new FoodStuffs
                     {
-                        int lastId = _unitOfWork.FoodRepository.GetLastStepId();
-                        int LastId1 = lastId + 1;
-                        if (foodAdd != null && foodAdd.FoodStuffsID == 0)
+                        FoodStuffsID = foods.FoodStuffsID,
+                        BrandFK = foodFK,
+                        FoodStuffsName = foods.FoodStuffsName,
+                    };
+
+                    string wwwRootFoodPath = _webHostEnvironment.WebRootPath; // get root folder
+                    var file1Name1 = $"file1_{newfoods.FoodStuffsID}";
+                    var file1ForFood1 = HttpContext.Request.Form.Files[file1Name1];
+
+                    string FoodStuffsID = newfoods.FoodStuffsID.ToString();
+                    string BrandFK = newfoods.BrandFK.ToString();
+                    var FoodPath1 = Path.Combine(wwwRootFoodPath, "IMAGES", FoodStuffsID);
+
+                    if (file1ForFood1 != null && file1ForFood1.Length > 0)
+                    {
+                        string fileName11 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForFood1.FileName);
+
+                        if (!Directory.Exists(FoodPath1))
                         {
-
-                            var newfoods = new FoodStuffs
-                            {
-                                FoodStuffsID = LastId1,
-                                BrandFK = foodFK,
-                                FoodStuffsName = foodAdd.FoodStuffsName,
-
-                            };
-
-                            string wwwRootFoodPath = _webHostEnvironment.WebRootPath; // get us root folder
-
-
-                            var file1Name1 = $"file1_{newfoods.FoodStuffsID}";
-                            var file1ForFood1 = HttpContext.Request.Form.Files[file1Name1];
-
-
-                            string FoodStuffsID = newfoods.FoodStuffsID.ToString();
-                            string BrandFK = newfoods.BrandFK.ToString();
-                            var FoodPath1 = Path.Combine(wwwRootFoodPath, "IMAGES", FoodStuffsID);
-
-                           if (file1ForFood1 != null && file1ForFood1.Length > 0)
-                            {
-                                string fileName11 = Guid.NewGuid().ToString() + Path.GetExtension(file1ForFood1.FileName);
-
-                                if (!Directory.Exists(FoodPath1))
-                                {
-                                    Directory.CreateDirectory(FoodPath1);
-                                }
-
-                                using (var fileStream = new FileStream(Path.Combine(FoodPath1, fileName11), FileMode.Create)) //save images
-                                {
-                                    await file1ForFood1.CopyToAsync(fileStream);
-                                }
-                                newfoods.FoodStuffsImage = fileName11;
-                            }
-                            _unitOfWork.FoodRepository.Add(newfoods);
-                            _unitOfWork.Save();
-                            //// reOrder2 
-                            if (selectFoodvalue == 0)
-                            {
-                                int IDfoods = newfoods.FoodStuffsID;
-                                newfoods.FoodStuffsOrder = IDfoods;
-                                //// Get the maximum order value in the existing list
-                                //double maxOrder = _unitOfWork.FoodRepository.GetAll()
-                                //    .Max(item => item.FoodStuffsOrder) ?? 0.0f; // Default to 0.0f if there are no existing items
-
-                                //// Round down the maxOrder value to the nearest integer
-                                //int maxOrderAsInt = (int)Math.Floor(maxOrder);
-
-                                //// Set the new order value for the "اخرى" (Other) item
-                                //double newOrder = maxOrderAsInt + 1.0f;
-                                //newfoods.FoodStuffsOrder = newOrder;
-                            }
-                            else
-                            {
-                                var getIdOrder = _unitOfWork.FoodRepository.Get(u => u.FoodStuffsID == selectFoodvalue);
-                                int OldOrder = getIdOrder.FoodStuffsID; // Default to 0.0f if Order is null
-                                double newOrder = OldOrder + 0.1;
-                                newfoods.FoodStuffsOrder = newOrder;
-                            }
-
-                            List<FoodStuffs> obdeviceToolsList = _unitOfWork.FoodRepository.GetAll().OrderBy(item => item.FoodStuffsOrder).ToList();
-                            _unitOfWork.Save();
+                            Directory.CreateDirectory(FoodPath1);
                         }
+
+                        using (var fileStream = new FileStream(Path.Combine(FoodPath1, fileName11), FileMode.Create)) //save images
+                        {
+                            await file1ForFood1.CopyToAsync(fileStream);
+                        }
+                        newfoods.FoodStuffsImage = fileName11;
+                    }
+                    //// reOrder2 
+                    if (selectFoodvalue == 0)
+                    {
+                        int IDfoods = newfoods.FoodStuffsID;
+                        newfoods.FoodStuffsOrder = IDfoods;
+                        //// Get the maximum order value in the existing list
+                        //double maxOrder = _unitOfWork.FoodRepository.GetAll()
+                        //    .Max(item => item.FoodStuffsOrder) ?? 0.0f; // Default to 0.0f if there are no existing items
+
+                        //// Round down the maxOrder value to the nearest integer
+                        //int maxOrderAsInt = (int)Math.Floor(maxOrder);
+
+                        //// Set the new order value for the "اخرى" (Other) item
+                        //double newOrder = maxOrderAsInt + 1.0f;
+                        //newfoods.FoodStuffsOrder = newOrder;
+                    }
+                    else
+                    {
+                        var getIdOrder = _unitOfWork.FoodRepository.Get(u => u.FoodStuffsID == selectFoodvalue);
+                        int OldOrder = getIdOrder.FoodStuffsID; // Default to 0.0f if Order is null
+                        double newOrder = OldOrder + 0.1;
+                        newfoods.FoodStuffsOrder = newOrder;
                     }
 
+                    var existingFoods = _unitOfWork.FoodRepository.Get(u => u.FoodStuffsID == foods.FoodStuffsID);
+                    if (existingFoods != null)
+                    {
+                        existingFoods.FoodStuffsName = foods.FoodStuffsName;
+                        existingFoods.FoodStuffsOrder = newfoods.FoodStuffsOrder;
+                        existingFoods.FoodStuffsImage = newfoods.FoodStuffsImage ?? existingFoods.FoodStuffsImage;
+
+                        _unitOfWork.FoodRepository.Update(existingFoods);
+                    }
+                    else
+                    {
+                        _unitOfWork.FoodRepository.Add(newfoods);
+                    }
+
+                    _unitOfWork.Save();
+                    
+                    List<FoodStuffs> obdeviceToolsList = _unitOfWork.FoodRepository.GetAll().OrderBy(item => item.FoodStuffsOrder).ToList();
+                    _unitOfWork.Save();
                 }
+
+                TempData["success"] = "تم إضافة المواد الغذائية بشكل ناجح";
+                return RedirectToAction("RedirectToFoodList", new { brandFK = FoodsVM.tredMaeketFoodsVM.BrandID });
             }
 
-            TempData["success"] = "تم إضافة المواد الغذائية بشكل ناجح";
-            return RedirectToAction("RedirectToFoodList", new { brandFK = FoodsVM.tredMaeketFoodsVM.BrandID });
+            return View(FoodsVM);
         }
         //============================================================================
 
@@ -310,6 +315,28 @@ namespace Test12.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+        //=========================================POST Add ID ===================================
+        [HttpPost]
+        public IActionResult GetAddID(int BrandFK, LoginTredMarktViewModel FoodsVM)
+        {
+            // Fetch the production and steps associated with the given ProductionFK
+            FoodsVM.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.BrandFK == BrandFK);
+            FoodsVM.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll(incloudeProperties: "Brand").Where(u => u.BrandFK == BrandFK).ToList();
+
+            // Create a new step
+            var newDevice = new FoodStuffs
+            {
+                BrandFK = BrandFK,
+            };
+
+            // Save the new step to the database
+            _unitOfWork.FoodRepository.Add(newDevice);
+            _unitOfWork.Save();
+
+            // Return the new step's ID
+            return Json(newDevice.FoodStuffsID);
+        }
+        //============================================================================
 
     }
 }
