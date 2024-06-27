@@ -47,27 +47,25 @@ function toggleAddButtonVisibility(value) {
 //صفحة الاضافة مواد غذائية جديدة 
 var clickCount = 0;
 var lastID = 0; // Initialize lastID globally
-function AddnewFoods(FoodsFK) {
-    if (clickCount === 0) {
+function AddnewFoods(BrandFK) {
+    
         // Only retrieve lastID from server on the first click
         $.ajax({
-            url: '/Food/GetLastId',
-            type: 'GET',
+            url: '/Food/GetAddID',
+            type: 'POST',
+            data: {
+                BrandFK: BrandFK
+            },
             success: function (response) {
-                lastID = parseInt(response) + 1;
-                addStep(FoodsFK);
+                lastID = parseInt(response);
+                addStep(BrandFK);
             },
             error: function (xhr, status, error) {
                 console.error('Error fetching last ID:', error);
             }
         });
-    } else {
-        // On subsequent clicks, increment lastID locally
-        lastID++;
-        addStep(FoodsFK);
-    }
 
-        function addStep(FoodsFK) {
+        function addStep(BrandFK) {
 
             // Find the table body element
             var tableBody = document.querySelector("#tblFoods tbody");
@@ -77,11 +75,12 @@ function AddnewFoods(FoodsFK) {
         var newRow = document.createElement("tr");
         newRow.innerHTML = `
        <td class="col-5" style="text-align:center;">
-            <input type="hidden" name="FoodViewMList[${newRowIndex}].BrandFK" value="${FoodsFK}" />
-            <input type="hidden" name="FoodViewMList[${newRowIndex}].FoodStuffsImage" />
+            <input type="hidden" name="FoodLoginVMlist[${newRowIndex}].BrandFK" value="${BrandFK}" />
+            <input type="hidden" name="FoodLoginVMlist[${newRowIndex}].FoodStuffsID" value="${lastID}" />
+            <input type="hidden" name="FoodLoginVMlist[${newRowIndex}].FoodStuffsImage" />
         
-             <div class="form-controlstyle1">
-            <input type= "textarea" class="form-control" id="FoodViewMList_${newRowIndex}" name="FoodViewMList[${newRowIndex}].FoodStuffsName">
+             <div>
+            <input type= "textarea" class="form-controlstyle1" id="FoodLoginVMlist_${newRowIndex}" name="FoodLoginVMlist[${newRowIndex}].FoodStuffsName">
          </div>
      </td>
         
@@ -195,109 +194,3 @@ function AddnewFoods(FoodsFK) {
 //}
 
 
-//function DeleteRow(button) {
-//    var rowIndex = button.getAttribute("data-row-index");
-//    var tableBody = document.querySelector("#tblSteps tbody");
-//    var rows = tableBody.children;
-
-//    // Find the row to delete
-//    var rowToDelete = rows[rowIndex];
-
-//    // Determine the رقم_الخطوة values for الخطوة1 and الخطوة2 in the row to delete
-//    var رقم_الخطوة1ToDelete = parseInt(rowToDelete.querySelector(`input[name^="stepsVM[${rowIndex}].رقم_الخطوة1"]`).value);
-//    var رقم_الخطوة2ToDelete = parseInt(rowToDelete.querySelector(`input[name^="stepsVM[${rowIndex}].رقم_الخطوة2"]`).value);
-
-//    // Delete the row
-//    rowToDelete.remove();
-
-//    // Update the رقم_الخطوة values for الخطوة1 and الخطوة2 in the following rows
-//    for (var i = rowIndex++ ; i < rows.length; i++) {
-//        var رقم_الخطوة1Input = rows[i].querySelector(`input[name^="stepsVM[${i}].رقم_الخطوة1"]`);
-//        var رقم_الخطوة2Input = rows[i].querySelector(`input[name^="stepsVM[${i}].رقم_الخطوة2"]`);
-
-//        if (رقم_الخطوة1Input && رقم_الخطوة2Input) {
-//            رقم_الخطوة1Input.value = رقم_الخطوة1ToDelete;
-//            رقم_الخطوة2Input.value = رقم_الخطوة2ToDelete;
-
-//            // Update any displayed رقم_الخطوة values in the row
-//            rows[i].querySelector(`div[data-رقم_الخطوة1="${i}"]`).textContent = رقم_الخطوة1ToDelete;
-//            rows[i].querySelector(`div[data-رقم_الخطوة2="${i}"]`).textContent = رقم_الخطوة2ToDelete;
-//        }
-//    }
-//}
-
-//function DeleteRow(button) {
-//    var rowIndex = button.getAttribute("data-row-index");
-//    var tableBody = document.querySelector("#tblSteps tbody");
-//    var rows = tableBody.children;
-
-//    // Find the row to delete
-//    var rowToDelete = rows[rowIndex];
-
-//    // Determine the رقم_الخطوة values for الخطوة1 and الخطوة2 in the row to delete
-//    var lastToDelete1 = parseInt(rowToDelete.querySelector(`input[name^="stepsVM[${rowIndex}].رقم_الخطوة1"]`).value);
-//    var lastToDelete2 = parseInt(rowToDelete.querySelector(`input[name^="stepsVM[${rowIndex}].رقم_الخطوة2"]`).value);
-
-//    // Delete the row
-//    rowToDelete.remove();
-
-//    // Decrement the رقم_الخطوة values for الخطوة1 and الخطوة2 in the following rows
-//    for (var i = rowIndex; i < rows.length; i++) {
-//        var رقم_الخطوة1Input = rows[i].querySelector(`input[name^="stepsVM[${i}].رقم_الخطوة1"]`);
-//        var رقم_الخطوة2Input = rows[i].querySelector(`input[name^="stepsVM[${i}].رقم_الخطوة2"]`);
-
-//        if (رقم_الخطوة1Input && رقم_الخطوة2Input) {
-//            var رقم_الخطوة1 = parseInt(رقم_الخطوة1Input.value);
-//            var رقم_الخطوة2 = parseInt(رقم_الخطوة2Input.value);
-
-//            رقم_الخطوة1 -= 2;
-//            رقم_الخطوة2 -= 2;
-
-//            رقم_الخطوة1Input.value = رقم_الخطوة1;
-//            رقم_الخطوة2Input.value = رقم_الخطوة2;
-
-//            // Update any displayed رقم_الخطوة values in the row
-//            rows[i].querySelector(`div[data-رقم_الخطوة1="${i}"]`).textContent = رقم_الخطوة1;
-//            rows[i].querySelector(`div[data-رقم_الخطوة2="${i}"]`).textContent = رقم_الخطوة2;
-//        }
-//    }
-//}
-
-//function deletestep1(رقم_الخطوة1) {
-//    const tdToDelete = document.querySelector(`td[data-id="${رقم_الخطوة1}"]`);
-//    if (tdToDelete) {
-//        const tableRow = tdToDelete.parentElement; // Get the parent <tr> element
-
-//        // Remove the specific <td> element
-//        tdToDelete.remove();
-
-
-//    }
-//}
-
-//function deletestep1(رقم_الخطوة) {
-//    // Find the TD to delete
-//    const tdToDelete = document.querySelector(`td[data-id="${رقم_الخطوة}"]`);
-//    if (tdToDelete) {
-//        const currentRow = tdToDelete.parentElement;
-//        const tableBody = currentRow.parentElement;
-//        const currentIndex = Array.from(tableBody.children).indexOf(currentRow);
-
-//        // Find the next row
-//        const nextRow = tableBody.children[currentIndex + 1];
-//        if (nextRow) {
-//            const رقم_الخطوة2Cell = nextRow.querySelector(`td[data-id="${رقم_الخطوة}_2"]`);
-
-//            if (رقم_الخطوة2Cell) {
-//                // Move content from رقم_الخطوة2 to رقم_الخطوة1 in the next row
-//                const رقم_الخطوة1Cell = nextRow.querySelector(`td[data-id="${رقم_الخطوة}_1"]`);
-//                if (رقم_الخطوة1Cell) {
-//                    رقم_الخطوة1Cell.innerHTML = رقم_الخطوة2Cell.innerHTML;
-//                }
-
-//                // Remove the deleted TD
-//                tdToDelete.remove();
-//            }
-//        }
-//    }
-//}

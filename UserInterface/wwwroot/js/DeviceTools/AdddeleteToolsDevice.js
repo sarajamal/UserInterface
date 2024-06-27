@@ -46,61 +46,56 @@ function toggleAddButtonVisibility(value) {
 //صفحة الاضافة اجهزة وادوات جديدة 
 var clickCount = 0;
 var lastID = 0; // Initialize lastID globally
-function AddnewtoolsDeviceNew(DeviceToolsFK) {
 
-    if (clickCount === 0) {
-        // Only retrieve lastID from server on the first click
-        $.ajax({
-            url: '/Device_tool/GetLastId',
-            type: 'GET',
-            success: function (response) {
-                lastID = parseInt(response) + 1;
-                addStep(DeviceToolsFK);
-            },
-            error: function (xhr, status, error) {
-                console.error('Error fetching last ID:', error);
-            }
-        });
-    } else {
-        // On subsequent clicks, increment lastID locally
-        lastID++;
-        addStep(DeviceToolsFK);
-    }
+function AddnewtoolsDeviceNew(BrandFK) {
+    // Only retrieve lastID from server on the first click
+    $.ajax({
+        url: '/Device_tool/GetAddID',
+        type: 'POST',
+        data: {
+            BrandFK: BrandFK
+        },
+        success: function (response) {
+            lastID = parseInt(response);
+            addStep(BrandFK);
+        },
+        error: function (xhr, status, error) {
+            console.error('Error fetching last ID:', error);
+        }
+    });
 
-    function addStep(DeviceToolsFK) {
-
+    function addStep(BrandFK) {
         // Find the table body element
         var tableBody = document.querySelector("#tblDeviceTools tbody");
 
         // Find the last row index
-        var newRowIndex = tableBody.children.length ;
+        var newRowIndex = tableBody.children.length;
 
-        // Create a new row for الخطوة1 
+        // Create a new row for the step
         var newRow = document.createElement("tr");
         newRow.innerHTML = `
-      <td  class="col-5" style="text-align:center;">
-        <input type="hidden" name="Devices_toolsVM[${newRowIndex}].BrandFK" value="${DeviceToolsFK}" />
-        <input type="hidden" name="Devices_toolsVM[${newRowIndex}].DevicesAndTools_Image" />
+            <td class="col-5" style="text-align:center;">
+                <input type="hidden" name="DeviceToolsLoginVMlist[${newRowIndex}].BrandFK" value="${BrandFK}" />
+                <input type="hidden" name="DeviceToolsLoginVMlist[${newRowIndex}].DevicesAndToolsID" value="${lastID}" />
+                <input type="hidden" name="DeviceToolsLoginVMlist[${newRowIndex}].DevicesAndTools_Image" />
 
-        <div class="form-controlstyle1">
-            <textarea class="form-control" id="Devices_toolsVM_${newRowIndex}" name="Devices_toolsVM[${newRowIndex}].DevicesAndTools_Name"></textarea>
-        </div>
-    </td>
-    <td  class="col-5" style="text-align:center;">
-        <div class="row">
-            <div class="text-center ">
-                <img id="PreviewPhoto1_${lastID}" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
-                <input type="file" name="file1_${lastID}" class="border-0 shadow mt-1" id="customFile1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
-            </div>
-        </div>
-    </td>
-    </tr>
-`;
-
-        // Append the new الخطوة1 and الخطوة2 row to the table body
+                <div>
+                    <textarea class="form-controlstyle1" id="DeviceToolsLoginVMlist_${newRowIndex}" name="DeviceToolsLoginVMlist[${newRowIndex}].DevicesAndTools_Name"></textarea>
+                </div>
+            </td>
+            <td class="col-5" style="text-align:center;">
+                <div class="row">
+                    <div class="text-center">
+                        <img id="PreviewPhoto1_${lastID}" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
+                        <input type="file" name="file1_${lastID}" class="border-0 shadow mt-1" id="customFile1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
+                    </div>
+                </div>
+            </td>
+        `;
+        // Append the new row to the table body
         tableBody.appendChild(newRow);
         clickCount++;
-        console.log("newCell:", newRow); // Debugging log 
+        console.log("newCell:", newRow); // Debugging log
     }
 }
 

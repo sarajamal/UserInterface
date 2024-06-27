@@ -12,9 +12,10 @@ function loadDataTable(id) {
     // Define the CSS rules for your custom class
     style.innerHTML = `
         .custom-font-bold {
-            font-family:Calibri;
-            font-weight: bold;
-            font-size: 16px;
+             background: #676869;
+            color: #fff;
+            font-family: 'Almarai', sans-serif;
+            vertical-align:middle;
         }
     `;
 
@@ -29,7 +30,7 @@ function loadDataTable(id) {
             {
                 data: 'devicesAndTools_Name',
                 "width": "35%",
-                "className": "text-center custom-font-bold",
+                "className": "text-center"
  
             },
         {

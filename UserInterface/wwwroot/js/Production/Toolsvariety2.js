@@ -78,12 +78,12 @@ function AddRowTool2(ProductionFK) { //صفحة التعديل
 
     var newRow = document.createElement("tr");
     newRow.innerHTML = `
-        <td>${newRowNumber}</td>
+        <td style="text-align:center;">${newRowNumber}</td>
 
-        <td><input name="ToolsVarityVM2[${newRowNumber - 1}].ProdTools" class="form-control"  placeholder="الأدات المستخدمة" /></td>
+        <td><input name="ToolsVarityVM2List[${newRowNumber - 1}].ProdTools" class="form-control"  placeholder="الأدات المستخدمة" /></td>
 
        <td style="text-align:center;" >
-            <input type="hidden" name="ToolsVarityVM2[${newRowNumber - 1}].ProductionFK" value="${ProductionFK}" />
+            <input type="hidden" name="ToolsVarityVM2List[${newRowNumber - 1}].ProductionFK" value="${ProductionFK}" />
             <button type="button" class="btn btn-style5" data-row-index="${newRowNumber}" onclick="DeleteRow9(this)">حذف</button>
         </td>
          `;

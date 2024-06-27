@@ -1,0 +1,59 @@
+﻿@model LoginTredMarktViewModel
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>Food Stuffs PDF</title>
+    <link href="https://fonts.googleapis.com/css?family=Amiri&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/PDFstyle.css" asp-append-version="true" />
+</head>
+<body>
+    @{
+        int itemsPerPage = 12;
+        int pageCount = (int)Math.Ceiling((double)Model.FoodLoginVMlist.Count / itemsPerPage);
+    }
+
+    @for (int pageIndex = 0; pageIndex < pageCount; pageIndex++)
+    {
+        <div class="page">
+            <header>
+                <img src="https://manuals.befranchisor.com/IMAGES/@(Model.tredMaeketFoodsVM.BrandID)/@(Model.tredMaeketFoodsVM.BrandLogoImage)" alt="Brand Logo" class="logo-img" />
+                <h2 class="title">المواد الغذائية</h2>
+            </header>
+
+            <div class="items-wrapper">
+                @{
+                    int startIndex = pageIndex * itemsPerPage;
+                    int endIndex = Math.Min(startIndex + itemsPerPage, Model.FoodLoginVMlist.Count);
+                    for (int i = startIndex; i < endIndex; i++)
+                    {
+                        var itemFood = Model.FoodLoginVMlist[i];
+                        <div class="item-container">
+                            <img src="/IMAGES/@(itemFood.FoodStuffsID)/@(itemFood.FoodStuffsImage)" alt="Image" />
+                            <p>@itemFood.FoodStuffsName</p>
+                        </div>
+                    }
+                }
+            </div>
+
+            <footer>
+                <img src="https://manuals.befranchisor.com/IMAGES/@(Model.tredMaeketFoodsVM.BrandID)/@(Model.tredMaeketFoodsVM.BrandFooterImage)" alt="Footer Image" />
+            </footer>
+
+            @if (pageIndex < pageCount - 1)
+            {
+                <div class="page-break"></div>
+            }
+        </div>
+    }
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>

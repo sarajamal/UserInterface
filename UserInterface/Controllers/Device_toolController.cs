@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Rotativa.AspNetCore;
 using Test12.DataAccess.Repository.IRepository;
 using Test12.Models.Models.Device_Tools;
+using Test12.Models.Models.Food;
 using Test12.Models.Models.trade_mark;
 using Test12.Models.ViewModel;
 
@@ -196,11 +198,30 @@ namespace Test12.Controllers
                 for (int i = 0; i < device_ToolsVM.DeviceToolsLoginVMlist.Count; i++)
                 {
                     var devices = device_ToolsVM.DeviceToolsLoginVMlist[i];
+
+                    // Fetch the last FoodStuffs entry based on FoodStuffsNum
+                    var lastDevicesAndTools = _unitOfWork.DevicesAndTools.GetAll().Where(u => u.BrandFK == DeviceFK)
+                                        .OrderByDescending(u => u.DevicesAndTools_Num)
+                                        .FirstOrDefault();
+
+                    // Set the FoodStuffsName based on the last entry's FoodStuffsNum
+                    int? newDevicesAndTools_Num = lastDevicesAndTools.DevicesAndTools_Num;
+
+                    if (newDevicesAndTools_Num != null && lastDevicesAndTools.DevicesAndTools_Num.HasValue)
+                    {
+                        newDevicesAndTools_Num = lastDevicesAndTools.DevicesAndTools_Num.Value + 1;
+                    }
+                    else
+                    {
+                        newDevicesAndTools_Num = 1;
+                    }
+
                     var newDevice = new DevicesAndTools
                     {
                         DevicesAndToolsID = devices.DevicesAndToolsID,
                         BrandFK = DeviceFK,
                         DevicesAndTools_Name = devices.DevicesAndTools_Name,
+                        DevicesAndTools_Num= newDevicesAndTools_Num,
                     };
 
                     string wwwRootDevicePath = _webHostEnvironment.WebRootPath; // get us root folder
@@ -259,6 +280,7 @@ namespace Test12.Controllers
                         existingDevices.DevicesAndTools_Name = devices.DevicesAndTools_Name;
                         existingDevices.DevicesAndTools_Image = newDevice.DevicesAndTools_Image ?? existingDevices.DevicesAndTools_Image;
                         existingDevices.DevicesAndToolsOrder = newDevice.DevicesAndToolsOrder;
+                        existingDevices.DevicesAndTools_Num = newDevice.DevicesAndTools_Num;
                         _unitOfWork.DevicesAndTools.Update(existingDevices);
                     }
                     else
@@ -348,5 +370,25 @@ namespace Test12.Controllers
             return Json(newDevice.DevicesAndToolsID);
         }
         //============================================================================
+        public IActionResult PrintDeviceTools(int id, int brandfk)
+        {
+            var model = new LoginTredMarktViewModel
+            {
+                DeviceToolsLoginVM = new DevicesAndTools(),
+                DeviceToolsLoginVMlist = new List<DevicesAndTools>(),
+                tredMaeketFoodsVM = new Brands(),
+            };
+            model.tredMaeketToolsVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandfk);
+            model.DeviceToolsLoginVM = _unitOfWork.DevicesAndTools.Get(u => u.DevicesAndToolsID == id);
+            model.DeviceToolsLoginVMlist = _unitOfWork.DevicesAndTools.GetAll(incloudeProperties: "Brand").Where(u => u.BrandFK == brandfk).ToList();
+
+            return new ViewAsPdf("DeviceToolsPDF", model)
+            {
+                FileName = "DeviceToolsPDF.pdf",
+                PageSize = Rotativa.AspNetCore.Options.Size.A4,
+                PageMargins = new Rotativa.AspNetCore.Options.Margins(0, 0, 0, 0) // Remove margins
+            };
+        }
     }
 }
+

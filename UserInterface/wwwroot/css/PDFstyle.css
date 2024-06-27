@@ -1,0 +1,184 @@
+﻿@font-face {
+    font-family: 'STC Bold';
+    src: url('/fonts/STC-Bold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'STC Regular';
+    src: url('/fonts/STC-Regular.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+html, body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100%;
+    min-height: 100vh;
+    height: 100%;
+}
+
+.page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensure full height for the page */
+    background-color: white; /* Ensure each page has a white background */
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100px;
+    padding: 0 20px;
+    background-color: white;
+    border-bottom: 7px solid #444;
+    box-sizing: border-box;
+}
+
+    header img.logo-img {
+        width: 120px;
+        height: 85px;
+        object-fit: contain;
+        padding-top: 6px;
+        margin-left: 15px;
+    }
+
+    header .title {
+        width: 100%;
+        font-family: 'STC Bold', Arial, sans-serif;
+        font-size: 35px;
+        font-weight: bold;
+        text-align: right;
+        color: #495057;
+        padding-top: 25px;
+        margin-right: 15px;
+        margin-top: 5px;
+        box-sizing: border-box;
+    }
+
+.items-wrapper {
+    padding: 25px;
+    width: 100%;
+    flex-direction: column;
+    box-sizing: border-box;
+    margin: 0 !important;
+    direction: rtl;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 7px solid #ffd800;
+}
+
+.item-container {
+    display: inline-block;
+    width: 24%; /* Ensure four items per row */
+    text-align: center;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+
+    .item-container img {
+        width: 200px;
+        height: 270px;
+        margin-top: 20px; /* Center the image within the container */
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .item-container p {
+        margin-top: 5px;
+        margin-bottom: 0;
+        font-family: 'STC Regular', Arial, sans-serif;
+        font-size: 18px; /* Adjust font size as needed */
+        font-weight: normal;
+        color: #495057;
+        padding: 5px;
+        border-radius: 2px; /* Optional: Add rounded corners */
+        background-color: #f9f9f9; /* Optional: Add background color */
+        display: inline-block; /* Ensure the border fits snugly around the text */
+        width: 210px; /* Assign specific width */
+        height: 35px; /* Assign specific height */
+        line-height: 20px; /* Center text vertically */
+        text-align: center; /* Center text horizontally */
+    }
+
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px; /* Set height of footer */
+    background-color: white;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+    footer img {
+        height: 100%;
+        width: 100%;
+    }
+
+/* -----------Device And Tools--------------- */
+.item-container-Device {
+    display: inline-block;
+    width: 32%; /* Ensure three items per row */
+    text-align: center;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+    .item-container-Device img {
+        width: 210px;
+        height: 270px;
+        margin-top: 20px; /* Center the image within the container */
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+    .item-container-Device p {
+        margin-top: 5px;
+        margin-bottom: 0;
+        font-family: 'STC Regular', Arial, sans-serif;
+        font-size: 18px; /* Adjust font size as needed */
+        font-weight: normal;
+        color: #495057;
+        padding: 5px;
+        border-radius: 2px; /* Optional: Add rounded corners */
+        background-color: #f9f9f9; /* Optional: Add background color */
+        display: inline-block; /* Ensure the border fits snugly around the text */
+        width: 210px; /* Assign specific width */
+        height: 35px; /* Assign specific height */
+        line-height: 20px; /* Center text vertically */
+        text-align: center; /* Center text horizontally */
+    }
+
+.page-break {
+    page-break-after: always;
+}
+
+@media screen and (max-width: 500px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+        header img.logo-img {
+            float: left;
+        }
+
+        header .title {
+            text-align: right;
+        }
+}
+
+@media print {
+    body {
+        margin: 0;
+    }
+
+    .page-break {
+        page-break-after: always;
+    }
+}

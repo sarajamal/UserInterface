@@ -13,9 +13,10 @@ function loadDataTable(id) {
     // Define the CSS rules for your custom class
     style.innerHTML = `
         .custom-font-bold {
-            font-family:Calibri;
-            font-weight: bold;
-            font-size: 16px;
+             background: #676869;
+            color: #fff;
+            font-family: 'Almarai', sans-serif;
+            vertical-align:middle;
         }
     `;
 
@@ -30,7 +31,7 @@ function loadDataTable(id) {
             {
                 data: 'deviceName',
                 "width": "40%",
-                "className": "text-center custom-font-bold"
+                "className": "text-center"
             },
         
             {
@@ -39,7 +40,7 @@ function loadDataTable(id) {
                     // Assuming 'row' has a property for BrandFK
                     var brandFk = row.brandFK;
                     return `<div role="group">
-                     <a href="/Clean/RedirectToUpsert3?id=${data}&brandFK=${brandFk}" class="btn btn-style4 fnt-white mx-2"> <i class="bi bi-pencil-square"></i></a> 
+                     <a href="/Clean/RedirectToClean?CleanID=${data}&brandFK=${brandFk}" class="btn btn-style4 fnt-white mx-2"> <i class="bi bi-pencil-square"></i></a>
                      <a onClick=DeleteCleanPost('/Clean/DeleteCleanPost/${data}') class="btn btn-style5 "> <i class="bi bi-trash-fill"></i></a>
                     </div>`;
                 },

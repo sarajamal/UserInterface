@@ -189,7 +189,7 @@ namespace Test12.Controllers
                     {
                         var foodready = FoodsReadyVM.ReadyFoodLoginVMlist[i];
                         //int LastId = _unitOfWork.readyFoodRepository.GetLastStepId();
-                        //int LastId1 = LastId + 1;
+                        //int LastId1 = LastId + 1; 
 
                         var newfoods = new ReadyProducts
                         {

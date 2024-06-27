@@ -1,13 +1,17 @@
+using DinkToPdf.Contracts;
+using DinkToPdf;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Test12.DataAccess.Data;
 using Test12.DataAccess.Repository;
 using Test12.DataAccess.Repository.IRepository;
+using Rotativa.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
 
 builder.Services.AddHttpClient(); // Add IHttpClientFactory
 
@@ -35,9 +39,10 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-
-
 var app = builder.Build();
+
+string wwwRoot = app.Environment.WebRootPath;
+RotativaConfiguration.Setup(wwwRoot, "Rotativa");
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -56,6 +61,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseSession();
+app.UseRotativa();
 //app.MapRazorPages();
 
 app.MapControllerRoute(

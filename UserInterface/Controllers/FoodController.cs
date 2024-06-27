@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Rotativa.AspNetCore;
 using Test12.DataAccess.Repository.IRepository;
 using Test12.Models.Models.Food;
 using Test12.Models.Models.trade_mark;
 using Test12.Models.ViewModel;
+using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
 
 
 namespace Test12.Controllers
@@ -189,11 +191,30 @@ namespace Test12.Controllers
                 {
                     var foods = FoodsVM.FoodLoginVMlist[i];
 
+                    // Fetch the last FoodStuffs entry based on FoodStuffsNum
+                    var lastFoodStuffs = _unitOfWork.FoodRepository.GetAll().Where(u =>u.BrandFK == foodFK)
+                                        .OrderByDescending(u => u.FoodStuffsNum)
+                                        .FirstOrDefault();
+
+                    // Set the FoodStuffsName based on the last entry's FoodStuffsNum
+                    int? newFoodStuffsNum = lastFoodStuffs.FoodStuffsNum;
+
+                    if (newFoodStuffsNum != null && lastFoodStuffs.FoodStuffsNum.HasValue)
+                    {
+                        newFoodStuffsNum = lastFoodStuffs.FoodStuffsNum.Value + 1;
+                    }
+                    else
+                    {
+                        newFoodStuffsNum =  1;
+                    }
+
                     var newfoods = new FoodStuffs
                     {
                         FoodStuffsID = foods.FoodStuffsID,
                         BrandFK = foodFK,
                         FoodStuffsName = foods.FoodStuffsName,
+                        FoodStuffsNum = newFoodStuffsNum,
+                       
                     };
 
                     string wwwRootFoodPath = _webHostEnvironment.WebRootPath; // get root folder
@@ -218,6 +239,7 @@ namespace Test12.Controllers
                             await file1ForFood1.CopyToAsync(fileStream);
                         }
                         newfoods.FoodStuffsImage = fileName11;
+                       
                     }
                     //// reOrder2 
                     if (selectFoodvalue == 0)
@@ -249,6 +271,7 @@ namespace Test12.Controllers
                         existingFoods.FoodStuffsName = foods.FoodStuffsName;
                         existingFoods.FoodStuffsOrder = newfoods.FoodStuffsOrder;
                         existingFoods.FoodStuffsImage = newfoods.FoodStuffsImage ?? existingFoods.FoodStuffsImage;
+                        existingFoods.FoodStuffsNum = newfoods.FoodStuffsNum;
 
                         _unitOfWork.FoodRepository.Update(existingFoods);
                     }
@@ -338,6 +361,25 @@ namespace Test12.Controllers
         }
         //============================================================================
 
+        public IActionResult PrintFoodStuffs(int id, int brandfk)
+        {
+            var model = new LoginTredMarktViewModel
+            {
+                FoodLoginVM = new FoodStuffs(),
+                FoodLoginVMlist = new List<FoodStuffs>(),
+                tredMaeketFoodsVM = new Brands(),
+            };
+            model.tredMaeketFoodsVM = _unitOfWork.TredMarketRepository.Get(u => u.BrandID == brandfk);
+            model.FoodLoginVM = _unitOfWork.FoodRepository.Get(u => u.FoodStuffsID == id);
+            model.FoodLoginVMlist = _unitOfWork.FoodRepository.GetAll(incloudeProperties: "Brand").Where(u => u.BrandFK == brandfk).ToList();
+
+            return new ViewAsPdf("PrintFoodStuffs", model)
+            {
+                FileName = "FoodStuffs.pdf",
+                PageSize = Rotativa.AspNetCore.Options.Size.A4,
+                PageMargins = new Rotativa.AspNetCore.Options.Margins(0, 0, 0, 0) // Remove margins
+            };
+        }
     }
 }
 

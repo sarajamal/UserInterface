@@ -2,24 +2,22 @@
 var lastID = 0; // Initialize lastID globally
 function AddnewRowstepsUpdate2(ProductionFK) { //صفحة التعديل
 
-    if (clickCount === 0) {
-        // Only retrieve lastID from server on the first click
-        $.ajax({
-            url: '/Production/GetLastId',
-            type: 'GET',
-            success: function (response) {
-                lastID = parseInt(response) + 1;
-                addStep(ProductionFK);
-            },
-            error: function (xhr, status, error) {
-                console.error('Error fetching last ID:', error);
-            }
-        });
-    } else {
-        // On subsequent clicks, increment lastID locally
-        lastID++;
-        addStep(ProductionFK);
-    }
+    
+    $.ajax({
+        url: '/Production/GetAddID',
+        type: 'POST',
+        data: {
+            ProductionFK: ProductionFK,
+            PropaVM: {} // Pass necessary data if needed
+        },
+        success: function (response) {
+            lastID = parseInt(response); // Assuming response contains the new step ID
+            addStep(ProductionFK);
+        },
+        error: function (xhr, status, error) {
+            console.error('Error fetching last ID:', error);
+        }
+    });
 
     function addStep(ProductionFK) {
         var tableBody = document.querySelector("#tblSteps2 tbody");
@@ -38,7 +36,6 @@ function AddnewRowstepsUpdate2(ProductionFK) { //صفحة التعديل
 
         newRowIndex = stepCellsCount;
         var lastCell = stepCells[stepCells.length - 1];
-
         var lastStepInput = lastCell ? lastCell.querySelector(`input[name$="ProdStepsNum"]`) : null;
         var lastStepValue = lastStepInput ? parseInt(lastStepInput.value) : 0;
         currentStep1Value = lastStepValue + 1;
@@ -48,9 +45,10 @@ function AddnewRowstepsUpdate2(ProductionFK) { //صفحة التعديل
         var newCell = document.createElement("td");
         newCell.style.textAlign = "center";
         newCell.innerHTML = `
-        <input type="hidden" name="stepsVM2[${newRowIndex}].ProductionFK" value="${ProductionFK}" />
-        <input type="hidden" name="stepsVM2[${newRowIndex}].ProdStepsNum" value="${currentStep1Value}" />
-        <input type="hidden" name="stepsVM2[${newRowIndex}].ProdSImage" />
+        <input type="hidden" name="stepsVM2List[${newRowIndex}].ProductionFK" value="${ProductionFK}" />
+        <input type="hidden" name="stepsVM2List[${newRowIndex}].ProdStepsNum" value="${currentStep1Value}" />
+        <input type="hidden" name="stepsVM2List[${newRowIndex}].ProdStepsID" value="${lastID}" />
+        <input type="hidden" name="stepsVM2List[${newRowIndex}].ProdSImage" />
         <div class="row">
             <div class="col-12 text-center">
                 <div>${currentStep1Value}</div>
@@ -59,7 +57,7 @@ function AddnewRowstepsUpdate2(ProductionFK) { //صفحة التعديل
                 </div>
                 <div class="form-group mt-2">
                     <input type="file" name="file1_${lastID}" class="border-0 shadow mt-5" id="customFile1_${lastID}" data-preview-id="PreviewPhoto1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
-                    <textarea class="form-control mt-2" id="stepsVM2{newRowIndex}" name="stepsVM2[${newRowIndex}].ProdText" placeholder="وصف الخطوة"></textarea>
+                    <textarea class="form-control mt-2" id="stepsVM2List{newRowIndex}" name="stepsVM2List[${newRowIndex}].ProdText" placeholder="وصف الخطوة"></textarea>
                 </div>
             </div>
         </div>
@@ -68,8 +66,7 @@ function AddnewRowstepsUpdate2(ProductionFK) { //صفحة التعديل
         // Append the new <td> to the current/new row
         newRow.appendChild(newCell);
         console.log("newCell:", newCell); // Debugging log   
-         clickCount++;
-       
+        clickCount++;
     }
 }
 
@@ -79,46 +76,45 @@ var currentStep1Value = 1;
 var clickCount = 0;
 var lastID = 0; // Initialize lastID globally
 
-function AddnewRowstepsNew2(productionFk) {
-    if (clickCount === 0) {
-        // Only retrieve lastID from server on the first click
-        $.ajax({
-            url: '/Production/GetLastId',
-            type: 'GET',
-            success: function (response) {
-                lastID = parseInt(response) + 1;
-                addStep(productionFk);
-            },
-            error: function (xhr, status, error) {
-                console.error('Error fetching last ID:', error);
-            }
-        });
-    } else {
-        // On subsequent clicks, increment lastID locally
-        lastID++;
-        addStep(productionFk);
-    }
-}
+function AddnewRowstepsNew2(ProductionFK) {
 
-function addStep(productionFk) {
-    var tableBody = document.querySelector("#tblSteps2 tbody");
+    // Only retrieve lastID from server on the first click
+    $.ajax({
+        url: '/Production/GetAddID',
+        type: 'POST',
+        data: {
+            ProductionFK: ProductionFK,
+            PropaVM: {} // Pass necessary data if needed
+        },
+        success: function (response) {
+            lastID = parseInt(response);
+            addStep(ProductionFK);
+        },
+        error: function (xhr, status, error) {
+            console.error('Error fetching last ID:', error);
+        }
+    });
 
-    // Determine if adding to an existing row or creating a new row
-    var newRow;
-    if (clickCount % 2 === 0) { // Every two clicks, start a new row
-        newRow = document.createElement("tr");
-        tableBody.appendChild(newRow);
-    } else {
-        // Get the last row in the table to append a new <td>
-        newRow = tableBody.lastElementChild;
-    }
+    function addStep(ProductionFK) {
+        var tableBody = document.querySelector("#tblSteps2 tbody");
 
-    // Create a new <td> for the current step
-    var newCell = document.createElement("td");
-    newCell.style.textAlign = "center";
-    newCell.innerHTML = `
-        <input type="hidden" name="stepsVM2List[${clickCount}].ProductionFK" value="${productionFk}" />
-        <input type="hidden" name="stepsVM2List[${clickCount}].ProdStepsNum" value="${currentStep1Value}" />
+        // Determine if adding to an existing row or creating a new row
+        var newRow;
+        if (clickCount % 2 === 0) { // Every two clicks, start a new row
+            newRow = document.createElement("tr");
+            tableBody.appendChild(newRow);
+        } else {
+            // Get the last row in the table to append a new <td>
+            newRow = tableBody.lastElementChild;
+        }
+
+        // Create a new <td> for the current step
+        var newCell = document.createElement("td");
+        newCell.style.textAlign = "center";
+        newCell.innerHTML = `
+        <input type="hidden" name="stepsVM2List[${clickCount}].ProductionFK" value="${ProductionFK}" />
+        <input type="hidden" name="stepsVM2List[${clickCount}].ProdStepsNum" value="${currentStep1Value}" />       
+        <input type="hidden" name="stepsVM2List[${clickCount}].ProdStepsID" value="${lastID}" />
         <input type="hidden" name="stepsVM2List[${clickCount}].ProdSImage" />
         <div class="row">
             <div class="col-12 text-center">
@@ -134,13 +130,14 @@ function addStep(productionFk) {
         </div>
     `;
 
-    // Append the new <td> to the current/new row
-    newRow.appendChild(newCell);
+        // Append the new <td> to the current/new row
+        newRow.appendChild(newCell);
 
-    // Increment values for next click
-    currentStep1Value++;
-    clickCount++;
-    console.log("newCell:", newCell); // Debugging log   
+        // Increment values for next click
+        currentStep1Value++;
+        clickCount++;
+        console.log("newCell:", newCell); // Debugging log   
+    }
 }
 
 // صفحة الإضافة بعد الحفظ 
@@ -148,25 +145,22 @@ var clickCount = 0;
 var lastID = 0; // Initialize lastID globally
 function AddnewRowstepsUpdate222(ProductionFK) { //صفحة التعديل
 
-    if (clickCount === 0) {
         // Only retrieve lastID from server on the first click
         $.ajax({
-            url: '/Production/GetLastId',
-            type: 'GET',
+            url: '/Production/GetAddID',
+            type: 'POST',
+            data: {
+                ProductionFK: ProductionFK,
+                PropaVM: {} // Pass necessary data if needed
+            },
             success: function (response) {
-                lastID = parseInt(response) + 1;
+                lastID = parseInt(response);
                 addStep2(ProductionFK);
             },
             error: function (xhr, status, error) {
                 console.error('Error fetching last ID:', error);
             }
         });
-    } else {
-        // On subsequent clicks, increment lastID locally
-        lastID++;
-        addStep2(ProductionFK);
-    }
-
     function addStep2(ProductionFK) {
         var tableBody = document.querySelector("#tblSteps2 tbody");
         var stepCells = tableBody.querySelectorAll("td");
@@ -195,6 +189,7 @@ function AddnewRowstepsUpdate222(ProductionFK) { //صفحة التعديل
         newCell.innerHTML = `
         <input type="hidden" name="stepsVM2List[${newRowIndex}].ProductionFK" value="${ProductionFK}" />
         <input type="hidden" name="stepsVM2List[${newRowIndex}].ProdStepsNum" value="${currentStep1Value}" />
+         <input type="hidden" name="stepsVM2List[${newRowIndex}].ProdStepsID" value="${lastID}" />
         <input type="hidden" name="stepsVM2List[${newRowIndex}].ProdSImage" />
         <div class="row">
             <div class="col-12 text-center">
@@ -301,6 +296,122 @@ function Deletestep(id) { // after save in db .
         }
     });
 }
+
+//==============================زر الحذف إضافة الخطوات ====================
+function Deletestep2(id) { // after save in db . 
+    Swal.fire({
+        title: 'تأكيد !!',
+        text: "تأكد أولا من حفظ أي الخطوات قمت بإضافتها قبل الحذف  ",
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText: 'الغاء',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'حذف '
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/Production/Deletestep2/' + id,
+
+                success: function (data) {
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'تم الحذف بنجاح',
+                            text: data.message
+                        }).then(() => {
+                            window.location.href = data.redirectToUrl; // Perform the redirection
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'خطأ',
+                            text: data.message
+                        });
+                    }
+                }
+            });
+        }
+    });
+}
+
+//زر التعديل على الخطوات مع ID ليس عشوائي
+//var clickCount = 0;
+//var lastID = 0; // Initialize lastID globally
+//function AddnewRowstepsUpdate2(ProductionFK) { //صفحة التعديل
+
+//    if (clickCount === 0) {
+    //    // Only retrieve lastID from server on the first click
+    //    $.ajax({
+    //        url: '/Production/GetLastId',
+    //        type: 'GET',
+    //        success: function (response) {
+    //            lastID = parseInt(response) + 1;
+    //            addStep(ProductionFK);
+    //        },
+    //        error: function (xhr, status, error) {
+    //            console.error('Error fetching last ID:', error);
+    //        }
+    //    });
+    //} else {
+    //    // On subsequent clicks, increment lastID locally
+    //    lastID++;
+    //    addStep(ProductionFK);
+    //}
+
+    //function addStep(ProductionFK) {
+    //    var tableBody = document.querySelector("#tblSteps2 tbody");
+    //    var stepCells = tableBody.querySelectorAll("td");
+    //    var stepCellsCount = stepCells.length;
+
+    //    // Determine if adding to an existing row or creating a new row
+    //    var newRow;
+    //    if (stepCellsCount % 2 === 0) { // Every two clicks, start a new row
+    //        newRow = document.createElement("tr");
+    //        tableBody.appendChild(newRow);
+    //    } else {
+    //        // Get the last row in the table to append a new <td>
+    //        newRow = tableBody.lastElementChild;
+    //    }
+
+    //    newRowIndex = stepCellsCount;
+    //    var lastCell = stepCells[stepCells.length - 1];
+
+    //    var lastStepInput = lastCell ? lastCell.querySelector(`input[name$="ProdStepsNum"]`) : null;
+    //    var lastStepValue = lastStepInput ? parseInt(lastStepInput.value) : 0;
+    //    currentStep1Value = lastStepValue + 1;
+
+
+    //    // Create a new <td> for the current step
+    //    var newCell = document.createElement("td");
+    //    newCell.style.textAlign = "center";
+    //    newCell.innerHTML = `
+    //    <input type="hidden" name="stepsVM2List[${newRowIndex}].ProductionFK" value="${ProductionFK}" />
+    //    <input type="hidden" name="stepsVM2List[${newRowIndex}].ProdStepsNum" value="${currentStep1Value}" />
+    //    <input type="hidden" name="stepsVM2List[${newRowIndex}].ProdSImage" />
+    //    <div class="row">
+    //        <div class="col-12 text-center">
+    //            <div>${currentStep1Value}</div>
+    //            <div>
+    //                <img id="PreviewPhoto1_${lastID}" src="/IMAGES/noImage.png" alt="Logo" width="125" height="125" style="border: 1px; margin-top: 20px;">
+    //            </div>
+    //            <div class="form-group mt-2">
+    //                <input type="file" name="file1_${lastID}" class="border-0 shadow mt-5" id="customFile1_${lastID}" data-preview-id="PreviewPhoto1_${lastID}" onchange="displaySelectedImage(this, 'PreviewPhoto1_${lastID}')">
+    //                <textarea class="form-control mt-2" id="stepsVM2List{newRowIndex}" name="stepsVM2List[${newRowIndex}].ProdText" placeholder="وصف الخطوة"></textarea>
+    //            </div>
+    //        </div>
+    //    </div>
+    //`;
+
+    //    // Append the new <td> to the current/new row
+//        newRow.appendChild(newCell);
+//        console.log("newCell:", newCell); // Debugging log   
+//        clickCount++;
+
+//    }
+//}
+//=========================================================================================================================================
+
 
 //زر الحذف في صفحة التعديل .
 //function DeleteRow11(button) {

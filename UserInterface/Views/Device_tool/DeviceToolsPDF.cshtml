@@ -1,0 +1,56 @@
+﻿@model LoginTredMarktViewModel
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>Device Tools PDF</title>
+    <link href="https://fonts.googleapis.com/css?family=Amiri&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/PDFstyle.css" asp-append-version="true" />
+</head>
+<body>
+    @{
+        int itemsPerPage = 9;
+        int pageCount = (int)Math.Ceiling((double)Model.DeviceToolsLoginVMlist.Count / itemsPerPage);
+    }
+
+    @for (int pageIndex = 0; pageIndex < pageCount; pageIndex++)
+    {
+        <div class="page">
+            <header>
+                <img src="https://manuals.befranchisor.com/IMAGES/@(Model.tredMaeketToolsVM.BrandID)/@(Model.tredMaeketToolsVM.BrandLogoImage)" alt="Brand Logo" class="logo-img" />
+                <h2 class="title">الأجهزة والأدوات</h2>
+            </header>
+
+            <div class="items-wrapper">
+                @{
+                    int startIndex = pageIndex * itemsPerPage;
+                    int endIndex = Math.Min(startIndex + itemsPerPage, Model.DeviceToolsLoginVMlist.Count);
+                    for (int i = startIndex; i < endIndex; i++)
+                    {
+                        var itemFood = Model.DeviceToolsLoginVMlist[i];
+                        <div class="item-container-Device">
+                            <img src="/IMAGES/@(itemFood.DevicesAndToolsID)/@(itemFood.DevicesAndTools_Image)" alt="Image" />
+                            <p>@itemFood.DevicesAndTools_Name</p>
+                        </div>
+                    }
+                }
+            </div>
+
+            <footer>
+                <img src="https://manuals.befranchisor.com/IMAGES/@(Model.tredMaeketToolsVM.BrandID)/@(Model.tredMaeketToolsVM.BrandFooterImage)" alt="Footer Image" />
+            </footer>
+
+            @if (pageIndex < pageCount - 1)
+            {
+                <div class="page-break"></div>
+            }
+        </div>
+    }
+
+</body>
+</html>
